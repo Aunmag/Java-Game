@@ -30,7 +30,7 @@ public class Actor extends Sprite {
     public static int meleeRadius = 14;
     public static double meleeDistance = meleeRadius * 1.5;
     private static int meleeIntensity = 10;
-    private static final long meleeTimePace = 400_000_000;
+    private static final long meleeTimePace = 400;
     private long meleeTimeLast = 0;
     private static final Color meleeColor = new Color(255, 0, 0, 128);
     public double meleeX;
@@ -45,7 +45,7 @@ public class Actor extends Sprite {
 //    Inertia inertiaRadians = new Inertia(0.4);
     double currentMovementRadians = 0;
     Inertia inertiaVelocity = new Inertia(0.2);
-    double currentMovementVelocity = 0;
+//    double currentMovementVelocity = 0;
 
     public String type;
 
@@ -60,9 +60,6 @@ public class Actor extends Sprite {
     public static double vZombieForward = 0.63;
 
     private static SoundManager[] sounds = new SoundManager[6];
-
-    int displayX;
-    int displayY;
 
     public Actor(double x, double y, double degrees, String imagePath) {
 
@@ -206,11 +203,11 @@ public class Actor extends Sprite {
 //        currentMovementRadians = inertiaRadians.update(1, movementRadians);
         currentMovementRadians = movementRadians;
 
-        currentMovementVelocity = inertiaVelocity.update(1, movementVelocity * health);
+        velocity = inertiaVelocity.update(1, movementVelocity * health);
 //        currentMovementVelocity = movementVelocity * health;
 
-        x += currentMovementVelocity * Math.cos(currentMovementRadians);
-        y += currentMovementVelocity * Math.sin(currentMovementRadians);
+        x += velocity * Math.cos(currentMovementRadians);
+        y += velocity * Math.sin(currentMovementRadians);
 
     }
 
@@ -250,9 +247,9 @@ public class Actor extends Sprite {
         if (isMovingRight) move(radians + Math.PI / 2, velocityAside);
 
         if (!isMovingForward && !isMovingBack && !isMovingLeft && !isMovingRight) {
-            currentMovementVelocity = inertiaVelocity.update(1, 0);
-            x += currentMovementVelocity * Math.cos(currentMovementRadians);
-            y += currentMovementVelocity * Math.sin(currentMovementRadians);
+            velocity = inertiaVelocity.update(1, 0);
+            x += velocity * Math.cos(currentMovementRadians);
+            y += velocity * Math.sin(currentMovementRadians);
         }
 
         meleeUpdate();
@@ -270,14 +267,14 @@ public class Actor extends Sprite {
 
     public void render() {
 
-        if (!isAlive || imageManager == null || !IsVisible()) {
+        if (!isAlive || image == null || !IsVisible()) {
             return;
         }
 
-        BufferedImage imageUpdated = imageManager.get(radians);
-        displayX = (int) (x - imageManager.rotatedOffsetX - Client.getGX());
-        displayY = (int) (y - imageManager.rotatedOffsetY - Client.getGY());
-        Client.getG().drawImage(imageUpdated, displayX, displayY, null);
+        BufferedImage imageUpdated = image.get(radians);
+        displayPositionPrepare();
+
+        Client.getG().drawImage(imageUpdated, (int) displayX, (int) displayY, null);
 
         if (Sprite.isBodyRadiusVisible) {
             Client.getG().setColor(bodyColor);

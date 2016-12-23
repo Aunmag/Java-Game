@@ -15,23 +15,19 @@ import managers.SoundManager;
 
 public class Weapon extends Sprite {
 
-    public static List<Weapon> allWeapons = new ArrayList<>(); // the all valid weapons must keep here
-
-    // Description:
-    protected final String name; // uses for file paths
-    protected final String title;
+    public static List<Weapon> all = new ArrayList<>(); // the all valid weapons must keep here
 
     // Characteristics:
     private final double fireRate; // time between each shoot
     private final double bulletsPerShot; // how many bullets will make per a shot
     private final double vMuzzle; // muzzle velocity of bullet
-    private final double vKeep; // keep velocity of bullet
+    private final double vRecession; // how fast bullet lose its velocity per a second
     private final double deflection; // deflection of bullet from straight direction
 
-    // Other:
-    private Actor owner; // an actor with hold this weapon
+    // Misc:
+    private Actor owner; // an actor witch hold this weapon
     private long tLastShoot = 0; // the time of the last shot
-    private SoundManager soundShot = new SoundManager("/sounds/weapons/shot_mp_27.wav");
+    private SoundManager soundShot;
 
     public Weapon(Actor owner) {
 
@@ -39,28 +35,33 @@ public class Weapon extends Sprite {
         super(0, 0, 0, true, "weapons/mp_27.png");
 
         // Set characteristics:
-        name = "test_weapon";
-        title = "Test Weapon";
-        fireRate = 700_000_000;
-        bulletsPerShot = 16;
-        vMuzzle = 58;
-        vKeep = 0.92;
-        deflection = 2;
+        fireRate = 700; // 700 or 130
+        bulletsPerShot = 16; // 16 or 1
+        vMuzzle = 58; // 58 or 61
+        vRecession = 69;
+//        vRecession = 0.92;
+        deflection = 2; // 2 or 1.2
 
         // Set owner:
         this.owner = owner;
 
-        soundShot.setVolume(1);
+        // Set sound:
+        soundShot = new SoundManager("/sounds/weapons/shot_mp_27.wav");
+        soundShot.setVolume(1); // tweak volume
 
     }
 
     private void makeShot() {
 
+        /*
+         * Make required amount of bullets and play shot sound.
+         */
+
         // Make new bullets in according to number bullets per a shot:
         for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
             double bulletVelocity = FRandom.rand(vMuzzle, deflection, 1); // random velocity of the bullet
             double bulletDegrees = FRandom.rand(degrees, deflection, 1) % 360; // random direction of the bullet
-            Bullet.allBullets.add(new Bullet(x, y, bulletDegrees, bulletVelocity, vKeep)); // make the bullet
+            Bullet.all.add(new Bullet(x, y, bulletDegrees, bulletVelocity, vRecession)); // make the bullet
         }
 
         soundShot.play();
@@ -69,15 +70,15 @@ public class Weapon extends Sprite {
 
     @Override public void tick() {
 
-        // Disable weapon if owner is too:
+        // Disable weapon if owner is invalid:
         if (!isValid || (!owner.isAlive || !owner.isValid)) {
             isValid = false;
-            allWeapons.remove(this);
+            all.remove(this);
             return;
         }
 
         // Put weapon in owner hands:
-        setDegrees(owner.getDegrees());
+        setDegrees(owner.getDegrees()); // update weapon direction in according to its owner
         x = owner.x + 12 * Math.cos(radians);
         y = owner.y + 12 * Math.sin(radians);
 

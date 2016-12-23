@@ -23,7 +23,7 @@ public class MenuDeath extends MenuAbstract {
 
         x = Client.getWidth() / 2;
         y = height12Fold * 4;
-        labelTitle = new GuiLabel(x, y, 48, true, "You are die");
+        labelTitle = new GuiLabel(x, y, 48, true, "You have died");
 
         y = height12Fold * 5;
         labelMessage = new GuiLabel(x, y, 16, false, "You have killed 0 zombies.");

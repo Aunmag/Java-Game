@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * This is fixed level object like a wall, ground or tree.
+ * This is static level object like a wall, ground or tree.
  *
  * Created by Aunmag on 28.09.2016.
  */
 
 public class Object extends Sprite {
 
-    public static List<Object> allGroundObjects = new ArrayList<>(); // the all valid objects must keep here
-    public static List<Object> allDecorationObjects = new ArrayList<>(); // the all valid objects must keep here
-    public static List<Object> allAirObjects = new ArrayList<>(); // the all valid objects must keep here
+    // Layers (the all valid objects must keep here):
+    public static List<Object> allGround = new ArrayList<>(); // the lower objects like grass or sand
+    public static List<Object> allDecoration = new ArrayList<>(); // additional intangible ground decorations as garbage
+    public static List<Object> allAir = new ArrayList<>(); // the higher intangible objects like roofs or crown
 
     public Object(String name, boolean isUnique, double x, double y, double degrees) {
 

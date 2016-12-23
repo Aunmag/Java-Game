@@ -23,16 +23,15 @@ public class Hud {
             return;
         }
 
-        double t = Client.tPerformanceAverage.getAverage() / 1_000_000;
-        t = Math.round(t * 10.0) / 10.0;
+        double t = Math.round(Client.tPerformanceAverage.getAverage() * 10.0) / 10.0;
 
-        if (t > 8) {
+        if (t >= 8) {
             Client.getHud().setColor(Color.red);
-        } else if (t > 4) {
+        } else if (t >= 4) {
             Client.getHud().setColor(Color.orange);
-        } else if (t > 2) {
+        } else if (t >= 2) {
             Client.getHud().setColor(Color.yellow);
-        } else if (t > 1) {
+        } else if (t >= 1) {
             Client.getHud().setColor(Color.green);
         }
 
@@ -42,9 +41,9 @@ public class Hud {
 
         Client.getHud().drawString("AIs: " + AI.allAIs.size(), 20, 80);
         Client.getHud().drawString("Actors: " + Actor.allActors.size(), 20, 100);
-        Client.getHud().drawString("Weapons: " + Weapon.allWeapons.size(), 20, 120);
-        Client.getHud().drawString("Bullets: " + Bullet.allBullets.size(), 20, 140);
-        Client.getHud().drawString("Objects: " + Object.allGroundObjects.size(), 20, 160);
+        Client.getHud().drawString("Weapons: " + Weapon.all.size(), 20, 120);
+        Client.getHud().drawString("Bullets: " + Bullet.all.size(), 20, 140);
+        Client.getHud().drawString("Objects: " + Object.allGround.size(), 20, 160);
 
     }
 

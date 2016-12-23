@@ -3,12 +3,12 @@ package sprites;
 import client.Client;
 import managers.ImageManager;
 
-import java.awt.*;
+import java.awt.Color;
 import java.awt.image.BufferedImage;
 
 /**
  * Abstract class which is base to level sprites, like objects, actors, weapons etc. It has its own position on level,
- * imageManager, angle and body collision. An unique sprite has its own imageManager but a non unique sprite has common imageManager (see
+ * image, angle and body collision. An unique sprite has its own image but a non unique sprite has common image (see
  * more in ImageManager class).
  *
  * Created by Aunmag on 24.09.2016.
@@ -18,19 +18,26 @@ public abstract class Sprite {
 
     // Sprite:
     public boolean isValid = true; // define should the sprite be valid or deleted either
-    ImageManager imageManager; // imageManager of sprite
+    ImageManager image; // image of sprite
 
     // Body (uses for collision):
     boolean hasBody = false;
     public double bodyRadius; // radius of round body
-    static boolean isBodyRadiusVisible = false; // use for tests to see body round
+    static boolean isBodyRadiusVisible = false; // use for tests to see body round on the screen
     static final Color bodyColor = new Color(255, 255, 255, 100); // color of body round (for tests)
 
     // Position:
     public double x;
     public double y;
-    double degrees;
-    double radians;
+    double displayX;
+    double displayY;
+
+    // Direction:
+    double degrees; // degrees angle
+    double radians; // radians angle
+
+    // Physics:
+    double velocity = 0;
 
     Sprite(double x, double y, double degrees, boolean isImageUnique, String imagePath) {
 
@@ -39,10 +46,22 @@ public abstract class Sprite {
         this.y = y;
         setDegrees(degrees);
 
-        // Set imageManager:
+        // Set image:
         setImage(imagePath, isImageUnique);
 
-//        allSprites.add(this);
+    }
+
+    boolean IsVisible() {
+
+        /*
+         * Test is sprite close enough to the camera and isn't beyond screen.
+         */
+
+        // Distance between sprite and camera:
+        double distanceBetween = Math.sqrt(Math.pow(x - Client.getCameraX(), 2) + Math.pow(y - Client.getCameraY(), 2));
+
+        // Return false if the distance is grater than maximal allowed:
+        return distanceBetween < Client.getCameraVisibility();
 
     }
 
@@ -50,16 +69,24 @@ public abstract class Sprite {
 
     public void setImage(String imagePath, boolean isImageUnique) {
 
+        /*
+         * Get image from loaded images and set it as sprite's own.
+         */
+
         if (imagePath.isEmpty()) {
-            imageManager = null; // disable imageManager if there's no path
+            /* Disable image if there's no path. */
+            image = null;
         } else if (!isImageUnique) {
-            imageManager = ImageManager.commonImages.get(imagePath); // get common imageManager from set
-            if (imageManager == null) {
-                imageManager = new ImageManager(imagePath); // load common imageManager if it doesn't exist yet
-                ImageManager.commonImages.put(imagePath, imageManager); // set loaded imageManager in common set
+            /* Get and set common image if sprite isn't unique. */
+            image = ImageManager.commonImages.get(imagePath); // get common image from set of common images
+            if (image == null) {
+                /* Initialize new common image if it it doesn't exist yet. Then set it for sprite. */
+                image = new ImageManager(imagePath); // load common image if it doesn't exist yet
+                ImageManager.commonImages.put(imagePath, image); // set loaded image in common set
             }
         } else {
-            imageManager = new ImageManager(imagePath);
+            /* Initialize new image for sprite if it is unique. */
+            image = new ImageManager(imagePath);
         }
 
     }
@@ -108,68 +135,42 @@ public abstract class Sprite {
 
     }
 
-    // Updaters:
+    // Useful:
 
-    boolean IsVisible() {
+    void displayPositionPrepare() {
 
-        // The maximal allowed distance between sprite and player to be visible:
-        double distanceBuffer = 192; // additional distance counts the sprite imageManager size
-        double distanceMaximal = (Client.getScreenMax() + distanceBuffer) / Client.getZoom(); // count screen size and buffer with zoom
+        // Put sprite according to camera position:
+        displayX = x - Client.getGX();
+        displayY = y - Client.getGY();
 
-        // Get player position to refer to:
-        double x2 = Client.getPlayerX();
-        double y2 = Client.getPlayerY();
-
-        // Distance between sprite and player:
-        double distanceBetween = Math.sqrt(Math.pow(x - x2, 2) + Math.pow(y - y2, 2));
-
-        // Return false if the distance is grater than maximal allowed:
-        if (distanceBetween > distanceMaximal) {
-            return false;
+        // Put sprite according to its image center (see more in ImageManager class):
+        if (image != null) {
+            displayX -= image.rotatedOffsetX;
+            displayY -= image.rotatedOffsetY;
         }
-
-        // Buffer offset behind player:
-        double x3 = x2 - distanceBuffer * Math.cos(Client.getPlayerRadians());
-        double y3 = y2 - distanceBuffer * Math.sin(Client.getPlayerRadians());
-
-        // Radians between sprite and player and their difference:
-        double radiansBetween = Math.atan2(y - y3, x - x3);
-        double radiansDifference = radiansBetween - Client.getPlayerRadians();
-
-        // Tweak radians value:
-        if (radiansDifference > Math.PI) {
-            radiansDifference -= Math.PI * 2;
-        } else if (radiansDifference < -Math.PI) {
-            radiansDifference += Math.PI * 2;
-        }
-
-        // Return is sprite in front of player:
-        return Math.abs(radiansDifference) < Math.PI / 2;
 
     }
+
+    // Updaters:
 
     public void tick() {}
 
     public void render() {
 
-        // Test if sprite has an imageManager:
-        if (imageManager == null) {
+        // Test has sprite image or is sprite visible:
+        if (image == null || !IsVisible()) {
+            /* Abort rendering if image is invisible at all. */
             return;
         }
 
-        // Test if imageManager is visible:
-        if (!IsVisible()) {
-            return;
-        }
+        // Update and prepare image:
+        BufferedImage imageUpdated = image.get(radians);
 
-        // Update and prepare imageManager:
-        BufferedImage imageUpdated = imageManager.get(radians);
+        // Put sprite according to camera position and its image center (see more in ImageManager class):
+        int displayX = (int) (x - image.rotatedOffsetX - Client.getGX());
+        int displayY = (int) (y - image.rotatedOffsetY - Client.getGY());
 
-        // Put sprite according to camera position and its imageManager center (see more in ImageManager class):
-        int displayX = (int) (x - imageManager.rotatedOffsetX - Client.getGX());
-        int displayY = (int) (y - imageManager.rotatedOffsetY - Client.getGY());
-
-        // Render imageManager:
+        // Render image:
         Client.getG().drawImage(imageUpdated, displayX, displayY, null);
 
     }

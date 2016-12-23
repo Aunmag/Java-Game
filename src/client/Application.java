@@ -5,6 +5,7 @@ import client.states.GameMenu;
 import client.states.GamePlay;
 import managers.ImageManager;
 import sprites.Actor;
+import sprites.Sprite;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -28,14 +29,8 @@ public class Application implements Runnable {
     private BufferStrategy bs;
     private Graphics2D g;
     private Graphics2D hud;
-    private boolean isFullscreenMode = true;
+    private boolean isFullscreenMode = false;
     private int mouseLastX;
-
-    // Time:
-    private double d = 0;
-    private long tLast = System.nanoTime();
-    private long tPass;
-    private long tCurrent;
 
     public Application() {
 
@@ -98,8 +93,8 @@ public class Application implements Runnable {
             }
 
             GamePlay.tick();
-            Client.setPlayerPosition(Client.getPlayer().x, Client.getPlayer().y);
-            Client.setPlayerRadians(Client.getPlayer().getRadians());
+            Client.updateCamera();
+
         } else {
             Client.getGameMenu().tick();
         }
@@ -112,10 +107,6 @@ public class Application implements Runnable {
 
         updateGraphics();
 
-//        // DELETE:
-//        Client.getG().setColor(Color.BLACK);
-//        Client.getG().fillRect(0, 0, width, height);
-
         if (Client.isGamePlay()) {
             g = (Graphics2D) bs.getDrawGraphics();
             g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_OFF);
@@ -126,7 +117,7 @@ public class Application implements Runnable {
             double zoom = Client.getZoom();
             Client.getG().scale(zoom, zoom);
             double xCenter = width / (zoom * 2);
-            double yCenter = (height - 8) / zoom;
+            double yCenter = (Client.getCameraOffsetDefault()) / zoom;
             Client.setGX(Client.getPlayer().x - xCenter);
             Client.setGY(Client.getPlayer().y - yCenter);
             Client.getG().rotate(Math.toRadians(-Client.getPlayer().getDegrees() - 90), xCenter, yCenter);
@@ -191,9 +182,13 @@ public class Application implements Runnable {
         ImageManager.cacheImages();
         Actor.loadSounds();
 
+        // Time:
+        double d = 0;
+        long tLast = System.currentTimeMillis();
+
         while (Client.isRunning()) {
-            tCurrent = System.nanoTime();
-            tPass = tCurrent - tLast;
+            long tCurrent = System.currentTimeMillis();
+            long tPass = tCurrent - tLast;
             tLast = tCurrent;
             d += tPass / Client.getTTick();
             if (d >= 1) {
@@ -203,7 +198,7 @@ public class Application implements Runnable {
                 render();
                 d -= 1;
                 if (Client.isPerformanceData()) {
-                    Client.tPerformanceAverage.addValue(System.nanoTime() - tCurrent);
+                    Client.tPerformanceAverage.addValue(System.currentTimeMillis() - tCurrent);
                 }
             }
         }

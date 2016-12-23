@@ -24,8 +24,8 @@ public class AI {
     double targetDistance;
     boolean isTargetReached = false;
 
-    static final long tSearchTarget = 2_000_000_000;
-    static final long tReaction = 300_000_000;
+    static final long tSearchTarget = 2_000;
+    static final long tReaction = 300;
     long tSearchTargetLast = 0;
     long tReactionLast = 0;
 

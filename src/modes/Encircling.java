@@ -11,10 +11,10 @@ import java.util.Random;
 public class Encircling extends ModeAbstract {
 
     private long timeLastSpawn;
-//    private long timeSpawn = 200_000_000;
-    private long timeSpawn = 2_000_000_000L;
-    private final long timeSpawnMin = 100_000_000;
-    private final long timeSpawnDecrease = 20_000_000;
+//    private long timeSpawn = 200;
+    private long timeSpawn = 2_000;
+    private final long timeSpawnMin = 100;
+    private final long timeSpawnDecrease = 20;
     private int zombiesSpawned = 0;
     private int zombiesKilled = 0;
 
@@ -24,8 +24,8 @@ public class Encircling extends ModeAbstract {
     private void spawn() {
 
         double direction = Math.toRadians(random.nextInt(360));
-        double spawnX = Client.getPlayerX() - spawnDistance * Math.cos(direction);
-        double spawnY = Client.getPlayerY() - spawnDistance * Math.sin(direction);
+        double spawnX = Client.getPlayer().x - spawnDistance * Math.cos(direction);
+        double spawnY = Client.getPlayer().y - spawnDistance * Math.sin(direction);
 
         Actor spawnedZombie = new Actor(spawnX, spawnY, 0, "actors/zombie.png");
         Actor.allActors.add(spawnedZombie);

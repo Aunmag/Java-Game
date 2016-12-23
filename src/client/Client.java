@@ -23,7 +23,7 @@ public class Client {
     // Constants:
     private static final String AUTHOR = "Aunmag";
     private static final String TITLE = "A Zombie Shooter Game";
-    private static final String VERSION = "0.3.0 (pre-alpha)";
+    private static final String VERSION = "0.3.2 (pre-alpha)";
 
     // States:
     private static boolean isRunning = false;
@@ -32,13 +32,18 @@ public class Client {
     private static boolean isGameStarted = false;
     private static GameMenu gameMenu;
     private static GamePlay gamePlay;
-    private static boolean isPerformanceData = false;
+    private static boolean isPerformanceData = true; // false
 
     // Screen:
-    private static int width = 800;
-    private static int height = 600;
+    private static int width = 1280;
+    private static int height = 720;
     private static int screenMax = max(width, height);
-    private static double zoom = 1.2;
+    private static double zoom = 1.4;
+
+    private static int cameraOffsetDefault = height - 8;
+    private static double cameraVisibility; // the maximal allowed distance between sprite and camera to be visible
+    private static double cameraX;
+    private static double cameraY;
 
     // Player:
     private static Actor player;
@@ -83,8 +88,19 @@ public class Client {
     public static void initialize() {
 
         fpsLimit = 75;
-        tTick = 1_000_000_000 / fpsLimit;
+        tTick = 1_000 / fpsLimit;
         tPerformanceAverage = new ArrayAverage(fpsLimit);
+
+    }
+
+    // Updaters:
+
+    public static void updateCamera() {
+
+        double offset = cameraOffsetDefault / 2 / zoom;
+        cameraX = player.x + offset * Math.cos(player.getRadians());
+        cameraY = player.y + offset * Math.sin(player.getRadians());
+        cameraVisibility = screenMax * 0.75 / zoom;
 
     }
 
@@ -132,19 +148,20 @@ public class Client {
 
     }
 
-    public static void setScreenResolution(int screenWidth, int screenHeight) {
+    public static void setScreenResolution(int width, int height) {
 
-        if (screenWidth < 1) {
-            screenWidth = 1;
+        if (width < 16) {
+            width = 16;
         }
 
-        if (screenHeight < 1) {
-            screenHeight = 1;
+        if (height < 16) {
+            height = 16;
         }
 
-        Client.width = screenWidth;
-        Client.height = screenHeight;
-        Client.screenMax = max(screenWidth, screenHeight);
+        Client.width = width;
+        Client.height = height;
+        Client.screenMax = max(width, height);
+        cameraOffsetDefault = height - 8;
 
     }
 
@@ -348,9 +365,33 @@ public class Client {
 
     }
 
+    public static int getCameraOffsetDefault() {
+
+        return cameraOffsetDefault;
+
+    }
+
     public static double getZoom() {
 
         return zoom;
+
+    }
+
+    public static double getCameraX() {
+
+        return cameraX;
+
+    }
+
+    public static double getCameraY() {
+
+        return cameraY;
+
+    }
+
+    public static double getCameraVisibility() {
+
+        return cameraVisibility;
 
     }
 

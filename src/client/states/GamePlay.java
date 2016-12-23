@@ -14,8 +14,6 @@ import sprites.Bullet;
 import sprites.Object;
 import sprites.Weapon;
 
-import java.awt.*;
-
 public class GamePlay {
 
     private static ModeAbstract mode;
@@ -33,10 +31,10 @@ public class GamePlay {
         Actor player = new Actor(0, 0, 0, "actors/human.png");
         Client.setPlayer(player);
         Actor.allActors.add(player);
-        Weapon.allWeapons.add(new Weapon(player));
+        Weapon.all.add(new Weapon(player));
 
         // Create level:
-        int groundNumber = 48;
+        int groundNumber = 48; // 48
         int groundSizeBlock = 128;
         int groundSize = groundSizeBlock * groundNumber;
         int groundStart = groundNumber / 2 * groundSizeBlock - groundSizeBlock / 2;
@@ -44,31 +42,31 @@ public class GamePlay {
 
             for (int y = -groundStart; y < groundSize - groundStart; y += groundSizeBlock) {
 
-                Object.allGroundObjects.add(new Object("ground/grass", false, x, y, 0));
+                Object.allGround.add(new Object("ground/grass", false, x, y, 0));
 
                 int confine = 960 + 8;
                 int zone = 960;
 
                 if (y == -zone && x < confine && -confine < x) {
-                    Object.allDecorationObjects.add(new Object("ground/bluff_0", false, x, y - 64, 0));
+                    Object.allDecoration.add(new Object("ground/bluff_0", false, x, y - 64, 0));
                 } else if (y == zone && x < confine && -confine < x) {
-                    Object.allDecorationObjects.add(new Object("ground/bluff_180", false, x, y + 64, 0));
+                    Object.allDecoration.add(new Object("ground/bluff_180", false, x, y + 64, 0));
                 }
 
                 if (x == -zone && y < confine && -confine < y) {
-                    Object.allDecorationObjects.add(new Object("ground/bluff_270", false, x - 64, y, 0));
+                    Object.allDecoration.add(new Object("ground/bluff_270", false, x - 64, y, 0));
                 } else if (x == zone && y < confine && -confine < y) {
-                    Object.allDecorationObjects.add(new Object("ground/bluff_90", false, x + 64, y, 0));
+                    Object.allDecoration.add(new Object("ground/bluff_90", false, x + 64, y, 0));
                 }
 
                 if (y == -zone && x == -zone) {
-                    Object.allDecorationObjects.add(new Object("ground/bluff_a270", false, x - 64, y - 64, 0));
+                    Object.allDecoration.add(new Object("ground/bluff_a270", false, x - 64, y - 64, 0));
                 } else if (y == -zone && x == zone) {
-                    Object.allDecorationObjects.add(new Object("ground/bluff_a0", false, x + 64, y - 64, 0));
+                    Object.allDecoration.add(new Object("ground/bluff_a0", false, x + 64, y - 64, 0));
                 } else if (y == zone && x == zone) {
-                    Object.allDecorationObjects.add(new Object("ground/bluff_a90", false, x + 64, y + 64, 0));
+                    Object.allDecoration.add(new Object("ground/bluff_a90", false, x + 64, y + 64, 0));
                 } else if (y == zone && x == -zone) {
-                    Object.allDecorationObjects.add(new Object("ground/bluff_a180", false, x - 64, y + 64, 0));
+                    Object.allDecoration.add(new Object("ground/bluff_a180", false, x - 64, y + 64, 0));
                 }
 
             }
@@ -96,9 +94,9 @@ public class GamePlay {
         // Clear all data:
         AI.allAIs.clear();
         Actor.allActors.clear();
-        Weapon.allWeapons.clear();
-        Object.allGroundObjects.clear();
-        Object.allDecorationObjects.clear();
+        Weapon.all.clear();
+        Object.allGround.clear();
+        Object.allDecoration.clear();
         mode = null;
 
         ambiance.stop();
@@ -144,28 +142,28 @@ public class GamePlay {
         }
 
         // Tick weapons:
-        for (int i = Weapon.allWeapons.size() - 1; i >= 0; i--) {
-            Weapon.allWeapons.get(i).tick();
+        for (int i = Weapon.all.size() - 1; i >= 0; i--) {
+            Weapon.all.get(i).tick();
         }
 
         // Tick bullets:
-        for (int i = Bullet.allBullets.size() - 1; i >= 0; i--) {
-            Bullet.allBullets.get(i).tick();
+        for (int i = Bullet.all.size() - 1; i >= 0; i--) {
+            Bullet.all.get(i).tick();
         }
 
     }
 
     public static void render() {
 
-        for (Object object: Object.allGroundObjects) {
+        for (Object object: Object.allGround) {
             object.render();
         }
 
-        for (Object decoration: Object.allDecorationObjects) {
+        for (Object decoration: Object.allDecoration) {
             decoration.render();
         }
 
-        for (Weapon weapon: Weapon.allWeapons) {
+        for (Weapon weapon: Weapon.all) {
             weapon.render();
         }
 
@@ -173,11 +171,11 @@ public class GamePlay {
             actor.render();
         }
 
-        for (Bullet bullet: Bullet.allBullets) {
+        for (Bullet bullet: Bullet.all) {
             bullet.render();
         }
 
-        for (Object air: Object.allAirObjects) {
+        for (Object air: Object.allAir) {
             air.render();
         }
 

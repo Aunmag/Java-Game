@@ -13,7 +13,7 @@ public class PutTrees {
             int x = FRandom.random.nextInt(size) - size / 2;
             int y = FRandom.random.nextInt(size) - size / 2;
 
-            for (Object air: Object.allAirObjects) {
+            for (Object air: Object.allAir) {
                 if (Math.abs(x - air.x) < 128 && Math.abs(y - air.y) < 128) {
                     continue newTree;
                 }
@@ -21,7 +21,7 @@ public class PutTrees {
 
             int type = FRandom.random.nextInt(3) + 1;
 
-            Object.allAirObjects.add(new Object("air/tree_" + type, false, x, y, 0));
+            Object.allAir.add(new Object("air/tree_" + type, false, x, y, 0));
 
         }
 
