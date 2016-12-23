@@ -32,7 +32,7 @@ public class Client {
     private static boolean isGameStarted = false;
     private static GameMenu gameMenu;
     private static GamePlay gamePlay;
-    private static boolean isPerformanceData = true; // false
+    private static boolean isPerformanceData = false;
 
     // Screen:
     private static int width = 1280;

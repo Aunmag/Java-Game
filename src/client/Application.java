@@ -1,16 +1,13 @@
 package client;
 
-import client.graphics.Hud;
 import client.states.GameMenu;
 import client.states.GamePlay;
 import managers.ImageManager;
 import sprites.Actor;
-import sprites.Sprite;
 
 import java.awt.*;
 import java.awt.event.*;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 import javax.swing.*;
 
 // Created by Aunmag on 24.09.2016.
@@ -29,7 +26,7 @@ public class Application implements Runnable {
     private BufferStrategy bs;
     private Graphics2D g;
     private Graphics2D hud;
-    private boolean isFullscreenMode = false;
+    private boolean isFullscreenMode = true;
     private int mouseLastX;
 
     public Application() {
