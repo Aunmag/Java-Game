@@ -1,4 +1,4 @@
-# A Zombie Shooter Game <img src="https://img.shields.io/badge/Pre--alpha-v0.3.0-red.svg?style=flat">
+# A Zombie Shooter Game <img src="https://img.shields.io/badge/Pre--alpha-v0.3.2-red.svg?style=flat">
 
 ### About
 
