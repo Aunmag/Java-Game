@@ -3,6 +3,7 @@ package client.graphics.gui;
 // Created by Aunmag on 17.11.2016.
 
 import client.Client;
+import client.Constants;
 import client.states.GamePlay;
 import managers.SoundManager;
 
@@ -13,7 +14,6 @@ public class MenuMain extends MenuAbstract {
     private GuiButton buttonHelp;
     private GuiButton buttonExit;
 
-//    private String labelText = Client.getTitle() + " v" + Client.getVersion();
     private GuiLabel labelA;
     private GuiLabel labelB;
 
@@ -25,20 +25,20 @@ public class MenuMain extends MenuAbstract {
 
         int x;
         int y;
-        int height12Fold = Client.getHeight() / 12;
+        int height12Fold = Client.getDisplayHeight() / 12;
 
         int width = 400;
         int height = 50;
         int margin = 5;
 
-        x = (Client.getWidth() - width) / 2;
+        x = (Client.getDisplayWidth() - width) / 2;
         y = height + margin;
 
         int quantity = 4;
         int offsetY = height12Fold * 8 - (y * quantity) / 2;
 
-        labelA = new GuiLabel(Client.getWidth() / 2, height12Fold * 4, 48, true, Client.getTitle());
-        labelB = new GuiLabel(Client.getWidth() / 2, height12Fold * 5, 16, false, "v" + Client.getVersion());
+        labelA = new GuiLabel(Client.getDisplayWidth() / 2, height12Fold * 4, 48, true, Constants.TITLE);
+        labelB = new GuiLabel(Client.getDisplayWidth() / 2, height12Fold * 5, 16, false, "v" + Constants.VERSION);
 
         buttonContinue = new GuiButton(x, offsetY + y, width, height, "Continue");
         buttonContinue.setAvailable(false);

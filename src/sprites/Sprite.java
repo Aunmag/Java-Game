@@ -1,6 +1,7 @@
 package sprites;
 
 import client.Client;
+import client.Constants;
 import managers.ImageManager;
 
 import java.awt.Color;
@@ -109,10 +110,10 @@ public abstract class Sprite {
     public void setRadians(float radians) {
 
         // Tweak radians:
-        if (radians > Math.PI * 2) {
-            radians -= Math.PI * 2;
-        } else if (radians < -Math.PI * 2) {
-            radians += Math.PI * 2;
+        if (radians > Constants.PI_2_0) {
+            radians -= Constants.PI_2_0;
+        } else if (radians < -Constants.PI_2_0) {
+            radians += Constants.PI_2_0;
         }
 
         // Set radians and update degrees respectively:

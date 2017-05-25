@@ -48,7 +48,7 @@ public class GuiButton {
         int textWidth = Client.getHud().getFontMetrics().stringWidth(text);
 
         this.text = text;
-        textX = (Client.getWidth() - textWidth) / 2;
+        textX = (Client.getDisplayWidth() - textWidth) / 2;
         textY = y + (int) (height - fontSize / 1.5);
 
     }

@@ -2,6 +2,7 @@ package client.graphics;
 
 import ai.AI;
 import client.Client;
+import client.Constants;
 import sprites.Actor;
 import sprites.Bullet;
 import sprites.Weapon;
@@ -16,7 +17,7 @@ public class Hud {
 
         Client.getHud().setColor(Color.WHITE);
 
-        Client.getHud().drawString(Client.getTitle() + " v" + Client.getVersion(), 20, 20);
+        Client.getHud().drawString(Constants.TITLE + " v" + Constants.VERSION, 20, 20);
         Client.getHud().drawString("Performance [F1]", 20, 40);
 
         if (!Client.isPerformanceData()) {

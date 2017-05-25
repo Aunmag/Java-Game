@@ -23,15 +23,15 @@ public class MenuHelp extends MenuAbstract {
 
         int x;
         int y;
-        int height12Fold = Client.getHeight() / 12;
+        int height12Fold = Client.getDisplayHeight() / 12;
 
         // Title:
-        labelTitle = new GuiLabel(Client.getWidth() / 2, height12Fold * 2, 36, true, "Help");
+        labelTitle = new GuiLabel(Client.getDisplayWidth() / 2, height12Fold * 2, 36, true, "Help");
 
         // Help mark:
-        int x1 = Client.getWidth() / 3;
+        int x1 = Client.getDisplayWidth() / 3;
         int x2 = x1 * 2;
-        y = Client.getHeight() / 16;
+        y = Client.getDisplayHeight() / 16;
         int helpSize = 16;
 
         // Help:
@@ -57,7 +57,7 @@ public class MenuHelp extends MenuAbstract {
         // Button:
         int width = 400;
         int height = 50;
-        x = (Client.getWidth() - width) / 2;
+        x = (Client.getDisplayWidth() - width) / 2;
         y = (height12Fold * 8 - height / 2) + height * 2;
         buttonBack = new GuiButton(x, y, width, height, "Back");
 

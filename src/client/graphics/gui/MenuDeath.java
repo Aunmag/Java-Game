@@ -19,9 +19,9 @@ public class MenuDeath extends MenuAbstract {
 
         int x;
         int y;
-        int height12Fold = Client.getHeight() / 12;
+        int height12Fold = Client.getDisplayHeight() / 12;
 
-        x = Client.getWidth() / 2;
+        x = Client.getDisplayWidth() / 2;
         y = height12Fold * 4;
         labelTitle = new GuiLabel(x, y, 48, true, "You have died");
 
@@ -31,7 +31,7 @@ public class MenuDeath extends MenuAbstract {
         int width = 400;
         int height = 50;
 
-        x = (Client.getWidth() - width) / 2;
+        x = (Client.getDisplayWidth() - width) / 2;
         y = height / 2 + height12Fold * 8;
 
         buttonBack = new GuiButton(x, y, 400, 50, "Back to main menu");

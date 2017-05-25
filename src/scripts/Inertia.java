@@ -1,6 +1,7 @@
 package scripts;
 
 import client.Client;
+import client.Constants;
 
 /**
  * Gradually change a number from initial value to target according to FPS.
@@ -46,7 +47,7 @@ public class Inertia {
 
         this.valueTarget = valueTarget;
 
-        valueUnit = (valueTarget - valuePrevious) / (tDuration * Client.getFpsLimit());
+        valueUnit = (valueTarget - valuePrevious) / (tDuration * Constants.FPS_LIMIT);
 
         float valueTest = Math.abs(valueUnit);
         valueTestA = valueTarget - valueTest;

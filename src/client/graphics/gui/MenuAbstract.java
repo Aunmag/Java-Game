@@ -18,7 +18,7 @@ abstract class MenuAbstract {
 
         try {
             wallpaper = ImageIO.read(ImageManager.class.getResource(wallpaperPath));
-            wallpaper = wallpaper.getScaledInstance(Client.getWidth(), Client.getHeight(), BufferedImage.SCALE_SMOOTH);
+            wallpaper = wallpaper.getScaledInstance(Client.getDisplayWidth(), Client.getDisplayHeight(), BufferedImage.SCALE_SMOOTH);
         } catch (Exception e) {
             wallpaper = null;
             Log.log("ImageManager error", "Can't load \"" + wallpaperPath+ "\" image", e);

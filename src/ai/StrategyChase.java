@@ -3,6 +3,7 @@ package ai;
 // Created by Aunmag on 21.11.2016.
 
 import client.Client;
+import client.Constants;
 
 class StrategyChase extends StrategyAbstract {
 
@@ -23,7 +24,7 @@ class StrategyChase extends StrategyAbstract {
         ai.subject.isMovingForward = true;
 
         // If subject is behind the target:
-        ai.subject.isRunning = ai.targetFlankAbs < Math.PI / 2;
+        ai.subject.isRunning = ai.targetFlankAbs < Constants.PI_0_5;
 
         if (96 < ai.targetDistance && ai.targetDistance < 512 && ai.targetFlankAbs > Math.PI / 1.4) {
 
