@@ -5,9 +5,9 @@ package managers;
 public class ArrayAverage {
 
     private int depth;
-    private double[] values;
+    private float[] values;
     private int index = 0;
-    private double average;
+    private float average;
 
     public ArrayAverage(int depth) {
 
@@ -17,11 +17,11 @@ public class ArrayAverage {
             this.depth = 2;
         }
 
-        values = new double[this.depth];
+        values = new float[this.depth];
 
     }
 
-    public void addValue(double value) {
+    public void addValue(float value) {
 
         values[index++] = value;
         if (index == values.length) {
@@ -30,11 +30,11 @@ public class ArrayAverage {
 
     }
 
-    public double getAverage() {
+    public float getAverage() {
 
         average = 0;
 
-        for (double value: values) {
+        for (float value: values) {
             average += value;
         }
 

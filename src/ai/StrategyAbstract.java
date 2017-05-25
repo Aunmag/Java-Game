@@ -36,21 +36,21 @@ abstract class StrategyAbstract {
             return;
         }
 
-        double subjectX = ai.subject.x;
-        double subjectY = ai.subject.y;
-        double targetX = ai.target.x;
-        double targetY = ai.target.y;
+        float subjectX = ai.subject.x;
+        float subjectY = ai.subject.y;
+        float targetX = ai.target.x;
+        float targetY = ai.target.y;
 
-        ai.targetDistance = Math.sqrt(Math.pow(targetX - subjectX, 2) + Math.pow(targetY - subjectY, 2));
-        ai.targetDirection = Math.atan2(targetY - subjectY, targetX - subjectX);
+        ai.targetDistance = (float) (Math.sqrt(Math.pow(targetX - subjectX, 2) + Math.pow(targetY - subjectY, 2)));
+        ai.targetDirection = (float) (Math.atan2(targetY - subjectY, targetX - subjectX));
 
-        double x = ai.subject.meleeX;
-        double y = ai.subject.meleeY;
-        double radius = ai.subject.meleeRadius / 2;
+        float x = ai.subject.meleeX;
+        float y = ai.subject.meleeY;
+        float radius = ai.subject.meleeRadius / 2;
         ai.isTargetReached = IsIntersection.circleCircle(x, y, radius, targetX, targetY, ai.target.bodyRadius);
 
         // Radians between subject and target and their difference:
-        double radiansDifference = ai.targetDirection - ai.target.getRadians();
+        float radiansDifference = ai.targetDirection - ai.target.getRadians();
 
         // Tweak radians value:
         if (radiansDifference > Math.PI) {

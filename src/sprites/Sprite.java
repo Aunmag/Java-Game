@@ -22,24 +22,24 @@ public abstract class Sprite {
 
     // Body (uses for collision):
     boolean hasBody = false;
-    public double bodyRadius; // radius of round body
+    public float bodyRadius; // radius of round body
     static boolean isBodyRadiusVisible = false; // use for tests to see body round on the screen
     static final Color bodyColor = new Color(255, 255, 255, 100); // color of body round (for tests)
 
     // Position:
-    public double x;
-    public double y;
-    double displayX;
-    double displayY;
+    public float x;
+    public float y;
+    float displayX;
+    float displayY;
 
     // Direction:
-    double degrees; // degrees angle
-    double radians; // radians angle
+    float degrees; // degrees angle
+    float radians; // radians angle
 
     // Physics:
-    double velocity = 0;
+    float velocity = 0;
 
-    Sprite(double x, double y, double degrees, boolean isImageUnique, String imagePath) {
+    Sprite(float x, float y, float degrees, boolean isImageUnique, String imagePath) {
 
         // Set position:
         this.x = x;
@@ -58,7 +58,7 @@ public abstract class Sprite {
          */
 
         // Distance between sprite and camera:
-        double distanceBetween = Math.sqrt(Math.pow(x - Client.getCameraX(), 2) + Math.pow(y - Client.getCameraY(), 2));
+        float distanceBetween = (float) (Math.sqrt(Math.pow(x - Client.getCameraX(), 2) + Math.pow(y - Client.getCameraY(), 2)));
 
         // Return false if the distance is grater than maximal allowed:
         return distanceBetween < Client.getCameraVisibility();
@@ -91,7 +91,7 @@ public abstract class Sprite {
 
     }
 
-    public void setDegrees(double degrees) {
+    public void setDegrees(float degrees) {
 
         // Tweak degrees:
         if (degrees > 360) {
@@ -102,11 +102,11 @@ public abstract class Sprite {
 
         // Set degrees and update radians respectively:
         this.degrees = degrees;
-        this.radians = Math.toRadians(this.degrees);
+        this.radians = (float) (Math.toRadians(this.degrees));
 
     }
 
-    public void setRadians(double radians) {
+    public void setRadians(float radians) {
 
         // Tweak radians:
         if (radians > Math.PI * 2) {
@@ -117,19 +117,19 @@ public abstract class Sprite {
 
         // Set radians and update degrees respectively:
         this.radians = radians;
-        this.degrees = Math.toDegrees(this.radians);
+        this.degrees = (float) (Math.toDegrees(this.radians));
 
     }
 
     // Getters:
 
-    public double getDegrees() {
+    public float getDegrees() {
 
         return degrees;
 
     }
 
-    public double getRadians() {
+    public float getRadians() {
 
         return radians;
 

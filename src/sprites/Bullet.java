@@ -18,15 +18,15 @@ public class Bullet extends Sprite {
     public static List<Bullet> all = new ArrayList<>(); // the all valid bullets must keep here
 
     // Characteristics:
-//    private double velocity; // current bullet velocity
-    private final double vRecession; // how fast bullet lose its velocity per a second
+//    private float velocity; // current bullet velocity
+    private final float vRecession; // how fast bullet lose its velocity per a second
     private static final Color color = new Color(255, 204, 51, 160);
 
     // Tail position (depends on its velocity):
-    private double x2;
-    private double y2;
+    private float x2;
+    private float y2;
 
-    public Bullet(double x, double y, double degrees, double velocity, double vRecession) {
+    public Bullet(float x, float y, float degrees, float velocity, float vRecession) {
 
         // Set basic sprite data:
         super(x, y, degrees, true, "");
@@ -53,8 +53,8 @@ public class Bullet extends Sprite {
         y += velocity * Math.sin(radians);
 
         // Define bullet tall (trace) according to its head and velocity too:
-        x2 = x - velocity * Math.cos(radians);
-        y2 = y - velocity * Math.sin(radians);
+        x2 = (float) (x - velocity * Math.cos(radians));
+        y2 = (float) (y - velocity * Math.sin(radians));
 
         // Test if bullet intersected any actor's body:
         for (Actor actor: Actor.allActors) {
@@ -75,8 +75,8 @@ public class Bullet extends Sprite {
 
         displayPositionPrepare();
 
-        double displayX2 = displayX + velocity * Math.cos(radians);
-        double displayY2 = displayY + velocity * Math.sin(radians);
+        float displayX2 = (float) (displayX + velocity * Math.cos(radians));
+        float displayY2 = (float) (displayY + velocity * Math.sin(radians));
 
         // Set bullet color:
         Client.getG().setColor(color);

@@ -37,7 +37,7 @@ public class SoundManager {
 
     }
 
-    public void makeSound(double x2, double y2) {
+    public void makeSound(float x2, float y2) {
 
         if (clip == null) {
             return;
@@ -47,9 +47,9 @@ public class SoundManager {
 
         clip.setFramePosition(0);
 
-        double x1 = Client.getPlayer().x;
-        double y1 = Client.getPlayer().y;
-        double distance = Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2));
+        float x1 = Client.getPlayer().x;
+        float y1 = Client.getPlayer().y;
+        float distance = (float) (Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)));
 
         setVolume(-distance / 25);
 
@@ -117,7 +117,7 @@ public class SoundManager {
 
     // Setters:
 
-    public void setVolume(double volume) {
+    public void setVolume(float volume) {
 
         floatControl.setValue((float) volume);
 

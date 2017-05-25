@@ -23,9 +23,9 @@ public class Encircling extends ModeAbstract {
 
     private void spawn() {
 
-        double direction = Math.toRadians(random.nextInt(360));
-        double spawnX = Client.getPlayer().x - spawnDistance * Math.cos(direction);
-        double spawnY = Client.getPlayer().y - spawnDistance * Math.sin(direction);
+        float direction = (float) (Math.toRadians(random.nextInt(360)));
+        float spawnX = (float) (Client.getPlayer().x - spawnDistance * Math.cos(direction));
+        float spawnY = (float) (Client.getPlayer().y - spawnDistance * Math.sin(direction));
 
         Actor spawnedZombie = new Actor(spawnX, spawnY, 0, "actors/zombie.png");
         Actor.allActors.add(spawnedZombie);

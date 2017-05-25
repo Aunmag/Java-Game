@@ -23,7 +23,7 @@ public class Hud {
             return;
         }
 
-        double t = Math.round(Client.tPerformanceAverage.getAverage() * 10.0) / 10.0;
+        float t = Math.round(Client.tPerformanceAverage.getAverage() * 10.0f) / 10.0f;
 
         if (t >= 8) {
             Client.getHud().setColor(Color.red);

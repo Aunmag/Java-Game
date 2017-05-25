@@ -23,29 +23,29 @@ public class Actor extends Sprite {
 
     public boolean isAlive = true;
     public boolean hasWeapon = false;
-    double health = 1;
+    float health = 1;
 
     // Melee:
     private static boolean isMeleeRadiusVisible = false;
     public static int meleeRadius = 14;
-    public static double meleeDistance = meleeRadius * 1.5;
+    public static float meleeDistance = meleeRadius * 1.5f;
     private static int meleeIntensity = 10;
     private static final long meleeTimePace = 400;
     private long meleeTimeLast = 0;
     private static final Color meleeColor = new Color(255, 0, 0, 128);
-    public double meleeX;
-    public double meleeY;
+    public float meleeX;
+    public float meleeY;
 
     // Movement velocity:
-    public double velocityForward;
-    public double velocityAside;
-    public double velocityBack;
-    public double runningAcceleration;
+    public float velocityForward;
+    public float velocityAside;
+    public float velocityBack;
+    public float runningAcceleration;
 
 //    Inertia inertiaRadians = new Inertia(0.4);
-    double currentMovementRadians = 0;
-    Inertia inertiaVelocity = new Inertia(0.2);
-//    double currentMovementVelocity = 0;
+    float currentMovementRadians = 0;
+    Inertia inertiaVelocity = new Inertia(0.2f);
+//    float currentMovementVelocity = 0;
 
     public String type;
 
@@ -57,11 +57,11 @@ public class Actor extends Sprite {
     public boolean isRunning = false;
     public boolean isAttacking = false;
 
-    public static double vZombieForward = 0.63;
+    public static float vZombieForward = 0.63f;
 
     private static SoundManager[] sounds = new SoundManager[6];
 
-    public Actor(double x, double y, double degrees, String imagePath) {
+    public Actor(float x, float y, float degrees, String imagePath) {
 
         super(x, y, degrees, true, imagePath);
 
@@ -71,18 +71,18 @@ public class Actor extends Sprite {
         switch (type) {
             case "human.png":
                 type = "human";
-                velocityForward = 1.38;
-                velocityAside = velocityForward * 0.6;
-                velocityBack = velocityForward * 0.8;
-                runningAcceleration = 2.76; // 3.02
+                velocityForward = 1.38f;
+                velocityAside = velocityForward * 0.6f;
+                velocityBack = velocityForward * 0.8f;
+                runningAcceleration = 2.76f; // 3.02
                 hasWeapon = true;
                 break;
             case "zombie.png":
                 type = "zombie";
                 velocityForward = vZombieForward;
-                velocityAside = velocityForward * 0.6;
-                velocityBack = velocityForward * 0.8;
-                runningAcceleration = 1.63;
+                velocityAside = velocityForward * 0.6f;
+                velocityBack = velocityForward * 0.8f;
+                runningAcceleration = 1.63f;
                 hasWeapon = false;
                 break;
             default:
@@ -96,13 +96,13 @@ public class Actor extends Sprite {
         }
 
         hasBody = true;
-        bodyRadius = 7.2;
+        bodyRadius = 7.2f;
 
         meleeUpdate();
 
     }
 
-    public void hit(double intensity, double direction) {
+    public void hit(float intensity, float direction) {
 
         health -= intensity / 100;
 
@@ -110,7 +110,7 @@ public class Actor extends Sprite {
             health = 0;
         }
 
-        double impulse = intensity / 10;
+        float impulse = intensity / 10;
 
         x += impulse * Math.cos(direction);
         y += impulse * Math.sin(direction);
@@ -145,8 +145,8 @@ public class Actor extends Sprite {
 
     private void meleeUpdate() {
 
-        meleeX = x + meleeDistance * Math.cos(radians);
-        meleeY = y + meleeDistance * Math.sin(radians);
+        meleeX = (float) (x + meleeDistance * Math.cos(radians));
+        meleeY = (float) (y + meleeDistance * Math.sin(radians));
 
     }
 
@@ -157,10 +157,10 @@ public class Actor extends Sprite {
             if (a.isAlive && !a.equals(this)) {
                 if (IsIntersection.circleCircle(x, y, bodyRadius, a.x, a.y, a.bodyRadius)) {
 
-                    double distanceMin = bodyRadius + a.bodyRadius;
-                    double distanceCurrent = Math.abs(Math.sqrt(Math.pow(x - a.x, 2) + Math.pow(y - a.y, 2)));
-                    double distanceIntersection = (distanceMin - distanceCurrent) / 2;
-                    double direction = Math.atan2(y - a.y, x - a.x);
+                    float distanceMin = bodyRadius + a.bodyRadius;
+                    float distanceCurrent = (float) (Math.abs(Math.sqrt(Math.pow(x - a.x, 2) + Math.pow(y - a.y, 2))));
+                    float distanceIntersection = (distanceMin - distanceCurrent) / 2;
+                    float direction = (float) (Math.atan2(y - a.y, x - a.x));
 
                     x += distanceIntersection * Math.cos(direction);
                     y += distanceIntersection * Math.sin(direction);
@@ -194,7 +194,7 @@ public class Actor extends Sprite {
 
     // Movement methods:
 
-    private void move(double movementRadians, double movementVelocity) {
+    private void move(float movementRadians, float movementVelocity) {
 
         if (isRunning && isMovingForward) {
             movementVelocity *= runningAcceleration;
@@ -213,7 +213,7 @@ public class Actor extends Sprite {
 
     // Getters:
 
-    public double getHealth() {
+    public float getHealth() {
 
         return health;
 
@@ -242,9 +242,9 @@ public class Actor extends Sprite {
         }
 
         if (isMovingForward) move(radians, velocityForward);
-        if (isMovingBack) move(radians - Math.PI, velocityBack);
-        if (isMovingLeft) move(radians - Math.PI / 2, velocityAside);
-        if (isMovingRight) move(radians + Math.PI / 2, velocityAside);
+        if (isMovingBack) move((float) (radians - Math.PI), velocityBack);
+        if (isMovingLeft) move((float) (radians - Math.PI / 2), velocityAside);
+        if (isMovingRight) move((float) (radians + Math.PI / 2), velocityAside);
 
         if (!isMovingForward && !isMovingBack && !isMovingLeft && !isMovingRight) {
             velocity = inertiaVelocity.update(1, 0);

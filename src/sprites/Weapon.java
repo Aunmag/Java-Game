@@ -18,11 +18,11 @@ public class Weapon extends Sprite {
     public static List<Weapon> all = new ArrayList<>(); // the all valid weapons must keep here
 
     // Characteristics:
-    private final double fireRate; // time between each shoot
-    private final double bulletsPerShot; // how many bullets will make per a shot
-    private final double vMuzzle; // muzzle velocity of bullet
-    private final double vRecession; // how fast bullet lose its velocity per a second
-    private final double deflection; // deflection of bullet from straight direction
+    private final float fireRate; // time between each shoot
+    private final float bulletsPerShot; // how many bullets will make per a shot
+    private final float vMuzzle; // muzzle velocity of bullet
+    private final float vRecession; // how fast bullet lose its velocity per a second
+    private final float deflection; // deflection of bullet from straight direction
 
     // Misc:
     private Actor owner; // an actor witch hold this weapon
@@ -59,8 +59,8 @@ public class Weapon extends Sprite {
 
         // Make new bullets in according to number bullets per a shot:
         for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
-            double bulletVelocity = FRandom.rand(vMuzzle, deflection, 1); // random velocity of the bullet
-            double bulletDegrees = FRandom.rand(degrees, deflection, 1) % 360; // random direction of the bullet
+            float bulletVelocity = FRandom.rand(vMuzzle, deflection, 1); // random velocity of the bullet
+            float bulletDegrees = FRandom.rand(degrees, deflection, 1) % 360; // random direction of the bullet
             Bullet.all.add(new Bullet(x, y, bulletDegrees, bulletVelocity, vRecession)); // make the bullet
         }
 
@@ -79,8 +79,8 @@ public class Weapon extends Sprite {
 
         // Put weapon in owner hands:
         setDegrees(owner.getDegrees()); // update weapon direction in according to its owner
-        x = owner.x + 12 * Math.cos(radians);
-        y = owner.y + 12 * Math.sin(radians);
+        x = (float) (owner.x + 12 * Math.cos(radians));
+        y = (float) (owner.y + 12 * Math.sin(radians));
 
         // Make shot in according to fire rate if owner is attacking and has weapon:
         if (owner.isAttacking && owner.hasWeapon && Client.getT() - tLastShoot >= fireRate) {

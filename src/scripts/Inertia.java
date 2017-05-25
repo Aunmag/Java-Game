@@ -24,37 +24,37 @@ import client.Client;
 
 public class Inertia {
 
-    public double valuePrevious = 0;
-    public double valueCurrent = 0;
-    public double valueTarget = 0;
-    public double valueRound = 0;
-    public double valueUnit = 0;
-    public double bendDegree = 1;
-    private double tDuration = 0;
+    public float valuePrevious = 0;
+    public float valueCurrent = 0;
+    public float valueTarget = 0;
+    public float valueRound = 0;
+    public float valueUnit = 0;
+    public float bendDegree = 1;
+    private float tDuration = 0;
 
     private boolean isProcessing = false;
-    private double valueTestA = 0;
-    private double valueTestB = 0;
+    private float valueTestA = 0;
+    private float valueTestB = 0;
 
-    public Inertia(double tDuration) {
+    public Inertia(float tDuration) {
 
         this.tDuration = tDuration;
 
     }
 
-    private void calculateValueUnit(double valueTarget) {
+    private void calculateValueUnit(float valueTarget) {
 
         this.valueTarget = valueTarget;
 
         valueUnit = (valueTarget - valuePrevious) / (tDuration * Client.getFpsLimit());
 
-        double valueTest = Math.abs(valueUnit);
+        float valueTest = Math.abs(valueUnit);
         valueTestA = valueTarget - valueTest;
         valueTestB = valueTarget + valueTest;
 
     }
 
-    public double update(double timeDelta, double valueTarget) {
+    public float update(float timeDelta, float valueTarget) {
 
         if (isProcessing && valueTarget != this.valueTarget) {
             valuePrevious = valueCurrent;
@@ -85,7 +85,7 @@ public class Inertia {
 
     // Setters:
 
-    public void setTDuration(double tDuration) {
+    public void setTDuration(float tDuration) {
 
         this.tDuration = tDuration;
         calculateValueUnit(valueTarget);
@@ -94,13 +94,13 @@ public class Inertia {
 
     // Getters:
 
-    public double getValueTarget() {
+    public float getValueTarget() {
 
         return valueTarget;
 
     }
 
-    public double getTDuration() {
+    public float getTDuration() {
 
         return tDuration;
 

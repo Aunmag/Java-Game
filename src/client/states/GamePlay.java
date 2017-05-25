@@ -85,7 +85,7 @@ public class GamePlay {
         atmosphere = new SoundManager("/sounds/music/gameplay_atmosphere.wav");
         atmosphere.setVolume(-24);
 
-        Actor.vZombieForward = 0.63;
+        Actor.vZombieForward = 0.63f;
 
     }
 

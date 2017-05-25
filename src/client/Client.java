@@ -38,18 +38,18 @@ public class Client {
     private static int width = 1280;
     private static int height = 720;
     private static int screenMax = max(width, height);
-    private static double zoom = 1.4;
+    private static float zoom = 1.4f;
 
     private static int cameraOffsetDefault = height - 8;
-    private static double cameraVisibility; // the maximal allowed distance between sprite and camera to be visible
-    private static double cameraX;
-    private static double cameraY;
+    private static float cameraVisibility; // the maximal allowed distance between sprite and camera to be visible
+    private static float cameraX;
+    private static float cameraY;
 
     // Player:
     private static Actor player;
-    private static double playerX;
-    private static double playerY;
-    private static double playerRadians;
+    private static float playerX;
+    private static float playerY;
+    private static float playerRadians;
 
     // Input:
     private static Input input;
@@ -62,8 +62,8 @@ public class Client {
     private static BufferStrategy bs;
     private static Graphics2D hud;
     private static Graphics2D g;
-    private static double gX;
-    private static double gY;
+    private static float gX;
+    private static float gY;
     private static boolean isCursorVisible = true;
     private static BufferedImage cursorImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     private static Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "");
@@ -75,8 +75,8 @@ public class Client {
 
     // Time:
     private static long t; // current time
-    private static double tTick; // time for one frame
-    private static double d = 0; // current delta time
+    private static float tTick; // time for one frame
+    private static float d = 0; // current delta time
     public static ArrayAverage tPerformanceAverage;
 
     static {
@@ -97,10 +97,10 @@ public class Client {
 
     public static void updateCamera() {
 
-        double offset = cameraOffsetDefault / 2 / zoom;
-        cameraX = player.x + offset * Math.cos(player.getRadians());
-        cameraY = player.y + offset * Math.sin(player.getRadians());
-        cameraVisibility = screenMax * 0.75 / zoom;
+        float offset = cameraOffsetDefault / 2 / zoom;
+        cameraX = (float) (player.x + offset * Math.cos(player.getRadians()));
+        cameraY = (float) (player.y + offset * Math.sin(player.getRadians()));
+        cameraVisibility = screenMax * 0.75f / zoom;
 
     }
 
@@ -165,7 +165,7 @@ public class Client {
 
     }
 
-    public static void setZoom(double zoom) {
+    public static void setZoom(float zoom) {
 
         if (zoom < 1) {
             zoom = 1;
@@ -183,14 +183,14 @@ public class Client {
 
     }
 
-    public static void setPlayerPosition(double playerX, double playerY) {
+    public static void setPlayerPosition(float playerX, float playerY) {
 
         Client.playerX = playerX;
         Client.playerY = playerY;
 
     }
 
-    public static void setPlayerRadians(double playerRadians) {
+    public static void setPlayerRadians(float playerRadians) {
 
         Client.playerRadians = playerRadians;
 
@@ -220,13 +220,13 @@ public class Client {
 
     }
 
-    public static void setGX(double gX) {
+    public static void setGX(float gX) {
 
         Client.gX = gX;
 
     }
 
-    public static void setGY(double gY) {
+    public static void setGY(float gY) {
 
         Client.gY = gY;
 
@@ -279,7 +279,7 @@ public class Client {
 
     }
 
-    public static void setD(double d) {
+    public static void setD(float d) {
 
         Client.d = d;
 
@@ -371,25 +371,25 @@ public class Client {
 
     }
 
-    public static double getZoom() {
+    public static float getZoom() {
 
         return zoom;
 
     }
 
-    public static double getCameraX() {
+    public static float getCameraX() {
 
         return cameraX;
 
     }
 
-    public static double getCameraY() {
+    public static float getCameraY() {
 
         return cameraY;
 
     }
 
-    public static double getCameraVisibility() {
+    public static float getCameraVisibility() {
 
         return cameraVisibility;
 
@@ -401,19 +401,19 @@ public class Client {
 
     }
 
-    public static double getPlayerX() {
+    public static float getPlayerX() {
 
         return playerX;
 
     }
 
-    public static double getPlayerY() {
+    public static float getPlayerY() {
 
         return playerY;
 
     }
 
-    public static double getPlayerRadians() {
+    public static float getPlayerRadians() {
 
         return playerRadians;
 
@@ -443,13 +443,13 @@ public class Client {
 
     }
 
-    public static double getGX() {
+    public static float getGX() {
 
         return gX;
 
     }
 
-    public static double getGY() {
+    public static float getGY() {
 
         return gY;
 
@@ -497,13 +497,13 @@ public class Client {
 
     }
 
-    public static double getTTick() {
+    public static float getTTick() {
 
         return tTick;
 
     }
 
-    public static double getD() {
+    public static float getD() {
 
         return d;
 
