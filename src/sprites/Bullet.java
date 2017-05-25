@@ -27,10 +27,10 @@ public class Bullet extends Sprite {
     private float x2;
     private float y2;
 
-    public Bullet(float x, float y, float degrees, float velocity, float vRecession) {
+    public Bullet(float x, float y, float radians, float velocity, float vRecession) {
 
         // Set basic sprite data:
-        super(x, y, degrees, true, "");
+        super(x, y, radians, true, "");
 
         // Set characteristics:
         this.velocity = velocity;

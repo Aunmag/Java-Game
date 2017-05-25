@@ -33,20 +33,17 @@ public abstract class Sprite {
     public float y;
     float displayX;
     float displayY;
-
-    // Direction:
-    float degrees; // degrees angle
-    float radians; // radians angle
+    float radians;
 
     // Physics:
     float velocity = 0;
 
-    Sprite(float x, float y, float degrees, boolean isImageUnique, String imagePath) {
+    Sprite(float x, float y, float radians, boolean isImageUnique, String imagePath) {
 
         // Set position:
         this.x = x;
         this.y = y;
-        setDegrees(degrees);
+        setRadians(radians);
 
         // Set image:
         setImage(imagePath, isImageUnique);
@@ -93,37 +90,11 @@ public abstract class Sprite {
 
     }
 
-    public void setDegrees(float degrees) {
-
-        // Tweak degrees:
-        if (degrees > 360) {
-            degrees -= 360;
-        } else if (degrees < -360) {
-            degrees += 360;
-        }
-
-        // Set degrees and update radians respectively:
-        this.degrees = degrees;
-        this.radians = (float) (Math.toRadians(this.degrees));
-
-    }
-
     public void setRadians(float radians) {
-        radians = MathManager.correctRadians(radians);
-
-        // Set radians and update degrees respectively:
-        this.radians = radians;
-        this.degrees = (float) (Math.toDegrees(this.radians));
-
+        this.radians = MathManager.correctRadians(radians);
     }
 
     // Getters:
-
-    public float getDegrees() {
-
-        return degrees;
-
-    }
 
     public float getRadians() {
 

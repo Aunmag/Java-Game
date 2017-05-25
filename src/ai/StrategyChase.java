@@ -27,25 +27,23 @@ class StrategyChase extends StrategyAbstract {
         ai.subject.isRunning = ai.targetFlankAbs < Constants.PI_0_5;
 
         if (96 < ai.targetDistance && ai.targetDistance < 512 && ai.targetFlankAbs > Math.PI / 1.4) {
-
-            float degreesOffset = 0;
+            float radiansOffset = 0;
 
             if (ai.targetDistance > 512) {
-                degreesOffset = 45;
+                radiansOffset = (float) Constants.PI_0_5 / 2f;
             } else if (ai.targetDistance > 256) {
-                degreesOffset = 22.5f;
+                radiansOffset = (float) Constants.PI_0_5 / 4f;
             } else if (ai.targetDistance > 128) {
-                degreesOffset = 11.25f;
+                radiansOffset = (float) Constants.PI_0_5 / 8f;
             } else if (ai.targetDistance > 64) {
-                degreesOffset = 5.625f;
+                radiansOffset = (float) Constants.PI_0_5 / 16f;
             }
 
             if (ai.targetFlankReal < 0) {
-                ai.subject.setDegrees(ai.subject.getDegrees() - degreesOffset);
+                ai.subject.setRadians(ai.subject.getRadians() - radiansOffset);
             } else {
-                ai.subject.setDegrees(ai.subject.getDegrees() + degreesOffset);
+                ai.subject.setRadians(ai.subject.getRadians() + radiansOffset);
             }
-
         }
 
         // If the subject is close enough to the target:
