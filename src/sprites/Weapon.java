@@ -3,7 +3,7 @@ package sprites;
 import java.util.ArrayList;
 import java.util.List;
 import client.Client;
-import scripts.FRandom;
+import managers.MathManager;
 import managers.SoundManager;
 
 /**
@@ -59,8 +59,8 @@ public class Weapon extends Sprite {
 
         // Make new bullets in according to number bullets per a shot:
         for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
-            float bulletVelocity = FRandom.rand(vMuzzle, deflection, 1); // random velocity of the bullet
-            float bulletDegrees = FRandom.rand(degrees, deflection, 1) % 360; // random direction of the bullet
+            float bulletVelocity = MathManager.randomizeBetween(vMuzzle - deflection, vMuzzle + deflection); // random velocity of the bullet
+            float bulletDegrees = MathManager.randomizeBetween(degrees - deflection, degrees + deflection) % 360; // random direction of the bullet
             Bullet.all.add(new Bullet(x, y, bulletDegrees, bulletVelocity, vRecession)); // make the bullet
         }
 

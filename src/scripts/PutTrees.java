@@ -2,6 +2,7 @@ package scripts;
 
 // Created by Aunmag on 23.11.2016.
 
+import managers.MathManager;
 import sprites.Object;
 
 public class PutTrees {
@@ -10,8 +11,8 @@ public class PutTrees {
 
         newTree: for (int i = 0; i < number; i++) {
 
-            int x = FRandom.random.nextInt(size) - size / 2;
-            int y = FRandom.random.nextInt(size) - size / 2;
+            int x = MathManager.random.nextInt(size) - size / 2;
+            int y = MathManager.random.nextInt(size) - size / 2;
 
             for (Object air: Object.allAir) {
                 if (Math.abs(x - air.x) < 128 && Math.abs(y - air.y) < 128) {
@@ -19,7 +20,7 @@ public class PutTrees {
                 }
             }
 
-            int type = FRandom.random.nextInt(3) + 1;
+            int type = MathManager.random.nextInt(3) + 1;
 
             Object.allAir.add(new Object("air/tree_" + type, false, x, y, 0));
 
