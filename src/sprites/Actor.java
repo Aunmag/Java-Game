@@ -1,6 +1,7 @@
 package sprites;
 
 import client.Client;
+import client.Constants;
 import managers.Log;
 import scripts.FRandom;
 import scripts.Inertia;
@@ -243,8 +244,8 @@ public class Actor extends Sprite {
 
         if (isMovingForward) move(radians, velocityForward);
         if (isMovingBack) move((float) (radians - Math.PI), velocityBack);
-        if (isMovingLeft) move((float) (radians - Math.PI / 2), velocityAside);
-        if (isMovingRight) move((float) (radians + Math.PI / 2), velocityAside);
+        if (isMovingLeft) move((float) (radians - Constants.PI_0_5), velocityAside);
+        if (isMovingRight) move((float) (radians + Constants.PI_0_5), velocityAside);
 
         if (!isMovingForward && !isMovingBack && !isMovingLeft && !isMovingRight) {
             velocity = inertiaVelocity.update(1, 0);

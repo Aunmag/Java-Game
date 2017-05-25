@@ -52,7 +52,7 @@ public class GameMenu {
     public void render() {
 
         Client.getHud().setColor(backgroundColor);
-        Client.getHud().fillRect(0, 0, Client.getWidth(), Client.getHeight());
+        Client.getHud().fillRect(0, 0, Client.getDisplayWidth(), Client.getDisplayHeight());
 
         if (isMenuMain) {
             menuMain.render();

@@ -20,11 +20,6 @@ import static java.lang.Integer.max;
 
 public class Client {
 
-    // Constants:
-    private static final String AUTHOR = "Aunmag";
-    private static final String TITLE = "A Zombie Shooter Game";
-    private static final String VERSION = "0.3.2 (pre-alpha)";
-
     // States:
     private static boolean isRunning = false;
     private static boolean isGameMenu = true;
@@ -35,12 +30,12 @@ public class Client {
     private static boolean isPerformanceData = false;
 
     // Screen:
-    private static int width = 1280;
-    private static int height = 720;
-    private static int screenMax = max(width, height);
+    private static int displayWidth = 1280;
+    private static int displayHeight = 720;
+    private static int displayMax = max(displayWidth, displayHeight);
     private static float zoom = 1.4f;
 
-    private static int cameraOffsetDefault = height - 8;
+    private static int cameraOffsetDefault = displayHeight - 8;
     private static float cameraVisibility; // the maximal allowed distance between sprite and camera to be visible
     private static float cameraX;
     private static float cameraY;
@@ -68,11 +63,6 @@ public class Client {
     private static BufferedImage cursorImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     private static Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "");
 
-    // Frames:
-    private static int fpsLimit;
-    private static boolean isFrame2Fold = false;
-    private static boolean isFrame4Fold = false;
-
     // Time:
     private static long t; // current time
     private static float tTick; // time for one frame
@@ -80,17 +70,12 @@ public class Client {
     public static ArrayAverage tPerformanceAverage;
 
     static {
-
         initialize();
-
     }
 
     public static void initialize() {
-
-        fpsLimit = 75;
-        tTick = 1_000 / fpsLimit;
-        tPerformanceAverage = new ArrayAverage(fpsLimit);
-
+        tTick = 1_000 / Constants.FPS_LIMIT;
+        tPerformanceAverage = new ArrayAverage(Constants.FPS_LIMIT);
     }
 
     // Updaters:
@@ -100,7 +85,7 @@ public class Client {
         float offset = cameraOffsetDefault / 2 / zoom;
         cameraX = (float) (player.x + offset * Math.cos(player.getRadians()));
         cameraY = (float) (player.y + offset * Math.sin(player.getRadians()));
-        cameraVisibility = screenMax * 0.75f / zoom;
+        cameraVisibility = displayMax * 0.75f / zoom;
 
     }
 
@@ -158,9 +143,9 @@ public class Client {
             height = 16;
         }
 
-        Client.width = width;
-        Client.height = height;
-        Client.screenMax = max(width, height);
+        Client.displayWidth = width;
+        Client.displayHeight = height;
+        Client.displayMax = max(width, height);
         cameraOffsetDefault = height - 8;
 
     }
@@ -263,16 +248,6 @@ public class Client {
 
     }
 
-    public static void setFpsLimit(int fpsLimit) {
-
-        if (fpsLimit < 1) {
-            fpsLimit = 1;
-        }
-
-        Client.fpsLimit = fpsLimit;
-
-    }
-
     public static void setT(long t) {
 
         Client.t = t;
@@ -282,26 +257,6 @@ public class Client {
     public static void setD(float d) {
 
         Client.d = d;
-
-    }
-
-    // Getters:
-
-    public static String getAuthor() {
-
-        return AUTHOR;
-
-    }
-
-    public static String getTitle() {
-
-        return TITLE;
-
-    }
-
-    public static String getVersion() {
-
-        return VERSION;
 
     }
 
@@ -347,21 +302,15 @@ public class Client {
 
     }
 
-    public static int getWidth() {
+    public static int getDisplayWidth() {
 
-        return width;
-
-    }
-
-    public static int getHeight() {
-
-        return height;
+        return displayWidth;
 
     }
 
-    public static int getScreenMax() {
+    public static int getDisplayHeight() {
 
-        return screenMax;
+        return displayHeight;
 
     }
 
@@ -482,12 +431,6 @@ public class Client {
     public static int getMouseY() {
 
         return mouseY;
-
-    }
-
-    public static int getFpsLimit() {
-
-        return fpsLimit;
 
     }
 

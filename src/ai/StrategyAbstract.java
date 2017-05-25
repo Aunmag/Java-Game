@@ -2,6 +2,7 @@ package ai;
 
 // Created by Aunmag on 21.11.2016.
 
+import client.Constants;
 import scripts.IsIntersection;
 import sprites.Actor;
 
@@ -54,9 +55,9 @@ abstract class StrategyAbstract {
 
         // Tweak radians value:
         if (radiansDifference > Math.PI) {
-            radiansDifference -= Math.PI * 2;
+            radiansDifference -= Constants.PI_2_0;
         } else if (radiansDifference < -Math.PI) {
-            radiansDifference += Math.PI * 2;
+            radiansDifference += Constants.PI_2_0;
         }
 
         ai.targetFlankReal = radiansDifference;

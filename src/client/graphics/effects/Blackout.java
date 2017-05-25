@@ -32,7 +32,7 @@ public class Blackout {
 
         try {
             image = ImageIO.read(Blackout.class.getResource("/images/gui/blackout1600.png"));
-            image = image.getScaledInstance(Client.getWidth(), Client.getHeight(), BufferedImage.SCALE_SMOOTH);
+            image = image.getScaledInstance(Client.getDisplayWidth(), Client.getDisplayHeight(), BufferedImage.SCALE_SMOOTH);
         } catch (IOException e) {
             Log.log("Error", "Can't load blackout image.", e);
             image = null;
@@ -61,7 +61,7 @@ public class Blackout {
         if (playerHealth <= 0.66) {
             alpha = (1 - playerHealth / 0.66f) * 0.9f;
             Client.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
-            Client.getHud().fillRect(0, 0, Client.getWidth(), Client.getHeight());
+            Client.getHud().fillRect(0, 0, Client.getDisplayWidth(), Client.getDisplayHeight());
         }
 
         // Render blackout boundaries:
@@ -88,7 +88,7 @@ public class Blackout {
         }
 
         Client.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
-        Client.getHud().fillRect(0, 0, Client.getWidth(), Client.getHeight());
+        Client.getHud().fillRect(0, 0, Client.getDisplayWidth(), Client.getDisplayHeight());
 
         // Reset default hud alpha:
 

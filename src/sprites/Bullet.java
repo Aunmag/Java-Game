@@ -1,6 +1,7 @@
 package sprites;
 
 import client.Client;
+import client.Constants;
 import scripts.IsIntersection;
 import java.awt.Color;
 import java.util.ArrayList;
@@ -46,7 +47,7 @@ public class Bullet extends Sprite {
         }
 
         // Update velocity:
-        velocity *= vRecession / Client.getFpsLimit(); // make bullet velocity slower in according to FPS
+        velocity *= vRecession / Constants.FPS_LIMIT; // make bullet velocity slower in according to FPS
 
         // Update bullet position according to its velocity:
         x += velocity * Math.cos(radians);

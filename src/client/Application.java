@@ -149,7 +149,7 @@ public class Application implements Runnable {
 
         Client.setScreenResolution(width, height);
 
-        frame = new JFrame(Client.getTitle() + " v" + Client.getVersion());
+        frame = new JFrame(Constants.TITLE + " v" + Constants.VERSION);
         frame.setSize(width, height);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setResizable(false);
