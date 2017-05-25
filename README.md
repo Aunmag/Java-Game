@@ -11,8 +11,4 @@ To launch this game make sure you have installed [Java 8](https://www.java.com/d
 
 ### Screenshots
 
-<img src="https://pp.vk.me/c604418/v604418423/50ede/C1SCvHT5EW8.jpg" width="140">
-<img src="https://pp.vk.me/c604418/v604418423/50ee7/ikHYfemKXdg.jpg" width="140">
-<img src="https://pp.vk.me/c604418/v604418423/50ef0/s-dfKSbWKEw.jpg" width="140">
-<img src="https://pp.vk.me/c604418/v604418423/50ef9/PibuTturReQ.jpg" width="140">
-<img src="https://pp.vk.me/c604418/v604418423/50f02/_jnlGQxIa7U.jpg" width="140">
+<img src="https://pp.vk.me/c604418/v604418423/50ede/C1SCvHT5EW8.jpg" width="140"> <img src="https://pp.vk.me/c604418/v604418423/50ee7/ikHYfemKXdg.jpg" width="140"> <img src="https://pp.vk.me/c604418/v604418423/50ef0/s-dfKSbWKEw.jpg" width="140"> <img src="https://pp.vk.me/c604418/v604418423/50ef9/PibuTturReQ.jpg" width="140"> <img src="https://pp.vk.me/c604418/v604418423/50f02/_jnlGQxIa7U.jpg" width="140">
