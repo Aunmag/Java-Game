@@ -3,6 +3,7 @@ package ai;
 // Created by Aunmag on 21.11.2016.
 
 import client.Constants;
+import managers.MathManager;
 import scripts.IsIntersection;
 import sprites.Actor;
 
@@ -52,13 +53,7 @@ abstract class StrategyAbstract {
 
         // Radians between subject and target and their difference:
         float radiansDifference = ai.targetDirection - ai.target.getRadians();
-
-        // Tweak radians value:
-        if (radiansDifference > Math.PI) {
-            radiansDifference -= Constants.PI_2_0;
-        } else if (radiansDifference < -Math.PI) {
-            radiansDifference += Constants.PI_2_0;
-        }
+        radiansDifference = MathManager.correctRadians(radiansDifference);
 
         ai.targetFlankReal = radiansDifference;
         ai.targetFlankAbs = Math.abs(radiansDifference);

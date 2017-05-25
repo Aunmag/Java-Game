@@ -3,7 +3,7 @@ package sprites;
 import client.Client;
 import client.Constants;
 import managers.Log;
-import scripts.FRandom;
+import managers.MathManager;
 import scripts.Inertia;
 import scripts.IsIntersection;
 import managers.SoundManager;
@@ -118,7 +118,7 @@ public class Actor extends Sprite {
 
 
         if (type.equals("human")) {
-            sounds[FRandom.random.nextInt(6)].play();
+            sounds[MathManager.random.nextInt(6)].play();
         }
 
     }
