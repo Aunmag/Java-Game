@@ -16,10 +16,10 @@ public class Object extends Sprite {
     public static List<Object> allDecoration = new ArrayList<>(); // additional intangible ground decorations as garbage
     public static List<Object> allAir = new ArrayList<>(); // the higher intangible objects like roofs or crown
 
-    public Object(String name, boolean isUnique, float x, float y, float degrees) {
+    public Object(String name, boolean isUnique, float x, float y, float radians) {
 
         // Set basic object data:
-        super(x, y, degrees, isUnique, "objects/" + name + ".png");
+        super(x, y, radians, isUnique, "objects/" + name + ".png");
 
     }
 

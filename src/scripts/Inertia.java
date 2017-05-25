@@ -30,7 +30,6 @@ public class Inertia {
     public float valueTarget = 0;
     public float valueRound = 0;
     public float valueUnit = 0;
-    public float bendDegree = 1;
     private float tDuration = 0;
 
     private boolean isProcessing = false;

@@ -62,9 +62,9 @@ public class Actor extends Sprite {
 
     private static SoundManager[] sounds = new SoundManager[6];
 
-    public Actor(float x, float y, float degrees, String imagePath) {
+    public Actor(float x, float y, float radians, String imagePath) {
 
-        super(x, y, degrees, true, imagePath);
+        super(x, y, radians, true, imagePath);
 
         String[] imagePathData = imagePath.split("/");
         type = imagePathData[1];

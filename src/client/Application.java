@@ -30,13 +30,11 @@ public class Application implements Runnable {
     private int mouseLastX;
 
     public Application() {
-
         try {
             robot = new Robot();
         } catch (AWTException e) {
             e.printStackTrace();
         }
-
     }
 
     private void updateGraphics() {
@@ -65,22 +63,23 @@ public class Application implements Runnable {
         }
 
         if (Client.isGamePlay()) {
+            Actor player = Client.getPlayer();
 
             if (Client.getMouseX() != mouseLastX) {
-                float mouseSpeed = (Client.getMouseX() - mouseLastX) / 3.8f;
-                Client.getPlayer().setDegrees(Client.getPlayer().getDegrees() + (mouseSpeed % 360));
-                int putMouseX = screenWidth / 2;
-                int putMouseY = screenHeight / 2;
-                robot.mouseMove(putMouseX, putMouseY);
+                float mouseSensitivity = 0.005f;
+                float mouseVelocity = Client.getMouseX() - mouseLastX;
+                float rotatePlayerRadians = player.getRadians() + mouseVelocity * mouseSensitivity;
+                player.setRadians(rotatePlayerRadians);
+                robot.mouseMove(screenWidth / 2, screenHeight / 2);
                 mouseLastX = width / 2;
             }
 
-            Client.getPlayer().isMovingForward = input.keys[KeyEvent.VK_W];
-            Client.getPlayer().isMovingBack = input.keys[KeyEvent.VK_S];
-            Client.getPlayer().isMovingLeft = input.keys[KeyEvent.VK_A];
-            Client.getPlayer().isMovingRight = input.keys[KeyEvent.VK_D];
-            Client.getPlayer().isRunning = input.keys[KeyEvent.VK_SHIFT];
-            Client.getPlayer().isAttacking = input.mouseButtons[MouseEvent.BUTTON1];
+            player.isMovingForward = input.keys[KeyEvent.VK_W];
+            player.isMovingBack = input.keys[KeyEvent.VK_S];
+            player.isMovingLeft = input.keys[KeyEvent.VK_A];
+            player.isMovingRight = input.keys[KeyEvent.VK_D];
+            player.isRunning = input.keys[KeyEvent.VK_SHIFT];
+            player.isAttacking = input.mouseButtons[MouseEvent.BUTTON1];
 
             if (input.keys[KeyEvent.VK_ADD]) {
                 Client.setZoom(Client.getZoom() + Client.getZoom() * 0.01f);
@@ -115,9 +114,10 @@ public class Application implements Runnable {
             Client.getG().scale(zoom, zoom);
             float xCenter = width / (zoom * 2);
             float yCenter = (Client.getCameraOffsetDefault()) / zoom;
-            Client.setGX(Client.getPlayer().x - xCenter);
-            Client.setGY(Client.getPlayer().y - yCenter);
-            Client.getG().rotate(Math.toRadians(-Client.getPlayer().getDegrees() - 90), xCenter, yCenter);
+            Actor player = Client.getPlayer();
+            Client.setGX(player.x - xCenter);
+            Client.setGY(player.y - yCenter);
+            Client.getG().rotate(-player.getRadians() - Constants.PI_0_5, xCenter, yCenter);
             GamePlay.render();
             Client.getG().dispose();
         } else {

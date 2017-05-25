@@ -60,8 +60,9 @@ public class Weapon extends Sprite {
         // Make new bullets in according to number bullets per a shot:
         for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
             float bulletVelocity = MathManager.randomizeBetween(vMuzzle - deflection, vMuzzle + deflection); // random velocity of the bullet
-            float bulletDegrees = MathManager.randomizeBetween(degrees - deflection, degrees + deflection) % 360; // random direction of the bullet
-            Bullet.all.add(new Bullet(x, y, bulletDegrees, bulletVelocity, vRecession)); // make the bullet
+            float deflectionRadians = deflection / 60f;
+            float bulletRadians = MathManager.randomizeBetween(radians - deflectionRadians, radians + deflectionRadians); // random direction of the bullet
+            Bullet.all.add(new Bullet(x, y, bulletRadians, bulletVelocity, vRecession)); // make the bullet
         }
 
         soundShot.play();
@@ -78,7 +79,7 @@ public class Weapon extends Sprite {
         }
 
         // Put weapon in owner hands:
-        setDegrees(owner.getDegrees()); // update weapon direction in according to its owner
+        setRadians(owner.getRadians());
         x = (float) (owner.x + 12 * Math.cos(radians));
         y = (float) (owner.y + 12 * Math.sin(radians));
 
