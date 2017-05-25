@@ -67,7 +67,7 @@ public class Application implements Runnable {
         if (Client.isGamePlay()) {
 
             if (Client.getMouseX() != mouseLastX) {
-                double mouseSpeed = (Client.getMouseX() - mouseLastX) / 3.8;
+                float mouseSpeed = (Client.getMouseX() - mouseLastX) / 3.8f;
                 Client.getPlayer().setDegrees(Client.getPlayer().getDegrees() + (mouseSpeed % 360));
                 int putMouseX = screenWidth / 2;
                 int putMouseY = screenHeight / 2;
@@ -83,10 +83,10 @@ public class Application implements Runnable {
             Client.getPlayer().isAttacking = input.mouseButtons[MouseEvent.BUTTON1];
 
             if (input.keys[KeyEvent.VK_ADD]) {
-                Client.setZoom(Client.getZoom() + Client.getZoom() * 0.01);
+                Client.setZoom(Client.getZoom() + Client.getZoom() * 0.01f);
             }
             if (input.keys[KeyEvent.VK_SUBTRACT]) {
-                Client.setZoom(Client.getZoom() - Client.getZoom() * 0.01);
+                Client.setZoom(Client.getZoom() - Client.getZoom() * 0.01f);
             }
 
             GamePlay.tick();
@@ -111,10 +111,10 @@ public class Application implements Runnable {
             g.setRenderingHint(RenderingHints.KEY_COLOR_RENDERING, RenderingHints.VALUE_COLOR_RENDER_SPEED);
             g.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_SPEED);
             Client.setG(g);
-            double zoom = Client.getZoom();
+            float zoom = Client.getZoom();
             Client.getG().scale(zoom, zoom);
-            double xCenter = width / (zoom * 2);
-            double yCenter = (Client.getCameraOffsetDefault()) / zoom;
+            float xCenter = width / (zoom * 2);
+            float yCenter = (Client.getCameraOffsetDefault()) / zoom;
             Client.setGX(Client.getPlayer().x - xCenter);
             Client.setGY(Client.getPlayer().y - yCenter);
             Client.getG().rotate(Math.toRadians(-Client.getPlayer().getDegrees() - 90), xCenter, yCenter);
@@ -180,7 +180,7 @@ public class Application implements Runnable {
         Actor.loadSounds();
 
         // Time:
-        double d = 0;
+        float d = 0;
         long tLast = System.currentTimeMillis();
 
         while (Client.isRunning()) {

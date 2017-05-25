@@ -113,7 +113,7 @@ public class Input implements KeyListener, MouseListener, MouseMotionListener, M
 
     @Override public void mouseWheelMoved(MouseWheelEvent e) {
 
-        Client.setZoom(Client.getZoom() + Client.getZoom() * 0.1 * -e.getWheelRotation());
+        Client.setZoom(Client.getZoom() + Client.getZoom() * 0.1f * -e.getWheelRotation());
 
     }
 

@@ -37,14 +37,14 @@ public class ImageManager {
     private BufferedImage original;
     private final int originalWidth;
     private final int originalHeight;
-    public final double originalOffsetX;
-    public final double originalOffsetY;
+    public final float originalOffsetX;
+    public final float originalOffsetY;
 
     // Changed image data:
     private BufferedImage rotated;
-    public double rotatedOffsetX;
-    public double rotatedOffsetY;
-    private double radians = 0; // rotation angle
+    public float rotatedOffsetX;
+    public float rotatedOffsetY;
+    private float radians = 0; // rotation angle
 
     public ImageManager(String path) {
 
@@ -136,7 +136,7 @@ public class ImageManager {
 
     }
 
-    public BufferedImage get(double radians) {
+    public BufferedImage get(float radians) {
 
         if (original == null) {
             return null;

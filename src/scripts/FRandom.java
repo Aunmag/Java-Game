@@ -7,12 +7,12 @@ import java.util.Random;
 public class FRandom {
 
     public static Random random = new Random();
-    private static final double randomDepth = 1_000_000;
+    private static final float randomDepth = 1_000_000;
 
-    public static double rand(double mid, double offset, double flex) {
+    public static float rand(float mid, float offset, float flex) {
 
-        double min = mid - offset;
-        double max = mid + offset;
+        float min = mid - offset;
+        float max = mid + offset;
 
         return random.nextInt((int) ((max - min) * randomDepth)) / randomDepth + min;
 

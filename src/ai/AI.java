@@ -18,10 +18,10 @@ public class AI {
 
     // Target data:
     Actor target = null;
-    double targetDirection;
-    double targetFlankAbs;
-    double targetFlankReal;
-    double targetDistance;
+    float targetDirection;
+    float targetFlankAbs;
+    float targetFlankReal;
+    float targetDistance;
     boolean isTargetReached = false;
 
     static final long tSearchTarget = 2_000;

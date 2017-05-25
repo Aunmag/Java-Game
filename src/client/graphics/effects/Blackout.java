@@ -14,10 +14,10 @@ import java.io.IOException;
 public class Blackout {
 
     private static Image image;
-    private static double playerHealthLast;
-    private static final double tHurtInertiaAscent = 0.06;
-    private static final double tHurtInertiaDecline = 0.48;
-    private static double hurtIntensity;
+    private static float playerHealthLast;
+    private static final float tHurtInertiaAscent = 0.06f;
+    private static final float tHurtInertiaDecline = 0.48f;
+    private static float hurtIntensity;
     private static Inertia hurtInertia = new Inertia(tHurtInertiaAscent);
     private static boolean isHurting = false;
     private static boolean isHurtAscenting = false;
@@ -44,8 +44,8 @@ public class Blackout {
 
     public static void render() {
 
-        double alpha;
-        double playerHealth = Client.getPlayer().getHealth();
+        float alpha;
+        float playerHealth = Client.getPlayer().getHealth();
 
         // Tweak player health:
         if (playerHealth > 1) {
@@ -59,14 +59,14 @@ public class Blackout {
 
         // Render blackout rectangle:
         if (playerHealth <= 0.66) {
-            alpha = (1 - playerHealth / 0.66) * 0.9;
+            alpha = (1 - playerHealth / 0.66f) * 0.9f;
             Client.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
             Client.getHud().fillRect(0, 0, Client.getWidth(), Client.getHeight());
         }
 
         // Render blackout boundaries:
         if (image != null) {
-            alpha = 1 - playerHealth / 1.4;
+            alpha = 1 - playerHealth / 1.4f;
             Client.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
             Client.getHud().drawImage(image, 0, 0, null);
         }
@@ -77,7 +77,7 @@ public class Blackout {
             if (hurtInertia.getTDuration() != tHurtInertiaAscent) {
                 hurtInertia.setTDuration(tHurtInertiaAscent);
             }
-            double intensity = Math.abs(playerHealthLast - playerHealth) * 8 % 1;
+            float intensity = Math.abs(playerHealthLast - playerHealth) * 8 % 1;
             alpha = hurtInertia.update(1, intensity);
             if (!hurtInertia.getState()) {
                 playerHealthLast = playerHealth;

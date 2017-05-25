@@ -27,16 +27,16 @@ class StrategyChase extends StrategyAbstract {
 
         if (96 < ai.targetDistance && ai.targetDistance < 512 && ai.targetFlankAbs > Math.PI / 1.4) {
 
-            double degreesOffset = 0;
+            float degreesOffset = 0;
 
             if (ai.targetDistance > 512) {
                 degreesOffset = 45;
             } else if (ai.targetDistance > 256) {
-                degreesOffset = 22.5;
+                degreesOffset = 22.5f;
             } else if (ai.targetDistance > 128) {
-                degreesOffset = 11.25;
+                degreesOffset = 11.25f;
             } else if (ai.targetDistance > 64) {
-                degreesOffset = 5.625;
+                degreesOffset = 5.625f;
             }
 
             if (ai.targetFlankReal < 0) {
