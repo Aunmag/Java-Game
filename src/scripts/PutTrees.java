@@ -2,7 +2,6 @@ package scripts;
 
 // Created by Aunmag on 23.11.2016.
 
-import client.Constants;
 import managers.MathManager;
 import sprites.Object;
 

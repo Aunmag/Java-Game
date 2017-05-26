@@ -78,8 +78,6 @@ public class GamePlay {
             PutTrees.put(treesQuantity, treesSpreading);
         }
 
-//        PutTrees.put((groundNumber * groundNumber) / 2, groundNumber * groundSizeBlock);
-
         // Game mode:
 //        mode = new TestAI();
         mode = new Encircling();
