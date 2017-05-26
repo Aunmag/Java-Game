@@ -17,20 +17,57 @@ public class MathManager {
         return (float) result;
     }
 
-    public static float randomizeBetween(double min, double max) {
+    public static int randomizeBetween(int min, int max) {
         if (min > max) {
             // TODO: log
-            double min_copy = min;
+            int min_copy = min;
             min = max;
             max = min_copy;
         } else if (min == max) {
             // TODO: log
-            return (float) min;
+            return min;
         }
 
-        double difference = max - min;
-        double result = random.nextDouble() * difference + min;
-        return (float) result;
+        int difference = max - min;
+        return random.nextInt(difference + 1) + min;
+    }
+
+    public static float randomizeBetween(float min, float max) {
+        if (min > max) {
+            // TODO: log
+            float min_copy = min;
+            min = max;
+            max = min_copy;
+        } else if (min == max) {
+            // TODO: log
+            return min;
+        }
+
+        float difference = max - min;
+        return random.nextFloat() * difference + min;
+    }
+
+    public static float randomizeFlexibly(float middle, float offset) {
+        return randomizeFlexibly(middle, offset, 0.5f);
+    }
+
+    public static float randomizeFlexibly(float middle, float offset, float flex) {
+        if (flex <= 0 || flex > 1) {
+            // TODO: log
+            flex = 0.5f;
+        }
+
+        // Randomize offset to flexed result
+        float offsetMin = offset * randomizeBetween(0, flex);
+        float offsetMax = offset * randomizeBetween(flex, 1);
+        float offsetRandom = randomizeBetween(offsetMin, offsetMax);
+
+        // Set minimal and maximal result value
+        float resultMin = middle - offsetRandom;
+        float resultMax = middle + offsetRandom;
+
+        // Randomize and return result
+        return randomizeBetween(resultMin, resultMax);
     }
 
 }

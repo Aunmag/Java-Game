@@ -4,26 +4,23 @@ package modes;
 
 import ai.AI;
 import client.Client;
+import client.Constants;
+import managers.MathManager;
 import sprites.Actor;
-
-import java.util.Random;
 
 public class Encircling extends ModeAbstract {
 
     private long timeLastSpawn;
-//    private long timeSpawn = 200;
     private long timeSpawn = 2_000;
     private final long timeSpawnMin = 100;
     private final long timeSpawnDecrease = 20;
     private int zombiesSpawned = 0;
     private int zombiesKilled = 0;
-
-    private Random random = new Random();
     private final int spawnDistance = 1000;
 
     private void spawn() {
 
-        float direction = (float) (Math.toRadians(random.nextInt(360)));
+        float direction = MathManager.randomizeBetween(0, (float) Constants.PI_2_0);
         float spawnX = (float) (Client.getPlayer().x - spawnDistance * Math.cos(direction));
         float spawnY = (float) (Client.getPlayer().y - spawnDistance * Math.sin(direction));
 
