@@ -8,11 +8,9 @@ import sprites.Object;
 public class PutTrees {
 
     public static void put(int number, int size) {
-
         newTree: for (int i = 0; i < number; i++) {
-
-            int x = MathManager.random.nextInt(size) - size / 2;
-            int y = MathManager.random.nextInt(size) - size / 2;
+            int x = MathManager.randomizeBetween(-size, size);
+            int y = MathManager.randomizeBetween(-size, size);
 
             for (Object air: Object.allAir) {
                 if (Math.abs(x - air.x) < 128 && Math.abs(y - air.y) < 128) {
@@ -21,11 +19,8 @@ public class PutTrees {
             }
 
             int type = MathManager.random.nextInt(3) + 1;
-
             Object.allAir.add(new Object("air/tree_" + type, false, x, y, 0));
-
         }
-
     }
 
 }

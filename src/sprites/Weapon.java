@@ -3,6 +3,7 @@ package sprites;
 import java.util.ArrayList;
 import java.util.List;
 import client.Client;
+import client.Constants;
 import managers.MathManager;
 import managers.SoundManager;
 
@@ -22,7 +23,8 @@ public class Weapon extends Sprite {
     private final float bulletsPerShot; // how many bullets will make per a shot
     private final float vMuzzle; // muzzle velocity of bullet
     private final float vRecession; // how fast bullet lose its velocity per a second
-    private final float deflection; // deflection of bullet from straight direction
+    private final float deflectionVelocity; // deflection of bullet from straight direction
+    private final float deflectionRadians; // deflection of bullet from straight direction
 
     // Misc:
     private Actor owner; // an actor witch hold this weapon
@@ -39,8 +41,8 @@ public class Weapon extends Sprite {
         bulletsPerShot = 16; // 16 or 1
         vMuzzle = 58; // 58 or 61
         vRecession = 69;
-//        vRecession = 0.92;
-        deflection = 2; // 2 or 1.2
+        deflectionVelocity = 2; // 2 or 1.2
+        deflectionRadians = 0.06f;
 
         // Set owner:
         this.owner = owner;
@@ -59,9 +61,8 @@ public class Weapon extends Sprite {
 
         // Make new bullets in according to number bullets per a shot:
         for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
-            float bulletVelocity = MathManager.randomizeBetween(vMuzzle - deflection, vMuzzle + deflection); // random velocity of the bullet
-            float deflectionRadians = deflection / 60f;
-            float bulletRadians = MathManager.randomizeBetween(radians - deflectionRadians, radians + deflectionRadians); // random direction of the bullet
+            float bulletVelocity = MathManager.randomizeFlexibly(vMuzzle, deflectionVelocity); // random velocity of the bullet
+            float bulletRadians = MathManager.randomizeFlexibly(radians, deflectionRadians); // random direction of the bullet
             Bullet.all.add(new Bullet(x, y, bulletRadians, bulletVelocity, vRecession)); // make the bullet
         }
 
