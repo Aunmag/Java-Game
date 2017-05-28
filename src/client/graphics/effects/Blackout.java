@@ -74,17 +74,17 @@ public class Blackout {
         // Render blackout hurt:
 
         if (playerHealth != playerHealthLast) {
-            if (hurtInertia.getTDuration() != tHurtInertiaAscent) {
-                hurtInertia.setTDuration(tHurtInertiaAscent);
+            if (hurtInertia.getTimeDuration() != tHurtInertiaAscent) {
+                hurtInertia.setTimeDuration(tHurtInertiaAscent);
             }
             float intensity = Math.abs(playerHealthLast - playerHealth) * 8 % 1;
-            alpha = hurtInertia.update(1, intensity);
-            if (!hurtInertia.getState()) {
+            alpha = hurtInertia.update(intensity);
+            if (!hurtInertia.getIsProcessing()) {
                 playerHealthLast = playerHealth;
-                hurtInertia.setTDuration(tHurtInertiaDecline);
+                hurtInertia.setTimeDuration(tHurtInertiaDecline);
             }
         } else {
-            alpha = hurtInertia.update(1, 0);
+            alpha = hurtInertia.update(0);
         }
 
         Client.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));

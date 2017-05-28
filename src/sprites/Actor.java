@@ -156,13 +156,13 @@ public class Actor extends Sprite {
 
         currentMovementRadians = movementRadians;
 
-        float velocityCurrent = inertiaVelocity.update(1, movementVelocity * health);
+        float velocityCurrent = inertiaVelocity.update(movementVelocity * health);
         x += velocityCurrent * Math.cos(currentMovementRadians);
         y += velocityCurrent * Math.sin(currentMovementRadians);
     }
 
     private void stay() {
-        float velocityCurrent = inertiaVelocity.update(1, 0);
+        float velocityCurrent = inertiaVelocity.update(0);
         x += velocityCurrent * Math.cos(currentMovementRadians);
         y += velocityCurrent * Math.sin(currentMovementRadians);
     }

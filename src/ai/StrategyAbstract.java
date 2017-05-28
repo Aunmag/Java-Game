@@ -3,8 +3,8 @@ package ai;
 // Created by Aunmag on 21.11.2016.
 
 import managers.MathManager;
-import scripts.IsIntersection;
 import sprites.Actor;
+import sprites.components.Collision;
 
 abstract class StrategyAbstract {
 
@@ -45,10 +45,10 @@ abstract class StrategyAbstract {
         ai.targetDistance = (float) (Math.sqrt(Math.pow(targetX - subjectX, 2) + Math.pow(targetY - subjectY, 2)));
         ai.targetDirection = (float) (Math.atan2(targetY - subjectY, targetX - subjectX));
 
-        float x = ai.subject.getHands().getX();
-        float y = ai.subject.getHands().getY();
-        float radius = ai.subject.getHands().getRadius() / 2;
-        ai.isTargetReached = IsIntersection.circleCircle(x, y, radius, targetX, targetY, ai.target.getCollision().getRadius());
+        ai.isTargetReached = Collision.calculateIsCollision(
+                ai.subject.getCollision(),
+                ai.target.getCollision()
+        );
 
         // Radians between subject and target and their difference:
         float radiansDifference = ai.targetDirection - ai.target.getRadians();

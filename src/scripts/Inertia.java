@@ -1,14 +1,15 @@
 package scripts;
 
-import client.Client;
 import client.Constants;
 
 /**
- * Gradually change a number from initial value to target according to FPS.
- * In this way provide smooth transition.
+ * TODO: Overwrite
  *
- * For example we want to change x=0.0 to x=0.8 smoothly per 4 seconds and
- * 1 FPS then it will look this way:
+ * Gradually change a number from initial value to target according to FPS. In this way provide
+ * smooth transition.
+ *
+ * For example we want to change x=0.0 to x=0.8 smoothly per 4 seconds and 1 FPS then it will look
+ * this way:
  *
  * x = 0.0  # 0 second pass (initial value)
  * x = 0.2  # 1 second pass
@@ -16,100 +17,84 @@ import client.Constants;
  * x = 0.6  # 3 second pass
  * x = 0.8  # 4 second pass (target value)
  *
- * As well as you can see every second (because us FPS == 1) variable 'x'
- * increased by 0.2. If us FPS would equal 2 then updates will occur twice
- * as likely and 'x' will increase by 0.1 each frame.
+ * As well as you can see every second (because us FPS == 1) variable 'x' increased by 0.2. If us
+ * FPS would equal 2 then updates will occur twice as likely and 'x' will increase by 0.1 each
+ * frame.
  *
- * Created by Aunmag on 27.10.2016.
+ * Created by Aunmag on 2016.10.27.
  */
 
 public class Inertia {
 
-    public float valuePrevious = 0;
-    public float valueCurrent = 0;
-    public float valueTarget = 0;
-    public float valueRound = 0;
-    public float valueUnit = 0;
-    private float tDuration = 0;
+    public float target = 0;
+    public float current = 0;
+    public float previous = 0;
+    public float step = 0;
+
+    private float timeDuration = 0;
 
     private boolean isProcessing = false;
+
     private float valueTestA = 0;
     private float valueTestB = 0;
 
-    public Inertia(float tDuration) {
-
-        this.tDuration = tDuration;
-
+    public Inertia(float timeDuration) {
+        this.timeDuration = timeDuration;
     }
 
-    private void calculateValueUnit(float valueTarget) {
-
-        this.valueTarget = valueTarget;
-
-        valueUnit = (valueTarget - valuePrevious) / (tDuration * Constants.FPS_LIMIT);
-
-        float valueTest = Math.abs(valueUnit);
-        valueTestA = valueTarget - valueTest;
-        valueTestB = valueTarget + valueTest;
-
-    }
-
-    public float update(float timeDelta, float valueTarget) {
-
-        if (isProcessing && valueTarget != this.valueTarget) {
-            valuePrevious = valueCurrent;
+    public float update(float valueTarget) {
+        if (isProcessing && valueTarget != this.target) {
+            previous = current;
             isProcessing = false;
         }
 
-        if (valueTarget != this.valueTarget) {
-            calculateValueUnit(valueTarget);
+        if (valueTarget != this.target) {
+            setTarget(valueTarget);
         }
 
-
-        if (!isProcessing && valueTarget != valuePrevious) {
+        if (!isProcessing && valueTarget != previous) {
             isProcessing = true;
         }
 
         if (isProcessing) {
-            valueCurrent += valueUnit * timeDelta;
-            if (valueTestA <= valueCurrent && valueCurrent <= valueTestB) {
-                valuePrevious = valueTarget;
-                valueCurrent = valueTarget;
+            current += step;
+            if (valueTestA <= current && current <= valueTestB) {
+                previous = valueTarget;
+                current = valueTarget;
                 isProcessing = false;
             }
         }
 
-        return valueCurrent;
-
+        return current;
     }
 
-    // Setters:
-
-    public void setTDuration(float tDuration) {
-
-        this.tDuration = tDuration;
-        calculateValueUnit(valueTarget);
-
+    private void updateStep() {
+        step = (target - previous) / (timeDuration * Constants.FPS_LIMIT);
+        float valueTest = Math.abs(step);
+        valueTestA = target - valueTest;
+        valueTestB = target + valueTest;
     }
 
-    // Getters:
+    /* Setters */
 
-    public float getValueTarget() {
-
-        return valueTarget;
-
+    public void setTimeDuration(float timeDuration) {
+        this.timeDuration = timeDuration;
+        updateStep();
     }
 
-    public float getTDuration() {
-
-        return tDuration;
-
+    public void setTarget(float target) {
+        this.target = target;
+        updateStep();
     }
 
-    public boolean getState() {
+    /* Getters */
 
+    public float getTimeDuration() {
+        return timeDuration;
+    }
+
+    public boolean getIsProcessing() {
         return isProcessing;
-
     }
 
 }

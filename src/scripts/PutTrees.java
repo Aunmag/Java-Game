@@ -1,16 +1,18 @@
 package scripts;
 
-// Created by Aunmag on 23.11.2016.
+/**
+ * Created by Aunmag on 2016.11.23.
+ */
 
 import managers.MathManager;
 import sprites.Object;
 
 public class PutTrees {
 
-    public static void put(int number, int size) {
-        newTree: for (int i = 0; i < number; i++) {
-            int x = MathManager.randomizeBetween(-size, size);
-            int y = MathManager.randomizeBetween(-size, size);
+    public static void put(int quantity, int spreading) {
+        newTree: for (int i = 0; i < quantity; i++) {
+            int x = MathManager.randomizeBetween(-spreading, spreading);
+            int y = MathManager.randomizeBetween(-spreading, spreading);
 
             for (Object air: Object.allAir) {
                 if (Math.abs(x - air.getX()) < 128 && Math.abs(y - air.getY()) < 128) {
