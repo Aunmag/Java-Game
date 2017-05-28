@@ -24,26 +24,23 @@ public abstract class Collision extends BasePosition {
     public abstract void render();
 
     public static boolean calculateIsCollision(CollisionCircle a, CollisionCircle b) {
-        float distanceBetweenToCollision = a.getRadius() + b.getRadius();
+        float distanceToCollision = a.getRadius() + b.getRadius();
 
-//        if (toCollisionDistanceBetween < min(a.getRadius(), b.getRadius())) {
+//        // TODO: Check performance
+//        if (distanceToCollision < min(a.getRadius(), b.getRadius())) {
 //            return true;
 //        }
 
-        float distanceBetween = MathManager.calculateDistanceBetween(
-                a.getX(),
-                a.getY(),
-                b.getX(),
-                b.getY()
-        );
+        float distanceBetween = MathManager.calculateDistanceBetween(a, b);
 
         a.setLastDistanceBetween(distanceBetween);
         b.setLastDistanceBetween(distanceBetween);
 
-        return distanceBetween < distanceBetweenToCollision;
+        return distanceBetween < distanceToCollision;
     }
 
     public static boolean calculateIsCollision(CollisionCircle circle, CollisionLine line) {
+        // TODO: Overwrite
         float circleX = circle.getX();
         float circleY = circle.getY();
         float circleRadius = circle.getRadius();

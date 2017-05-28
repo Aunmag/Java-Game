@@ -1,6 +1,7 @@
 package managers;
 
 import client.Constants;
+import sprites.basics.BasePoint;
 
 import java.util.Random;
 
@@ -70,10 +71,18 @@ public class MathManager {
         return randomizeBetween(resultMin, resultMax);
     }
 
+    public static float calculateDistanceBetween(BasePoint a, BasePoint b) {
+        return calculateDistanceBetween(a.getX(), a.getY(), b.getX(), b.getY());
+    }
+
     public static float calculateDistanceBetween(float x1, float y1, float x2, float y2) {
         double powX = Math.pow(x1 - x2, 2);
         double powY = Math.pow(y1 - y2, 2);
         return (float) Math.sqrt(powX + powY);
+    }
+
+    public static float calculateRadiansBetween(BasePoint a, BasePoint b) {
+        return calculateRadiansBetween(a.getX(), a.getY(), b.getX(), b.getY());
     }
 
     public static float calculateRadiansBetween(float x1, float y1, float x2, float y2) {

@@ -59,7 +59,7 @@ public abstract class Sprite extends BasePosition {
     boolean calculateIsVisible() {
         float cameraX = Client.getCameraX();
         float cameraY = Client.getCameraY();
-        float distanceBetween = MathManager.calculateDistanceBetween(x, y, cameraX, cameraY);
+        float distanceBetween = MathManager.calculateDistanceBetween(x, y, cameraX, cameraY); // TODO: Use BasePoint
         return distanceBetween < Client.getCameraVisibility();
     }
 

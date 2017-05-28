@@ -177,15 +177,8 @@ public class Actor extends Sprite {
             if (Collision.calculateIsCollision(collision, actor.getCollision())) {
                 float distanceBetween = collision.getLastDistanceBetween();
                 float distanceToCollision = collision.getRadius() + actor.getCollision().getRadius();
-
                 float distanceIntersection = (distanceToCollision - distanceBetween) / 2;
-                float radiansBetween = MathManager.calculateRadiansBetween(
-                        x,
-                        y,
-                        actor.getX(),
-                        actor.getY()
-                );
-
+                float radiansBetween = MathManager.calculateRadiansBetween(this, actor);
                 x += distanceIntersection * Math.cos(radiansBetween);
                 y += distanceIntersection * Math.sin(radiansBetween);
                 actor.x += distanceIntersection * Math.cos(-radiansBetween);
