@@ -2,7 +2,6 @@ package ai;
 
 // Created by Aunmag on 21.11.2016.
 
-import client.Constants;
 import managers.MathManager;
 import scripts.IsIntersection;
 import sprites.Actor;
@@ -23,8 +22,8 @@ abstract class StrategyAbstract {
 
         ai.target = null;
 
-        for (Actor actor: Actor.allActors) {
-            if (actor.type.equals("human") && actor.isAlive) {
+        for (Actor actor: Actor.all) {
+            if (actor.group.equals("human") && actor.getIsAlive()) {
                 ai.target = actor;
                 break;
             }
@@ -38,18 +37,18 @@ abstract class StrategyAbstract {
             return;
         }
 
-        float subjectX = ai.subject.x;
-        float subjectY = ai.subject.y;
-        float targetX = ai.target.x;
-        float targetY = ai.target.y;
+        float subjectX = ai.subject.getX();
+        float subjectY = ai.subject.getY();
+        float targetX = ai.target.getX();
+        float targetY = ai.target.getY();
 
         ai.targetDistance = (float) (Math.sqrt(Math.pow(targetX - subjectX, 2) + Math.pow(targetY - subjectY, 2)));
         ai.targetDirection = (float) (Math.atan2(targetY - subjectY, targetX - subjectX));
 
-        float x = ai.subject.meleeX;
-        float y = ai.subject.meleeY;
-        float radius = ai.subject.meleeRadius / 2;
-        ai.isTargetReached = IsIntersection.circleCircle(x, y, radius, targetX, targetY, ai.target.bodyRadius);
+        float x = ai.subject.getHands().getX();
+        float y = ai.subject.getHands().getY();
+        float radius = ai.subject.getHands().getRadius() / 2;
+        ai.isTargetReached = IsIntersection.circleCircle(x, y, radius, targetX, targetY, ai.target.getCollision().getRadius());
 
         // Radians between subject and target and their difference:
         float radiansDifference = ai.targetDirection - ai.target.getRadians();

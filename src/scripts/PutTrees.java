@@ -13,7 +13,7 @@ public class PutTrees {
             int y = MathManager.randomizeBetween(-size, size);
 
             for (Object air: Object.allAir) {
-                if (Math.abs(x - air.x) < 128 && Math.abs(y - air.y) < 128) {
+                if (Math.abs(x - air.getX()) < 128 && Math.abs(y - air.getY()) < 128) {
                     continue newTree;
                 }
             }

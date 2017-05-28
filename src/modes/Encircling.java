@@ -21,11 +21,11 @@ public class Encircling extends ModeAbstract {
     private void spawn() {
 
         float direction = MathManager.randomizeBetween(0, (float) Constants.PI_2_0);
-        float spawnX = (float) (Client.getPlayer().x - spawnDistance * Math.cos(direction));
-        float spawnY = (float) (Client.getPlayer().y - spawnDistance * Math.sin(direction));
+        float spawnX = (float) (Client.getPlayer().getX() - spawnDistance * Math.cos(direction));
+        float spawnY = (float) (Client.getPlayer().getY() - spawnDistance * Math.sin(direction));
 
         Actor spawnedZombie = new Actor(spawnX, spawnY, 0, "actors/zombie.png");
-        Actor.allActors.add(spawnedZombie);
+        Actor.all.add(spawnedZombie);
         AI.allAIs.add(new AI(spawnedZombie));
 
     }
@@ -36,22 +36,28 @@ public class Encircling extends ModeAbstract {
 
         // Confine actor:
 
+
+
         int boundary = 128 * 8;
+
         Actor player = Client.getPlayer();
-        if (-boundary > player.x) {
-            player.x = -boundary;
-        } else if (player.x > boundary) {
-            player.x = boundary;
+        float playerX = player.getX();
+        float playerY = player.getY();
+
+        if (-boundary > playerX) {
+            player.setX(-boundary);
+        } else if (playerX > boundary) {
+            player.setX(boundary);
         }
-        if (-boundary > player.y) {
-            player.y = -boundary;
-        } else if (player.y > boundary) {
-            player.y = boundary;
+        if (-boundary > playerY) {
+            player.setY(-boundary);
+        } else if (playerY > boundary) {
+            player.setY(boundary);
         }
 
         // Tick:
 
-        int newZombiesNumber = Actor.allActors.size() - 1;
+        int newZombiesNumber = Actor.all.size() - 1;
 
         if (zombiesSpawned > newZombiesNumber) {
             zombiesKilled++;
@@ -59,12 +65,12 @@ public class Encircling extends ModeAbstract {
             if (timeSpawn - timeSpawnDecrease > timeSpawnMin) {
                 timeSpawn -= timeSpawnDecrease;
             }
-            Actor.vZombieForward += 0.005;
+            Actor.velocityForwardZombie += 0.005;
         }
 
         zombiesSpawned = newZombiesNumber;
 
-        if (Actor.allActors.size() >= 64) {
+        if (Actor.all.size() >= 64) {
             return;
         }
 
@@ -82,7 +88,7 @@ public class Encircling extends ModeAbstract {
 
 //        Client.getHud().setColor(Color.WHITE);
 //        Client.getHud().drawString("Zombies killed: " + zombiesKilled, 20, 70);
-//        Client.getHud().drawString("Player health: " + (int) (Actor.allActors.get(0).getHealth() * 100), 20, 90);
+//        Client.getHud().drawString("Player health: " + (int) (Actor.all.get(0).getHealth() * 100), 20, 90);
 
     }
 

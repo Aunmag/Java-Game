@@ -74,11 +74,11 @@ public class Application implements Runnable {
                 mouseLastX = width / 2;
             }
 
-            player.isMovingForward = input.keys[KeyEvent.VK_W];
-            player.isMovingBack = input.keys[KeyEvent.VK_S];
-            player.isMovingLeft = input.keys[KeyEvent.VK_A];
-            player.isMovingRight = input.keys[KeyEvent.VK_D];
-            player.isRunning = input.keys[KeyEvent.VK_SHIFT];
+            player.isWalkingForward = input.keys[KeyEvent.VK_W];
+            player.isWalkingBack = input.keys[KeyEvent.VK_S];
+            player.isWalkingLeft = input.keys[KeyEvent.VK_A];
+            player.isWalkingRight = input.keys[KeyEvent.VK_D];
+            player.isSprinting = input.keys[KeyEvent.VK_SHIFT];
             player.isAttacking = input.mouseButtons[MouseEvent.BUTTON1];
 
             if (input.keys[KeyEvent.VK_ADD]) {
@@ -113,10 +113,11 @@ public class Application implements Runnable {
             float zoom = Client.getZoom();
             Client.getG().scale(zoom, zoom);
             float xCenter = width / (zoom * 2);
-            float yCenter = (Client.getCameraOffsetDefault()) / zoom;
+            float yCenter = height / (zoom * 2); // TODO: Reset!
+//            float yCenter = (Client.getCameraOffsetDefault()) / zoom;
             Actor player = Client.getPlayer();
-            Client.setGX(player.x - xCenter);
-            Client.setGY(player.y - yCenter);
+            Client.setGX(player.getX() - xCenter);
+            Client.setGY(player.getY() - yCenter);
             Client.getG().rotate(-player.getRadians() - Constants.PI_0_5, xCenter, yCenter);
             GamePlay.render();
             Client.getG().dispose();
@@ -181,7 +182,7 @@ public class Application implements Runnable {
 
         // Time:
         float d = 0;
-        long tLast = System.currentTimeMillis();
+        long tLast = System.currentTimeMillis();  // TODO: Use timeNext with optimization
 
         while (Client.isRunning()) {
             long tCurrent = System.currentTimeMillis();

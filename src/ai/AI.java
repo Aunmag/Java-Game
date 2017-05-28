@@ -44,7 +44,7 @@ public class AI {
 
     public void tick() {
 
-        if (!isValid || (!subject.isValid || !subject.isAlive)) {
+        if (!isValid || (!subject.getIsValid() || !subject.getIsAlive())) {
             isValid = false;
             allAIs.remove(this);
             return;

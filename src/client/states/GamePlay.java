@@ -30,7 +30,7 @@ public class GamePlay {
         // Create player:
         Actor player = new Actor(0, 0, 0, "actors/human.png");
         Client.setPlayer(player);
-        Actor.allActors.add(player);
+        Actor.all.add(player);
         Weapon.all.add(new Weapon(player));
 
         // Create level:
@@ -89,7 +89,7 @@ public class GamePlay {
         atmosphere = new SoundManager("/sounds/music/gameplay_atmosphere.wav");
         atmosphere.setVolume(-24);
 
-        Actor.vZombieForward = 0.63f;
+        Actor.velocityForwardZombie = 0.63f;
 
     }
 
@@ -97,7 +97,7 @@ public class GamePlay {
 
         // Clear all data:
         AI.allAIs.clear();
-        Actor.allActors.clear();
+        Actor.all.clear();
         Weapon.all.clear();
         Object.allGround.clear();
         Object.allDecoration.clear();
@@ -125,7 +125,7 @@ public class GamePlay {
 
     public static void tick() {
 
-        if (!Client.getPlayer().isAlive) {
+        if (!Client.getPlayer().getIsAlive()) {
             Client.getGameMenu().activeMenuDeath();
             return;
         }
@@ -141,18 +141,18 @@ public class GamePlay {
         }
 
         // Tick actors:
-        for (int i = Actor.allActors.size() - 1; i >= 0; i--) {
-            Actor.allActors.get(i).tick();
+        for (int i = Actor.all.size() - 1; i >= 0; i--) {
+            Actor.all.get(i).update();
         }
 
         // Tick weapons:
         for (int i = Weapon.all.size() - 1; i >= 0; i--) {
-            Weapon.all.get(i).tick();
+            Weapon.all.get(i).update();
         }
 
         // Tick bullets:
         for (int i = Bullet.all.size() - 1; i >= 0; i--) {
-            Bullet.all.get(i).tick();
+            Bullet.all.get(i).update();
         }
 
     }
@@ -171,7 +171,7 @@ public class GamePlay {
             weapon.render();
         }
 
-        for (Actor actor: Actor.allActors) {
+        for (Actor actor: Actor.all) {
             actor.render();
         }
 

@@ -1,180 +1,105 @@
 package sprites;
 
-import client.Client;
 import client.Constants;
 import managers.Log;
 import managers.MathManager;
 import scripts.Inertia;
-import scripts.IsIntersection;
 import managers.SoundManager;
+import sprites.components.Collision;
+import sprites.components.CollisionCircle;
+import sprites.components.Hands;
 
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.util.*;
 
 /**
- * MAKE DESCRIPTION!
+ * TODO: Make description
  *
- * Created by Aunmag on 23.10.2016.
+ * Created by Aunmag on 2016.10.23.
  */
 
 public class Actor extends Sprite {
 
-    public static java.util.List<Actor> allActors = new ArrayList<>();
+    public static java.util.List<Actor> all = new ArrayList<>();
 
-    public boolean isAlive = true;
-    public boolean hasWeapon = false;
-    float health = 1;
+    private boolean isAlive = true;
+    private boolean hasWeapon = false;
 
-    // Melee:
-    private static boolean isMeleeRadiusVisible = false;
-    public static int meleeRadius = 14;
-    public static float meleeDistance = meleeRadius * 1.5f;
-    private static int meleeIntensity = 10;
-    private static final long meleeTimePace = 400;
-    private long meleeTimeLast = 0;
-    private static final Color meleeColor = new Color(255, 0, 0, 128);
-    public float meleeX;
-    public float meleeY;
+    private float health = 1;
 
-    // Movement velocity:
-    public float velocityForward;
-    public float velocityAside;
-    public float velocityBack;
-    public float runningAcceleration;
+    private float velocityForward;
+    private float velocityAside;
+    private float velocityBack;
+    private float sprintAcceleration;
+    public static float velocityForwardZombie = 0.63f; // TODO: Improve
 
-//    Inertia inertiaRadians = new Inertia(0.4);
-    float currentMovementRadians = 0;
-    Inertia inertiaVelocity = new Inertia(0.2f);
-//    float currentMovementVelocity = 0;
+    private float currentMovementRadians = 0;
+    private Inertia inertiaVelocity = new Inertia(0.2f); // TODO: Improve
 
-    public String type;
+    public String group; // TODO: Maybe create separate class
 
-    // Doing flags:
-    public boolean isMovingForward = false;
-    public boolean isMovingBack = false;
-    public boolean isMovingLeft = false;
-    public boolean isMovingRight = false;
-    public boolean isRunning = false;
+    public boolean isWalking = false;
+    public boolean isWalkingForward = false;
+    public boolean isWalkingBack = false;
+    public boolean isWalkingLeft = false;
+    public boolean isWalkingRight = false;
+    public boolean isSprinting = false;
     public boolean isAttacking = false;
 
-    public static float vZombieForward = 0.63f;
+    private Hands hands = new Hands(this);
+    private CollisionCircle collision = new CollisionCircle(this, 7.2f);
 
-    private static SoundManager[] sounds = new SoundManager[6];
+    private static SoundManager[] sounds = new SoundManager[6]; // TODO: Improve
 
     public Actor(float x, float y, float radians, String imagePath) {
 
         super(x, y, radians, true, imagePath);
 
         String[] imagePathData = imagePath.split("/");
-        type = imagePathData[1];
+        group = imagePathData[1];
 
-        switch (type) {
+        switch (group) {
             case "human.png":
-                type = "human";
+                group = "human";
                 velocityForward = 1.38f;
                 velocityAside = velocityForward * 0.6f;
                 velocityBack = velocityForward * 0.8f;
-                runningAcceleration = 2.76f; // 3.02
+                sprintAcceleration = 2.76f; // 3.02
                 hasWeapon = true;
                 break;
             case "zombie.png":
-                type = "zombie";
-                velocityForward = vZombieForward;
+                group = "zombie";
+                velocityForward = velocityForwardZombie;
                 velocityAside = velocityForward * 0.6f;
                 velocityBack = velocityForward * 0.8f;
-                runningAcceleration = 1.63f;
+                sprintAcceleration = 1.63f;
                 hasWeapon = false;
                 break;
             default:
-                type = "unknown";
+                group = "unknown";
                 velocityForward = 1;
                 velocityAside = velocityForward;
                 velocityBack = velocityForward;
-                runningAcceleration = 2;
+                sprintAcceleration = 2;
                 hasWeapon = false;
                 Log.log("Spawn", "Unknown actor spawned.", null);
         }
 
-        hasBody = true;
-        bodyRadius = 7.2f;
-
-        meleeUpdate();
-
     }
 
-    public void hit(float intensity, float direction) {
-
+    public void hit(float intensity, float radiansFrom) {
         health -= intensity / 100;
-
-        if (health < 0) {
-            health = 0;
-        }
+        updateIsAlive();
 
         float impulse = intensity / 10;
+        x += impulse * Math.cos(radiansFrom);
+        y += impulse * Math.sin(radiansFrom);
 
-        x += impulse * Math.cos(direction);
-        y += impulse * Math.sin(direction);
-
-
-        if (type.equals("human")) {
-            sounds[MathManager.random.nextInt(6)].play();
-        }
-
-    }
-
-    public void meleeAttack() {
-
-        for (Actor i: Actor.allActors) {
-            if (type.equals("zombie") && i.type.equals(type)) {
-                continue;
-            }
-            if (IsIntersection.circleCircle(meleeX, meleeY, meleeRadius, i.x, i.y, i.bodyRadius)) {
-                i.hit(meleeIntensity * health, radians);
-            }
-        }
-
-        if (isMeleeRadiusVisible) {
-            Client.getG().setColor(meleeColor);
-            int roundX = (int) (meleeX - Client.getGX() - meleeRadius);
-            int roundY = (int) (meleeY - Client.getGY() - meleeRadius);
-            int roundR = meleeRadius * 2;
-            Client.getG().fillRoundRect(roundX, roundY, roundR, roundR, roundR, roundR);
-        }
-
-    }
-
-    private void meleeUpdate() {
-
-        meleeX = (float) (x + meleeDistance * Math.cos(radians));
-        meleeY = (float) (y + meleeDistance * Math.sin(radians));
-
-    }
-
-    private void detectCollision() {
-
-        for (int i = Actor.allActors.size() - 1; i >= 0; i--) {
-            Actor a = Actor.allActors.get(i);
-            if (a.isAlive && !a.equals(this)) {
-                if (IsIntersection.circleCircle(x, y, bodyRadius, a.x, a.y, a.bodyRadius)) {
-
-                    float distanceMin = bodyRadius + a.bodyRadius;
-                    float distanceCurrent = (float) (Math.abs(Math.sqrt(Math.pow(x - a.x, 2) + Math.pow(y - a.y, 2))));
-                    float distanceIntersection = (distanceMin - distanceCurrent) / 2;
-                    float direction = (float) (Math.atan2(y - a.y, x - a.x));
-
-                    x += distanceIntersection * Math.cos(direction);
-                    y += distanceIntersection * Math.sin(direction);
-                    a.x += distanceIntersection * Math.cos(-direction);
-                    a.y += distanceIntersection * Math.sin(-direction);
-
-                }
-            }
+        if (group.equals("human")) {
+            soundHurt();
         }
     }
 
     public static void loadSounds() {
-
         sounds[0] = new SoundManager("/sounds/actors/human_hurt_1.wav");
         sounds[1] = new SoundManager("/sounds/actors/human_hurt_2.wav");
         sounds[2] = new SoundManager("/sounds/actors/human_hurt_3.wav");
@@ -183,49 +108,24 @@ public class Actor extends Sprite {
         sounds[5] = new SoundManager("/sounds/actors/human_hurt_6.wav");
 
         int volume = 6;
-
         sounds[0].setVolume(volume);
         sounds[1].setVolume(volume);
         sounds[2].setVolume(volume);
         sounds[3].setVolume(volume);
         sounds[4].setVolume(volume);
         sounds[5].setVolume(volume);
-
     }
 
-    // Movement methods:
-
-    private void move(float movementRadians, float movementVelocity) {
-
-        if (isRunning && isMovingForward) {
-            movementVelocity *= runningAcceleration;
+    public void update() {
+        if (!isValid) {
+            destroy();
+            return;
         }
 
-//        currentMovementRadians = inertiaRadians.update(1, movementRadians);
-        currentMovementRadians = movementRadians;
-
-        velocity = inertiaVelocity.update(1, movementVelocity * health);
-//        currentMovementVelocity = movementVelocity * health;
-
-        x += velocity * Math.cos(currentMovementRadians);
-        y += velocity * Math.sin(currentMovementRadians);
-
-    }
-
-    // Getters:
-
-    public float getHealth() {
-
-        return health;
-
-    }
-
-    // Updaters:
-
-    @Override public void tick() {
+        updateIsAlive();
 
         if (!isValid) {
-            Actor.allActors.remove(this);
+            destroy();
             return;
         }
 
@@ -233,58 +133,137 @@ public class Actor extends Sprite {
             return;
         }
 
-        if (health <= 0) {
-            isAlive = false;
-            if (type.equals("zombie")) {
-                isValid = false;
-                Actor.allActors.remove(this);
-                return;
-            }
+        updateIsWalking();
+
+        if (isWalking) {
+            walk();
+        } else {
+            stay();
         }
 
-        if (isMovingForward) move(radians, velocityForward);
-        if (isMovingBack) move((float) (radians - Math.PI), velocityBack);
-        if (isMovingLeft) move((float) (radians - Constants.PI_0_5), velocityAside);
-        if (isMovingRight) move((float) (radians + Constants.PI_0_5), velocityAside);
-
-        if (!isMovingForward && !isMovingBack && !isMovingLeft && !isMovingRight) {
-            velocity = inertiaVelocity.update(1, 0);
-            x += velocity * Math.cos(currentMovementRadians);
-            y += velocity * Math.sin(currentMovementRadians);
-        }
-
-        meleeUpdate();
-
-        detectCollision();
-
-        if (isAttacking && !hasWeapon) {
-            if (Client.getT() - meleeTimeLast >= meleeTimePace) {
-                meleeAttack();
-                meleeTimeLast = Client.getT();
-            }
-        }
-
+        updateCollision();
+        hands.update();
     }
 
-    public void render() {
-
-        if (!isAlive || image == null || !IsVisible()) {
+    private void updateIsAlive() {
+        if (!isAlive) {
             return;
         }
 
-        BufferedImage imageUpdated = image.get(radians);
-        displayPositionPrepare();
-
-        Client.getG().drawImage(imageUpdated, (int) displayX, (int) displayY, null);
-
-        if (Sprite.isBodyRadiusVisible) {
-            Client.getG().setColor(bodyColor);
-            int roundX = (int) (x - Client.getGX() - bodyRadius);
-            int roundY = (int) (y - Client.getGY() - bodyRadius);
-            int roundR = (int) (bodyRadius * 2);
-            Client.getG().fillRoundRect(roundX, roundY, roundR, roundR, roundR, roundR);
+        if (health < 0) {
+            health = 0;
         }
 
+        if (health == 0) {
+            isAlive = false;
+            if (group.equals("zombie")) {
+                isValid = false;
+            }
+        }
+    }
+
+    private void updateIsWalking() {
+        isWalking = isWalkingForward || isWalkingLeft || isWalkingRight || isWalkingBack;
+    }
+
+    private void updateCollision() {
+        collision.setPosition(x, y);
+
+        for (Actor actor: all) {
+            if (!actor.isAlive || actor.equals(this)) {
+                continue;
+            }
+
+            if (Collision.calculateIsCollision(collision, actor.getCollision())) {
+                float distanceBetween = collision.getLastDistanceBetween();
+                float distanceToCollision = collision.getRadius() + actor.getCollision().getRadius();
+
+                float distanceIntersection = (distanceToCollision - distanceBetween) / 2;
+                float radiansBetween = MathManager.calculateRadiansBetween(
+                        x,
+                        y,
+                        actor.getX(),
+                        actor.getY()
+                );
+
+                x += distanceIntersection * Math.cos(radiansBetween);
+                y += distanceIntersection * Math.sin(radiansBetween);
+                actor.x += distanceIntersection * Math.cos(-radiansBetween);
+                actor.y += distanceIntersection * Math.sin(-radiansBetween);
+            }
+        }
+    }
+
+    private void walk() {
+        if (isWalkingForward) {
+            move(radians, velocityForward);
+        }
+
+        if (isWalkingBack) {
+            move(radians - (float) Math.PI, velocityBack);
+        }
+
+        if (isWalkingLeft) {
+            move(radians - (float) Constants.PI_0_5, velocityAside);
+        }
+
+        if (isWalkingRight) {
+            move(radians + (float) Constants.PI_0_5, velocityAside);
+        }
+    }
+
+    private void move(float movementRadians, float movementVelocity) {
+        if (isSprinting && isWalkingForward) {
+            movementVelocity *= sprintAcceleration;
+        }
+
+        currentMovementRadians = movementRadians;
+
+        float velocity = inertiaVelocity.update(1, movementVelocity * health);
+        x += velocity * Math.cos(currentMovementRadians);
+        y += velocity * Math.sin(currentMovementRadians);
+    }
+
+    private void stay() {
+        float velocity = inertiaVelocity.update(1, 0);
+        x += velocity * Math.cos(currentMovementRadians);
+        y += velocity * Math.sin(currentMovementRadians);
+    }
+
+    private void destroy() {
+        Actor.all.remove(this);
+    }
+
+    public void render() {
+        super.render();
+        hands.render();
+        collision.render();
+    }
+
+    private void soundHurt() {
+        sounds[MathManager.random.nextInt(6)].play();
+    }
+
+    /* Getters */
+
+    public float getHealth() {
+        return health;
+    }
+
+    public boolean getIsAlive() {
+        return isAlive;
+    }
+
+    public boolean getHasWeapon() {
+        return hasWeapon;
+    }
+
+    public CollisionCircle getCollision() {
+        return collision;
+    }
+
+    public Hands getHands() {
+        return hands;
     }
 
 }

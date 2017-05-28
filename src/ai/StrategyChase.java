@@ -21,10 +21,10 @@ class StrategyChase extends StrategyAbstract {
 
         ai.subject.isAttacking = false;
         ai.subject.setRadians(ai.targetDirection);
-        ai.subject.isMovingForward = true;
+        ai.subject.isWalkingForward = true;
 
         // If subject is behind the target:
-        ai.subject.isRunning = ai.targetFlankAbs < Constants.PI_0_5;
+        ai.subject.isSprinting = ai.targetFlankAbs < Constants.PI_0_5;
 
         if (96 < ai.targetDistance && ai.targetDistance < 512 && ai.targetFlankAbs > Math.PI / 1.4) {
             float radiansOffset = 0;
@@ -48,7 +48,7 @@ class StrategyChase extends StrategyAbstract {
 
         // If the subject is close enough to the target:
         if (ai.targetDistance < 96) {
-            ai.subject.isRunning = true;
+            ai.subject.isSprinting = true;
         }
 
     }
@@ -61,7 +61,7 @@ class StrategyChase extends StrategyAbstract {
         }
 
         if (ai.target == null) {
-            ai.subject.isMovingForward = false;
+            ai.subject.isWalkingForward = false;
             ai.subject.isAttacking = false;
             return;
         }
@@ -73,7 +73,7 @@ class StrategyChase extends StrategyAbstract {
 
         if (ai.isTargetReached) {
             ai.subject.isAttacking = true;
-            ai.subject.isMovingForward = false;
+            ai.subject.isWalkingForward = false;
         } else {
             reachTarget();
         }

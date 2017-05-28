@@ -56,7 +56,7 @@ public class Client {
     private static JFrame frame;
     private static BufferStrategy bs;
     private static Graphics2D hud;
-    private static Graphics2D g;
+    private static Graphics2D g; // TODO: Rename
     private static float gX;
     private static float gY;
     private static boolean isCursorVisible = true;
@@ -81,10 +81,10 @@ public class Client {
     // Updaters:
 
     public static void updateCamera() {
-
+//        float offset = cameraOffsetDefault / zoom; // TODO: RESET!
         float offset = cameraOffsetDefault / 2 / zoom;
-        cameraX = (float) (player.x + offset * Math.cos(player.getRadians()));
-        cameraY = (float) (player.y + offset * Math.sin(player.getRadians()));
+        cameraX = (float) (player.getX() + offset * Math.cos(player.getRadians()));
+        cameraY = (float) (player.getY() + offset * Math.sin(player.getRadians()));
         cameraVisibility = displayMax * 0.75f / zoom;
 
     }

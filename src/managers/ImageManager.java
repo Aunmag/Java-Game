@@ -136,19 +136,20 @@ public class ImageManager {
 
     }
 
-    public BufferedImage get(float radians) {
+    /* Getters */
 
-        if (original == null) {
-            return null;
-        }
-
-        if (this.radians != radians) {
-            this.radians = radians;
-            rotate();
-        }
-
+    public BufferedImage getRotated() {
         return rotated;
-
     }
 
+    /* Setters */
+
+    public void setRadians(float radians) {
+        if (this.radians == radians) {
+            return;
+        }
+
+        this.radians = radians;
+        rotate();
+    }
 }

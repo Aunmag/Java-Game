@@ -47,8 +47,8 @@ public class SoundManager {
 
         clip.setFramePosition(0);
 
-        float x1 = Client.getPlayer().x;
-        float y1 = Client.getPlayer().y;
+        float x1 = Client.getPlayer().getX();
+        float y1 = Client.getPlayer().getY();
         float distance = (float) (Math.sqrt(Math.pow(x1 - x2, 2) + Math.pow(y1 - y2, 2)));
 
         setVolume(-distance / 25);

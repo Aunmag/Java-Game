@@ -41,7 +41,7 @@ public class Hud {
         Client.getHud().setColor(Color.WHITE);
 
         Client.getHud().drawString("AIs: " + AI.allAIs.size(), 20, 80);
-        Client.getHud().drawString("Actors: " + Actor.allActors.size(), 20, 100);
+        Client.getHud().drawString("Actors: " + Actor.all.size(), 20, 100);
         Client.getHud().drawString("Weapons: " + Weapon.all.size(), 20, 120);
         Client.getHud().drawString("Bullets: " + Bullet.all.size(), 20, 140);
         Client.getHud().drawString("Objects: " + Object.allGround.size(), 20, 160);
