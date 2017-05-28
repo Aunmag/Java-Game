@@ -130,6 +130,12 @@ public class Application implements Runnable {
 
     }
 
+    private void finish() {
+        if (Client.isGamePlay()) {
+            GamePlay.deleteInvalids();
+        }
+    }
+
     // Runnable methods:
 
     @Override public void run() {
@@ -194,6 +200,7 @@ public class Application implements Runnable {
                 Client.setD(d);
                 tick();
                 render();
+                finish();
                 d -= 1;
                 if (Client.isPerformanceData()) {
                     Client.tPerformanceAverage.addValue(System.currentTimeMillis() - tCurrent);

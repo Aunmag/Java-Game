@@ -19,7 +19,8 @@ import java.util.*;
 
 public class Actor extends Sprite {
 
-    public static java.util.List<Actor> all = new ArrayList<>();
+    public static List<Actor> all = new ArrayList<>();
+    public static List<Actor> invalids = new ArrayList<>();
 
     private boolean isAlive = true;
     private boolean hasWeapon = false;
@@ -30,8 +31,8 @@ public class Actor extends Sprite {
     private float velocityAside;
     private float velocityBack;
     private float sprintAcceleration;
-    public static float velocityForwardZombie = 0.63f; // TODO: Improve
 
+    public static float velocityForwardZombie = 0.63f; // TODO: Improve
     private float currentMovementRadians = 0;
     private Inertia inertiaVelocity = new Inertia(0.2f); // TODO: Improve
 
@@ -117,17 +118,7 @@ public class Actor extends Sprite {
     }
 
     public void update() {
-        if (!isValid) {
-            destroy();
-            return;
-        }
-
         updateIsAlive();
-
-        if (!isValid) {
-            destroy();
-            return;
-        }
 
         if (!isAlive) {
             return;
@@ -157,7 +148,7 @@ public class Actor extends Sprite {
         if (health == 0) {
             isAlive = false;
             if (group.equals("zombie")) {
-                isValid = false;
+                delete();
             }
         }
     }
@@ -223,10 +214,6 @@ public class Actor extends Sprite {
         y += velocity * Math.sin(currentMovementRadians);
     }
 
-    private void destroy() {
-        Actor.all.remove(this);
-    }
-
     public void render() {
         super.render();
         hands.render();
@@ -235,6 +222,11 @@ public class Actor extends Sprite {
 
     private void soundHurt() {
         sounds[MathManager.random.nextInt(6)].play();
+    }
+
+    public void delete() {
+        isValid = false;
+        invalids.add(this);
     }
 
     /* Getters */

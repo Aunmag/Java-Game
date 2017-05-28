@@ -19,4 +19,6 @@ public class Object extends Sprite {
         super(x, y, radians, isUnique, "objects/" + name + ".png");  // TODO: Simplify image path
     }
 
+    public void delete() {}
+
 }

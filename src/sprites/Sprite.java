@@ -56,6 +56,8 @@ public abstract class Sprite extends BasePosition {
         Client.getG().drawImage(image.getRotated(), onScreenX, onScreenY, null);
     }
 
+    public abstract void delete();
+
     boolean calculateIsVisible() {
         float cameraX = Client.getCameraX();
         float cameraY = Client.getCameraY();

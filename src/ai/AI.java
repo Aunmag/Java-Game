@@ -2,15 +2,14 @@ package ai;
 
 // Created by Aunmag on 23.10.2016.
 
-import client.Client;
-import scripts.IsIntersection;
 import sprites.Actor;
 import java.util.ArrayList;
 import java.util.List;
 
 public class AI {
 
-    public static List<AI> allAIs = new ArrayList<>();
+    public static List<AI> all = new ArrayList<>();
+    public static List<AI> invalids = new ArrayList<>();
 
     public boolean isValid = true;
 
@@ -43,15 +42,16 @@ public class AI {
     }
 
     public void tick() {
-
-        if (!isValid || (!subject.getIsValid() || !subject.getIsAlive())) {
-            isValid = false;
-            allAIs.remove(this);
-            return;
+        if (!subject.getIsValid() || !subject.getIsAlive()) {
+            delete();
         }
 
         currentStrategy.tick();
+    }
 
+    public void delete() {
+        isValid = false;
+        invalids.add(this);
     }
 
 }

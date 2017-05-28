@@ -17,6 +17,7 @@ import managers.SoundManager;
 public class Weapon extends Sprite {
 
     public static List<Weapon> all = new ArrayList<>();
+    public static List<Weapon> invalids = new ArrayList<>();
 
     private static final int fireRate = 700; // TODO: Rename
     private static final int bulletsPerShot = 16;
@@ -39,13 +40,7 @@ public class Weapon extends Sprite {
     }
 
     public void update() {
-        updateIsValid();
-
-        if (!isValid) {
-            all.remove(this);
-            return;
-        }
-
+        updateOwner();
         updatePosition();
 
         if (owner.getHasWeapon() && owner.isAttacking && Client.getT() >= timeNextShot) {
@@ -53,12 +48,10 @@ public class Weapon extends Sprite {
         }
     }
 
-    private void updateIsValid() {
-        if (!isValid) {
-            return;
+    private void updateOwner() {
+        if (owner == null || !owner.getIsAlive()) {
+            delete();
         }
-
-        isValid = owner != null && owner.getIsAlive() && owner.isValid;
     }
 
     private void updatePosition() {
@@ -81,6 +74,11 @@ public class Weapon extends Sprite {
         float bulletRadians = MathManager.randomizeFlexibly(radians, deflectionRadians);
         float bulletVelocity = MathManager.randomizeFlexibly(velocityMuzzle, deflectionVelocity);
         Bullet.all.add(new Bullet(x, y, bulletRadians, bulletVelocity, velocityRecession));
+    }
+
+    public void delete() {
+        isValid = false;
+        invalids.add(this);
     }
 
 }

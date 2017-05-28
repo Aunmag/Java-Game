@@ -96,7 +96,7 @@ public class GamePlay {
     public static void terminate() {
 
         // Clear all data:
-        AI.allAIs.clear();
+        AI.all.clear();
         Actor.all.clear();
         Weapon.all.clear();
         Object.allGround.clear();
@@ -121,44 +121,34 @@ public class GamePlay {
 
     }
 
-    // Updaters:
-
     public static void tick() {
-
         if (!Client.getPlayer().getIsAlive()) {
             Client.getGameMenu().activeMenuDeath();
             return;
         }
 
-        // Tick game mode:
         if (mode != null) {
             mode.tick();
         }
 
-        // Tick AIs:
-        for (int i = AI.allAIs.size() - 1; i >= 0; i--) {
-            AI.allAIs.get(i).tick();
+        for (AI ai: AI.all) {
+            ai.tick();
         }
 
-        // Tick actors:
-        for (int i = Actor.all.size() - 1; i >= 0; i--) {
-            Actor.all.get(i).update();
+        for (Actor actor: Actor.all) {
+            actor.update();
         }
 
-        // Tick weapons:
-        for (int i = Weapon.all.size() - 1; i >= 0; i--) {
-            Weapon.all.get(i).update();
+        for (Weapon weapon: Weapon.all) {
+            weapon.update();
         }
 
-        // Tick bullets:
-        for (int i = Bullet.all.size() - 1; i >= 0; i--) {
-            Bullet.all.get(i).update();
+        for (Bullet bullet: Bullet.all) {
+            bullet.update();
         }
-
     }
 
     public static void render() {
-
         for (Object object: Object.allGround) {
             object.render();
         }
@@ -190,7 +180,20 @@ public class GamePlay {
         }
 
         Hud.render();
+    }
 
+    public static void deleteInvalids() {
+        Bullet.all.removeAll(Bullet.invalids);
+        Bullet.invalids.clear();
+
+        Weapon.all.removeAll(Weapon.invalids);
+        Weapon.invalids.clear();
+
+        Actor.all.removeAll(Actor.invalids);
+        Actor.invalids.clear();
+
+        AI.all.removeAll(AI.invalids);
+        AI.invalids.clear();
     }
 
     // Getters:

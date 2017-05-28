@@ -26,7 +26,7 @@ public class Encircling extends ModeAbstract {
 
         Actor spawnedZombie = new Actor(spawnX, spawnY, 0, "actors/zombie.png");
         Actor.all.add(spawnedZombie);
-        AI.allAIs.add(new AI(spawnedZombie));
+        AI.all.add(new AI(spawnedZombie));
 
     }
 

@@ -20,6 +20,8 @@ import java.util.List;
 public class Bullet extends Sprite {
 
     public static List<Bullet> all = new ArrayList<>();
+    public static List<Bullet> invalids = new ArrayList<>();
+
     private static final Color color = new Color(255, 204, 51, 160);
 
     private float x2;
@@ -37,26 +39,20 @@ public class Bullet extends Sprite {
     }
 
     public void update() {
-        updateIsValid();
-
-        if (!isValid) {
-            Bullet.all.remove(this);
-            return;
-        }
-
+        updateVelocity();
         updatePosition();
         updateCollision();
     }
 
-    private void updateIsValid() {
+    private void updateVelocity() {
+        velocity *= velocityRecession / Constants.FPS_LIMIT;
+
         if (velocity <= 1) {
-            isValid = false;
+            delete();
         }
     }
 
     private void updatePosition() {
-        velocity *= velocityRecession / Constants.FPS_LIMIT;
-
         x += velocity * Math.cos(radians);
         y += velocity * Math.sin(radians);
         updatePositionTail();
@@ -92,6 +88,11 @@ public class Bullet extends Sprite {
         Client.getG().drawLine(onScreenX1, onScreenY1, onScreenX2, onScreenY2);
 
         collision.render();
+    }
+
+    public void delete() {
+        isValid = false;
+        invalids.add(this);
     }
 
 }
