@@ -28,7 +28,7 @@ public class GamePlay {
         }
 
         // Create player:
-        Actor player = new Actor(0, 0, 0, "actors/human.png");
+        Actor player = new Actor(0, 0, 0, "human");
         Client.setPlayer(player);
         Actor.all.add(player);
         Weapon.all.add(new Weapon(player));

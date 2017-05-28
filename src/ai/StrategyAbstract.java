@@ -23,7 +23,7 @@ abstract class StrategyAbstract {
         ai.target = null;
 
         for (Actor actor: Actor.all) {
-            if (actor.group.equals("human") && actor.getIsAlive()) {
+            if (actor.type.equals("human") && actor.getIsAlive()) {
                 ai.target = actor;
                 break;
             }

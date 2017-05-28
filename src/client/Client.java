@@ -81,7 +81,6 @@ public class Client {
     // Updaters:
 
     public static void updateCamera() {
-//        float offset = cameraOffsetDefault / zoom; // TODO: RESET!
         float offset = cameraOffsetDefault / 2 / zoom;
         cameraX = (float) (player.getX() + offset * Math.cos(player.getRadians()));
         cameraY = (float) (player.getY() + offset * Math.sin(player.getRadians()));

@@ -113,8 +113,7 @@ public class Application implements Runnable {
             float zoom = Client.getZoom();
             Client.getG().scale(zoom, zoom);
             float xCenter = width / (zoom * 2);
-            float yCenter = height / (zoom * 2); // TODO: Reset!
-//            float yCenter = (Client.getCameraOffsetDefault()) / zoom;
+            float yCenter = (Client.getCameraOffsetDefault()) / zoom;
             Actor player = Client.getPlayer();
             Client.setGX(player.getX() - xCenter);
             Client.setGY(player.getY() - yCenter);

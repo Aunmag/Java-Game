@@ -44,7 +44,7 @@ public class Hands extends CollisionCircle {
 
     private void attack() {
         for (Actor actor: Actor.all) {
-            if (actor.group.equals(owner.group) || actor == owner) {
+            if (actor.type.equals(owner.type) || actor == owner) {
                 continue;
             }
 
