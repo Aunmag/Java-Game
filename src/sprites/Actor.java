@@ -31,8 +31,8 @@ public class Actor extends Sprite {
     private float velocityAside;
     private float velocityBack;
     private float sprintAcceleration;
-
     public static float velocityForwardZombie = 0.63f; // TODO: Improve
+
     private float currentMovementRadians = 0;
     private Inertia inertiaVelocity = new Inertia(0.2f); // TODO: Improve
 
@@ -141,11 +141,8 @@ public class Actor extends Sprite {
             return;
         }
 
-        if (health < 0) {
+        if (health <= 0) {
             health = 0;
-        }
-
-        if (health == 0) {
             isAlive = false;
             if (group.equals("zombie")) {
                 delete();
