@@ -31,10 +31,20 @@ public class Bullet extends Sprite {
     private final float velocityRecession; // TODO: Implement bullet weight
     private CollisionLine collision = new CollisionLine(this);
 
-    public Bullet(float x, float y, float radians, float velocity, float velocityRecession) {
+    Actor shooter;
+
+    public Bullet(
+            float x,
+            float y,
+            float radians,
+            float velocity,
+            float velocityRecession,
+            Actor shooter
+    ) {
         super(x, y, radians, true, null);
         this.velocity = velocity;
         this.velocityRecession = velocityRecession;
+        this.shooter = shooter;
         updatePositionTail();
     }
 
@@ -68,7 +78,7 @@ public class Bullet extends Sprite {
 
         for (Actor actor: Actor.all) {
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
-                actor.hit(velocity, radians);
+                actor.hit(velocity, radians, shooter);
                 velocity /= 60; // TODO: Improve
             }
         }

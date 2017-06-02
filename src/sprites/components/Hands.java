@@ -11,7 +11,7 @@ import java.awt.*;
 
 public class Hands extends CollisionCircle {
 
-    private static boolean isVisible = false;
+    private static boolean isVisible = true;
     protected static final Color renderColor = new Color(255, 0, 0, 128);
 
     private static final float radius = 14;
@@ -57,24 +57,9 @@ public class Hands extends CollisionCircle {
     }
 
     public void render() {
-        if (!isVisible) {
-            return;
+        if (isVisible) {
+            super.render(renderColor);
         }
-
-        Client.getG().setColor(renderColor);
-
-        int onScreenX = Math.round(x - Client.getGX() - radius);
-        int onScreenY = Math.round(y - Client.getGY() - radius);
-        int onScreenDiameter = Math.round(diameter);
-
-        Client.getG().fillRoundRect(
-                onScreenX,
-                onScreenY,
-                onScreenDiameter,
-                onScreenDiameter,
-                onScreenDiameter,
-                onScreenDiameter
-        );
     }
 
 }

@@ -73,7 +73,8 @@ public class Weapon extends Sprite {
     private void makeBullet() {
         float bulletRadians = MathManager.randomizeFlexibly(radians, deflectionRadians);
         float bulletVelocity = MathManager.randomizeFlexibly(velocityMuzzle, deflectionVelocity);
-        Bullet.all.add(new Bullet(x, y, bulletRadians, bulletVelocity, velocityRecession));
+        Bullet bullet = new Bullet(x, y, bulletRadians, bulletVelocity, velocityRecession, owner);
+        Bullet.all.add(bullet);
     }
 
     public void delete() {

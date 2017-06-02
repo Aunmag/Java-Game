@@ -6,7 +6,7 @@ import ai.AI;
 import client.graphics.Hud;
 import client.graphics.effects.Blackout;
 import client.Client;
-import modes.*;
+import gameModes.*;
 import managers.SoundManager;
 import scripts.PutTrees;
 import sprites.Actor;
@@ -16,7 +16,7 @@ import sprites.Weapon;
 
 public class GamePlay {
 
-    private static ModeAbstract mode;
+    private static GameMode mode;
 
     private static SoundManager ambiance;
     private static SoundManager atmosphere;
@@ -80,7 +80,7 @@ public class GamePlay {
 
         // Game mode:
 //        mode = new TestAI();
-        mode = new Encircling();
+        mode = new GameModeEncircling();
 //        mode = new Benchmark();
         Client.setIsGameStarted(true);
 
@@ -128,7 +128,7 @@ public class GamePlay {
         }
 
         if (mode != null) {
-            mode.tick();
+            mode.update();
         }
 
         for (AI ai: AI.all) {

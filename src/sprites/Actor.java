@@ -1,6 +1,7 @@
 package sprites;
 
 import client.Constants;
+import managers.Log;
 import managers.MathManager;
 import scripts.Inertia;
 import managers.SoundManager;
@@ -25,6 +26,7 @@ public class Actor extends Sprite {
     private boolean isAlive = true;
     private boolean hasWeapon = false;
     private float health = 1;
+    private int kills = 0;
     public String type;
     private Hands hands = new Hands(this);
     private CollisionCircle collision = new CollisionCircle(this, 7.2f);
@@ -56,6 +58,13 @@ public class Actor extends Sprite {
             velocitySprint = 2.76f;
             hasWeapon = true;
         } else {
+            if (!type.equals("zombie")) {
+                this.type = "zombie";
+                String message = String.format(
+                        "Got unknown \"%s\" actor type. Used \"%s\" instead", type, this.type
+                );
+                Log.log("Actor", message, null);
+            }
             velocity = velocityForwardZombie;
             velocityAside = velocity * 0.6f;
             velocityBack = velocity * 0.8f;
@@ -167,13 +176,23 @@ public class Actor extends Sprite {
         y += velocityCurrent * Math.sin(currentMovementRadians);
     }
 
-    public void hit(float intensity, float radiansFrom) {
+    public void hit(float intensity, float radians) {
+        hit(intensity, radians, null);
+    }
+
+    public void hit(float intensity, float radians, Actor attacker) {
+        boolean wasAlreadyDead = !isAlive;
+
         health -= intensity / 100;
         updateIsAlive();
 
+        if (!wasAlreadyDead && !isAlive && attacker != null) {
+            attacker.increaseKills();
+        }
+
         float impulse = intensity / 10;
-        x += impulse * Math.cos(radiansFrom);
-        y += impulse * Math.sin(radiansFrom);
+        x += impulse * Math.cos(radians);
+        y += impulse * Math.sin(radians);
 
         if (type.equals("human")) {
             soundHurt();
@@ -193,6 +212,10 @@ public class Actor extends Sprite {
     public void delete() {
         isValid = false;
         invalids.add(this);
+    }
+
+    public void increaseKills() {
+        kills++;
     }
 
     /* Getters */
@@ -215,6 +238,10 @@ public class Actor extends Sprite {
 
     public Hands getHands() {
         return hands;
+    }
+
+    public int getKills() {
+        return kills;
     }
 
 }

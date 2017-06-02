@@ -3,6 +3,8 @@ package sprites.components;
 import client.Client;
 import sprites.Sprite;
 
+import java.awt.*;
+
 /**
  * Created by Aunmag on 2017.05.26.
  */
@@ -20,11 +22,15 @@ public class CollisionCircle extends Collision {
     }
 
     public void render() {
+        render(renderColor);
+    }
+
+    public void render(Color color) {
         if (!isVisible) {
             return;
         }
 
-        Client.getG().setColor(renderColor);
+        Client.getG().setColor(color);
 
         int onScreenX = Math.round(x - Client.getGX() - radius);
         int onScreenY = Math.round(y - Client.getGY() - radius);

@@ -1,11 +1,11 @@
 package scripts;
 
+import managers.MathManager;
+import sprites.Object;
+
 /**
  * Created by Aunmag on 2016.11.23.
  */
-
-import managers.MathManager;
-import sprites.Object;
 
 public class PutTrees {
 
