@@ -1,7 +1,7 @@
 package sprites;
 
 import client.Client;
-import managers.image.ImageManager;
+import managers.ImageManager;
 import managers.MathManager;
 import sprites.basics.BasePosition;
 

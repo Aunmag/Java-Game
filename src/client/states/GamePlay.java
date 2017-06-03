@@ -8,7 +8,7 @@ import client.graphics.effects.Blackout;
 import client.Client;
 import gameModes.*;
 import managers.SoundManager;
-import managers.image.ImageManager;
+import managers.ImageManager;
 import scripts.PutTrees;
 import sprites.Actor;
 import sprites.Bullet;
@@ -53,32 +53,32 @@ public class GamePlay {
 
             for (int y = -groundStart; y < groundSize - groundStart; y += groundSizeBlock) {
 
-                Object.allGround.add(new Object(x, y, "objects/ground/grass"));
+                Object.allGround.add(new Object(x, y, imageGrass));
 
                 int confine = 960 + 8;
                 int zone = 960;
 
-//                if (y == -zone && x < confine && -confine < x) {
-//                    Object.allDecoration.add(new Object(x, y - 64, imageBluff0));
-//                } else if (y == zone && x < confine && -confine < x) {
-//                    Object.allDecoration.add(new Object(x, y + 64, imageBluff180));
-//                }
-//
-//                if (x == -zone && y < confine && -confine < y) {
-//                    Object.allDecoration.add(new Object(x - 64, y, imageBluff270));
-//                } else if (x == zone && y < confine && -confine < y) {
-//                    Object.allDecoration.add(new Object(x + 64, y, imageBluff90));
-//                }
-//
-//                if (y == -zone && x == -zone) {
-//                    Object.allDecoration.add(new Object(x - 64, y - 64, imageBluffa270));
-//                } else if (y == -zone && x == zone) {
-//                    Object.allDecoration.add(new Object(x + 64, y - 64, imageBluffa0));
-//                } else if (y == zone && x == zone) {
-//                    Object.allDecoration.add(new Object(x + 64, y + 64, imageBluffa90));
-//                } else if (y == zone && x == -zone) {
-//                    Object.allDecoration.add(new Object(x - 64, y + 64, imageBluffa180));
-//                }
+                if (y == -zone && x < confine && -confine < x) {
+                    Object.allDecoration.add(new Object(x, y - 64, imageBluff0));
+                } else if (y == zone && x < confine && -confine < x) {
+                    Object.allDecoration.add(new Object(x, y + 64, imageBluff180));
+                }
+
+                if (x == -zone && y < confine && -confine < y) {
+                    Object.allDecoration.add(new Object(x - 64, y, imageBluff270));
+                } else if (x == zone && y < confine && -confine < y) {
+                    Object.allDecoration.add(new Object(x + 64, y, imageBluff90));
+                }
+
+                if (y == -zone && x == -zone) {
+                    Object.allDecoration.add(new Object(x - 64, y - 64, imageBluffa270));
+                } else if (y == -zone && x == zone) {
+                    Object.allDecoration.add(new Object(x + 64, y - 64, imageBluffa0));
+                } else if (y == zone && x == zone) {
+                    Object.allDecoration.add(new Object(x + 64, y + 64, imageBluffa90));
+                } else if (y == zone && x == -zone) {
+                    Object.allDecoration.add(new Object(x - 64, y + 64, imageBluffa180));
+                }
 
             }
         }
@@ -92,6 +92,7 @@ public class GamePlay {
         // Game mode:
 //        mode = new TestAI();
         mode = new GameModeEncircling();
+//        mode = new GameModeEmpty();
 //        mode = new Benchmark();
         Client.setIsGameStarted(true);
 

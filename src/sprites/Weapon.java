@@ -5,7 +5,7 @@ import java.util.List;
 import client.Client;
 import managers.MathManager;
 import managers.SoundManager;
-import managers.image.ImageManager;
+import managers.ImageManager;
 
 /**
  * This is a weapon which is been used by the owner (an actor with this weapon). If the owner is

@@ -3,7 +3,7 @@ package client.graphics.gui;
 // Created by Aunmag on 20.11.2016.
 
 import client.Client;
-import managers.image.ImageManager;
+import managers.ImageManager;
 import managers.Log;
 
 import javax.imageio.ImageIO;

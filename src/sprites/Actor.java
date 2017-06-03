@@ -3,7 +3,7 @@ package sprites;
 import client.Constants;
 import managers.Log;
 import managers.MathManager;
-import managers.image.ImageManager;
+import managers.ImageManager;
 import scripts.Inertia;
 import managers.SoundManager;
 import sprites.components.Collision;

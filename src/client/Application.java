@@ -2,7 +2,6 @@ package client;
 
 import client.states.GameMenu;
 import client.states.GamePlay;
-import managers.image.ImageManager;
 import sprites.Actor;
 
 import java.awt.*;

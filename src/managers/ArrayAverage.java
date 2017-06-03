@@ -13,7 +13,7 @@ public class ArrayAverage {
     public ArrayAverage(int depth) {
         if (depth < 1) {
             String message = String.format(
-                    "Got %s ArrayAverage depth value. Replaced with 2.", depth
+                    "Got wrong ArrayAverage depth value (%s). Replaced with 2.", depth
             );
             Log.log("ArrayAverage", message);
             depth = 2;

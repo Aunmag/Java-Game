@@ -1,7 +1,6 @@
-package managers.image;
+package managers;
 
 import client.Settings;
-import managers.Log;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -15,28 +14,12 @@ import java.util.Map;
 /**
  * This is the image manager which find, load, store and handle images.
  *
- * ### Image types:
- * - Original is the dry image without any effects. It let make its copy and change them without
- * quality lose.
- * - Rotated is the wet copy of original image with rotating any some effects.
- *
- * ### Terms:
- * - Common image - the image which is used a number of times in a moment. For instance a ground
- * image is copied in several positions and there's no need to make for every position a new image.
- * That is a general image no has its copies but is put in several position. This saves performance
- * and memory. It also has two forms: original and rotated. There is the special set of general
- * images in this class.
- * - ImageManager offset - a half of image width (offset x) and height (offset y) which is usually
- * used to find the image center. It allows put sprite right in its position according to image
- * size.
- *
  * Created by Aunmag on 2016.09.24.
  */
 
 public class ImageManager {
 
     private static Map<String, BufferedImage> imagesCached = new HashMap<>();
-    public static Map<String, ImageManager> imagesCommon = new HashMap<>();
 
     private BufferedImage image;
     private final BufferedImage imageOriginal;
@@ -86,21 +69,6 @@ public class ImageManager {
     public ImageManager(String path) {
         imageOriginal = imagesCached.get(path);
         setRadiansDirectly(0);
-    }
-
-    public static ImageManager getCommonImage(String path) {
-        if (path == null) {
-            return null;
-        }
-
-        ImageManager imageCommon = ImageManager.imagesCommon.get(path);
-
-        if (imageCommon == null) {
-            imageCommon = new ImageManager(path);
-            ImageManager.imagesCommon.put(path, imageCommon);
-        }
-
-        return imageCommon;
     }
 
     private void rotate() {

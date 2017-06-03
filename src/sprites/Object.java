@@ -1,8 +1,7 @@
 package sprites;
 
-import managers.image.ImageManager;
+import managers.ImageManager;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,10 +19,6 @@ public class Object extends Sprite {
 
     public Object(float x, float y, ImageManager image) {
         super(x, y, 0, image);
-    }
-
-    public Object(float x, float y, String imagePath) {
-        super(x, y, 0, ImageManager.getCommonImage(imagePath));
     }
 
     public void delete() {}
