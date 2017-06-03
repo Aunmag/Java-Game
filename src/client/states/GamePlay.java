@@ -8,6 +8,7 @@ import client.graphics.effects.Blackout;
 import client.Client;
 import gameModes.*;
 import managers.SoundManager;
+import managers.image.ImageManager;
 import scripts.PutTrees;
 import sprites.Actor;
 import sprites.Bullet;
@@ -33,6 +34,16 @@ public class GamePlay {
         Actor.all.add(player);
         Weapon.all.add(new Weapon(player));
 
+        ImageManager imageGrass = new ImageManager("objects/ground/grass");
+        ImageManager imageBluff0 = new ImageManager("objects/ground/bluff_0");
+        ImageManager imageBluff90 = new ImageManager("objects/ground/bluff_90");
+        ImageManager imageBluff180 = new ImageManager("objects/ground/bluff_180");
+        ImageManager imageBluff270 = new ImageManager("objects/ground/bluff_270");
+        ImageManager imageBluffa0 = new ImageManager("objects/ground/bluff_a0");
+        ImageManager imageBluffa90 = new ImageManager("objects/ground/bluff_a90");
+        ImageManager imageBluffa180 = new ImageManager("objects/ground/bluff_a180");
+        ImageManager imageBluffa270 = new ImageManager("objects/ground/bluff_a270");
+
         // Create level:
         int groundNumber = 48; // 48
         int groundSizeBlock = 128;
@@ -42,32 +53,32 @@ public class GamePlay {
 
             for (int y = -groundStart; y < groundSize - groundStart; y += groundSizeBlock) {
 
-                Object.allGround.add(new Object("ground/grass", false, x, y, 0));
+                Object.allGround.add(new Object(x, y, "objects/ground/grass"));
 
                 int confine = 960 + 8;
                 int zone = 960;
 
-                if (y == -zone && x < confine && -confine < x) {
-                    Object.allDecoration.add(new Object("ground/bluff_0", false, x, y - 64, 0));
-                } else if (y == zone && x < confine && -confine < x) {
-                    Object.allDecoration.add(new Object("ground/bluff_180", false, x, y + 64, 0));
-                }
-
-                if (x == -zone && y < confine && -confine < y) {
-                    Object.allDecoration.add(new Object("ground/bluff_270", false, x - 64, y, 0));
-                } else if (x == zone && y < confine && -confine < y) {
-                    Object.allDecoration.add(new Object("ground/bluff_90", false, x + 64, y, 0));
-                }
-
-                if (y == -zone && x == -zone) {
-                    Object.allDecoration.add(new Object("ground/bluff_a270", false, x - 64, y - 64, 0));
-                } else if (y == -zone && x == zone) {
-                    Object.allDecoration.add(new Object("ground/bluff_a0", false, x + 64, y - 64, 0));
-                } else if (y == zone && x == zone) {
-                    Object.allDecoration.add(new Object("ground/bluff_a90", false, x + 64, y + 64, 0));
-                } else if (y == zone && x == -zone) {
-                    Object.allDecoration.add(new Object("ground/bluff_a180", false, x - 64, y + 64, 0));
-                }
+//                if (y == -zone && x < confine && -confine < x) {
+//                    Object.allDecoration.add(new Object(x, y - 64, imageBluff0));
+//                } else if (y == zone && x < confine && -confine < x) {
+//                    Object.allDecoration.add(new Object(x, y + 64, imageBluff180));
+//                }
+//
+//                if (x == -zone && y < confine && -confine < y) {
+//                    Object.allDecoration.add(new Object(x - 64, y, imageBluff270));
+//                } else if (x == zone && y < confine && -confine < y) {
+//                    Object.allDecoration.add(new Object(x + 64, y, imageBluff90));
+//                }
+//
+//                if (y == -zone && x == -zone) {
+//                    Object.allDecoration.add(new Object(x - 64, y - 64, imageBluffa270));
+//                } else if (y == -zone && x == zone) {
+//                    Object.allDecoration.add(new Object(x + 64, y - 64, imageBluffa0));
+//                } else if (y == zone && x == zone) {
+//                    Object.allDecoration.add(new Object(x + 64, y + 64, imageBluffa90));
+//                } else if (y == zone && x == -zone) {
+//                    Object.allDecoration.add(new Object(x - 64, y + 64, imageBluffa180));
+//                }
 
             }
         }

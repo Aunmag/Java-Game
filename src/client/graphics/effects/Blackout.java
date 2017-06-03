@@ -34,7 +34,7 @@ public class Blackout {
             image = ImageIO.read(Blackout.class.getResource("/images/gui/blackout1600.png"));
             image = image.getScaledInstance(Client.getDisplayWidth(), Client.getDisplayHeight(), BufferedImage.SCALE_SMOOTH);
         } catch (IOException e) {
-            Log.log("Error", "Can't load blackout image.", e);
+            Log.log("Error", "Can't load blackout image.", e.toString());
             image = null;
         }
 

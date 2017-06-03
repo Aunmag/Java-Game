@@ -1,7 +1,7 @@
 package sprites;
 
 import client.Client;
-import managers.ImageManager;
+import managers.image.ImageManager;
 import managers.MathManager;
 import sprites.basics.BasePosition;
 
@@ -18,28 +18,11 @@ public abstract class Sprite extends BasePosition {
     protected boolean isValid = true;
     protected ImageManager image;
 
-    Sprite(float x, float y, float radians, boolean isImageUnique, String imagePath) {
+    Sprite(float x, float y, float radians, ImageManager image) {
         this.x = x;
         this.y = y;
         this.radians = radians;
-        initializeImage(imagePath, isImageUnique);
-    }
-
-    private void initializeImage(String imagePath, boolean isImageUnique) {
-        // TODO: Overwrite
-        if (imagePath == null) {
-            image = null;
-        } else if (isImageUnique) {
-            image = new ImageManager(imagePath);
-        } else {
-            // TODO: Simplify
-            image = ImageManager.commonImages.get(imagePath);
-            if (image == null) {
-                // Initialize new common image if it it doesn't exist yet, then set it for sprite
-                image = new ImageManager(imagePath);
-                ImageManager.commonImages.put(imagePath, image);
-            }
-        }
+        this.image = image;
     }
 
     public void update() {}
@@ -51,9 +34,9 @@ public abstract class Sprite extends BasePosition {
 
         image.setRadians(radians);
 
-        int onScreenX = (int) (x - image.rotatedOffsetX - Client.getGX());
-        int onScreenY = (int) (y - image.rotatedOffsetY - Client.getGY());
-        Client.getG().drawImage(image.getRotated(), onScreenX, onScreenY, null);
+        int onScreenX = (int) (x - image.getCenterX() - Client.getGX());
+        int onScreenY = (int) (y - image.getCenterY() - Client.getGY());
+        Client.getG().drawImage(image.getImage(), onScreenX, onScreenY, null);
     }
 
     public abstract void delete();

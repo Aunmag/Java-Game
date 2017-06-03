@@ -3,6 +3,7 @@ package sprites;
 import client.Constants;
 import managers.Log;
 import managers.MathManager;
+import managers.image.ImageManager;
 import scripts.Inertia;
 import managers.SoundManager;
 import sprites.components.Collision;
@@ -22,6 +23,9 @@ public class Actor extends Sprite {
     public static List<Actor> all = new ArrayList<>();
     public static List<Actor> invalids = new ArrayList<>();
     private static SoundManager[] sounds = new SoundManager[6];
+
+    private final static ImageManager imageHuman = new ImageManager("actors/human");
+    private final static ImageManager imageZombie = new ImageManager("actors/zombie");
 
     private boolean isAlive = true;
     private boolean hasWeapon = false;
@@ -48,7 +52,7 @@ public class Actor extends Sprite {
     public boolean isAttacking = false;
 
     public Actor(float x, float y, float radians, String type) {
-        super(x, y, radians, true, "actors/" + type + ".png");
+        super(x, y, radians, findImage(type));
         this.type = type;
 
         if (type.equals("human")) {
@@ -61,15 +65,25 @@ public class Actor extends Sprite {
             if (!type.equals("zombie")) {
                 this.type = "zombie";
                 String message = String.format(
-                        "Got unknown \"%s\" actor type. Used \"%s\" instead", type, this.type
+                        "Got unknown \"%s\" actor type. Used \"%s\" instead.",
+                        type,
+                        this.type
                 );
-                Log.log("Actor", message, null);
+                Log.log("Actor", message);
             }
             velocity = velocityForwardZombie;
             velocityAside = velocity * 0.6f;
             velocityBack = velocity * 0.8f;
             velocitySprint = 1.63f;
             hasWeapon = false;
+        }
+    }
+
+    private static ImageManager findImage(String type) {
+        if (type.equals("human")) {
+            return imageHuman;
+        } else {
+            return imageZombie;
         }
     }
 

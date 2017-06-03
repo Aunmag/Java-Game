@@ -3,7 +3,7 @@ package client.graphics.gui;
 // Created by Aunmag on 20.11.2016.
 
 import client.Client;
-import managers.ImageManager;
+import managers.image.ImageManager;
 import managers.Log;
 
 import javax.imageio.ImageIO;
@@ -21,7 +21,7 @@ abstract class MenuAbstract {
             wallpaper = wallpaper.getScaledInstance(Client.getDisplayWidth(), Client.getDisplayHeight(), BufferedImage.SCALE_SMOOTH);
         } catch (Exception e) {
             wallpaper = null;
-            Log.log("ImageManager error", "Can't load \"" + wallpaperPath+ "\" image", e);
+            Log.log("ImageManager error", "Can't load \"" + wallpaperPath+ "\" image.", e.toString());
         }
 
     }

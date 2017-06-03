@@ -2,7 +2,7 @@ package client;
 
 import client.states.GameMenu;
 import client.states.GamePlay;
-import managers.ImageManager;
+import managers.image.ImageManager;
 import sprites.Actor;
 
 import java.awt.*;
@@ -182,7 +182,6 @@ public class Application implements Runnable {
 
         Client.setGameMenu(new GameMenu());
 
-        ImageManager.cacheImages();
         Actor.loadSounds();
 
         // Time:

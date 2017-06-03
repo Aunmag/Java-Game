@@ -5,6 +5,7 @@ import java.util.List;
 import client.Client;
 import managers.MathManager;
 import managers.SoundManager;
+import managers.image.ImageManager;
 
 /**
  * This is a weapon which is been used by the owner (an actor with this weapon). If the owner is
@@ -19,6 +20,7 @@ public class Weapon extends Sprite {
     public static List<Weapon> all = new ArrayList<>();
     public static List<Weapon> invalids = new ArrayList<>();
 
+    private static final ImageManager image = new ImageManager("weapons/mp_27");
     private static final int fireRate = 700; // TODO: Rename
     private static final int bulletsPerShot = 16;
     private static final float velocityMuzzle = 58;
@@ -31,7 +33,7 @@ public class Weapon extends Sprite {
     private SoundManager soundShot;
 
     public Weapon(Actor owner) {
-        super(0, 0, 0, true, "weapons/mp_27.png");
+        super(0, 0, 0, image);
 
         this.owner = owner;
 

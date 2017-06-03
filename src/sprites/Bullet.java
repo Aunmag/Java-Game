@@ -41,7 +41,7 @@ public class Bullet extends Sprite {
             float velocityRecession,
             Actor shooter
     ) {
-        super(x, y, radians, true, null);
+        super(x, y, radians, null);
         this.velocity = velocity;
         this.velocityRecession = velocityRecession;
         this.shooter = shooter;

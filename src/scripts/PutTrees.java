@@ -1,6 +1,7 @@
 package scripts;
 
 import managers.MathManager;
+import managers.image.ImageManager;
 import sprites.Object;
 
 /**
@@ -20,8 +21,19 @@ public class PutTrees {
                 }
             }
 
-            int type = MathManager.random.nextInt(3) + 1;
-            Object.allAir.add(new Object("air/tree_" + type, false, x, y, 0));
+            ImageManager[] images = {
+                    new ImageManager("objects/air/tree_1"),
+                    new ImageManager("objects/air/tree_2"),
+                    new ImageManager("objects/air/tree_3"),
+            };
+
+//            int imageIndex = 1;
+//            int imageIndex = MathManager.random.nextInt(3) + 1;
+//            int imageIndex = MathManager.random.nextInt(3);
+//            String imagePath = "objects/air/tree_" + imageIndex;
+            Object tree = new Object(x, y, "objects/air/tree_1");
+//            Object tree = new Object(x, y, images[0]);
+            Object.allAir.add(tree);
         }
     }
 

@@ -1,47 +1,47 @@
 package managers;
 
-// Created by Aunmag on 27.10.2016.
+/**
+ * Created by Aunmag on 2016.10.27.
+ */
 
 public class ArrayAverage {
 
-    private int depth;
     private float[] values;
-    private int index = 0;
-    private float average;
+    private int indexUpdateNext = 0;
+    private float averageValue;
 
     public ArrayAverage(int depth) {
-
-        if (depth > 1) {
-            this.depth = depth;
-        } else {
-            this.depth = 2;
+        if (depth < 1) {
+            String message = String.format(
+                    "Got %s ArrayAverage depth value. Replaced with 2.", depth
+            );
+            Log.log("ArrayAverage", message);
+            depth = 2;
         }
 
-        values = new float[this.depth];
-
+        values = new float[depth];
     }
 
     public void addValue(float value) {
+        values[indexUpdateNext] = value;
+        indexUpdateNext++;
+        indexUpdateNext %= values.length;
 
-        values[index++] = value;
-        if (index == values.length) {
-            index = 0;
-        }
-
+        updateAverageValue();
     }
 
-    public float getAverage() {
-
-        average = 0;
+    private void updateAverageValue() {
+        float valuesSum = 0;
 
         for (float value: values) {
-            average += value;
+            valuesSum += value;
         }
 
-        average /= values.length;
+        averageValue = valuesSum / values.length;
+    }
 
-        return average;
-
+    public float getAverageValue() {
+        return averageValue;
     }
 
 }

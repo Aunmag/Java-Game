@@ -1,5 +1,8 @@
 package sprites;
 
+import managers.image.ImageManager;
+
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,8 +18,12 @@ public class Object extends Sprite {
     public static List<Object> allDecoration = new ArrayList<>();
     public static List<Object> allAir = new ArrayList<>();
 
-    public Object(String name, boolean isUnique, float x, float y, float radians) {
-        super(x, y, radians, isUnique, "objects/" + name + ".png");  // TODO: Simplify image path
+    public Object(float x, float y, ImageManager image) {
+        super(x, y, 0, image);
+    }
+
+    public Object(float x, float y, String imagePath) {
+        super(x, y, 0, ImageManager.getCommonImage(imagePath));
     }
 
     public void delete() {}
