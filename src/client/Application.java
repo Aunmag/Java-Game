@@ -1,5 +1,6 @@
 package client;
 
+import client.input.Input;
 import client.states.GameMenu;
 import client.states.GamePlay;
 import sprites.Actor;
@@ -25,7 +26,6 @@ public class Application implements Runnable {
     }
 
     public void run() {
-        DataManager.setInput(new Input(Display.getFrame(), Display.getCanvas()));
         DataManager.setGameMenu(new GameMenu());
         Actor.loadSounds();
 
@@ -53,8 +53,9 @@ public class Application implements Runnable {
             PerformanceManager.timerUpdating.makeStart();
         }
 
+        Input.update();
+
         if (DataManager.isGamePlay()) {
-            DataManager.getInput().update();
             GamePlay.update();
         } else {
             DataManager.getGameMenu().update();
@@ -113,7 +114,7 @@ public class Application implements Runnable {
             GamePlay.cleanUp();
         }
 
-        DataManager.getInput().cleanUp();
+        Input.cleanUp();
 
         if (DataManager.isPerformanceData()) {
             PerformanceManager.timerFinishing.makeStop();

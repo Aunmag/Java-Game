@@ -2,10 +2,11 @@ package client.graphics.gui;
 
 // Created by Aunmag on 17.11.2016.
 
-import client.DataManager;
 import client.Display;
+import client.input.Input;
 
 import java.awt.*;
+import java.awt.event.MouseEvent;
 
 public class GuiButton {
 
@@ -60,13 +61,13 @@ public class GuiButton {
             return;
         }
 
-        int mouseX = DataManager.getInput().getMouseX();
-        int mouseY = DataManager.getInput().getMouseY();
+        int mouseX = Input.getMouseX();
+        int mouseY = Input.getMouseY();
         boolean isTouchedX = x < mouseX && mouseX < x + width;
         boolean isTouchedY = y < mouseY && mouseY < y + height;
 
         isTouched = isTouchedX && isTouchedY;
-        isPressed = isTouched && DataManager.getInput().isMouseReleased;
+        isPressed = isTouched && Input.getIsButtonJustReleased(MouseEvent.BUTTON1);
 
     }
 

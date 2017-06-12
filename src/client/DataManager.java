@@ -22,7 +22,6 @@ public class DataManager {
     private static GamePlay gamePlay;
     private static boolean isPerformanceData = false;
 
-    private static Input input; // TODO: Make static
     private static Actor player;
     private static Camera camera; // TODO: Make static
 
@@ -76,12 +75,6 @@ public class DataManager {
 
     }
 
-    public static void setInput(Input input) {
-
-        DataManager.input = input;
-
-    }
-
     public static void setCamera(Camera camera) {
         DataManager.camera = camera;
     }
@@ -127,12 +120,6 @@ public class DataManager {
     public static Actor getPlayer() {
 
         return player;
-
-    }
-
-    public static Input getInput() {
-
-        return input;
 
     }
 

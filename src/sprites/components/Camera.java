@@ -1,8 +1,8 @@
 package sprites.components;
 
 import client.Constants;
-import client.DataManager;
 import client.Display;
+import client.input.Input;
 import managers.MathManager;
 import managers.Utils;
 import sprites.basics.BasePoint;
@@ -39,7 +39,7 @@ public class Camera extends BasePosition {
     }
 
     private void updateZoom() {
-        int mouseWheelRotation = DataManager.getInput().getMouseWheelRotation();
+        int mouseWheelRotation = Input.getMouseWheelRotation();
 
         if (mouseWheelRotation == 0) {
             return;
