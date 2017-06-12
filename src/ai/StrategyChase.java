@@ -4,6 +4,7 @@ package ai;
 
 import client.DataManager;
 import client.Constants;
+import client.TimeManager;
 
 class StrategyChase extends StrategyAbstract {
 
@@ -55,8 +56,8 @@ class StrategyChase extends StrategyAbstract {
 
     @Override public void tick() {
 
-        if (DataManager.getTime() - ai.tSearchTargetLast >= ai.tSearchTarget) {
-            ai.tSearchTargetLast = DataManager.getTime();
+        if (TimeManager.getTimeCurrent() - ai.tSearchTargetLast >= ai.tSearchTarget) {
+            ai.tSearchTargetLast = TimeManager.getTimeCurrent();
             searchTarget();
         }
 
@@ -66,8 +67,8 @@ class StrategyChase extends StrategyAbstract {
             return;
         }
 
-        if (DataManager.getTime() - ai.tReactionLast >= ai.tReaction) {
-            ai.tReactionLast = DataManager.getTime();
+        if (TimeManager.getTimeCurrent() - ai.tReactionLast >= ai.tReaction) {
+            ai.tReactionLast = TimeManager.getTimeCurrent();
             updateTargetPosition();
         }
 

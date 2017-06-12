@@ -1,6 +1,7 @@
 package sprites.components;
 
 import client.DataManager;
+import client.TimeManager;
 import sprites.Actor;
 
 import java.awt.*;
@@ -28,7 +29,7 @@ public class Hands extends CollisionCircle {
     public void update() {
         updatePosition();
 
-        if (owner.isAttacking && !owner.getHasWeapon() && DataManager.getTime() >= timeAttackNext) {
+        if (owner.isAttacking && !owner.getHasWeapon() && TimeManager.getTimeCurrent() >= timeAttackNext) {
             attack();
         }
     }
@@ -49,7 +50,7 @@ public class Hands extends CollisionCircle {
             }
         }
 
-        timeAttackNext = DataManager.getTime() + timeAttackPace;
+        timeAttackNext = TimeManager.getTimeCurrent() + timeAttackPace;
     }
 
     public void render() {

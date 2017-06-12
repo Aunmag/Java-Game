@@ -230,25 +230,19 @@ public class Application implements Runnable {
 
         Actor.loadSounds();
 
-        // Time:
-        float d = 0;
-        long tLast = System.currentTimeMillis();  // TODO: Use timeNext with optimization
-
+        long timeLast = System.currentTimeMillis();
         while (DataManager.isRunning()) {
-            long tCurrent = System.currentTimeMillis();
-            long tPass = tCurrent - tLast;
-            tLast = tCurrent;
-            d += tPass / DataManager.getTTick();
-            if (d >= 1) {
-                DataManager.setTime(tCurrent);
-                DataManager.setD(d);
+            long timeCurrent = System.currentTimeMillis();
+            long timePassed = timeCurrent - timeLast;
+            float timeDelta = timePassed / TimeManager.FRAME_DURATION;
+
+            if (timeDelta >= 1) {
+                timeLast = timeCurrent;
+                TimeManager.setTimeCurrent(timeCurrent);
+                TimeManager.setTimeDelta(timeDelta);
                 update();
                 render();
                 finish();
-                d -= 1;
-//                if (DataManager.isPerformanceData()) {
-//                    DataManager.tPerformanceAverage.addValue(System.currentTimeMillis() - tCurrent);
-//                }
             }
         }
 

@@ -1,6 +1,7 @@
 package scripts;
 
 import client.Constants;
+import client.TimeManager;
 
 /**
  * TODO: Overwrite
@@ -69,7 +70,7 @@ public class Inertia {
     }
 
     private void updateStep() {
-        step = (target - previous) / (timeDuration * Constants.FPS_LIMIT);
+        step = (target - previous) / (timeDuration * TimeManager.FPS_LIMIT);
         float valueTest = Math.abs(step);
         valueTestA = target - valueTest;
         valueTestB = target + valueTest;

@@ -2,6 +2,7 @@ package sprites;
 
 import client.DataManager;
 import client.Constants;
+import client.TimeManager;
 import sprites.basics.BasePoint;
 import sprites.components.Collision;
 import sprites.components.CollisionLine;
@@ -56,7 +57,7 @@ public class Bullet extends Sprite {
     }
 
     private void updateVelocity() {
-        velocity *= velocityRecession / Constants.FPS_LIMIT;
+        velocity *= velocityRecession / TimeManager.FPS_LIMIT;
 
         if (velocity <= 1) {
             delete();

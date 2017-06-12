@@ -1,6 +1,7 @@
 package managers;
 
 import client.Constants;
+import client.TimeManager;
 
 /**
  * Created by Aunmag on 2017.06.03.
@@ -17,7 +18,7 @@ public class Timer {
         this.isAverageUsing = isAverageUsing;
 
         if (isAverageUsing) {
-            timeDurationAverage = new ArrayAverage(Constants.FPS_LIMIT);
+            timeDurationAverage = new ArrayAverage(TimeManager.FPS_LIMIT);
         }
     }
 

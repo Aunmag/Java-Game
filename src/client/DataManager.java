@@ -48,23 +48,10 @@ public class DataManager {
     private static JFrame frame;
     private static BufferStrategy bufferStrategy;
     private static Graphics2D hud;
-    private static Graphics2D graphics; // TODO: Rename
+    private static Graphics2D graphics;
     private static boolean isCursorVisible = true;
     private static BufferedImage cursorImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     private static Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "");
-
-    // Time:
-    private static long time; // current time
-    private static float tTick; // time for one frame
-    private static float d = 0; // current delta time
-
-    static {
-        initialize();
-    }
-
-    public static void initialize() {
-        tTick = 1_000 / Constants.FPS_LIMIT;
-    }
 
     // Setters:
 
@@ -177,18 +164,6 @@ public class DataManager {
 
         DataManager.mouseX = mouseX;
         DataManager.mouseY = mouseY;
-
-    }
-
-    public static void setTime(long time) {
-
-        DataManager.time = time;
-
-    }
-
-    public static void setD(float d) {
-
-        DataManager.d = d;
 
     }
 
@@ -307,24 +282,6 @@ public class DataManager {
     public static int getMouseY() {
 
         return mouseY;
-
-    }
-
-    public static long getTime() {
-
-        return time;
-
-    }
-
-    public static float getTTick() {
-
-        return tTick;
-
-    }
-
-    public static float getD() {
-
-        return d;
 
     }
 

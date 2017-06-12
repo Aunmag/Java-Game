@@ -3,6 +3,7 @@ package gameModes;
 import ai.AI;
 import client.DataManager;
 import client.Constants;
+import client.TimeManager;
 import managers.MathManager;
 import sprites.Actor;
 
@@ -27,8 +28,8 @@ public class GameModeEncircling extends GameMode {
         confinePlayerPosition();
         updateZombiesKilled();
 
-        if (Actor.all.size() < actorsSpawnedLimit && DataManager.getTime() >= timeSpawnNext) {
-            timeSpawnNext = DataManager.getTime() + timeSpawnStep;
+        if (Actor.all.size() < actorsSpawnedLimit && TimeManager.getTimeCurrent() >= timeSpawnNext) {
+            timeSpawnNext = TimeManager.getTimeCurrent() + timeSpawnStep;
             spawnZombie();
         }
     }

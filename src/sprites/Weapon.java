@@ -3,6 +3,7 @@ package sprites;
 import java.util.ArrayList;
 import java.util.List;
 import client.DataManager;
+import client.TimeManager;
 import managers.MathManager;
 import managers.SoundManager;
 import managers.ImageManager;
@@ -45,7 +46,7 @@ public class Weapon extends Sprite {
         updateOwner();
         updatePosition();
 
-        if (owner.getHasWeapon() && owner.isAttacking && DataManager.getTime() >= timeNextShot) {
+        if (owner.getHasWeapon() && owner.isAttacking && TimeManager.getTimeCurrent() >= timeNextShot) {
             makeShot();
         }
     }
@@ -69,7 +70,7 @@ public class Weapon extends Sprite {
             makeBullet();
         }
 
-        timeNextShot = DataManager.getTime() + fireRate;
+        timeNextShot = TimeManager.getTimeCurrent() + fireRate;
     }
 
     private void makeBullet() {
