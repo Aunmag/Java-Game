@@ -36,9 +36,9 @@ public class CollisionCircle extends Collision {
         DataManager.getGraphics().setColor(color);
 
         BasePoint onScreenPosition = DataManager.getCamera().calculateOnScreenPosition(this);
-        int onScreenX = (int) (onScreenPosition.getX() - radius);
-        int onScreenY = (int) (onScreenPosition.getY() - radius);
-        Utils.drawCircle(DataManager.getGraphics(), onScreenX, onScreenY, (int) diameter);
+        int onScreenX = (int) onScreenPosition.getX();
+        int onScreenY = (int) onScreenPosition.getY();
+        Utils.fillCircle(DataManager.getGraphics(), onScreenX, onScreenY, (int) diameter);
     }
 
     /* Setters */
