@@ -4,7 +4,7 @@ import client.DataManager;
 import client.Display;
 import client.states.GamePlay;
 import sprites.Actor;
-import sprites.components.Camera;
+import client.Camera;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -92,20 +92,14 @@ public class Input {
     }
 
     public static void updateCamera() {
-        Camera camera = DataManager.getCamera();
-
-        if (camera == null) {
-            return;
-        }
-
-        float zoom = camera.getZoom();
+        float zoom = Camera.getZoom();
 
         if (keys[KeyEvent.VK_ADD]) {
-            camera.setZoom(zoom + zoom * 0.01f);
+            Camera.setZoom(zoom + zoom * 0.01f);
         }
 
         if (keys[KeyEvent.VK_SUBTRACT]) {
-            camera.setZoom(zoom - zoom * 0.01f);
+            Camera.setZoom(zoom - zoom * 0.01f);
         }
     }
 

@@ -79,7 +79,7 @@ public class Application implements Runnable {
             scaleGraphics();
             rotateGraphics();
             GamePlay.render();
-            DataManager.getCamera().render();
+            Camera.render();
             Display.getGraphics().dispose();
         } else {
             DataManager.getGameMenu().render();
@@ -94,14 +94,14 @@ public class Application implements Runnable {
     }
 
     private void scaleGraphics() {
-        float zoom = DataManager.getCamera().getZoom();
+        float zoom = Camera.getZoom();
         Display.getGraphics().scale(zoom, zoom);
     }
 
     private void rotateGraphics() {
-        float radians = DataManager.getCamera().getRadians() + (float) Constants.PI_0_5;
-        float x = DataManager.getCamera().getCenterX();
-        float y = DataManager.getCamera().getCenterY();
+        float radians = Camera.getRadians() + (float) Constants.PI_0_5;
+        float x = Camera.getCenterX();
+        float y = Camera.getCenterY();
         Display.getGraphics().rotate(-radians, x, y);
     }
 

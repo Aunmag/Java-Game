@@ -15,7 +15,7 @@ import sprites.Actor;
 import sprites.Bullet;
 import sprites.Object;
 import sprites.Weapon;
-import sprites.components.Camera;
+import client.Camera;
 
 public class GamePlay {
 
@@ -34,8 +34,7 @@ public class GamePlay {
         DataManager.setPlayer(player);
         Actor.all.add(player);
         Weapon.all.add(new Weapon(player));
-
-        DataManager.setCamera(new Camera(player));
+        Camera.setTarget(player);
 
         ImageManager imageGrass = new ImageManager("objects/ground/grass");
         ImageManager imageBluff0 = new ImageManager("objects/ground/bluff_0");
@@ -160,7 +159,7 @@ public class GamePlay {
             bullet.update();
         }
 
-        DataManager.getCamera().update();
+        Camera.update();
     }
 
     public static void render() {

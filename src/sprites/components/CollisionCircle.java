@@ -1,5 +1,6 @@
 package sprites.components;
 
+import client.Camera;
 import client.Constants;
 import client.DataManager;
 import client.Display;
@@ -30,13 +31,13 @@ public class CollisionCircle extends Collision {
     }
 
     public void render(Color color) {
-        if (!Constants.isDebug || !DataManager.getCamera().calculateIsPointVisible(this)) {
+        if (!Constants.isDebug || !Camera.calculateIsPointVisible(this)) {
             return;
         }
 
         Display.getGraphics().setColor(color);
 
-        BasePoint onScreenPosition = DataManager.getCamera().calculateOnScreenPosition(this);
+        BasePoint onScreenPosition = Camera.calculateOnScreenPosition(this);
         int onScreenX = (int) onScreenPosition.getX();
         int onScreenY = (int) onScreenPosition.getY();
         Utils.fillCircle(Display.getGraphics(), onScreenX, onScreenY, (int) diameter);

@@ -1,9 +1,6 @@
 package sprites;
 
-import client.DataManager;
-import client.Constants;
-import client.Display;
-import client.TimeManager;
+import client.*;
 import sprites.basics.BasePoint;
 import sprites.components.Collision;
 import sprites.components.CollisionLine;
@@ -88,15 +85,15 @@ public class Bullet extends Sprite {
     }
 
     public void render() {
-        if (!DataManager.getCamera().calculateIsLineVisible(x, y, x2, y2)) {
+        if (!Camera.calculateIsLineVisible(x, y, x2, y2)) {
             return;
         }
 
-        BasePoint onScreenPosition = DataManager.getCamera().calculateOnScreenPosition(x, y);
+        BasePoint onScreenPosition = Camera.calculateOnScreenPosition(x, y);
         int onScreenX1 = (int) onScreenPosition.getX();
         int onScreenY1 = (int) onScreenPosition.getY();
 
-        onScreenPosition = DataManager.getCamera().calculateOnScreenPosition(x2, y2);
+        onScreenPosition = Camera.calculateOnScreenPosition(x2, y2);
         int onScreenX2 = (int) onScreenPosition.getX();
         int onScreenY2 = (int) onScreenPosition.getY();
 

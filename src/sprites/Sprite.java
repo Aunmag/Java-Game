@@ -1,5 +1,6 @@
 package sprites;
 
+import client.Camera;
 import client.DataManager;
 import client.Display;
 import managers.ImageManager;
@@ -34,7 +35,7 @@ public abstract class Sprite extends BasePosition {
 
         image.setRadians(radians);
 
-        BasePoint onScreenPosition = DataManager.getCamera().calculateOnScreenPosition(this);
+        BasePoint onScreenPosition = Camera.calculateOnScreenPosition(this);
         int onScreenX = (int) (onScreenPosition.getX() - image.getCenterX());
         int onScreenY = (int) (onScreenPosition.getY() - image.getCenterY());
         Display.getGraphics().drawImage(image.getImage(), onScreenX, onScreenY, null);
@@ -43,7 +44,7 @@ public abstract class Sprite extends BasePosition {
     public abstract void delete();
 
     boolean calculateIsVisible() {
-        return DataManager.getCamera().calculateIsPointVisible(this);
+        return Camera.calculateIsPointVisible(this);
     }
 
     /* Getters */

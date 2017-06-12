@@ -3,7 +3,6 @@ package client;
 import client.states.GameMenu;
 import client.states.GamePlay;
 import sprites.Actor;
-import sprites.components.Camera;
 
 /**
  * Client - Central Data Table
@@ -23,7 +22,6 @@ public class DataManager {
     private static boolean isPerformanceData = false;
 
     private static Actor player;
-    private static Camera camera; // TODO: Make static
 
     /* Setters */
 
@@ -75,10 +73,6 @@ public class DataManager {
 
     }
 
-    public static void setCamera(Camera camera) {
-        DataManager.camera = camera;
-    }
-
     /* Getters */
 
     public static boolean isRunning() {
@@ -121,10 +115,6 @@ public class DataManager {
 
         return player;
 
-    }
-
-    public static Camera getCamera() {
-        return camera;
     }
 
 }
