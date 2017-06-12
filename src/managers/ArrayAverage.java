@@ -1,5 +1,7 @@
 package managers;
 
+import client.DataManager;
+
 /**
  * Created by Aunmag on 2016.10.27.
  */

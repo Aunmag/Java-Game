@@ -1,7 +1,7 @@
 package gameModes;
 
 import ai.AI;
-import client.Client;
+import client.DataManager;
 import client.Constants;
 import managers.MathManager;
 import sprites.Actor;
@@ -27,15 +27,15 @@ public class GameModeEncircling extends GameMode {
         confinePlayerPosition();
         updateZombiesKilled();
 
-        if (Actor.all.size() < actorsSpawnedLimit && Client.getT() >= timeSpawnNext) {
-            timeSpawnNext = Client.getT() + timeSpawnStep;
+        if (Actor.all.size() < actorsSpawnedLimit && DataManager.getTime() >= timeSpawnNext) {
+            timeSpawnNext = DataManager.getTime() + timeSpawnStep;
             spawnZombie();
         }
     }
 
     private void confinePlayerPosition() {
         int boundary = 128 * 8;
-        Actor player = Client.getPlayer();
+        Actor player = DataManager.getPlayer();
         float playerX = player.getX();
         float playerY = player.getY();
 
@@ -53,7 +53,7 @@ public class GameModeEncircling extends GameMode {
     }
 
     public void updateZombiesKilled() {
-        int zombiesKilledNow = Client.getPlayer().getKills();
+        int zombiesKilledNow = DataManager.getPlayer().getKills();
 
         if (zombiesKilled == zombiesKilledNow) {
             return;
@@ -64,7 +64,7 @@ public class GameModeEncircling extends GameMode {
         zombiesKilled = zombiesKilledNow;
 
         String gameOverMessage = String.format("You have killed %s zombies.", zombiesKilled);
-        Client.getGameMenu().getMenuDeath().setMessage(gameOverMessage);
+        DataManager.getGameMenu().getMenuDeath().setMessage(gameOverMessage);
 
         int timeSpawnDecreaseNow = timeSpawnDecrease * zombiesKilledDifference;
         if (timeSpawnStep - timeSpawnDecreaseNow > timeSpawnStepMin) {
@@ -74,8 +74,8 @@ public class GameModeEncircling extends GameMode {
 
     private void spawnZombie() {
         float direction = MathManager.randomizeBetween(0, (float) Constants.PI_2_0);
-        float x = Client.getPlayer().getX() - spawnDistance * (float) Math.cos(direction);
-        float y = Client.getPlayer().getY() - spawnDistance * (float) Math.sin(direction);
+        float x = DataManager.getPlayer().getX() - spawnDistance * (float) Math.cos(direction);
+        float y = DataManager.getPlayer().getY() - spawnDistance * (float) Math.sin(direction);
 
         Actor zombie = new Actor(x, y, -direction, "zombie");
         Actor.all.add(zombie);

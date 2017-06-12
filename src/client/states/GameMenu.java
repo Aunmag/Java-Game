@@ -6,7 +6,7 @@ import client.graphics.gui.MenuDeath;
 import client.graphics.gui.MenuExit;
 import client.graphics.gui.MenuHelp;
 import client.graphics.gui.MenuMain;
-import client.Client;
+import client.DataManager;
 
 import java.awt.*;
 
@@ -51,8 +51,8 @@ public class GameMenu {
 
     public void render() {
 
-        Client.getHud().setColor(backgroundColor);
-        Client.getHud().fillRect(0, 0, Client.getDisplayWidth(), Client.getDisplayHeight());
+        DataManager.getHud().setColor(backgroundColor);
+        DataManager.getHud().fillRect(0, 0, DataManager.getDisplayWidth(), DataManager.getDisplayHeight());
 
         if (isMenuMain) {
             menuMain.render();
@@ -70,9 +70,9 @@ public class GameMenu {
 
     private void active() {
 
-        Client.setIsCursorVisible(true);
-        Client.setIsGamePlay(false);
-        Client.setIsGameMenu(true);
+        DataManager.setIsCursorVisible(true);
+        DataManager.setIsGamePlay(false);
+        DataManager.setIsGameMenu(true);
 
         isMenuMain = true;
 

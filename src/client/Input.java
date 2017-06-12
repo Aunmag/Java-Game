@@ -1,120 +1,102 @@
 package client;
 
-// Created by Aunmag on 05.10.2016.
-
 import client.states.GamePlay;
 
 import javax.swing.JFrame;
 import java.awt.Canvas;
 import java.awt.event.*;
 
+/**
+ * Created by Aunmag on 2016.10.05.
+ */
+
 public class Input implements KeyListener, MouseListener, MouseMotionListener, MouseWheelListener {
 
     boolean[] keys = new boolean[256];
     boolean[] mouseButtons = new boolean[8];
+
+    private int mouseWheelRotation = 0;
+
     public boolean isMouseReleased = false;
 
     Input(JFrame frame, Canvas canvas) {
-
         frame.addKeyListener(this);
         canvas.addMouseListener(this);
         canvas.addMouseMotionListener(this);
         canvas.addMouseWheelListener(this);
-
     }
-
-    // Updaters:
 
     public void reset() {
-
         isMouseReleased = false;
-
+        mouseWheelRotation = 0;
     }
 
-    // Key listener methods:
+    public int getMouseWheelRotation() {
+        return mouseWheelRotation;
+    }
 
-    @Override public void keyPressed(KeyEvent e) {
-
+    public void keyPressed(KeyEvent e) {
         keys[e.getKeyCode()] = true;
 
-        if (e.getKeyCode() == KeyEvent.VK_ESCAPE && Client.isGameStarted()) {
-            if (Client.isGamePlay()) {
-                Client.getGameMenu().activeMenuMain();
-                Client.getGameMenu().getMenuMain().getSoundscape().loop();
-                Client.getGamePlay().getAmbiance().stop();
-                Client.getGamePlay().getAtmosphere().stop();
+        if (e.getKeyCode() == KeyEvent.VK_ESCAPE && DataManager.isGameStarted()) {
+            if (DataManager.isGamePlay()) {
+                DataManager.getGameMenu().activeMenuMain();
+                DataManager.getGameMenu().getMenuMain().getSoundscape().loop();
+                DataManager.getGamePlay().getAmbiance().stop();
+                DataManager.getGamePlay().getAtmosphere().stop();
             } else {
                 GamePlay.activate();
-                Client.getGameMenu().getMenuMain().getSoundscape().stop();
+                DataManager.getGameMenu().getMenuMain().getSoundscape().stop();
             }
         }
 
         if (e.getKeyCode() == KeyEvent.VK_F1) {
-            Client.setIsPerformanceData(!Client.isPerformanceData());
+            DataManager.setIsPerformanceData(!DataManager.isPerformanceData());
         }
-
     }
 
-    @Override public void keyReleased(KeyEvent e) {
-
+    public void keyReleased(KeyEvent e) {
         keys[e.getKeyCode()] = false;
-
     }
 
-    @Override public void keyTyped(KeyEvent e) {}
+    public void keyTyped(KeyEvent e) {}
 
-    // Mouse listener methods:
-
-    @Override public void mousePressed(MouseEvent e) {
-
+    public void mousePressed(MouseEvent e) {
         mouseButtons[e.getButton()] = true;
-        Client.setIsMousePressed(true);
+        DataManager.setIsMousePressed(true);
 
         if (e.getButton() == MouseEvent.BUTTON1) {
             isMouseReleased = false;
         }
-
     }
 
-    @Override public void mouseReleased(MouseEvent e) {
-
+    public void mouseReleased(MouseEvent e) {
         mouseButtons[e.getButton()] = false;
-        Client.setIsMousePressed(false);
+        DataManager.setIsMousePressed(false);
 
         if (e.getButton() == MouseEvent.BUTTON1) {
             isMouseReleased = true;
         }
-
     }
 
-    @Override public void mouseEntered(MouseEvent e) {}
+    public void mouseEntered(MouseEvent e) {}
 
-    @Override public void mouseExited(MouseEvent e) {}
+    public void mouseExited(MouseEvent e) {}
 
-    @Override public void mouseClicked(MouseEvent e) {}
+    public void mouseClicked(MouseEvent e) {}
 
-    // Mouse motion listener methods:
-
-    @Override public void mouseDragged(MouseEvent e) {
-
-        Client.setMousePosition(e.getX(), e.getY());
+    public void mouseDragged(MouseEvent e) {
+        DataManager.setMousePosition(e.getX(), e.getY());
         e.consume();
-
     }
 
-    @Override public void mouseMoved(MouseEvent e) {
-
-        Client.setMousePosition(e.getX(), e.getY());
+    public void mouseMoved(MouseEvent e) {
+        DataManager.setMousePosition(e.getX(), e.getY());
         e.consume();
-
     }
 
-    // Mouse wheel listener methods:
-
-    @Override public void mouseWheelMoved(MouseWheelEvent e) {
-
-        Client.setZoom(Client.getZoom() + Client.getZoom() * 0.1f * -e.getWheelRotation());
-
+    public void mouseWheelMoved(MouseWheelEvent e) {
+        mouseWheelRotation = e.getWheelRotation();
     }
 
 }

@@ -2,7 +2,7 @@ package ai;
 
 // Created by Aunmag on 21.11.2016.
 
-import client.Client;
+import client.DataManager;
 import client.Constants;
 
 class StrategyChase extends StrategyAbstract {
@@ -55,8 +55,8 @@ class StrategyChase extends StrategyAbstract {
 
     @Override public void tick() {
 
-        if (Client.getT() - ai.tSearchTargetLast >= ai.tSearchTarget) {
-            ai.tSearchTargetLast = Client.getT();
+        if (DataManager.getTime() - ai.tSearchTargetLast >= ai.tSearchTarget) {
+            ai.tSearchTargetLast = DataManager.getTime();
             searchTarget();
         }
 
@@ -66,8 +66,8 @@ class StrategyChase extends StrategyAbstract {
             return;
         }
 
-        if (Client.getT() - ai.tReactionLast >= ai.tReaction) {
-            ai.tReactionLast = Client.getT();
+        if (DataManager.getTime() - ai.tReactionLast >= ai.tReaction) {
+            ai.tReactionLast = DataManager.getTime();
             updateTargetPosition();
         }
 

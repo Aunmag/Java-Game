@@ -1,8 +1,9 @@
 package sprites;
 
-import client.Client;
+import client.DataManager;
 import managers.ImageManager;
 import managers.MathManager;
+import sprites.basics.BasePoint;
 import sprites.basics.BasePosition;
 
 /**
@@ -19,9 +20,7 @@ public abstract class Sprite extends BasePosition {
     protected ImageManager image;
 
     Sprite(float x, float y, float radians, ImageManager image) {
-        this.x = x;
-        this.y = y;
-        this.radians = radians;
+        super(x, y, radians);
         this.image = image;
     }
 
@@ -34,18 +33,16 @@ public abstract class Sprite extends BasePosition {
 
         image.setRadians(radians);
 
-        int onScreenX = (int) (x - image.getCenterX() - Client.getGX());
-        int onScreenY = (int) (y - image.getCenterY() - Client.getGY());
-        Client.getG().drawImage(image.getImage(), onScreenX, onScreenY, null);
+        BasePoint onScreenPosition = DataManager.getCamera().calculateOnScreenPosition(this);
+        int onScreenX = (int) (onScreenPosition.getX() - image.getCenterX());
+        int onScreenY = (int) (onScreenPosition.getY() - image.getCenterY());
+        DataManager.getGraphics().drawImage(image.getImage(), onScreenX, onScreenY, null);
     }
 
     public abstract void delete();
 
     boolean calculateIsVisible() {
-        float cameraX = Client.getCameraX();
-        float cameraY = Client.getCameraY();
-        float distanceBetween = MathManager.calculateDistanceBetween(x, y, cameraX, cameraY); // TODO: Use BasePoint
-        return distanceBetween < Client.getCameraVisibility();
+        return DataManager.getCamera().calculateIsPointVisible(this);
     }
 
     /* Getters */

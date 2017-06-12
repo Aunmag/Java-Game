@@ -2,7 +2,7 @@ package client.graphics.gui;
 
 // Created by Aunmag on 20.11.2016.
 
-import client.Client;
+import client.DataManager;
 
 public class MenuExit extends MenuAbstract {
 
@@ -16,19 +16,19 @@ public class MenuExit extends MenuAbstract {
 
         int x;
         int y;
-        int height12Fold = Client.getDisplayHeight() / 12;
+        int height12Fold = DataManager.getDisplayHeight() / 12;
 
         int width = 400;
         int height = 50;
         int margin = 5;
 
-        x = (Client.getDisplayWidth() - width) / 2;
+        x = (DataManager.getDisplayWidth() - width) / 2;
         y = height + margin;
 
         int quantity = 2;
         int offsetY = height12Fold * 8 - (y * quantity) / 2;
 
-        labelQuestion = new GuiLabel(Client.getDisplayWidth() / 2, height12Fold * 4, 36, true, "Are you sure you want to exit?");
+        labelQuestion = new GuiLabel(DataManager.getDisplayWidth() / 2, height12Fold * 4, 36, true, "Are you sure you want to exit?");
 
 
         buttonExit = new GuiButton(x, offsetY + y, width, height, "Yes");
@@ -41,13 +41,13 @@ public class MenuExit extends MenuAbstract {
         // Back button:
         buttonBack.tick();
         if (buttonBack.isPressed()) {
-            Client.getGameMenu().activeMenuMain();
+            DataManager.getGameMenu().activeMenuMain();
         }
 
         // Exit button:
         buttonExit.tick();
         if (buttonExit.isPressed()) {
-            Client.setIsRunning(false);
+            DataManager.setIsRunning(false);
         }
 
     }

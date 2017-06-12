@@ -5,7 +5,7 @@ package client.states;
 import ai.AI;
 import client.graphics.Hud;
 import client.graphics.effects.Blackout;
-import client.Client;
+import client.DataManager;
 import gameModes.*;
 import managers.SoundManager;
 import managers.ImageManager;
@@ -14,6 +14,7 @@ import sprites.Actor;
 import sprites.Bullet;
 import sprites.Object;
 import sprites.Weapon;
+import sprites.components.Camera;
 
 public class GamePlay {
 
@@ -24,28 +25,30 @@ public class GamePlay {
 
     public static void initialize() {
 
-        if (Client.isGameStarted()) {
+        if (DataManager.isGameStarted()) {
             terminate();
         }
 
         // Create player:
         Actor player = new Actor(0, 0, 0, "human");
-        Client.setPlayer(player);
+        DataManager.setPlayer(player);
         Actor.all.add(player);
         Weapon.all.add(new Weapon(player));
+
+        DataManager.setCamera(new Camera(player));
 
         ImageManager imageGrass = new ImageManager("objects/ground/grass");
         ImageManager imageBluff0 = new ImageManager("objects/ground/bluff_0");
         ImageManager imageBluff90 = new ImageManager("objects/ground/bluff_90");
         ImageManager imageBluff180 = new ImageManager("objects/ground/bluff_180");
         ImageManager imageBluff270 = new ImageManager("objects/ground/bluff_270");
-        ImageManager imageBluffa0 = new ImageManager("objects/ground/bluff_a0");
-        ImageManager imageBluffa90 = new ImageManager("objects/ground/bluff_a90");
-        ImageManager imageBluffa180 = new ImageManager("objects/ground/bluff_a180");
-        ImageManager imageBluffa270 = new ImageManager("objects/ground/bluff_a270");
+        ImageManager imageBluffA0 = new ImageManager("objects/ground/bluff_a0");
+        ImageManager imageBluffA90 = new ImageManager("objects/ground/bluff_a90");
+        ImageManager imageBluffA180 = new ImageManager("objects/ground/bluff_a180");
+        ImageManager imageBluffA270 = new ImageManager("objects/ground/bluff_a270");
 
         // Create level:
-        int groundNumber = 48; // 48
+        int groundNumber = 48;
         int groundSizeBlock = 128;
         int groundSize = groundSizeBlock * groundNumber;
         int groundStart = groundNumber / 2 * groundSizeBlock - groundSizeBlock / 2;
@@ -71,13 +74,13 @@ public class GamePlay {
                 }
 
                 if (y == -zone && x == -zone) {
-                    Object.allDecoration.add(new Object(x - 64, y - 64, imageBluffa270));
+                    Object.allDecoration.add(new Object(x - 64, y - 64, imageBluffA270));
                 } else if (y == -zone && x == zone) {
-                    Object.allDecoration.add(new Object(x + 64, y - 64, imageBluffa0));
+                    Object.allDecoration.add(new Object(x + 64, y - 64, imageBluffA0));
                 } else if (y == zone && x == zone) {
-                    Object.allDecoration.add(new Object(x + 64, y + 64, imageBluffa90));
+                    Object.allDecoration.add(new Object(x + 64, y + 64, imageBluffA90));
                 } else if (y == zone && x == -zone) {
-                    Object.allDecoration.add(new Object(x - 64, y + 64, imageBluffa180));
+                    Object.allDecoration.add(new Object(x - 64, y + 64, imageBluffA180));
                 }
 
             }
@@ -90,11 +93,9 @@ public class GamePlay {
         }
 
         // Game mode:
-//        mode = new TestAI();
-        mode = new GameModeEncircling();
-//        mode = new GameModeEmpty();
-//        mode = new Benchmark();
-        Client.setIsGameStarted(true);
+//        mode = new GameModeEncircling();
+        mode = new GameModeEmpty();
+        DataManager.setIsGameStarted(true);
 
         ambiance = new SoundManager("/sounds/ambiance/birds.wav");
         ambiance.setVolume(-8);
@@ -118,15 +119,15 @@ public class GamePlay {
         ambiance.stop();
         atmosphere.stop();
 
-        Client.setIsGameStarted(false);
+        DataManager.setIsGameStarted(false);
 
     }
 
     public static void activate() {
 
-        Client.setIsCursorVisible(false);
-        Client.setIsGamePlay(true);
-        Client.setIsGameMenu(false);
+        DataManager.setIsCursorVisible(false);
+        DataManager.setIsGamePlay(true);
+        DataManager.setIsGameMenu(false);
 
         ambiance.loop();
         atmosphere.loop();
@@ -134,8 +135,8 @@ public class GamePlay {
     }
 
     public static void tick() {
-        if (!Client.getPlayer().getIsAlive()) {
-            Client.getGameMenu().activeMenuDeath();
+        if (!DataManager.getPlayer().getIsAlive()) {
+            DataManager.getGameMenu().activeMenuDeath();
             return;
         }
 

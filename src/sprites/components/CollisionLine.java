@@ -1,7 +1,9 @@
 package sprites.components;
 
-import client.Client;
+import client.Constants;
+import client.DataManager;
 import sprites.Sprite;
+import sprites.basics.BasePoint;
 
 /**
  * Created by Aunmag on 2017.05.26.
@@ -18,19 +20,7 @@ public class CollisionLine extends Collision {
         y2 = target.getY();
     }
 
-    public void render() {
-        if (!isVisible) {
-            return;
-        }
-
-        int onScreenX1 = (int) (x - Client.getGX());
-        int onScreenY1 = (int) (y - Client.getGY());
-        int onScreenX2 = (int) (x2 - Client.getGX());
-        int onScreenY2 = (int) (y2 - Client.getGY());
-
-        Client.getG().setColor(renderColor);
-        Client.getG().drawLine(onScreenX1, onScreenY1, onScreenX2, onScreenY2);
-    }
+    public void render() {}
 
     /* Getters */
 

@@ -2,7 +2,7 @@ package client.graphics.effects;
 
 // Created by AunmagUser on 13.11.2016.
 
-import client.Client;
+import client.DataManager;
 import managers.Log;
 import scripts.Inertia;
 
@@ -32,7 +32,7 @@ public class Blackout {
 
         try {
             image = ImageIO.read(Blackout.class.getResource("/images/gui/blackout1600.png"));
-            image = image.getScaledInstance(Client.getDisplayWidth(), Client.getDisplayHeight(), BufferedImage.SCALE_SMOOTH);
+            image = image.getScaledInstance(DataManager.getDisplayWidth(), DataManager.getDisplayHeight(), BufferedImage.SCALE_SMOOTH);
         } catch (IOException e) {
             Log.log("Error", "Can't load blackout image.", e.toString());
             image = null;
@@ -45,7 +45,7 @@ public class Blackout {
     public static void render() {
 
         float alpha;
-        float playerHealth = Client.getPlayer().getHealth();
+        float playerHealth = DataManager.getPlayer().getHealth();
 
         // Tweak player health:
         if (playerHealth > 1) {
@@ -55,20 +55,20 @@ public class Blackout {
         }
 
         // Set blackout color:
-        Client.getHud().setColor(Color.BLACK);
+        DataManager.getHud().setColor(Color.BLACK);
 
         // Render blackout rectangle:
         if (playerHealth <= 0.66) {
             alpha = (1 - playerHealth / 0.66f) * 0.9f;
-            Client.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
-            Client.getHud().fillRect(0, 0, Client.getDisplayWidth(), Client.getDisplayHeight());
+            DataManager.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
+            DataManager.getHud().fillRect(0, 0, DataManager.getDisplayWidth(), DataManager.getDisplayHeight());
         }
 
         // Render blackout boundaries:
         if (image != null) {
             alpha = 1 - playerHealth / 1.4f;
-            Client.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
-            Client.getHud().drawImage(image, 0, 0, null);
+            DataManager.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
+            DataManager.getHud().drawImage(image, 0, 0, null);
         }
 
         // Render blackout hurt:
@@ -87,12 +87,12 @@ public class Blackout {
             alpha = hurtInertia.update(0);
         }
 
-        Client.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
-        Client.getHud().fillRect(0, 0, Client.getDisplayWidth(), Client.getDisplayHeight());
+        DataManager.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
+        DataManager.getHud().fillRect(0, 0, DataManager.getDisplayWidth(), DataManager.getDisplayHeight());
 
         // Reset default hud alpha:
 
-        Client.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+        DataManager.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 
     }
 

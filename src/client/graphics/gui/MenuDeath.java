@@ -2,7 +2,7 @@ package client.graphics.gui;
 
 // Created by Aunmag on 19.11.2016.
 
-import client.Client;
+import client.DataManager;
 import managers.SoundManager;
 
 public class MenuDeath extends MenuAbstract {
@@ -19,9 +19,9 @@ public class MenuDeath extends MenuAbstract {
 
         int x;
         int y;
-        int height12Fold = Client.getDisplayHeight() / 12;
+        int height12Fold = DataManager.getDisplayHeight() / 12;
 
-        x = Client.getDisplayWidth() / 2;
+        x = DataManager.getDisplayWidth() / 2;
         y = height12Fold * 4;
         labelTitle = new GuiLabel(x, y, 48, true, "You have died");
 
@@ -31,7 +31,7 @@ public class MenuDeath extends MenuAbstract {
         int width = 400;
         int height = 50;
 
-        x = (Client.getDisplayWidth() - width) / 2;
+        x = (DataManager.getDisplayWidth() - width) / 2;
         y = height / 2 + height12Fold * 8;
 
         buttonBack = new GuiButton(x, y, 400, 50, "Back to main menu");
@@ -47,8 +47,8 @@ public class MenuDeath extends MenuAbstract {
 
         if (buttonBack.isPressed()) {
             sound.stop();
-            Client.getGameMenu().getMenuMain().getSoundscape().loop();
-            Client.getGameMenu().activeMenuMain();
+            DataManager.getGameMenu().getMenuMain().getSoundscape().loop();
+            DataManager.getGameMenu().activeMenuMain();
         }
 
     }

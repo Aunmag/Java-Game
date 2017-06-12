@@ -1,6 +1,6 @@
 package sprites.components;
 
-import client.Client;
+import client.DataManager;
 import sprites.Actor;
 
 import java.awt.*;
@@ -11,16 +11,12 @@ import java.awt.*;
 
 public class Hands extends CollisionCircle {
 
-    private static boolean isVisible = true;
     protected static final Color renderColor = new Color(255, 0, 0, 128);
-
     private static final float radius = 14;
     private static final float distance = radius * 1.5f;
     private static final float damage = 10;
     private static final long timeAttackPace = 400;
-
     private final Actor owner;
-
     private long timeAttackNext = 0;
 
     public Hands(Actor owner) {
@@ -32,7 +28,7 @@ public class Hands extends CollisionCircle {
     public void update() {
         updatePosition();
 
-        if (owner.isAttacking && !owner.getHasWeapon() && Client.getT() >= timeAttackNext) {
+        if (owner.isAttacking && !owner.getHasWeapon() && DataManager.getTime() >= timeAttackNext) {
             attack();
         }
     }
@@ -53,13 +49,11 @@ public class Hands extends CollisionCircle {
             }
         }
 
-        timeAttackNext = Client.getT() + timeAttackPace;
+        timeAttackNext = DataManager.getTime() + timeAttackPace;
     }
 
     public void render() {
-        if (isVisible) {
-            super.render(renderColor);
-        }
+        super.render(renderColor);
     }
 
 }

@@ -9,6 +9,11 @@ public class BasePoint {
     protected float x = 0;
     protected float y = 0;
 
+    public BasePoint(float x, float y) {
+        this.x = x;
+        this.y = y;
+    }
+
     /* Setters */
 
     public void setX(float x) {

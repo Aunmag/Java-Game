@@ -2,7 +2,7 @@ package client.graphics.gui;
 
 // Created by Aunmag on 17.11.2016.
 
-import client.Client;
+import client.DataManager;
 
 import java.awt.*;
 
@@ -44,11 +44,11 @@ public class GuiButton {
 
         guiLabel = new GuiLabel(x + width / 2, y + height / 2, 24, true, text);
 
-        Client.getHud().setFont(font);
-        int textWidth = Client.getHud().getFontMetrics().stringWidth(text);
+        DataManager.getHud().setFont(font);
+        int textWidth = DataManager.getHud().getFontMetrics().stringWidth(text);
 
         this.text = text;
-        textX = (Client.getDisplayWidth() - textWidth) / 2;
+        textX = (DataManager.getDisplayWidth() - textWidth) / 2;
         textY = y + (int) (height - fontSize / 1.5);
 
     }
@@ -59,11 +59,11 @@ public class GuiButton {
             return;
         }
 
-        boolean isTouchedX = x < Client.getMouseX() && Client.getMouseX() < x + width;
-        boolean isTouchedY = y < Client.getMouseY() && Client.getMouseY() < y + height;
+        boolean isTouchedX = x < DataManager.getMouseX() && DataManager.getMouseX() < x + width;
+        boolean isTouchedY = y < DataManager.getMouseY() && DataManager.getMouseY() < y + height;
 
         isTouched = isTouchedX && isTouchedY;
-        isPressed = isTouched && Client.getInput().isMouseReleased;
+        isPressed = isTouched && DataManager.getInput().isMouseReleased;
 
     }
 
@@ -78,8 +78,8 @@ public class GuiButton {
         }
 
         // Render rectangle:
-        Client.getHud().setColor(color);
-        Client.getHud().fillRect(x, y, width, height);
+        DataManager.getHud().setColor(color);
+        DataManager.getHud().fillRect(x, y, width, height);
 
         // Render text:
         guiLabel.render();

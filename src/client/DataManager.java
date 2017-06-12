@@ -2,15 +2,13 @@ package client;
 
 import client.states.GameMenu;
 import client.states.GamePlay;
-import managers.ArrayAverage;
 import sprites.Actor;
+import sprites.components.Camera;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
-
-import static java.lang.Integer.max;
 
 /**
  * Client - Central Data Table
@@ -18,7 +16,7 @@ import static java.lang.Integer.max;
  * Created by AunmagUser on 08.11.2016.
  */
 
-public class Client {
+public class DataManager {
 
     // States:
     private static boolean isRunning = false;
@@ -32,19 +30,13 @@ public class Client {
     // Screen:
     private static int displayWidth = 1280;
     private static int displayHeight = 720;
-    private static int displayMax = max(displayWidth, displayHeight);
-    private static float zoom = 1.4f;
+    private static int displayMax = Math.max(displayWidth, displayHeight);
+    private static float displayHalfWidth = displayWidth / 2f;
+    private static float displayHalfHeight = displayHeight / 2f;
+    private static float displayHalfMax = displayMax / 2f;
 
-    private static int cameraOffsetDefault = displayHeight - 8;
-    private static float cameraVisibility; // the maximal allowed distance between sprite and camera to be visible
-    private static float cameraX;
-    private static float cameraY;
-
-    // Player:
     private static Actor player;
-    private static float playerX;
-    private static float playerY;
-    private static float playerRadians;
+    private static Camera camera;
 
     // Input:
     private static Input input;
@@ -54,20 +46,17 @@ public class Client {
 
     // Graphics:
     private static JFrame frame;
-    private static BufferStrategy bs;
+    private static BufferStrategy bufferStrategy;
     private static Graphics2D hud;
-    private static Graphics2D g; // TODO: Rename
-    private static float gX;
-    private static float gY;
+    private static Graphics2D graphics; // TODO: Rename
     private static boolean isCursorVisible = true;
     private static BufferedImage cursorImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
     private static Cursor cursor = Toolkit.getDefaultToolkit().createCustomCursor(cursorImage, new Point(0, 0), "");
 
     // Time:
-    private static long t; // current time
+    private static long time; // current time
     private static float tTick; // time for one frame
     private static float d = 0; // current delta time
-    public static ArrayAverage tPerformanceAverage;
 
     static {
         initialize();
@@ -75,150 +64,94 @@ public class Client {
 
     public static void initialize() {
         tTick = 1_000 / Constants.FPS_LIMIT;
-        tPerformanceAverage = new ArrayAverage(Constants.FPS_LIMIT);
-    }
-
-    // Updaters:
-
-    public static void updateCamera() {
-        float offset = cameraOffsetDefault / 2 / zoom;
-        cameraX = (float) (player.getX() + offset * Math.cos(player.getRadians()));
-        cameraY = (float) (player.getY() + offset * Math.sin(player.getRadians()));
-        cameraVisibility = displayMax * 0.75f / zoom;
-
     }
 
     // Setters:
 
     public static void setIsRunning(boolean isRunning) {
 
-        Client.isRunning = isRunning;
+        DataManager.isRunning = isRunning;
 
     }
 
     public static void setIsGameMenu(boolean isGameMenu) {
 
-        Client.isGameMenu = isGameMenu;
+        DataManager.isGameMenu = isGameMenu;
 
     }
 
     public static void setIsGamePlay(boolean isGamePlay) {
 
-        Client.isGamePlay = isGamePlay;
+        DataManager.isGamePlay = isGamePlay;
 
     }
 
     public static void setIsGameStarted(boolean isGameStarted) {
 
-        Client.isGameStarted = isGameStarted;
+        DataManager.isGameStarted = isGameStarted;
 
     }
 
     public static void setGameMenu(GameMenu gameMenu) {
 
-        Client.gameMenu = gameMenu;
+        DataManager.gameMenu = gameMenu;
 
     }
 
     public static void setGamePlay(GamePlay gamePlay) {
 
-        Client.gamePlay = gamePlay;
+        DataManager.gamePlay = gamePlay;
 
     }
 
     public static void setIsPerformanceData(boolean isPerformanceData) {
 
-        Client.isPerformanceData = isPerformanceData;
+        DataManager.isPerformanceData = isPerformanceData;
 
     }
 
     public static void setScreenResolution(int width, int height) {
-
-        if (width < 16) {
-            width = 16;
-        }
-
-        if (height < 16) {
-            height = 16;
-        }
-
-        Client.displayWidth = width;
-        Client.displayHeight = height;
-        Client.displayMax = max(width, height);
-        cameraOffsetDefault = height - 8;
-
-    }
-
-    public static void setZoom(float zoom) {
-
-        if (zoom < 1) {
-            zoom = 1;
-        } else if (zoom > 3) {
-            zoom = 3;
-        }
-
-        Client.zoom = zoom;
-
+        displayWidth = width;
+        displayHeight = height;
+        displayMax = Math.max(displayWidth, displayHeight);
+        displayHalfWidth = displayWidth / 2f;
+        displayHalfHeight = displayHeight / 2f;
+        displayHalfMax = displayMax / 2f;
     }
 
     public static void setPlayer(Actor player) {
 
-        Client.player = player;
-
-    }
-
-    public static void setPlayerPosition(float playerX, float playerY) {
-
-        Client.playerX = playerX;
-        Client.playerY = playerY;
-
-    }
-
-    public static void setPlayerRadians(float playerRadians) {
-
-        Client.playerRadians = playerRadians;
+        DataManager.player = player;
 
     }
 
     public static void setFrame(JFrame frame) {
 
-        Client.frame = frame;
+        DataManager.frame = frame;
 
     }
 
-    public static void setBs(BufferStrategy bs) {
+    public static void setBufferStrategy(BufferStrategy bufferStrategy) {
 
-        Client.bs = bs;
+        DataManager.bufferStrategy = bufferStrategy;
 
     }
 
     public static void setHud(Graphics2D hud) {
 
-        Client.hud = hud;
+        DataManager.hud = hud;
 
     }
 
-    public static void setG(Graphics2D g) {
+    public static void setGraphics(Graphics2D graphics) {
 
-        Client.g = g;
-
-    }
-
-    public static void setGX(float gX) {
-
-        Client.gX = gX;
-
-    }
-
-    public static void setGY(float gY) {
-
-        Client.gY = gY;
+        DataManager.graphics = graphics;
 
     }
 
     public static void setIsCursorVisible(boolean isCursorVisible) {
 
-        Client.isCursorVisible = isCursorVisible;
+        DataManager.isCursorVisible = isCursorVisible;
 
         if (isCursorVisible) {
             frame.getContentPane().setCursor(Cursor.getDefaultCursor());
@@ -230,32 +163,32 @@ public class Client {
 
     public static void setInput(Input input) {
 
-        Client.input = input;
+        DataManager.input = input;
 
     }
 
     public static void setIsMousePressed(boolean isMousePressed) {
 
-        Client.isMousePressed = isMousePressed;
+        DataManager.isMousePressed = isMousePressed;
 
     }
 
     public static void setMousePosition(int mouseX, int mouseY) {
 
-        Client.mouseX = mouseX;
-        Client.mouseY = mouseY;
+        DataManager.mouseX = mouseX;
+        DataManager.mouseY = mouseY;
 
     }
 
-    public static void setT(long t) {
+    public static void setTime(long time) {
 
-        Client.t = t;
+        DataManager.time = time;
 
     }
 
     public static void setD(float d) {
 
-        Client.d = d;
+        DataManager.d = d;
 
     }
 
@@ -313,57 +246,13 @@ public class Client {
 
     }
 
-    public static int getCameraOffsetDefault() {
-
-        return cameraOffsetDefault;
-
-    }
-
-    public static float getZoom() {
-
-        return zoom;
-
-    }
-
-    public static float getCameraX() {
-
-        return cameraX;
-
-    }
-
-    public static float getCameraY() {
-
-        return cameraY;
-
-    }
-
-    public static float getCameraVisibility() {
-
-        return cameraVisibility;
-
+    public static int getDisplayMax() {
+        return displayMax;
     }
 
     public static Actor getPlayer() {
 
         return player;
-
-    }
-
-    public static float getPlayerX() {
-
-        return playerX;
-
-    }
-
-    public static float getPlayerY() {
-
-        return playerY;
-
-    }
-
-    public static float getPlayerRadians() {
-
-        return playerRadians;
 
     }
 
@@ -373,9 +262,9 @@ public class Client {
 
     }
 
-    public static BufferStrategy getBs() {
+    public static BufferStrategy getBufferStrategy() {
 
-        return bs;
+        return bufferStrategy;
 
     }
 
@@ -385,21 +274,9 @@ public class Client {
 
     }
 
-    public static Graphics2D getG() {
+    public static Graphics2D getGraphics() {
 
-        return g;
-
-    }
-
-    public static float getGX() {
-
-        return gX;
-
-    }
-
-    public static float getGY() {
-
-        return gY;
+        return graphics;
 
     }
 
@@ -433,9 +310,9 @@ public class Client {
 
     }
 
-    public static long getT() {
+    public static long getTime() {
 
-        return t;
+        return time;
 
     }
 
@@ -449,6 +326,26 @@ public class Client {
 
         return d;
 
+    }
+
+    public static float getDisplayHalfWidth() {
+        return displayHalfWidth;
+    }
+
+    public static float getDisplayHalfHeight() {
+        return displayHalfHeight;
+    }
+
+    public static float getDisplayHalfMax() {
+        return displayHalfMax;
+    }
+
+    public static Camera getCamera() {
+        return camera;
+    }
+
+    public static void setCamera(Camera camera) {
+        DataManager.camera = camera;
     }
 
 }

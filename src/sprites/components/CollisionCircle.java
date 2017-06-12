@@ -1,7 +1,10 @@
 package sprites.components;
 
-import client.Client;
+import client.Constants;
+import client.DataManager;
+import managers.Utils;
 import sprites.Sprite;
+import sprites.basics.BasePoint;
 
 import java.awt.*;
 
@@ -26,24 +29,16 @@ public class CollisionCircle extends Collision {
     }
 
     public void render(Color color) {
-        if (!isVisible) {
+        if (!Constants.isDebug || !DataManager.getCamera().calculateIsPointVisible(this)) {
             return;
         }
 
-        Client.getG().setColor(color);
+        DataManager.getGraphics().setColor(color);
 
-        int onScreenX = Math.round(x - Client.getGX() - radius);
-        int onScreenY = Math.round(y - Client.getGY() - radius);
-        int onScreenDiameter = Math.round(diameter);
-
-        Client.getG().fillRoundRect(
-                onScreenX,
-                onScreenY,
-                onScreenDiameter,
-                onScreenDiameter,
-                onScreenDiameter,
-                onScreenDiameter
-        );
+        BasePoint onScreenPosition = DataManager.getCamera().calculateOnScreenPosition(this);
+        int onScreenX = (int) (onScreenPosition.getX() - radius);
+        int onScreenY = (int) (onScreenPosition.getY() - radius);
+        Utils.drawCircle(DataManager.getGraphics(), onScreenX, onScreenY, (int) diameter);
     }
 
     /* Setters */

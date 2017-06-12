@@ -8,6 +8,11 @@ public class BasePosition extends BasePoint {
 
     protected float radians = 0;
 
+    public BasePosition(float x, float y, float radians) {
+        super(x, y);
+        this.radians = radians;
+    }
+
     /* Setters */
 
     public void setRadians(float radians) {

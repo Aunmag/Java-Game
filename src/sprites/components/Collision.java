@@ -12,12 +12,11 @@ import java.awt.*;
 
 public abstract class Collision extends BasePosition {
 
-    protected static boolean isVisible = true;
     protected static final Color renderColor = new Color(255, 255, 255, 100);
-
     protected Sprite target;
 
     protected Collision(Sprite target) {
+        super(target.getX(), target.getY(), target.getRadians());
         this.target = target;
     }
 

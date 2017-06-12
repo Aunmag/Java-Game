@@ -100,4 +100,8 @@ public class MathManager {
         return (float) Math.atan2(differenceY, differenceX);
     }
 
+    public static float calculateRoundValue(float value, float round) {
+        return Math.round(value * round) / round;
+    }
+
 }
