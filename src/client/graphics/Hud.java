@@ -3,6 +3,7 @@ package client.graphics;
 import ai.AI;
 import client.DataManager;
 import client.Constants;
+import client.Display;
 import client.PerformanceManager;
 import managers.MathManager;
 import sprites.Actor;
@@ -19,10 +20,10 @@ public class Hud {
         int y = 20;
         int y_step = 20;
 
-        DataManager.getHud().setColor(Color.WHITE);
-        DataManager.getHud().drawString(Constants.TITLE + " v" + Constants.VERSION, 20, y);
+        Display.getGraphicsHud().setColor(Color.WHITE);
+        Display.getGraphicsHud().drawString(Constants.TITLE + " v" + Constants.VERSION, 20, y);
         y += y_step;
-        DataManager.getHud().drawString("Performance [F1]", 20, y);
+        Display.getGraphicsHud().drawString("Performance [F1]", 20, y);
 
         if (!DataManager.isPerformanceData()) {
             return;
@@ -57,20 +58,20 @@ public class Hud {
         };
 
         for (String message: performanceMessages) {
-            DataManager.getHud().drawString(message, 20, y);
+            Display.getGraphicsHud().drawString(message, 20, y);
             y += y_step;
         }
 
         y += y_step;
-        DataManager.getHud().drawString("AIs: " + AI.all.size(), 20, y);
+        Display.getGraphicsHud().drawString("AIs: " + AI.all.size(), 20, y);
         y += y_step;
-        DataManager.getHud().drawString("Actors: " + Actor.all.size(), 20, y);
+        Display.getGraphicsHud().drawString("Actors: " + Actor.all.size(), 20, y);
         y += y_step;
-        DataManager.getHud().drawString("Weapons: " + Weapon.all.size(), 20, y);
+        Display.getGraphicsHud().drawString("Weapons: " + Weapon.all.size(), 20, y);
         y += y_step;
-        DataManager.getHud().drawString("Bullets: " + Bullet.all.size(), 20, y);
+        Display.getGraphicsHud().drawString("Bullets: " + Bullet.all.size(), 20, y);
         y += y_step;
-        DataManager.getHud().drawString("Objects: " + Object.allGround.size(), 20, y);
+        Display.getGraphicsHud().drawString("Objects: " + Object.allGround.size(), 20, y);
     }
 
 }

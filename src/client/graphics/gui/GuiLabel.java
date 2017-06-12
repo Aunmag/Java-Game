@@ -3,6 +3,7 @@ package client.graphics.gui;
 // Created by Aunmag on 19.11.2016.
 
 import client.DataManager;
+import client.Display;
 
 import java.awt.*;
 
@@ -45,17 +46,17 @@ public class GuiLabel {
 
         this.text = text;
 
-        DataManager.getHud().setFont(font);
-        width = DataManager.getHud().getFontMetrics().stringWidth(text);
+        Display.getGraphicsHud().setFont(font);
+        width = Display.getGraphicsHud().getFontMetrics().stringWidth(text);
         height = (int) (size / 2.5);
 
     }
 
     public void render() {
 
-        DataManager.getHud().setFont(font);
-        DataManager.getHud().setColor(color);
-        DataManager.getHud().drawString(text, x - width / 2, y + height);
+        Display.getGraphicsHud().setFont(font);
+        Display.getGraphicsHud().setColor(color);
+        Display.getGraphicsHud().drawString(text, x - width / 2, y + height);
 
     }
 

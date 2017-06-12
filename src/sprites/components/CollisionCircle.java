@@ -2,6 +2,7 @@ package sprites.components;
 
 import client.Constants;
 import client.DataManager;
+import client.Display;
 import managers.Utils;
 import sprites.Sprite;
 import sprites.basics.BasePoint;
@@ -33,12 +34,12 @@ public class CollisionCircle extends Collision {
             return;
         }
 
-        DataManager.getGraphics().setColor(color);
+        Display.getGraphics().setColor(color);
 
         BasePoint onScreenPosition = DataManager.getCamera().calculateOnScreenPosition(this);
         int onScreenX = (int) onScreenPosition.getX();
         int onScreenY = (int) onScreenPosition.getY();
-        Utils.fillCircle(DataManager.getGraphics(), onScreenX, onScreenY, (int) diameter);
+        Utils.fillCircle(Display.getGraphics(), onScreenX, onScreenY, (int) diameter);
     }
 
     /* Setters */

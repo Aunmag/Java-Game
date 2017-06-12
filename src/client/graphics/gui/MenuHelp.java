@@ -3,6 +3,7 @@ package client.graphics.gui;
 // Created by Aunmag on 20.11.2016.
 
 import client.DataManager;
+import client.Display;
 
 public class MenuHelp extends MenuAbstract {
 
@@ -23,15 +24,15 @@ public class MenuHelp extends MenuAbstract {
 
         int x;
         int y;
-        int height12Fold = DataManager.getDisplayHeight() / 12;
+        int height12Fold = Display.getHeight() / 12;
 
         // Title:
-        labelTitle = new GuiLabel(DataManager.getDisplayWidth() / 2, height12Fold * 2, 36, true, "Help");
+        labelTitle = new GuiLabel(Display.getWidth() / 2, height12Fold * 2, 36, true, "Help");
 
         // Help mark:
-        int x1 = DataManager.getDisplayWidth() / 3;
+        int x1 = Display.getWidth() / 3;
         int x2 = x1 * 2;
-        y = DataManager.getDisplayHeight() / 16;
+        y = Display.getHeight() / 16;
         int helpSize = 16;
 
         // Help:
@@ -57,7 +58,7 @@ public class MenuHelp extends MenuAbstract {
         // Button:
         int width = 400;
         int height = 50;
-        x = (DataManager.getDisplayWidth() - width) / 2;
+        x = (Display.getWidth() - width) / 2;
         y = (height12Fold * 8 - height / 2) + height * 2;
         buttonBack = new GuiButton(x, y, width, height, "Back");
 

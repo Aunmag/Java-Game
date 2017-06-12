@@ -2,6 +2,7 @@ package client.states;
 
 // Created by Aunmag on 19.11.2016.
 
+import client.Display;
 import client.graphics.gui.MenuDeath;
 import client.graphics.gui.MenuExit;
 import client.graphics.gui.MenuHelp;
@@ -35,7 +36,7 @@ public class GameMenu {
 
     // Updaters:
 
-    public void tick() {
+    public void update() {
 
         if (isMenuMain) {
             menuMain.tick();
@@ -51,8 +52,8 @@ public class GameMenu {
 
     public void render() {
 
-        DataManager.getHud().setColor(backgroundColor);
-        DataManager.getHud().fillRect(0, 0, DataManager.getDisplayWidth(), DataManager.getDisplayHeight());
+        Display.getGraphicsHud().setColor(backgroundColor);
+        Display.getGraphicsHud().fillRect(0, 0, Display.getWidth(), Display.getHeight());
 
         if (isMenuMain) {
             menuMain.render();
@@ -70,7 +71,7 @@ public class GameMenu {
 
     private void active() {
 
-        DataManager.setIsCursorVisible(true);
+        Display.setIsCursorVisible(true);
         DataManager.setIsGamePlay(false);
         DataManager.setIsGameMenu(true);
 

@@ -2,6 +2,7 @@ package sprites;
 
 import client.DataManager;
 import client.Constants;
+import client.Display;
 import client.TimeManager;
 import sprites.basics.BasePoint;
 import sprites.components.Collision;
@@ -99,8 +100,8 @@ public class Bullet extends Sprite {
         int onScreenX2 = (int) onScreenPosition.getX();
         int onScreenY2 = (int) onScreenPosition.getY();
 
-        DataManager.getGraphics().setColor(color);
-        DataManager.getGraphics().drawLine(onScreenX1, onScreenY1, onScreenX2, onScreenY2);
+        Display.getGraphics().setColor(color);
+        Display.getGraphics().drawLine(onScreenX1, onScreenY1, onScreenX2, onScreenY2);
 
         collision.render();
     }

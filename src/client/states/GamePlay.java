@@ -3,6 +3,7 @@ package client.states;
 // Created by Aunmag on 09.11.2016.
 
 import ai.AI;
+import client.Display;
 import client.graphics.Hud;
 import client.graphics.effects.Blackout;
 import client.DataManager;
@@ -24,7 +25,6 @@ public class GamePlay {
     private static SoundManager atmosphere;
 
     public static void initialize() {
-
         if (DataManager.isGameStarted()) {
             terminate();
         }
@@ -125,7 +125,7 @@ public class GamePlay {
 
     public static void activate() {
 
-        DataManager.setIsCursorVisible(false);
+        Display.setIsCursorVisible(false);
         DataManager.setIsGamePlay(true);
         DataManager.setIsGameMenu(false);
 
@@ -134,7 +134,7 @@ public class GamePlay {
 
     }
 
-    public static void tick() {
+    public static void update() {
         if (!DataManager.getPlayer().getIsAlive()) {
             DataManager.getGameMenu().activeMenuDeath();
             return;
@@ -159,6 +159,8 @@ public class GamePlay {
         for (Bullet bullet: Bullet.all) {
             bullet.update();
         }
+
+        DataManager.getCamera().update();
     }
 
     public static void render() {
@@ -195,7 +197,7 @@ public class GamePlay {
         Hud.render();
     }
 
-    public static void deleteInvalids() {
+    public static void cleanUp() {
         Bullet.all.removeAll(Bullet.invalids);
         Bullet.invalids.clear();
 

@@ -2,6 +2,7 @@ package sprites.components;
 
 import client.Constants;
 import client.DataManager;
+import client.Display;
 import managers.MathManager;
 import managers.Utils;
 import sprites.basics.BasePoint;
@@ -71,8 +72,8 @@ public class Camera extends BasePosition {
     public void renderCameraCenter() {
         /* Used for debug */
 
-        DataManager.getGraphics().setColor(new Color(0, 255, 0));
-        Utils.drawCircle(DataManager.getGraphics(), (int) centerX, (int) centerY, 4);
+        Display.getGraphics().setColor(new Color(0, 255, 0));
+        Utils.drawCircle(Display.getGraphics(), (int) centerX, (int) centerY, 4);
     }
 
     public void renderDistanceViewBoundaries() {
@@ -82,12 +83,12 @@ public class Camera extends BasePosition {
         int y = (int) centerY;
 
         // Render distance view boundaries
-        DataManager.getGraphics().setColor(new Color(255, 0, 0));
-        Utils.drawCircle(DataManager.getGraphics(), x, y, distanceView * 2);
+        Display.getGraphics().setColor(new Color(255, 0, 0));
+        Utils.drawCircle(Display.getGraphics(), x, y, distanceView * 2);
 
         // Render distance view boundaries without buffer
-        DataManager.getGraphics().setColor(new Color(255, 255, 0));
-        Utils.drawCircle(DataManager.getGraphics(), x, y, distanceView * 2);
+        Display.getGraphics().setColor(new Color(255, 255, 0));
+        Utils.drawCircle(Display.getGraphics(), x, y, distanceView * 2);
     }
 
     public BasePoint calculateOnScreenPosition(BasePoint onWorldPosition) {
@@ -133,11 +134,11 @@ public class Camera extends BasePosition {
 
         this.zoom = zoom;
 
-        offset = (DataManager.getDisplayHalfHeight() - 30) / zoom;
-        distanceView = (int) (DataManager.getDisplayHalfMax() / zoom) + distanceViewBuffer;
+        offset = (Display.getHalfHeight() - 30) / zoom;
+        distanceView = (int) (Display.getHalfMaximal() / zoom) + distanceViewBuffer;
 
-        centerX = DataManager.getDisplayHalfWidth() / zoom;
-        centerY = DataManager.getDisplayHalfHeight() / zoom;
+        centerX = Display.getHalfWidth() / zoom;
+        centerY = Display.getHalfHeight() / zoom;
     }
 
     /* Getters */

@@ -3,6 +3,7 @@ package client.graphics.effects;
 // Created by AunmagUser on 13.11.2016.
 
 import client.DataManager;
+import client.Display;
 import managers.Log;
 import scripts.Inertia;
 
@@ -32,7 +33,7 @@ public class Blackout {
 
         try {
             image = ImageIO.read(Blackout.class.getResource("/images/gui/blackout1600.png"));
-            image = image.getScaledInstance(DataManager.getDisplayWidth(), DataManager.getDisplayHeight(), BufferedImage.SCALE_SMOOTH);
+            image = image.getScaledInstance(Display.getWidth(), Display.getHeight(), BufferedImage.SCALE_SMOOTH);
         } catch (IOException e) {
             Log.log("Error", "Can't load blackout image.", e.toString());
             image = null;
@@ -55,20 +56,20 @@ public class Blackout {
         }
 
         // Set blackout color:
-        DataManager.getHud().setColor(Color.BLACK);
+        Display.getGraphicsHud().setColor(Color.BLACK);
 
         // Render blackout rectangle:
         if (playerHealth <= 0.66) {
             alpha = (1 - playerHealth / 0.66f) * 0.9f;
-            DataManager.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
-            DataManager.getHud().fillRect(0, 0, DataManager.getDisplayWidth(), DataManager.getDisplayHeight());
+            Display.getGraphicsHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
+            Display.getGraphicsHud().fillRect(0, 0, Display.getWidth(), Display.getHeight());
         }
 
         // Render blackout boundaries:
         if (image != null) {
             alpha = 1 - playerHealth / 1.4f;
-            DataManager.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
-            DataManager.getHud().drawImage(image, 0, 0, null);
+            Display.getGraphicsHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
+            Display.getGraphicsHud().drawImage(image, 0, 0, null);
         }
 
         // Render blackout hurt:
@@ -87,12 +88,12 @@ public class Blackout {
             alpha = hurtInertia.update(0);
         }
 
-        DataManager.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
-        DataManager.getHud().fillRect(0, 0, DataManager.getDisplayWidth(), DataManager.getDisplayHeight());
+        Display.getGraphicsHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) alpha));
+        Display.getGraphicsHud().fillRect(0, 0, Display.getWidth(), Display.getHeight());
 
         // Reset default hud alpha:
 
-        DataManager.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+        Display.getGraphicsHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 
     }
 

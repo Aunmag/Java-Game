@@ -3,6 +3,7 @@ package client.graphics.gui;
 // Created by Aunmag on 20.11.2016.
 
 import client.DataManager;
+import client.Display;
 import managers.ImageManager;
 import managers.Log;
 
@@ -18,7 +19,7 @@ abstract class MenuAbstract {
 
         try {
             wallpaper = ImageIO.read(ImageManager.class.getResource(wallpaperPath));
-            wallpaper = wallpaper.getScaledInstance(DataManager.getDisplayWidth(), DataManager.getDisplayHeight(), BufferedImage.SCALE_SMOOTH);
+            wallpaper = wallpaper.getScaledInstance(Display.getWidth(), Display.getHeight(), BufferedImage.SCALE_SMOOTH);
         } catch (Exception e) {
             wallpaper = null;
             Log.log("ImageManager error", "Can't load \"" + wallpaperPath+ "\" image.", e.toString());
@@ -32,9 +33,9 @@ abstract class MenuAbstract {
             return;
         }
 
-        DataManager.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) 0.3));
-        DataManager.getHud().drawImage(wallpaper, 0, 0, null);
-        DataManager.getHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
+        Display.getGraphicsHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, (float) 0.3));
+        Display.getGraphicsHud().drawImage(wallpaper, 0, 0, null);
+        Display.getGraphicsHud().setComposite(AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 1));
 
     }
 
