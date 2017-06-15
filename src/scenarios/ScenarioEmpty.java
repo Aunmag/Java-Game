@@ -1,10 +1,10 @@
-package gameModes;
+package scenarios;
 
 /**
  * Created by Aunmag on 2017.06.03.
  */
 
-public class GameModeEmpty extends GameMode {
+public class ScenarioEmpty extends Scenario {
 
     public void update() {}
 

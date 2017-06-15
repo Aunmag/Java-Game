@@ -1,4 +1,4 @@
-package gameModes;
+package scenarios;
 
 import ai.AI;
 import client.DataManager;
@@ -11,7 +11,7 @@ import sprites.Actor;
  * Created by Aunmag on 2016.11.23.
  */
 
-public class GameModeEncircling extends GameMode {
+public class ScenarioEncircling extends Scenario {
 
     private long timeSpawnNext;
     private int timeSpawnStep = 2_000;

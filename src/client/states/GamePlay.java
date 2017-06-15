@@ -7,7 +7,7 @@ import client.Display;
 import client.graphics.Hud;
 import client.graphics.effects.Blackout;
 import client.DataManager;
-import gameModes.*;
+import scenarios.*;
 import managers.SoundManager;
 import managers.ImageManager;
 import scripts.PutTrees;
@@ -19,7 +19,7 @@ import client.Camera;
 
 public class GamePlay {
 
-    private static GameMode mode;
+    private static Scenario mode;
 
     private static SoundManager ambiance;
     private static SoundManager atmosphere;
@@ -93,7 +93,7 @@ public class GamePlay {
 
         // Game mode:
 //        mode = new GameModeEncircling();
-        mode = new GameModeEmpty();
+        mode = new ScenarioEmpty();
         DataManager.setIsGameStarted(true);
 
         ambiance = new SoundManager("/sounds/ambiance/birds.wav");
