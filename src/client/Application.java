@@ -1,8 +1,7 @@
 package client;
 
+import gui.menus.MenuManager;
 import client.input.Input;
-import client.states.GameMenu;
-import client.states.GamePlay;
 import sprites.Actor;
 
 import java.awt.event.*;
@@ -16,7 +15,7 @@ public class Application implements Runnable {
     private Thread thread;
 
     public synchronized void start() {
-        if (DataManager.isRunning()) {
+        if (DataManager.getIsRunning()) {
             return;
         }
 
@@ -26,11 +25,10 @@ public class Application implements Runnable {
     }
 
     public void run() {
-        DataManager.setGameMenu(new GameMenu());
         Actor.loadSounds();
 
         long timeLast = System.currentTimeMillis();
-        while (DataManager.isRunning()) {
+        while (DataManager.getIsRunning()) {
             long timeCurrent = System.currentTimeMillis();
             long timePassed = timeCurrent - timeLast;
             float timeDelta = timePassed / TimeManager.FRAME_DURATION;
@@ -49,32 +47,32 @@ public class Application implements Runnable {
     }
 
     private void update() {
-        if (DataManager.isPerformanceData()) {
+        if (DataManager.getIsPerformanceData()) {
             PerformanceManager.timerUpdating.makeStart();
         }
 
         Input.update();
 
-        if (DataManager.isGamePlay()) {
+        if (GamePlay.getIsActive()) {
             GamePlay.update();
         } else {
-            DataManager.getGameMenu().update();
+            MenuManager.update();
         }
 
-        if (DataManager.isPerformanceData()) {
+        if (DataManager.getIsPerformanceData()) {
             PerformanceManager.timerUpdating.makeStop();
         }
     }
 
     private void render() {
-        if (DataManager.isPerformanceData()) {
+        if (DataManager.getIsPerformanceData()) {
             PerformanceManager.timerRendering.makeStart();
         }
 
         Display.prepareBufferStrategy();
         Display.prepareGraphicsHud();
 
-        if (DataManager.isGamePlay()) {
+        if (GamePlay.getIsActive()) {
             Display.prepareGraphics();
             scaleGraphics();
             rotateGraphics();
@@ -82,13 +80,13 @@ public class Application implements Runnable {
             Camera.render();
             Display.getGraphics().dispose();
         } else {
-            DataManager.getGameMenu().render();
+            MenuManager.render();
         }
 
         Display.getGraphicsHud().dispose();
         Display.getBufferStrategy().show();
 
-        if (DataManager.isPerformanceData()) {
+        if (DataManager.getIsPerformanceData()) {
             PerformanceManager.timerRendering.makeStop();
         }
     }
@@ -106,17 +104,17 @@ public class Application implements Runnable {
     }
 
     private void cleanUp() {
-        if (DataManager.isPerformanceData()) {
+        if (DataManager.getIsPerformanceData()) {
             PerformanceManager.timerFinishing.makeStart();
         }
 
-        if (DataManager.isGamePlay()) {
+        if (GamePlay.getIsActive()) {
             GamePlay.cleanUp();
         }
 
         Input.cleanUp();
 
-        if (DataManager.isPerformanceData()) {
+        if (DataManager.getIsPerformanceData()) {
             PerformanceManager.timerFinishing.makeStop();
         }
     }

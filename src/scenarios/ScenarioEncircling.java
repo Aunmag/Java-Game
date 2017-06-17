@@ -4,6 +4,7 @@ import ai.AI;
 import client.DataManager;
 import client.Constants;
 import client.TimeManager;
+import gui.menus.MenuManager;
 import managers.MathManager;
 import sprites.Actor;
 
@@ -65,7 +66,7 @@ public class ScenarioEncircling extends Scenario {
         zombiesKilled = zombiesKilledNow;
 
         String gameOverMessage = String.format("You have killed %s zombies.", zombiesKilled);
-        DataManager.getGameMenu().getMenuDeath().setMessage(gameOverMessage);
+        MenuManager.getMenuGameOver().setMessage(gameOverMessage);
 
         int timeSpawnDecreaseNow = timeSpawnDecrease * zombiesKilledDifference;
         if (timeSpawnStep - timeSpawnDecreaseNow > timeSpawnStepMin) {

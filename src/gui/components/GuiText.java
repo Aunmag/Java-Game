@@ -1,4 +1,4 @@
-package client.graphics.gui;
+package gui.components;
 
 // Created by Aunmag on 19.11.2016.
 
@@ -7,7 +7,7 @@ import client.Display;
 
 import java.awt.*;
 
-public class GuiLabel {
+public class GuiText {
 
     // Position:
     private int x;
@@ -24,7 +24,7 @@ public class GuiLabel {
 
     private Color color = Color.white;
 
-    public GuiLabel(int x, int y, int size, boolean isBold, String text) {
+    public GuiText(int x, int y, int size, boolean isBold, String text) {
 
         this.x = x;
         this.y = y;

@@ -2,7 +2,8 @@ package client.input;
 
 import client.DataManager;
 import client.Display;
-import client.states.GamePlay;
+import gui.menus.MenuManager;
+import client.GamePlay;
 import sprites.Actor;
 import client.Camera;
 
@@ -41,28 +42,26 @@ public class Input {
     public static void update() {
         updateStates();
 
-        if (DataManager.isGamePlay()) {
+        if (GamePlay.getIsActive()) {
             updatePlayer();
             updateCamera();
         }
     }
 
     public static void updateStates() {
-        if (keysJustReleased[KeyEvent.VK_ESCAPE] && DataManager.isGameStarted()) {
+        if (keysJustReleased[KeyEvent.VK_ESCAPE] && DataManager.getIsGameStarted()) {
             // TODO: Improve this behavior
-            if (DataManager.isGamePlay()) {
-                DataManager.getGameMenu().activeMenuMain();
-                DataManager.getGameMenu().getMenuMain().getSoundscape().loop();
-                DataManager.getGamePlay().getAmbiance().stop();
-                DataManager.getGamePlay().getAtmosphere().stop();
+            if (GamePlay.getIsActive()) {
+                GamePlay.setIsActive(false);
+                MenuManager.getMenuMain().getSoundscape().loop();
             } else {
-                GamePlay.activate();
-                DataManager.getGameMenu().getMenuMain().getSoundscape().stop();
+                GamePlay.setIsActive(true);
+                MenuManager.getMenuMain().getSoundscape().stop();
             }
         }
 
         if (keysJustReleased[KeyEvent.VK_F1]) {
-            DataManager.setIsPerformanceData(!DataManager.isPerformanceData());
+            DataManager.setIsPerformanceData(!DataManager.getIsPerformanceData());
         }
     }
 

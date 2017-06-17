@@ -1,12 +1,11 @@
-package client.states;
+package client;
 
 // Created by Aunmag on 09.11.2016.
 
 import ai.AI;
-import client.Display;
 import client.graphics.Hud;
 import client.graphics.effects.Blackout;
-import client.DataManager;
+import gui.menus.MenuManager;
 import scenarios.*;
 import managers.SoundManager;
 import managers.ImageManager;
@@ -15,17 +14,16 @@ import sprites.Actor;
 import sprites.Bullet;
 import sprites.Object;
 import sprites.Weapon;
-import client.Camera;
 
 public class GamePlay {
 
-    private static Scenario mode;
-
-    private static SoundManager ambiance;
-    private static SoundManager atmosphere;
+    private static boolean isActive = false;
+    private static Scenario scenario;
+    private static SoundManager ambiance; // TODO: Create word class with this sound
+    private static SoundManager atmosphere; // TODO: Create word class with this sound
 
     public static void initialize() {
-        if (DataManager.isGameStarted()) {
+        if (DataManager.getIsGameStarted()) {
             terminate();
         }
 
@@ -91,9 +89,9 @@ public class GamePlay {
             PutTrees.put(treesQuantity, treesSpreading);
         }
 
-        // Game mode:
-//        mode = new GameModeEncircling();
-        mode = new ScenarioEmpty();
+        // Game scenario:
+//        scenario = new GameModeEncircling();
+        scenario = new ScenarioEmpty();
         DataManager.setIsGameStarted(true);
 
         ambiance = new SoundManager("/sounds/ambiance/birds.wav");
@@ -105,42 +103,14 @@ public class GamePlay {
 
     }
 
-    public static void terminate() {
-
-        // Clear all data:
-        AI.all.clear();
-        Actor.all.clear();
-        Weapon.all.clear();
-        Object.allGround.clear();
-        Object.allDecoration.clear();
-        mode = null;
-
-        ambiance.stop();
-        atmosphere.stop();
-
-        DataManager.setIsGameStarted(false);
-
-    }
-
-    public static void activate() {
-
-        Display.setIsCursorVisible(false);
-        DataManager.setIsGamePlay(true);
-        DataManager.setIsGameMenu(false);
-
-        ambiance.loop();
-        atmosphere.loop();
-
-    }
-
     public static void update() {
         if (!DataManager.getPlayer().getIsAlive()) {
-            DataManager.getGameMenu().activeMenuDeath();
+            MenuManager.getMenuGameOver().activate();
             return;
         }
 
-        if (mode != null) {
-            mode.update();
+        if (scenario != null) {
+            scenario.update();
         }
 
         for (AI ai: AI.all) {
@@ -189,8 +159,8 @@ public class GamePlay {
 
         Blackout.render();
 
-        if (mode != null) {
-            mode.render();
+        if (scenario != null) {
+            scenario.render();
         }
 
         Hud.render();
@@ -210,18 +180,47 @@ public class GamePlay {
         AI.invalids.clear();
     }
 
-    // Getters:
+    public static void terminate() {
 
-    public static SoundManager getAmbiance() {
+        // Clear all data:
+        AI.all.clear();
+        Actor.all.clear();
+        Weapon.all.clear();
+        Object.allGround.clear();
+        Object.allDecoration.clear();
+        scenario = null;
 
-        return ambiance;
+        ambiance.stop();
+        atmosphere.stop();
+
+        DataManager.setIsGameStarted(false);
 
     }
 
-    public static SoundManager getAtmosphere() {
+    /* Setters */
 
-        return atmosphere;
+    public static void setIsActive(boolean isActive) {
 
+        if (isActive == GamePlay.isActive) {
+            return;
+        }
+
+        GamePlay.isActive = isActive;
+        Display.setIsCursorVisible(!isActive);
+
+        if (isActive) {
+            ambiance.loop();
+            atmosphere.loop();
+        } else {
+            ambiance.stop();
+            atmosphere.stop();
+        }
+    }
+
+    /* Getters */
+
+    public static boolean getIsActive() {
+        return isActive;
     }
 
 }

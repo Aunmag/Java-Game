@@ -18,6 +18,7 @@ public class Display {
     private static float halfWidth;
     private static float halfHeight;
     private static float halfMaximal;
+    private static boolean isCursorVisible = true;
 
     private static JFrame frame;
     private static Canvas canvas;
@@ -119,6 +120,12 @@ public class Display {
     }
 
     public static void setIsCursorVisible(boolean isCursorVisible) {
+        if (isCursorVisible == Display.isCursorVisible) {
+            return;
+        } else {
+            Display.isCursorVisible = isCursorVisible;
+        }
+
         if (isCursorVisible) {
             frame.getContentPane().setCursor(Cursor.getDefaultCursor());
         } else {

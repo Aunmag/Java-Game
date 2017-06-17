@@ -1,4 +1,4 @@
-package client.graphics.gui;
+package gui.components;
 
 // Created by Aunmag on 17.11.2016.
 
@@ -27,14 +27,16 @@ public class GuiButton {
     private boolean isPressed = false;
 
     // Text:
-    GuiLabel guiLabel;
+    GuiText guiText;
     private static final int fontSize = 24;
     private static final Font font = new Font("Arial", Font.BOLD, fontSize);
     private int textX;
     private int textY;
     private String text;
 
-    public GuiButton(int x, int y, int width, int height, String text) {
+    private Runnable action;
+
+    public GuiButton(int x, int y, int width, int height, String text, Runnable action) {
 
         // Set rectangle:
         this.x = x;
@@ -44,7 +46,7 @@ public class GuiButton {
 
         // Set text:
 
-        guiLabel = new GuiLabel(x + width / 2, y + height / 2, 24, true, text);
+        guiText = new GuiText(x + width / 2, y + height / 2, 24, true, text);
 
         Display.getGraphicsHud().setFont(font);
         int textWidth = Display.getGraphicsHud().getFontMetrics().stringWidth(text);
@@ -53,9 +55,11 @@ public class GuiButton {
         textX = (Display.getWidth() - textWidth) / 2;
         textY = y + (int) (height - fontSize / 1.5);
 
+        this.action = action;
+
     }
 
-    public void tick() {
+    public void update() {
 
         if (!isAvailable) {
             return;
@@ -68,6 +72,14 @@ public class GuiButton {
 
         isTouched = isTouchedX && isTouchedY;
         isPressed = isTouched && Input.getIsButtonJustReleased(MouseEvent.BUTTON1);
+
+        if (isPressed && action != null) {
+            try {
+                action.run();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
 
     }
 
@@ -86,7 +98,7 @@ public class GuiButton {
         Display.getGraphicsHud().fillRect(x, y, width, height);
 
         // Render text:
-        guiLabel.render();
+        guiText.render();
 
     }
 
@@ -99,30 +111,10 @@ public class GuiButton {
         if (!isAvailable) {
             isTouched = false;
             isPressed = false;
-            guiLabel.setColor(new Color(204, 204, 204));
+            guiText.setColor(new Color(204, 204, 204));
         } else {
-            guiLabel.setColor(Color.WHITE);
+            guiText.setColor(Color.WHITE);
         }
-
-    }
-
-    // Getters:
-
-    public boolean isAvailable() {
-
-        return isAvailable;
-
-    }
-
-    public boolean isTouched() {
-
-        return isTouched;
-
-    }
-
-    public boolean isPressed() {
-
-        return isPressed;
 
     }
 

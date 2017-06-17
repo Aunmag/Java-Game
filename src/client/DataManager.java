@@ -1,24 +1,16 @@
 package client;
 
-import client.states.GameMenu;
-import client.states.GamePlay;
 import sprites.Actor;
 
 /**
- * Client - Central Data Table
- *
- * Created by AunmagUser on 08.11.2016.
+ * Created by Aunmag on 2016.11.08.
  */
 
 public class DataManager {
 
     // States:
     private static boolean isRunning = false;
-    private static boolean isGameMenu = true; // TODO: создать едниый world class. использовать isPause
-    private static boolean isGamePlay = false;
     private static boolean isGameStarted = false;
-    private static GameMenu gameMenu;
-    private static GamePlay gamePlay;
     private static boolean isPerformanceData = false;
 
     private static Actor player;
@@ -31,33 +23,9 @@ public class DataManager {
 
     }
 
-    public static void setIsGameMenu(boolean isGameMenu) {
-
-        DataManager.isGameMenu = isGameMenu;
-
-    }
-
-    public static void setIsGamePlay(boolean isGamePlay) {
-
-        DataManager.isGamePlay = isGamePlay;
-
-    }
-
     public static void setIsGameStarted(boolean isGameStarted) {
 
         DataManager.isGameStarted = isGameStarted;
-
-    }
-
-    public static void setGameMenu(GameMenu gameMenu) {
-
-        DataManager.gameMenu = gameMenu;
-
-    }
-
-    public static void setGamePlay(GamePlay gamePlay) {
-
-        DataManager.gamePlay = gamePlay;
 
     }
 
@@ -75,37 +43,19 @@ public class DataManager {
 
     /* Getters */
 
-    public static boolean isRunning() {
+    public static boolean getIsRunning() {
 
         return isRunning;
 
     }
 
-    public static boolean isGamePlay() {
-
-        return isGamePlay;
-
-    }
-
-    public static boolean isGameStarted() {
+    public static boolean getIsGameStarted() {
 
         return isGameStarted;
 
     }
 
-    public static GameMenu getGameMenu() {
-
-        return gameMenu;
-
-    }
-
-    public static GamePlay getGamePlay() {
-
-        return gamePlay;
-
-    }
-
-    public static boolean isPerformanceData() {
+    public static boolean getIsPerformanceData() {
 
         return isPerformanceData;
 

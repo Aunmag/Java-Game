@@ -25,7 +25,7 @@ public class Hud {
         y += y_step;
         Display.getGraphicsHud().drawString("Performance [F1]", 20, y);
 
-        if (!DataManager.isPerformanceData()) {
+        if (!DataManager.getIsPerformanceData()) {
             return;
         }
 

@@ -75,6 +75,7 @@ public class ImageManager {
         int width = imageOriginal.getWidth() * 2;
         int height = imageOriginal.getHeight() * 2;
 
+        // TODO: Try save these three variables as final static:
         GraphicsEnvironment graphicsEnvironment = GraphicsEnvironment.getLocalGraphicsEnvironment();
         GraphicsDevice graphicsDevice = graphicsEnvironment.getDefaultScreenDevice();
         GraphicsConfiguration graphicsConfiguration = graphicsDevice.getDefaultConfiguration();
