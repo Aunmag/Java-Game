@@ -27,6 +27,8 @@ public class Actor extends Sprite {
     private final static ImageManager imageHuman = new ImageManager("actors/human");
     private final static ImageManager imageZombie = new ImageManager("actors/zombie");
 
+    private static Actor player;
+
     private boolean isAlive = true;
     private boolean hasWeapon = false;
     private float health = 1;
@@ -232,7 +234,17 @@ public class Actor extends Sprite {
         kills++;
     }
 
+    /* Setters */
+
+    public static void setPlayer(Actor player) {
+        Actor.player = player;
+    }
+
     /* Getters */
+
+    public static Actor getPlayer() {
+        return player;
+    }
 
     public float getHealth() {
         return health;

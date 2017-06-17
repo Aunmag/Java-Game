@@ -2,7 +2,6 @@ package gui.components;
 
 // Created by Aunmag on 19.11.2016.
 
-import client.DataManager;
 import client.Display;
 
 import java.awt.*;

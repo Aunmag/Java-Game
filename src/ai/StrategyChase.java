@@ -2,7 +2,6 @@ package ai;
 
 // Created by Aunmag on 21.11.2016.
 
-import client.DataManager;
 import client.Constants;
 import client.TimeManager;
 

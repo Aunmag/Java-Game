@@ -1,7 +1,6 @@
 package scenarios;
 
 import ai.AI;
-import client.DataManager;
 import client.Constants;
 import client.TimeManager;
 import gui.menus.MenuManager;
@@ -37,7 +36,7 @@ public class ScenarioEncircling extends Scenario {
 
     private void confinePlayerPosition() {
         int boundary = 128 * 8;
-        Actor player = DataManager.getPlayer();
+        Actor player = Actor.getPlayer();
         float playerX = player.getX();
         float playerY = player.getY();
 
@@ -55,7 +54,7 @@ public class ScenarioEncircling extends Scenario {
     }
 
     public void updateZombiesKilled() {
-        int zombiesKilledNow = DataManager.getPlayer().getKills();
+        int zombiesKilledNow = Actor.getPlayer().getKills();
 
         if (zombiesKilled == zombiesKilledNow) {
             return;
@@ -76,8 +75,8 @@ public class ScenarioEncircling extends Scenario {
 
     private void spawnZombie() {
         float direction = MathManager.randomizeBetween(0, (float) Constants.PI_2_0);
-        float x = DataManager.getPlayer().getX() - spawnDistance * (float) Math.cos(direction);
-        float y = DataManager.getPlayer().getY() - spawnDistance * (float) Math.sin(direction);
+        float x = Actor.getPlayer().getX() - spawnDistance * (float) Math.cos(direction);
+        float y = Actor.getPlayer().getY() - spawnDistance * (float) Math.sin(direction);
 
         Actor zombie = new Actor(x, y, -direction, "zombie");
         Actor.all.add(zombie);

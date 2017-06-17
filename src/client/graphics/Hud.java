@@ -1,7 +1,6 @@
 package client.graphics;
 
 import ai.AI;
-import client.DataManager;
 import client.Constants;
 import client.Display;
 import client.PerformanceManager;
@@ -25,7 +24,7 @@ public class Hud {
         y += y_step;
         Display.getGraphicsHud().drawString("Performance [F1]", 20, y);
 
-        if (!DataManager.getIsPerformanceData()) {
+        if (!PerformanceManager.isMonitoring) {
             return;
         }
 

@@ -1,10 +1,8 @@
 package sprites;
 
 import client.Camera;
-import client.DataManager;
 import client.Display;
 import managers.ImageManager;
-import managers.MathManager;
 import sprites.basics.BasePoint;
 import sprites.basics.BasePosition;
 

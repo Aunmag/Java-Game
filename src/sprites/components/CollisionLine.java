@@ -1,9 +1,6 @@
 package sprites.components;
 
-import client.Constants;
-import client.DataManager;
 import sprites.Sprite;
-import sprites.basics.BasePoint;
 
 /**
  * Created by Aunmag on 2017.05.26.

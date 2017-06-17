@@ -2,7 +2,7 @@ package gui.menus;
 
 // Created by Aunmag on 20.11.2016.
 
-import client.DataManager;
+import client.Application;
 import client.Display;
 import gui.components.GuiButton;
 import gui.components.GuiText;
@@ -31,7 +31,7 @@ public class MenuExit extends Menu {
         guiTexts.add(labelQuestion);
 
         {
-            Runnable action = () -> DataManager.setIsRunning(false);
+            Runnable action = () -> Application.isRunning = false;
             GuiButton buttonExit = new GuiButton(x, offsetY + y, width, height, "Yes", action);
             allButtons.add(buttonExit);
         }

@@ -2,7 +2,6 @@ package sprites.components;
 
 import client.Camera;
 import client.Constants;
-import client.DataManager;
 import client.Display;
 import managers.Utils;
 import sprites.Sprite;

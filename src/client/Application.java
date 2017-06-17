@@ -12,14 +12,15 @@ import java.awt.event.*;
 
 public class Application implements Runnable {
 
+    public static boolean isRunning = false;
     private Thread thread;
 
     public synchronized void start() {
-        if (DataManager.getIsRunning()) {
+        if (isRunning) {
             return;
         }
 
-        DataManager.setIsRunning(true);
+        isRunning = true;
         thread = new Thread(this);
         thread.start();
     }
@@ -28,7 +29,7 @@ public class Application implements Runnable {
         Actor.loadSounds();
 
         long timeLast = System.currentTimeMillis();
-        while (DataManager.getIsRunning()) {
+        while (isRunning) {
             long timeCurrent = System.currentTimeMillis();
             long timePassed = timeCurrent - timeLast;
             float timeDelta = timePassed / TimeManager.FRAME_DURATION;
@@ -47,7 +48,7 @@ public class Application implements Runnable {
     }
 
     private void update() {
-        if (DataManager.getIsPerformanceData()) {
+        if (PerformanceManager.isMonitoring) {
             PerformanceManager.timerUpdating.makeStart();
         }
 
@@ -59,13 +60,13 @@ public class Application implements Runnable {
             MenuManager.update();
         }
 
-        if (DataManager.getIsPerformanceData()) {
+        if (PerformanceManager.isMonitoring) {
             PerformanceManager.timerUpdating.makeStop();
         }
     }
 
     private void render() {
-        if (DataManager.getIsPerformanceData()) {
+        if (PerformanceManager.isMonitoring) {
             PerformanceManager.timerRendering.makeStart();
         }
 
@@ -86,7 +87,7 @@ public class Application implements Runnable {
         Display.getGraphicsHud().dispose();
         Display.getBufferStrategy().show();
 
-        if (DataManager.getIsPerformanceData()) {
+        if (PerformanceManager.isMonitoring) {
             PerformanceManager.timerRendering.makeStop();
         }
     }
@@ -104,7 +105,7 @@ public class Application implements Runnable {
     }
 
     private void cleanUp() {
-        if (DataManager.getIsPerformanceData()) {
+        if (PerformanceManager.isMonitoring) {
             PerformanceManager.timerFinishing.makeStart();
         }
 
@@ -114,13 +115,13 @@ public class Application implements Runnable {
 
         Input.cleanUp();
 
-        if (DataManager.getIsPerformanceData()) {
+        if (PerformanceManager.isMonitoring) {
             PerformanceManager.timerFinishing.makeStop();
         }
     }
 
     public synchronized void stop() {
-        DataManager.setIsRunning(false);
+        isRunning = false;
         Display.getFrame().dispatchEvent(new WindowEvent(
                 Display.getFrame(),
                 WindowEvent.WINDOW_CLOSING

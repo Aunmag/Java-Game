@@ -2,7 +2,6 @@ package gui.menus;
 
 // Created by Aunmag on 17.11.2016.
 
-import client.DataManager;
 import client.Constants;
 import client.Display;
 import gui.components.GuiButton;
@@ -77,7 +76,7 @@ public class MenuMain extends Menu {
     }
 
     public void update() {
-        buttonContinue.setAvailable(DataManager.getIsGameStarted());
+        buttonContinue.setAvailable(GamePlay.getIsWorldCreated());
         super.update();
     }
 

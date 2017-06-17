@@ -8,6 +8,7 @@ import managers.Timer;
 
 public class PerformanceManager {
 
+    public static boolean isMonitoring = false;
     public static Timer timerUpdating = new Timer(true);
     public static Timer timerRendering = new Timer(true);
     public static Timer timerFinishing = new Timer(true);

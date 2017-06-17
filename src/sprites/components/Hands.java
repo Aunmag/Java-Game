@@ -1,6 +1,5 @@
 package sprites.components;
 
-import client.DataManager;
 import client.TimeManager;
 import sprites.Actor;
 

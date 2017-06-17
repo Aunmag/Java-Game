@@ -2,10 +2,10 @@ package client.graphics.effects;
 
 // Created by AunmagUser on 13.11.2016.
 
-import client.DataManager;
 import client.Display;
 import managers.Log;
 import scripts.Inertia;
+import sprites.Actor;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -46,7 +46,7 @@ public class Blackout {
     public static void render() {
 
         float alpha;
-        float playerHealth = DataManager.getPlayer().getHealth();
+        float playerHealth = Actor.getPlayer().getHealth();
 
         // Tweak player health:
         if (playerHealth > 1) {

@@ -18,18 +18,19 @@ import sprites.Weapon;
 public class GamePlay {
 
     private static boolean isActive = false;
+    private static boolean isWorldCreated = false;
     private static Scenario scenario;
     private static SoundManager ambiance; // TODO: Create word class with this sound
     private static SoundManager atmosphere; // TODO: Create word class with this sound
 
     public static void initialize() {
-        if (DataManager.getIsGameStarted()) {
+        if (isWorldCreated) {
             terminate();
         }
 
         // Create player:
         Actor player = new Actor(0, 0, 0, "human");
-        DataManager.setPlayer(player);
+        Actor.setPlayer(player);
         Actor.all.add(player);
         Weapon.all.add(new Weapon(player));
         Camera.setTarget(player);
@@ -92,7 +93,7 @@ public class GamePlay {
         // Game scenario:
 //        scenario = new GameModeEncircling();
         scenario = new ScenarioEmpty();
-        DataManager.setIsGameStarted(true);
+        isWorldCreated = true;
 
         ambiance = new SoundManager("/sounds/ambiance/birds.wav");
         ambiance.setVolume(-8);
@@ -104,7 +105,7 @@ public class GamePlay {
     }
 
     public static void update() {
-        if (!DataManager.getPlayer().getIsAlive()) {
+        if (!Actor.getPlayer().getIsAlive()) {
             MenuManager.getMenuGameOver().activate();
             return;
         }
@@ -193,8 +194,7 @@ public class GamePlay {
         ambiance.stop();
         atmosphere.stop();
 
-        DataManager.setIsGameStarted(false);
-
+        isWorldCreated = false;
     }
 
     /* Setters */
@@ -221,6 +221,10 @@ public class GamePlay {
 
     public static boolean getIsActive() {
         return isActive;
+    }
+
+    public static boolean getIsWorldCreated() {
+        return isWorldCreated;
     }
 
 }

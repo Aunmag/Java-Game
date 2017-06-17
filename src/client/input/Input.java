@@ -1,11 +1,8 @@
 package client.input;
 
-import client.DataManager;
-import client.Display;
+import client.*;
 import gui.menus.MenuManager;
-import client.GamePlay;
 import sprites.Actor;
-import client.Camera;
 
 import java.awt.*;
 import java.awt.event.*;
@@ -49,7 +46,7 @@ public class Input {
     }
 
     public static void updateStates() {
-        if (keysJustReleased[KeyEvent.VK_ESCAPE] && DataManager.getIsGameStarted()) {
+        if (keysJustReleased[KeyEvent.VK_ESCAPE] && GamePlay.getIsWorldCreated()) {
             // TODO: Improve this behavior
             if (GamePlay.getIsActive()) {
                 GamePlay.setIsActive(false);
@@ -61,12 +58,12 @@ public class Input {
         }
 
         if (keysJustReleased[KeyEvent.VK_F1]) {
-            DataManager.setIsPerformanceData(!DataManager.getIsPerformanceData());
+            PerformanceManager.isMonitoring = !PerformanceManager.isMonitoring;
         }
     }
 
     public static void updatePlayer() {
-        Actor player = DataManager.getPlayer();
+        Actor player = Actor.getPlayer();
 
         if (player == null) {
             return;
