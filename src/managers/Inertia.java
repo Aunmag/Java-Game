@@ -1,4 +1,4 @@
-package scripts;
+package managers;
 
 import client.Constants;
 import client.TimeManager;

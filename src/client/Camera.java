@@ -3,8 +3,8 @@ package client;
 import client.input.Input;
 import managers.MathManager;
 import managers.Utils;
-import sprites.basics.BasePoint;
-import sprites.basics.BasePosition;
+import utilities.basics.BasePoint;
+import utilities.basics.BasePosition;
 
 import java.awt.*;
 

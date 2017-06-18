@@ -1,68 +1,57 @@
 package gui.components;
 
-// Created by Aunmag on 19.11.2016.
-
+import client.Constants;
 import client.Display;
+import utilities.basics.BaseRectangle;
 
 import java.awt.*;
 
-public class GuiText {
+/**
+ * Created by Aunmag on 2016.11.19.
+ */
 
-    // Position:
-    private int x;
-    private int y;
-    private int width;
-    private int height;
+public class GuiText extends BaseRectangle {
 
-    // Text:
-    private int size;
-    private boolean isBold;
-    private static String fontName = "Arial";
-    private Font font;
-    private String text;
+    private Color color = Color.WHITE;
+    private Font font = Constants.FONT;
+    private String message;
 
-    private Color color = Color.white;
+    public GuiText(int x, int y, int size, boolean isBold, String message) {
+        super(x, y, 0, 0);
 
-    public GuiText(int x, int y, int size, boolean isBold, String text) {
-
-        this.x = x;
-        this.y = y;
-
-        this.size = size;
-        this.isBold = isBold;
-
+        setSize(size);
         if (isBold) {
-            font = new Font(fontName, Font.BOLD, size);
-        } else {
-            font = new Font(fontName, Font.PLAIN, size);
+            setStyle(Font.BOLD);
         }
 
-        setText(text);
-
-    }
-
-    public void setText(String text) {
-
-        this.text = text;
-
-        Display.getGraphicsHud().setFont(font);
-        width = Display.getGraphicsHud().getFontMetrics().stringWidth(text);
-        height = (int) (size / 2.5);
-
+        setMessage(message);
     }
 
     public void render() {
-
         Display.getGraphicsHud().setFont(font);
         Display.getGraphicsHud().setColor(color);
-        Display.getGraphicsHud().drawString(text, x - width / 2, y + height);
+        Display.getGraphicsHud().drawString(message, x - width / 2, y + height);
+    }
 
+    /* Setters */
+
+    public void setSize(int size) {
+        font = new Font(font.getFamily(), font.getStyle(), size);
+    }
+
+    public void setStyle(int style) {
+        font = new Font(font.getFamily(), style, font.getSize());
     }
 
     public void setColor(Color color) {
-
         this.color = color;
+    }
 
+    public void setMessage(String message) {
+        this.message = message;
+        Display.getGraphicsHud().setFont(font);
+        width = Display.getGraphicsHud().getFontMetrics().stringWidth(message);
+        height = (int) (font.getSize() / 2.5);
     }
 
 }

@@ -5,9 +5,7 @@ package client;
  */
 
 public enum SettingsEnum {
-
     LOW,
     MEDIUM,
     HIGH
-
 }

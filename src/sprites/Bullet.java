@@ -1,7 +1,7 @@
 package sprites;
 
 import client.*;
-import sprites.basics.BasePoint;
+import utilities.basics.BasePoint;
 import sprites.components.Collision;
 import sprites.components.CollisionLine;
 

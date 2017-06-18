@@ -9,7 +9,7 @@ import gui.menus.MenuManager;
 import scenarios.*;
 import managers.SoundManager;
 import managers.ImageManager;
-import scripts.PutTrees;
+import utilities.PutTrees;
 import sprites.Actor;
 import sprites.Bullet;
 import sprites.Object;
@@ -91,8 +91,8 @@ public class GamePlay {
         }
 
         // Game scenario:
-//        scenario = new GameModeEncircling();
-        scenario = new ScenarioEmpty();
+        scenario = new ScenarioEncircling();
+//        scenario = new ScenarioEmpty();
         isWorldCreated = true;
 
         ambiance = new SoundManager("/sounds/ambiance/birds.wav");

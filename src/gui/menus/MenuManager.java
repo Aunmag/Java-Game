@@ -15,7 +15,6 @@ public class MenuManager {
     private static final MenuHelp menuHelp = new MenuHelp();
     private static final MenuExit menuExit = new MenuExit();
     private static final MenuGameOver menuGameOver = new MenuGameOver();
-
     private static Menu currentMenu = menuMain;
     private static final Color backgroundColor = new Color(51, 51, 51);
 
@@ -56,4 +55,5 @@ public class MenuManager {
     public static MenuExit getMenuExit() {
         return menuExit;
     }
+
 }

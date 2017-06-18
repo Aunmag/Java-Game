@@ -1,7 +1,7 @@
 package managers;
 
 import client.Constants;
-import sprites.basics.BasePoint;
+import utilities.basics.BasePoint;
 
 import java.util.Random;
 

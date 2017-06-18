@@ -4,7 +4,7 @@ package client.graphics.effects;
 
 import client.Display;
 import managers.Log;
-import scripts.Inertia;
+import managers.Inertia;
 import sprites.Actor;
 
 import javax.imageio.ImageIO;

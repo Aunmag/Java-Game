@@ -1,93 +1,87 @@
 package gui.menus;
 
-// Created by Aunmag on 17.11.2016.
-
 import client.Constants;
-import client.Display;
 import gui.components.GuiButton;
-import gui.components.GuiText;
+import gui.components.GuiLabel;
 import client.GamePlay;
 import managers.SoundManager;
+
+/**
+ * Created by Aunmag on 2016.11.17.
+ */
 
 public class MenuMain extends Menu {
 
     private GuiButton buttonContinue;
-
-    private SoundManager soundscape;
+    private SoundManager sound;
 
     public MenuMain() {
-
         super("/images/wallpapers/main_menu.png");
+        initializeLabelTitle();
+        initializeLabelVersionAndDeveloper();
+        initializeButtonContinue();
+        initializeButtonNewGame();
+        initializeButtonHelp();
+        initializeButtonExit();
+        initializeSound();
+    }
 
-        int x;
-        int y;
-        int height12Fold = Display.getHeight() / 12;
+    private void initializeLabelTitle() {
+        allLabels.add(new GuiLabel(3, 3, 6, 1, 12, 48, true, Constants.TITLE));
+    }
 
-        int width = 400;
-        int height = 50;
-        int margin = 5;
+    private void initializeLabelVersionAndDeveloper() {
+        String text = String.format("v%s by %s", Constants.VERSION, Constants.DEVELOPER);
+        allLabels.add(new GuiLabel(5, 4, 2, 1, 12, 16, false, text));
+    }
 
-        x = (Display.getWidth() - width) / 2;
-        y = height + margin;
+    private void initializeButtonContinue() {
+        Runnable action = () -> {
+            sound.stop();
+            GamePlay.setIsActive(true);
+        };
 
-        int quantity = 4;
-        int offsetY = height12Fold * 8 - (y * quantity) / 2;
+        buttonContinue = new GuiButton(4, 7, 4, 1, 12, "Continue", action);
+        buttonContinue.setIsAvailable(false);
+        allButtons.add(buttonContinue);
+    }
 
-        GuiText labelA = new GuiText(Display.getWidth() / 2, height12Fold * 4, 48, true, Constants.TITLE);
-        guiTexts.add(labelA);
-        GuiText labelB = new GuiText(Display.getWidth() / 2, height12Fold * 5, 16, false, "v" + Constants.VERSION);
-        guiTexts.add(labelB);
+    private void initializeButtonNewGame() {
+        Runnable action = () -> {
+            sound.stop();
+            GamePlay.initialize();
+            GamePlay.setIsActive(true);
+        };
 
-        {
-            Runnable action = () -> {
-                soundscape.stop();
-                GamePlay.setIsActive(true);
-            };
-            buttonContinue = new GuiButton(x, offsetY + y, width, height, "Continue", action);
-            buttonContinue.setAvailable(false);
-            allButtons.add(buttonContinue);
-        }
+        allButtons.add(new GuiButton(4, 8, 4, 1, 12, "New game", action));
+    }
 
-        {
-            Runnable action = () -> {
-                soundscape.stop();
-                GamePlay.initialize();
-                GamePlay.setIsActive(true);
-            };
-            GuiButton buttonNewGame = new GuiButton(x, offsetY + y * 2, width, height, "New game", action);
-            allButtons.add(buttonNewGame);
-        }
+    private void initializeButtonHelp() {
+        Runnable action = () -> MenuManager.getMenuHelp().activate();
+        allButtons.add(new GuiButton(4, 9, 4, 1, 12, "Help", action));
+    }
 
-        {
-            Runnable action = () -> MenuManager.getMenuHelp().activate();
-            GuiButton buttonHelp = new GuiButton(x, offsetY + y * 3, width, height, "Help", action);
-            allButtons.add(buttonHelp);
-        }
+    private void initializeButtonExit() {
+        Runnable action = () -> MenuManager.getMenuExit().activate();
+        allButtons.add(new GuiButton(4, 10, 4, 1, 12, "Exit", action));
+    }
 
-        {
-            Runnable action = () -> MenuManager.getMenuExit().activate();
-            GuiButton buttonExit = new GuiButton(x, offsetY + y * 4, width, height, "Exit", action);
-            allButtons.add(buttonExit);
-        }
-
-        soundscape = new SoundManager("/sounds/music/menu.wav");
-        soundscape.loop();
-
+    private void initializeSound() {
+        sound = new SoundManager("/sounds/music/menu.wav");
+        sound.loop();
     }
 
     public void update() {
-        buttonContinue.setAvailable(GamePlay.getIsWorldCreated());
+        buttonContinue.setIsAvailable(GamePlay.getIsWorldCreated());
         super.update();
     }
 
     public void deactivate() {}
 
-    // Getters:
+    /* Getters */
 
-    public SoundManager getSoundscape() {
-
-        return soundscape;
-
+    public SoundManager getSound() {
+        return sound;
     }
 
 }

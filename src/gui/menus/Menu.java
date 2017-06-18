@@ -1,8 +1,9 @@
 package gui.menus;
 
+import client.Constants;
 import client.Display;
 import gui.components.GuiButton;
-import gui.components.GuiText;
+import gui.components.GuiLabel;
 import managers.ImageManager;
 import managers.Log;
 
@@ -27,19 +28,23 @@ public abstract class Menu {
             AlphaComposite.SRC_OVER,
             1
     );
-    protected Set<GuiText> guiTexts = new HashSet<>();
+
+    protected Set<GuiLabel> allLabels = new HashSet<>();
     protected Set<GuiButton> allButtons = new HashSet<>();
 
     Menu(String wallpaperPath) {
-
         try {
             wallpaper = ImageIO.read(ImageManager.class.getResource(wallpaperPath));
-            wallpaper = wallpaper.getScaledInstance(Display.getWidth(), Display.getHeight(), BufferedImage.SCALE_SMOOTH);
+            wallpaper = wallpaper.getScaledInstance(
+                    Display.getWidth(),
+                    Display.getHeight(),
+                    BufferedImage.SCALE_SMOOTH
+            );
         } catch (Exception e) {
             wallpaper = null;
-            Log.log("ImageManager error", "Can't load \"" + wallpaperPath+ "\" image.", e.toString());
+            String message = String.format("Can't load \"%s\" image.", wallpaperPath);
+            Log.log("ImageManager error", message, e.toString());
         }
-
     }
 
     public void activate() {
@@ -55,7 +60,11 @@ public abstract class Menu {
     public void render() {
         renderWallpaper();
 
-        for (GuiText label: guiTexts) {
+        if (Constants.isDebug) {
+            renderGrid();
+        }
+
+        for (GuiLabel label: allLabels) {
             label.render();
         }
 
@@ -64,7 +73,7 @@ public abstract class Menu {
         }
     }
 
-    void renderWallpaper() {
+    protected void renderWallpaper() {
         if (wallpaper == null) {
             return;
         }
@@ -74,7 +83,30 @@ public abstract class Menu {
         Display.getGraphicsHud().setComposite(alphaOff);
     }
 
-    public abstract void deactivate();
+    private void renderGrid() {
+        Display.getGraphicsHud().setColor(Color.GRAY);
+        int grid = 12;
+        int stepX = Display.getWidth() / 12;
+        int stepY = Display.getHeight() / 12;
+        int textMargin = 8;
 
+        for (int n = 0; n < grid; n++) {
+            int x1 = stepX * n;
+            int y1 = 0;
+            int x2 = stepX * n;
+            int y2 = Display.getHeight();
+            Display.getGraphicsHud().drawLine(x1, y1, x2, y2);
+            Display.getGraphicsHud().drawString("" + n, x1 + textMargin, textMargin * 2);
+
+            x1 = 0;
+            y1 = stepY * n;
+            x2 = Display.getWidth();
+            y2 = stepY * n;
+            Display.getGraphicsHud().drawLine(x1, y1, x2, y2);
+            Display.getGraphicsHud().drawString("" + n, textMargin, y1 + textMargin * 2);
+        }
+    }
+
+    public abstract void deactivate();
 
 }

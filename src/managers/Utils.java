@@ -1,5 +1,7 @@
 package managers;
 
+import client.Display;
+
 import java.awt.*;
 
 /**
@@ -20,6 +22,14 @@ public class Utils {
         x -= radius;
         y -= radius;
         graphics.fillRoundRect(x, y, diameter, diameter, diameter, diameter);
+    }
+
+    public static int calculateScreenGridX(int n) {
+        return Display.getWidth() / 12 * n;
+    }
+
+    public static int calculateScreenGridY(int n) {
+        return Display.getHeight() / 12 * n;
     }
 
 }

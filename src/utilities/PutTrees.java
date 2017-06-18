@@ -1,4 +1,4 @@
-package scripts;
+package utilities;
 
 import managers.MathManager;
 import managers.ImageManager;

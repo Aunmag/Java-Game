@@ -5,7 +5,7 @@ import client.Constants;
 import client.Display;
 import managers.Utils;
 import sprites.Sprite;
-import sprites.basics.BasePoint;
+import utilities.basics.BasePoint;
 
 import java.awt.*;
 

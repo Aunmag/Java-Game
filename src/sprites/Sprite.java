@@ -3,8 +3,8 @@ package sprites;
 import client.Camera;
 import client.Display;
 import managers.ImageManager;
-import sprites.basics.BasePoint;
-import sprites.basics.BasePosition;
+import utilities.basics.BasePoint;
+import utilities.basics.BasePosition;
 
 /**
  * Abstract class which is base to level sprites, like objects, actors, weapons etc. It has its own

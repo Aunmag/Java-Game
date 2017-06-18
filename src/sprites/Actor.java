@@ -4,7 +4,7 @@ import client.Constants;
 import managers.Log;
 import managers.MathManager;
 import managers.ImageManager;
-import scripts.Inertia;
+import managers.Inertia;
 import managers.SoundManager;
 import sprites.components.Collision;
 import sprites.components.CollisionCircle;

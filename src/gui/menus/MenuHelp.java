@@ -1,75 +1,65 @@
 package gui.menus;
 
-// Created by Aunmag on 20.11.2016.
-
-import client.Display;
 import gui.components.GuiButton;
-import gui.components.GuiText;
+import gui.components.GuiLabel;
+
+/**
+ * Created by Aunmag on 2016.11.20.
+ */
 
 public class MenuHelp extends Menu {
 
     public MenuHelp() {
-
         super("/images/wallpapers/help.png");
+        initializeLabelHelp();
+        initializeLabelsMovement();
+        initializeLabelsRotation();
+        initializeLabelsSprint();
+        initializeLabelsAttack();
+        initializeLabelsZoom();
+        initializeLabelsMenu();
+        initializeButtonBack();
+    }
 
-        int x;
-        int y;
-        int height12Fold = Display.getHeight() / 12;
+    private void initializeLabelHelp() {
+        allLabels.add(new GuiLabel(5, 1, 2, 1, 12, 48, true, "Help"));
+    }
 
-        // Title:
-        GuiText labelTitle = new GuiText(Display.getWidth() / 2, height12Fold * 2, 36, true, "Help");
-        guiTexts.add(labelTitle);
+    private void initializeLabelsMovement() {
+        allLabels.add(new GuiLabel(4, 3, 1, 1, 12, 16, false, "Rotation"));
+        allLabels.add(new GuiLabel(7, 3, 1, 1, 12, 16, false, "W, A, S, D"));
+    }
 
-        // Help mark:
-        int x1 = Display.getWidth() / 3;
-        int x2 = x1 * 2;
-        y = Display.getHeight() / 16;
-        int helpSize = 16;
+    private void initializeLabelsRotation() {
+        allLabels.add(new GuiLabel(4, 4, 1, 1, 12, 16, false, "Movement"));
+        allLabels.add(new GuiLabel(7, 4, 1, 1, 12, 16, false, "Mouse"));
+    }
 
-        // Help:
+    private void initializeLabelsSprint() {
+        allLabels.add(new GuiLabel(4, 5, 1, 1, 12, 16, false, "Sprint"));
+        allLabels.add(new GuiLabel(7, 5, 1, 1, 12, 16, false, "Shift"));
+    }
 
-        GuiText labelMovementA = new GuiText(x1, y * 5, helpSize, false, "Movement");
-        guiTexts.add(labelMovementA);
-        GuiText labelMovementB = new GuiText(x2, y * 5, helpSize, false, "W, A, S, D");
-        guiTexts.add(labelMovementB);
+    private void initializeLabelsAttack() {
+        allLabels.add(new GuiLabel(4, 6, 1, 1, 12, 16, false, "Attack"));
+        allLabels.add(new GuiLabel(7, 6, 1, 1, 12, 16, false, "LMB"));
+    }
 
-        GuiText labelRotationA = new GuiText(x1, y * 6, helpSize, false, "Rotation");
-        guiTexts.add(labelRotationA);
-        GuiText labelRotationB = new GuiText(x2, y * 6, helpSize, false, "Mouse");
-        guiTexts.add(labelRotationB);
+    private void initializeLabelsZoom() {
+        allLabels.add(new GuiLabel(4, 7, 1, 1, 12, 16, false, "Zoom in/out"));
+        allLabels.add(new GuiLabel(7, 7, 1, 1, 12, 16, false, "+/- or Wheel Up/Down"));
+    }
 
-        GuiText labelToRunA = new GuiText(x1, y * 7, helpSize, false, "Sprint");
-        guiTexts.add(labelToRunA);
-        GuiText labelToRunB = new GuiText(x2, y * 7, helpSize, false, "Shift");
-        guiTexts.add(labelToRunB);
+    private void initializeLabelsMenu() {
+        allLabels.add(new GuiLabel(4, 8, 1, 1, 12, 16, false, "Menu"));
+        allLabels.add(new GuiLabel(7, 8, 1, 1, 12, 16, false, "Escape"));
+    }
 
-        GuiText labelAttackA = new GuiText(x1, y * 8, helpSize, false, "Attack");
-        guiTexts.add(labelAttackA);
-        GuiText labelAttackB = new GuiText(x2, y * 8, helpSize, false, "LMB");
-        guiTexts.add(labelAttackB);
-
-        GuiText labelZoomA = new GuiText(x1, y * 9, helpSize, false, "Zoom in/out");
-        guiTexts.add(labelZoomA);
-        GuiText labelZoomB = new GuiText(x2, y * 9, helpSize, false, "+/- or Wheel Up/Down");
-        guiTexts.add(labelZoomB);
-
-        GuiText labelMenuA = new GuiText(x1, y * 10, helpSize, false, "Menu");
-        guiTexts.add(labelMenuA);
-        GuiText labelMenuB = new GuiText(x2, y * 10, helpSize, false, "Escape");
-        guiTexts.add(labelMenuB);
-
-        // Button:
-        int width = 400;
-        int height = 50;
-        x = (Display.getWidth() - width) / 2;
-        y = (height12Fold * 8 - height / 2) + height * 2;
+    private void initializeButtonBack() {
         Runnable action = () -> MenuManager.getMenuMain().activate();
-        GuiButton buttonBack = new GuiButton(x, y, width, height, "Back", action);
-        allButtons.add(buttonBack);
-
+        allButtons.add(new GuiButton(4, 10, 4, 1, 12, "Back", action));
     }
 
     public void deactivate() {}
-
 
 }

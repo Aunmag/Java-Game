@@ -50,10 +50,10 @@ public class Input {
             // TODO: Improve this behavior
             if (GamePlay.getIsActive()) {
                 GamePlay.setIsActive(false);
-                MenuManager.getMenuMain().getSoundscape().loop();
+                MenuManager.getMenuMain().getSound().loop();
             } else {
                 GamePlay.setIsActive(true);
-                MenuManager.getMenuMain().getSoundscape().stop();
+                MenuManager.getMenuMain().getSound().stop();
             }
         }
 

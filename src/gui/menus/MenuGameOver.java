@@ -1,45 +1,46 @@
 package gui.menus;
 
-// Created by Aunmag on 19.11.2016.
-
-import client.Display;
 import gui.components.GuiButton;
-import gui.components.GuiText;
+import gui.components.GuiLabel;
 import client.GamePlay;
 import managers.SoundManager;
 
+/**
+ * Created by Aunmag on 2016.11.19.
+ */
+
 public class MenuGameOver extends Menu {
 
-    private GuiText labelMessage;
-
+    private static final String defaultMessage = "You have killed 0 zombies.";
+    private GuiLabel labelScore;
     private SoundManager sound;
 
     public MenuGameOver() {
         super("/images/wallpapers/death.png");
+        initializeLabelYouHaveDied();
+        initializeLabelScore();
+        initializeButtonBack();
+        initializeSound();
+    }
 
-        int x;
-        int y;
-        int height12Fold = Display.getHeight() / 12;
+    private void initializeLabelYouHaveDied() {
+        allLabels.add(new GuiLabel(4, 4, 4, 1, 12, 48, true, "You have died"));
+    }
 
-        x = Display.getWidth() / 2;
-        y = height12Fold * 4;
-        GuiText labelTitle = new GuiText(x, y, 48, true, "You have died");
-        guiTexts.add(labelTitle);
+    private void initializeLabelScore() {
+        labelScore = new GuiLabel(4, 5, 4, 1, 12, 16, false, defaultMessage);
+        allLabels.add(labelScore);
+    }
 
-        y = height12Fold * 5;
-        labelMessage = new GuiText(x, y, 16, false, "You have killed 0 zombies.");
-        guiTexts.add(labelMessage);
+    private void initializeButtonBack() {
+        Runnable action = () -> {
+            MenuManager.getMenuGameOver().deactivate();
+            MenuManager.getMenuMain().activate();
+        };
+        allButtons.add(new GuiButton(4, 8, 4, 1, 12, "Back to main menu", action));
+    }
 
-        int width = 400;
-        int height = 50;
-
-        x = (Display.getWidth() - width) / 2;
-        y = height / 2 + height12Fold * 8;
-
-        Runnable action = () -> MenuManager.getMenuMain().activate();
-        GuiButton buttonBack = new GuiButton(x, y, 400, 50, "Back to main menu", action);
-        allButtons.add(buttonBack);
-
+    private void initializeSound() {
         sound = new SoundManager("/sounds/music/death.wav");
         sound.setVolume(-4);
     }
@@ -52,22 +53,13 @@ public class MenuGameOver extends Menu {
 
     public void deactivate() {
         sound.stop();
+        setMessage(defaultMessage);
     }
 
     /* Setters */
 
     public void setMessage(String message) {
-
-        labelMessage.setText(message);
-
-    }
-
-    /* Getters */
-
-    public SoundManager getSound() {
-
-        return sound;
-
+        labelScore.setText(message);
     }
 
 }
