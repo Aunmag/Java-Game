@@ -9,7 +9,7 @@ import gui.menus.MenuManager;
 import scenarios.*;
 import managers.SoundManager;
 import managers.ImageManager;
-import utilities.PutTrees;
+import utilities.UtilsWorld;
 import sprites.Actor;
 import sprites.Bullet;
 import sprites.Object;
@@ -87,7 +87,7 @@ public class GamePlay {
         {
             int treesQuantity = (groundNumber * groundNumber) / 2;
             int treesSpreading = (groundNumber * groundSizeBlock) / 2;
-            PutTrees.put(treesQuantity, treesSpreading);
+            UtilsWorld.putTrees(treesQuantity, treesSpreading);
         }
 
         // Game scenario:

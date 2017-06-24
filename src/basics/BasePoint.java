@@ -1,4 +1,4 @@
-package utilities.basics;
+package basics;
 
 /**
  * Created by Aunmag on 2017.05.27.

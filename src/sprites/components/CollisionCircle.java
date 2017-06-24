@@ -3,9 +3,9 @@ package sprites.components;
 import client.Camera;
 import client.Constants;
 import client.Display;
-import managers.Utils;
+import utilities.UtilsGraphics;
 import sprites.Sprite;
-import utilities.basics.BasePoint;
+import basics.BasePoint;
 
 import java.awt.*;
 
@@ -30,7 +30,7 @@ public class CollisionCircle extends Collision {
     }
 
     public void render(Color color) {
-        if (!Constants.isDebug || !Camera.calculateIsPointVisible(this)) {
+        if (!Constants.IS_DEBUG || !Camera.calculateIsPointVisible(this)) {
             return;
         }
 
@@ -39,7 +39,7 @@ public class CollisionCircle extends Collision {
         BasePoint onScreenPosition = Camera.calculateOnScreenPosition(this);
         int onScreenX = (int) onScreenPosition.getX();
         int onScreenY = (int) onScreenPosition.getY();
-        Utils.fillCircle(Display.getGraphics(), onScreenX, onScreenY, (int) diameter);
+        UtilsGraphics.fillCircle(Display.getGraphics(), onScreenX, onScreenY, (int) diameter);
     }
 
     /* Setters */

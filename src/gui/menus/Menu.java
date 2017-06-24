@@ -6,6 +6,7 @@ import gui.components.GuiButton;
 import gui.components.GuiLabel;
 import managers.ImageManager;
 import managers.Log;
+import utilities.UtilsGraphics;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -20,15 +21,7 @@ import java.util.Set;
 public abstract class Menu {
 
     private Image wallpaper;
-    private static AlphaComposite alphaOn = AlphaComposite.getInstance(
-            AlphaComposite.SRC_OVER,
-            0.3f
-    );
-    private static final AlphaComposite alphaOff = AlphaComposite.getInstance(
-            AlphaComposite.SRC_OVER,
-            1
-    );
-
+    private static AlphaComposite alpha = AlphaComposite.getInstance(AlphaComposite.SRC_OVER, 0.3f);
     protected Set<GuiLabel> allLabels = new HashSet<>();
     protected Set<GuiButton> allButtons = new HashSet<>();
 
@@ -60,7 +53,7 @@ public abstract class Menu {
     public void render() {
         renderWallpaper();
 
-        if (Constants.isDebug) {
+        if (Constants.IS_DEBUG) {
             renderGrid();
         }
 
@@ -78,9 +71,9 @@ public abstract class Menu {
             return;
         }
 
-        Display.getGraphicsHud().setComposite(alphaOn);
+        Display.getGraphicsHud().setComposite(alpha);
         Display.getGraphicsHud().drawImage(wallpaper, 0, 0, null);
-        Display.getGraphicsHud().setComposite(alphaOff);
+        UtilsGraphics.resetAlpha(Display.getGraphicsHud());
     }
 
     private void renderGrid() {

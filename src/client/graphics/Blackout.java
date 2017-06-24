@@ -3,7 +3,7 @@ package client.graphics;
 import client.Display;
 import managers.Log;
 import managers.Inertia;
-import managers.Utils;
+import utilities.UtilsGraphics;
 import sprites.Actor;
 
 import javax.imageio.ImageIO;
@@ -51,7 +51,7 @@ public class Blackout {
         renderRectangle();
         renderDynamicRectangle();
 
-        Utils.resetAlpha(Display.getGraphicsHud());
+        UtilsGraphics.resetAlpha(Display.getGraphicsHud());
     }
 
     private static void renderBoundaries() {

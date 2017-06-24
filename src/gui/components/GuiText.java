@@ -2,7 +2,7 @@ package gui.components;
 
 import client.Constants;
 import client.Display;
-import utilities.basics.BaseRectangle;
+import basics.BaseRectangle;
 
 import java.awt.*;
 

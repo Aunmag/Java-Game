@@ -8,9 +8,9 @@ import sprites.Object;
  * Created by Aunmag on 2016.11.23.
  */
 
-public class PutTrees {
+public class UtilsWorld {
 
-    public static void put(int quantity, int spreading) {
+    public static void putTrees(int quantity, int spreading) {
         positionChoosing: for (int i = 0; i < quantity; i++) {
             int x = MathManager.randomizeBetween(-spreading, spreading);
             int y = MathManager.randomizeBetween(-spreading, spreading);

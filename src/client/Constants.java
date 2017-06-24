@@ -18,6 +18,6 @@ public class Constants {
     public static final double PI_1_5 = Math.PI + PI_0_5;
     public static final double PI_2_0 = Math.PI * 2.0;
 
-    public static final boolean isDebug = true;
+    public static final boolean IS_DEBUG = true;
 
 }

@@ -2,9 +2,9 @@ package client;
 
 import client.input.Input;
 import managers.MathManager;
-import managers.Utils;
-import utilities.basics.BasePoint;
-import utilities.basics.BasePosition;
+import utilities.UtilsGraphics;
+import basics.BasePoint;
+import basics.BasePosition;
 
 import java.awt.*;
 
@@ -62,7 +62,7 @@ public class Camera {
     }
 
     public static void render() {
-//        if (Constants.isDebug) {
+//        if (Constants.IS_DEBUG) {
 //            renderCameraCenter();
 //            renderDistanceViewBoundaries();
 //        }
@@ -72,7 +72,7 @@ public class Camera {
         /* Used for debug */
 
         Display.getGraphics().setColor(new Color(0, 255, 0));
-        Utils.drawCircle(Display.getGraphics(), (int) centerX, (int) centerY, 4);
+        UtilsGraphics.drawCircle(Display.getGraphics(), (int) centerX, (int) centerY, 4);
     }
 
     public static void renderDistanceViewBoundaries() {
@@ -83,11 +83,11 @@ public class Camera {
 
         // Render distance view boundaries
         Display.getGraphics().setColor(new Color(255, 0, 0));
-        Utils.drawCircle(Display.getGraphics(), x, y, distanceView * 2);
+        UtilsGraphics.drawCircle(Display.getGraphics(), x, y, distanceView * 2);
 
         // Render distance view boundaries without buffer
         Display.getGraphics().setColor(new Color(255, 255, 0));
-        Utils.drawCircle(Display.getGraphics(), x, y, distanceView * 2);
+        UtilsGraphics.drawCircle(Display.getGraphics(), x, y, distanceView * 2);
     }
 
     public static BasePoint calculateOnScreenPosition(BasePoint onWorldPosition) {

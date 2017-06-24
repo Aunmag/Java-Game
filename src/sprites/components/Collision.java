@@ -2,7 +2,7 @@ package sprites.components;
 
 import managers.MathManager;
 import sprites.Sprite;
-import utilities.basics.BasePosition;
+import basics.BasePosition;
 
 import java.awt.*;
 

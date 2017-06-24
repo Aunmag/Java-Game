@@ -1,7 +1,7 @@
 package gui.components;
 
 import client.Display;
-import utilities.basics.BaseRectangle;
+import basics.BaseRectangle;
 
 /**
  * Created by Aunmag on 2017.06.17.
