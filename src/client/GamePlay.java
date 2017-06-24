@@ -4,7 +4,7 @@ package client;
 
 import ai.AI;
 import client.graphics.Hud;
-import client.graphics.effects.Blackout;
+import client.graphics.Blackout;
 import gui.menus.MenuManager;
 import scenarios.*;
 import managers.SoundManager;

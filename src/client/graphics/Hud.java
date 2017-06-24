@@ -11,66 +11,61 @@ import sprites.Weapon;
 import sprites.Object;
 import java.awt.*;
 
-// Created by Aunmag on 13.11.2016.
+/**
+ * Created by Aunmag on 2016.11.13.
+ */
 
 public class Hud {
 
     public static void render() {
-        int y = 20;
-        int y_step = 20;
+        int indentation = 20;
+        int y = indentation;
+
+        String[] messages = {
+                String.format("%s v%s", Constants.TITLE, Constants.VERSION),
+                "Performance [F1]"
+        };
 
         Display.getGraphicsHud().setColor(Color.WHITE);
-        Display.getGraphicsHud().drawString(Constants.TITLE + " v" + Constants.VERSION, 20, y);
-        y += y_step;
-        Display.getGraphicsHud().drawString("Performance [F1]", 20, y);
+
+        for (String message: messages) {
+            Display.getGraphicsHud().drawString(message, indentation, y);
+            y += indentation;
+        }
 
         if (!PerformanceManager.isMonitoring) {
             return;
         }
 
-        y += y_step * 2;
+        y += indentation;
 
         float timeSpentUpdate = PerformanceManager.timerUpdating.getTimeDurationAverage();
         float timeSpentRender = PerformanceManager.timerRendering.getTimeDurationAverage();
         float timeSpentFinish = PerformanceManager.timerFinishing.getTimeDurationAverage();
         float timeSpentTotal = timeSpentUpdate + timeSpentRender + timeSpentFinish;
-
         float round = 100f;
+        timeSpentUpdate = MathManager.calculateRoundValue(timeSpentUpdate, round);
+        timeSpentRender = MathManager.calculateRoundValue(timeSpentRender, round);
+        timeSpentFinish = MathManager.calculateRoundValue(timeSpentFinish, round);
+        timeSpentTotal = MathManager.calculateRoundValue(timeSpentTotal, round);
 
-        String[] performanceMessages = {
-                String.format(
-                        "Spent time on updating: %s ms",
-                        MathManager.calculateRoundValue(timeSpentUpdate, round)
-                ),
-                String.format(
-                        "Spent time on rendering: %s ms",
-                        MathManager.calculateRoundValue(timeSpentRender, round)
-                ),
-                String.format(
-                        "Spent time on finishing: %s ms",
-                        MathManager.calculateRoundValue(timeSpentFinish, round)
-                ),
-                String.format(
-                        "Spent time total: %s ms",
-                        MathManager.calculateRoundValue(timeSpentTotal, round)
-                ),
+        String[] messagesPerformance = {
+                String.format("Spent time on updating: %s ms", timeSpentUpdate),
+                String.format("Spent time on rendering: %s ms", timeSpentRender),
+                String.format("Spent time on finishing: %s ms", timeSpentFinish),
+                String.format("Spent time total: %s ms", timeSpentTotal),
+                "",
+                String.format("AIs: %s", AI.all.size()),
+                String.format("Actors: %s", Actor.all.size()),
+                String.format("Weapons: %s", Weapon.all.size()),
+                String.format("Bullets: %s", Bullet.all.size()),
+                String.format("Objects: %s", Object.allGround.size()),
         };
 
-        for (String message: performanceMessages) {
-            Display.getGraphicsHud().drawString(message, 20, y);
-            y += y_step;
+        for (String message: messagesPerformance) {
+            Display.getGraphicsHud().drawString(message, indentation, y);
+            y += indentation;
         }
-
-        y += y_step;
-        Display.getGraphicsHud().drawString("AIs: " + AI.all.size(), 20, y);
-        y += y_step;
-        Display.getGraphicsHud().drawString("Actors: " + Actor.all.size(), 20, y);
-        y += y_step;
-        Display.getGraphicsHud().drawString("Weapons: " + Weapon.all.size(), 20, y);
-        y += y_step;
-        Display.getGraphicsHud().drawString("Bullets: " + Bullet.all.size(), 20, y);
-        y += y_step;
-        Display.getGraphicsHud().drawString("Objects: " + Object.allGround.size(), 20, y);
     }
 
 }

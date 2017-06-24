@@ -62,10 +62,10 @@ public class Camera {
     }
 
     public static void render() {
-        if (Constants.isDebug) {
-            renderCameraCenter();
-            renderDistanceViewBoundaries();
-        }
+//        if (Constants.isDebug) {
+//            renderCameraCenter();
+//            renderDistanceViewBoundaries();
+//        }
     }
 
     public static void renderCameraCenter() {
