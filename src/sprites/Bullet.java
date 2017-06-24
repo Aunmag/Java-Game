@@ -55,7 +55,7 @@ public class Bullet extends Sprite {
     }
 
     private void updateVelocity() {
-        velocity *= velocityRecession / TimeManager.FPS_LIMIT;
+        velocity *= velocityRecession / Application.getFpsLimit();
 
         if (velocity <= 1) {
             delete();

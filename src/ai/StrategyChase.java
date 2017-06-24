@@ -2,8 +2,8 @@ package ai;
 
 // Created by Aunmag on 21.11.2016.
 
+import client.Application;
 import client.Constants;
-import client.TimeManager;
 
 class StrategyChase extends StrategyAbstract {
 
@@ -55,8 +55,8 @@ class StrategyChase extends StrategyAbstract {
 
     @Override public void tick() {
 
-        if (TimeManager.getTimeCurrent() - ai.tSearchTargetLast >= ai.tSearchTarget) {
-            ai.tSearchTargetLast = TimeManager.getTimeCurrent();
+        if (Application.getTimeCurrent() - ai.tSearchTargetLast >= ai.tSearchTarget) {
+            ai.tSearchTargetLast = Application.getTimeCurrent();
             searchTarget();
         }
 
@@ -66,8 +66,8 @@ class StrategyChase extends StrategyAbstract {
             return;
         }
 
-        if (TimeManager.getTimeCurrent() - ai.tReactionLast >= ai.tReaction) {
-            ai.tReactionLast = TimeManager.getTimeCurrent();
+        if (Application.getTimeCurrent() - ai.tReactionLast >= ai.tReaction) {
+            ai.tReactionLast = Application.getTimeCurrent();
             updateTargetPosition();
         }
 

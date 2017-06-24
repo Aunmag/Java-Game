@@ -13,6 +13,11 @@ import java.awt.event.*;
 public class Application implements Runnable {
 
     public static boolean isRunning = false;
+    private static final int fpsLimit = 75;
+    private static final float timeFrameDuration = 1000f / fpsLimit;
+    private static float timeDelta = 0;
+    private static long timeCurrent = 0;
+
     private Thread thread;
 
     public synchronized void start() {
@@ -30,14 +35,12 @@ public class Application implements Runnable {
 
         long timeLast = System.currentTimeMillis();
         while (isRunning) {
-            long timeCurrent = System.currentTimeMillis();
+            timeCurrent = System.currentTimeMillis();
             long timePassed = timeCurrent - timeLast;
-            float timeDelta = timePassed / TimeManager.FRAME_DURATION;
+            timeDelta = timePassed / timeFrameDuration;
 
             if (timeDelta >= 1) {
                 timeLast = timeCurrent;
-                TimeManager.setTimeCurrent(timeCurrent);
-                TimeManager.setTimeDelta(timeDelta);
                 update();
                 render();
                 cleanUp();
@@ -131,6 +134,20 @@ public class Application implements Runnable {
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+    }
+
+    /* Getters */
+
+    public static int getFpsLimit() {
+        return fpsLimit;
+    }
+
+    public static float getTimeDelta() {
+        return timeDelta;
+    }
+
+    public static long getTimeCurrent() {
+        return timeCurrent;
     }
 
 }

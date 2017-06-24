@@ -1,7 +1,6 @@
 package managers;
 
-import client.Constants;
-import client.TimeManager;
+import client.Application;
 
 /**
  * TODO: Overwrite
@@ -70,7 +69,7 @@ public class Inertia {
     }
 
     private void updateStep() {
-        step = (target - previous) / (timeDuration * TimeManager.FPS_LIMIT);
+        step = (target - previous) / (timeDuration * Application.getFpsLimit());
         float valueTest = Math.abs(step);
         valueTestA = target - valueTest;
         valueTestB = target + valueTest;

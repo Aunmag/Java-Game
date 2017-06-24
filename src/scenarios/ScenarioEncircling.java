@@ -1,8 +1,8 @@
 package scenarios;
 
 import ai.AI;
+import client.Application;
 import client.Constants;
-import client.TimeManager;
 import gui.menus.MenuManager;
 import managers.MathManager;
 import sprites.Actor;
@@ -28,8 +28,8 @@ public class ScenarioEncircling extends Scenario {
         confinePlayerPosition();
         updateZombiesKilled();
 
-        if (Actor.all.size() < actorsSpawnedLimit && TimeManager.getTimeCurrent() >= timeSpawnNext) {
-            timeSpawnNext = TimeManager.getTimeCurrent() + timeSpawnStep;
+        if (Actor.all.size() < actorsSpawnedLimit && Application.getTimeCurrent() >= timeSpawnNext) {
+            timeSpawnNext = Application.getTimeCurrent() + timeSpawnStep;
             spawnZombie();
         }
     }
