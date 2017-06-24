@@ -3,7 +3,7 @@ package client.graphics;
 import ai.AI;
 import client.Constants;
 import client.Display;
-import client.PerformanceManager;
+import managers.PerformanceManager;
 import managers.MathManager;
 import sprites.Actor;
 import sprites.Bullet;

@@ -2,6 +2,7 @@ package client.input;
 
 import client.*;
 import gui.menus.MenuManager;
+import managers.PerformanceManager;
 import sprites.Actor;
 
 import java.awt.*;

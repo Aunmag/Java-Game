@@ -1,6 +1,4 @@
-package client;
-
-import managers.Timer;
+package managers;
 
 /**
  * Created by Aunmag on 2017.06.03.

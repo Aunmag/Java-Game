@@ -2,6 +2,7 @@ package client;
 
 import gui.menus.MenuManager;
 import client.input.Input;
+import managers.PerformanceManager;
 import sprites.Actor;
 
 import java.awt.event.*;
@@ -17,7 +18,6 @@ public class Application implements Runnable {
     private static final float timeFrameDuration = 1000f / fpsLimit;
     private static float timeDelta = 0;
     private static long timeCurrent = 0;
-
     private Thread thread;
 
     public synchronized void start() {
