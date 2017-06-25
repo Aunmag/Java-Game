@@ -7,7 +7,6 @@ import sprites.Actor;
 
 import java.awt.*;
 import java.awt.event.*;
-import java.util.Arrays;
 
 /**
  * Created by Aunmag on 2016.10.05.

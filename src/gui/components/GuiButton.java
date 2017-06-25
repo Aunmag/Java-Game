@@ -12,9 +12,9 @@ import java.awt.event.MouseEvent;
 
 public class GuiButton extends GuiLabel {
 
-    private static final Color colorDefault = new Color(153, 153, 153);
-    private static final Color colorTouched = new Color(102, 102, 102);
-    private static final Color fontColorUnavailable = new Color(204, 204, 204);
+    private static final Color colorDefault = new Color(128, 128, 128, 140);
+    private static final Color colorTouched = new Color(166, 166, 166, 180);
+    private static final Color fontColorUnavailable = new Color(204, 204, 204, 128);
     private boolean isAvailable = true;
     private boolean isTouched = false;
     private boolean isPressed = false;
@@ -34,7 +34,6 @@ public class GuiButton extends GuiLabel {
         int mouseY = Input.getMouseY();
         isTouched = (x < mouseX && mouseX < x + width) && (y < mouseY && mouseY < y + height);
         isPressed = isTouched && Input.getIsButtonJustPressed(MouseEvent.BUTTON1);
-//        isPressed = isTouched && Input.getIsButtonJustReleased(MouseEvent.BUTTON1);
 
         if (isPressed && action != null) {
             try {
