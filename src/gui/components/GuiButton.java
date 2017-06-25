@@ -33,7 +33,8 @@ public class GuiButton extends GuiLabel {
         int mouseX = Input.getMouseX();
         int mouseY = Input.getMouseY();
         isTouched = (x < mouseX && mouseX < x + width) && (y < mouseY && mouseY < y + height);
-        isPressed = isTouched && Input.getIsButtonJustReleased(MouseEvent.BUTTON1);
+        isPressed = isTouched && Input.getIsButtonJustPressed(MouseEvent.BUTTON1);
+//        isPressed = isTouched && Input.getIsButtonJustReleased(MouseEvent.BUTTON1);
 
         if (isPressed && action != null) {
             try {

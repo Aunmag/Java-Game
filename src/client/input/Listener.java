@@ -26,12 +26,12 @@ public class Listener implements
 
     public void keyPressed(KeyEvent e) {
         Input.keys[e.getKeyCode()] = true;
-        Input.keysJustReleased[e.getKeyCode()] = false;
+        Input.keysJustPressed[e.getKeyCode()] = true;
     }
 
     public void keyReleased(KeyEvent e) {
         Input.keys[e.getKeyCode()] = false;
-        Input.keysJustReleased[e.getKeyCode()] = true;
+        Input.keysJustPressed[e.getKeyCode()] = false;
     }
 
     public void keyTyped(KeyEvent e) {}
@@ -40,12 +40,12 @@ public class Listener implements
 
     public void mousePressed(MouseEvent e) {
         Input.buttons[e.getButton()] = true;
-        Input.buttonsJustReleased[e.getButton()] = false;
+        Input.buttonsJustPressed[e.getButton()] = true;
     }
 
     public void mouseReleased(MouseEvent e) {
         Input.buttons[e.getButton()] = false;
-        Input.buttonsJustReleased[e.getButton()] = true;
+        Input.buttonsJustPressed[e.getButton()] = false;
     }
 
     public void mouseEntered(MouseEvent e) {}

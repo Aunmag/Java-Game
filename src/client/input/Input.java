@@ -19,9 +19,9 @@ public class Input {
     private static final float mouseSensitivity = 0.005f;
 
     static boolean[] keys = new boolean[256];
-    static boolean[] keysJustReleased = new boolean[keys.length];
+    static boolean[] keysJustPressed = new boolean[keys.length];
     static boolean[] buttons = new boolean[8];
-    static boolean[] buttonsJustReleased = new boolean[buttons.length];
+    static boolean[] buttonsJustPressed = new boolean[buttons.length];
 
     static int mouseWheelRotation = 0;
     static int mouseX;
@@ -47,7 +47,7 @@ public class Input {
     }
 
     public static void updateStates() {
-        if (keysJustReleased[KeyEvent.VK_ESCAPE] && GamePlay.getIsWorldCreated()) {
+        if (getIsKeyJustPressed(KeyEvent.VK_ESCAPE) && GamePlay.getIsWorldCreated()) {
             // TODO: Improve this behavior
             if (GamePlay.getIsActive()) {
                 GamePlay.setIsActive(false);
@@ -58,7 +58,7 @@ public class Input {
             }
         }
 
-        if (keysJustReleased[KeyEvent.VK_F1]) {
+        if (getIsKeyJustPressed(KeyEvent.VK_F1)) {
             PerformanceManager.isMonitoring = !PerformanceManager.isMonitoring;
         }
     }
@@ -101,15 +101,21 @@ public class Input {
     }
 
     public static void cleanUp() {
-        Arrays.fill(keysJustReleased, false);
-        Arrays.fill(buttonsJustReleased, false);
         mouseWheelRotation = 0;
     }
 
     /* Getters */
 
-    public static boolean getIsButtonJustReleased(int event) {
-        return buttonsJustReleased[event];
+    public static boolean getIsKeyJustPressed(int event) {
+        boolean isPressed = keysJustPressed[event];
+        keysJustPressed[event] = false;
+        return isPressed;
+    }
+
+    public static boolean getIsButtonJustPressed(int event) {
+        boolean isPressed = buttonsJustPressed[event];
+        buttonsJustPressed[event] = false;
+        return isPressed;
     }
 
     public static int getMouseWheelRotation() {
