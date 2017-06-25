@@ -20,7 +20,7 @@ public class Camera {
     private static float radians = 0;
     private static float centerX;
     private static float centerY;
-    private static float offset;
+    private static float offset = 0;
     private static float zoom;
     private static final float zoomLimitMin = 1;
     private static final float zoomLimitMax = 4;
@@ -62,10 +62,10 @@ public class Camera {
     }
 
     public static void render() {
-//        if (Constants.IS_DEBUG) {
-//            renderCameraCenter();
-//            renderDistanceViewBoundaries();
-//        }
+        if (Constants.IS_DEBUG) {
+            renderCameraCenter();
+            renderDistanceViewBoundaries();
+        }
     }
 
     public static void renderCameraCenter() {
@@ -137,7 +137,7 @@ public class Camera {
 
         Camera.zoom = zoom;
 
-        offset = (Display.getHalfHeight() - 30) / zoom;
+        offset = offset / zoom;
         distanceView = (int) (Display.getHalfMaximal() / zoom) + distanceViewBuffer;
 
         centerX = Display.getHalfWidth() / zoom;
