@@ -1,57 +1,57 @@
 package ai;
 
-// Created by Aunmag on 23.10.2016.
-
+import client.Application;
 import sprites.Actor;
 import java.util.ArrayList;
 import java.util.List;
+
+/**
+ * Created by Aunmag on 2016.10.23.
+ */
 
 public class AI {
 
     public static List<AI> all = new ArrayList<>();
     public static List<AI> invalids = new ArrayList<>();
 
-    public boolean isValid = true;
-
-    Actor subject;
-
-    // Target data:
-    Actor target = null;
-    float targetDirection;
-    float targetFlankAbs;
-    float targetFlankReal;
-    float targetDistance;
-    boolean isTargetReached = false;
-
-    static final long tSearchTarget = 2_000;
-    static final long tReaction = 300;
-    long tSearchTargetLast = 0;
-    long tReactionLast = 0;
-
-    // Strategies:
-    private StrategyAbstract currentStrategy;
-    private StrategyChase strategyChase;
+    private Actor subject;
+    private Strategy strategy;
+    private static final int timeReaction = 300;
+    private long timeReactionNext = 0;
+    private boolean isReactionNow = false;
 
     public AI(Actor subject) {
-
         this.subject = subject;
-
-        strategyChase = new StrategyChase(this);
-        currentStrategy = strategyChase;
-
+        strategy = new StrategyChase(this);
     }
 
-    public void tick() {
-        if (!subject.getIsValid() || !subject.getIsAlive()) {
-            delete();
+    public void update() {
+        if (Application.getTimeCurrent() > timeReactionNext) {
+            isReactionNow = true;
+            timeReactionNext = Application.getTimeCurrent() + timeReaction;
         }
 
-        currentStrategy.tick();
+        if (!subject.getIsValid() || !subject.getIsAlive()) {
+            delete();
+        } else {
+            strategy.update();
+        }
+
+        isReactionNow = false;
     }
 
     public void delete() {
-        isValid = false;
         invalids.add(this);
+    }
+
+    /* Getters */
+
+    Actor getSubject() {
+        return subject;
+    }
+
+    boolean getIsReactionNow() {
+        return isReactionNow;
     }
 
 }

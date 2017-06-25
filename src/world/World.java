@@ -100,7 +100,7 @@ public class World {
 
     public void update() {
         for (AI ai: AI.all) {
-            ai.tick();
+            ai.update();
         }
 
         for (Actor actor: Actor.all) {

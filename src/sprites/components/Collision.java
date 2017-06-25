@@ -31,10 +31,8 @@ public abstract class Collision extends BasePosition {
 //        }
 
         float distanceBetween = MathManager.calculateDistanceBetween(a, b);
-
         a.setLastDistanceBetween(distanceBetween);
         b.setLastDistanceBetween(distanceBetween);
-
         return distanceBetween < distanceToCollision;
     }
 
