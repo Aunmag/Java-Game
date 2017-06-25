@@ -1,51 +1,71 @@
 package client.graphics;
 
 import ai.AI;
-import client.Client;
 import client.Constants;
+import client.Display;
+import managers.PerformanceManager;
+import managers.MathManager;
 import sprites.Actor;
 import sprites.Bullet;
 import sprites.Weapon;
 import sprites.Object;
 import java.awt.*;
 
-// Created by Aunmag on 13.11.2016.
+/**
+ * Created by Aunmag on 2016.11.13.
+ */
 
 public class Hud {
 
     public static void render() {
+        int indentation = 20;
+        int y = indentation;
 
-        Client.getHud().setColor(Color.WHITE);
+        String[] messages = {
+                String.format("%s v%s", Constants.TITLE, Constants.VERSION),
+                "Performance [F1]"
+        };
 
-        Client.getHud().drawString(Constants.TITLE + " v" + Constants.VERSION, 20, 20);
-        Client.getHud().drawString("Performance [F1]", 20, 40);
+        Display.getGraphicsHud().setColor(Color.WHITE);
 
-        if (!Client.isPerformanceData()) {
+        for (String message: messages) {
+            Display.getGraphicsHud().drawString(message, indentation, y);
+            y += indentation;
+        }
+
+        if (!PerformanceManager.isMonitoring) {
             return;
         }
 
-        float t = Math.round(Client.tPerformanceAverage.getAverage() * 10.0f) / 10.0f;
+        y += indentation;
 
-        if (t >= 8) {
-            Client.getHud().setColor(Color.red);
-        } else if (t >= 4) {
-            Client.getHud().setColor(Color.orange);
-        } else if (t >= 2) {
-            Client.getHud().setColor(Color.yellow);
-        } else if (t >= 1) {
-            Client.getHud().setColor(Color.green);
+        float timeSpentUpdate = PerformanceManager.timerUpdating.getTimeDurationAverage();
+        float timeSpentRender = PerformanceManager.timerRendering.getTimeDurationAverage();
+        float timeSpentFinish = PerformanceManager.timerFinishing.getTimeDurationAverage();
+        float timeSpentTotal = timeSpentUpdate + timeSpentRender + timeSpentFinish;
+        float round = 100f;
+        timeSpentUpdate = MathManager.calculateRoundValue(timeSpentUpdate, round);
+        timeSpentRender = MathManager.calculateRoundValue(timeSpentRender, round);
+        timeSpentFinish = MathManager.calculateRoundValue(timeSpentFinish, round);
+        timeSpentTotal = MathManager.calculateRoundValue(timeSpentTotal, round);
+
+        String[] messagesPerformance = {
+                String.format("Spent time on updating: %s ms", timeSpentUpdate),
+                String.format("Spent time on rendering: %s ms", timeSpentRender),
+                String.format("Spent time on finishing: %s ms", timeSpentFinish),
+                String.format("Spent time total: %s ms", timeSpentTotal),
+                "",
+                String.format("AIs: %s", AI.all.size()),
+                String.format("Actors: %s", Actor.all.size()),
+                String.format("Weapons: %s", Weapon.all.size()),
+                String.format("Bullets: %s", Bullet.all.size()),
+                String.format("Objects: %s", Object.allGround.size()),
+        };
+
+        for (String message: messagesPerformance) {
+            Display.getGraphicsHud().drawString(message, indentation, y);
+            y += indentation;
         }
-
-        Client.getHud().drawString("Lags time: " + t + " ms", 20, 60);
-
-        Client.getHud().setColor(Color.WHITE);
-
-        Client.getHud().drawString("AIs: " + AI.allAIs.size(), 20, 80);
-        Client.getHud().drawString("Actors: " + Actor.allActors.size(), 20, 100);
-        Client.getHud().drawString("Weapons: " + Weapon.all.size(), 20, 120);
-        Client.getHud().drawString("Bullets: " + Bullet.all.size(), 20, 140);
-        Client.getHud().drawString("Objects: " + Object.allGround.size(), 20, 160);
-
     }
 
 }

@@ -1,89 +1,111 @@
 package sprites;
 
-import client.Client;
-import client.Constants;
-import scripts.IsIntersection;
+import client.*;
+import basics.BasePoint;
+import sprites.components.Collision;
+import sprites.components.CollisionLine;
+
 import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A bullet is been made with a weapon. Bullet is a line with its color and it has no image. It has its velocity (v),
- * direction and position. If a bullet intersects an actor then the bullets lose its speed and hit the actor.
+ * A bullet is been made with a weapon. Bullet is a line with its color and it has no image. It has
+ * its velocity, direction and position. If a bullet collides an actor then the bullets lose its
+ * speed and hit the actor.
  *
- * Created by Aunmag on 03.10.2016.
+ * Created by Aunmag on 2016.10.03.
  */
 
 public class Bullet extends Sprite {
 
-    public static List<Bullet> all = new ArrayList<>(); // the all valid bullets must keep here
+    public static List<Bullet> all = new ArrayList<>();
+    public static List<Bullet> invalids = new ArrayList<>();
 
-    // Characteristics:
-//    private float velocity; // current bullet velocity
-    private final float vRecession; // how fast bullet lose its velocity per a second
     private static final Color color = new Color(255, 204, 51, 160);
 
-    // Tail position (depends on its velocity):
     private float x2;
     private float y2;
 
-    public Bullet(float x, float y, float radians, float velocity, float vRecession) {
+    private float velocity;
+    private final float velocityRecession; // TODO: Implement bullet weight
+    private CollisionLine collision = new CollisionLine(this);
 
-        // Set basic sprite data:
-        super(x, y, radians, true, "");
+    Actor shooter;
 
-        // Set characteristics:
+    public Bullet(
+            float x,
+            float y,
+            float radians,
+            float velocity,
+            float velocityRecession,
+            Actor shooter
+    ) {
+        super(x, y, radians, null);
         this.velocity = velocity;
-        this.vRecession = vRecession;
-
+        this.velocityRecession = velocityRecession;
+        this.shooter = shooter;
+        updatePositionTail();
     }
 
-    @Override public void tick() {
+    public void update() {
+        updateVelocity();
+        updatePosition();
+        updateCollision();
+    }
 
-        // Remove bullet if it isn't valid or has stopped already:
-        if (!isValid || velocity <= 1) {
-            Bullet.all.remove(this);
-            return;
+    private void updateVelocity() {
+        velocity *= velocityRecession / Application.getFpsLimit();
+
+        if (velocity <= 1) {
+            delete();
         }
+    }
 
-        // Update velocity:
-        velocity *= vRecession / Constants.FPS_LIMIT; // make bullet velocity slower in according to FPS
-
-        // Update bullet position according to its velocity:
+    private void updatePosition() {
         x += velocity * Math.cos(radians);
         y += velocity * Math.sin(radians);
-
-        // Define bullet tall (trace) according to its head and velocity too:
-        x2 = (float) (x - velocity * Math.cos(radians));
-        y2 = (float) (y - velocity * Math.sin(radians));
-
-        // Test if bullet intersected any actor's body:
-        for (Actor actor: Actor.allActors) {
-            if (IsIntersection.circleLine(x, y, x2, y2, actor.x, actor.y, actor.bodyRadius)) {
-                actor.hit(velocity, radians); // hit actor with bullet velocity
-                velocity /= 60; // lose velocity (I think this must being improved)
-            }
-        }
-
+        updatePositionTail();
     }
 
-    @Override public void render() {
+    private void updatePositionTail() {
+        x2 = x - velocity * (float) Math.cos(radians);
+        y2 = y - velocity * (float) Math.sin(radians);
+    }
 
-        // Test if bullet is visible:
-        if (!IsVisible()) {
+    private void updateCollision() {
+        collision.setPosition(x, y, x2, y2);
+
+        for (Actor actor: Actor.all) {
+            if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
+                actor.hit(velocity, radians, shooter);
+                velocity /= 60; // TODO: Improve
+            }
+        }
+    }
+
+    public void render() {
+        if (!Camera.calculateIsLineVisible(x, y, x2, y2)) {
             return;
         }
 
-        displayPositionPrepare();
+        BasePoint onScreenPosition = Camera.calculateOnScreenPosition(x, y);
+        int onScreenX1 = (int) onScreenPosition.getX();
+        int onScreenY1 = (int) onScreenPosition.getY();
 
-        float displayX2 = (float) (displayX + velocity * Math.cos(radians));
-        float displayY2 = (float) (displayY + velocity * Math.sin(radians));
+        onScreenPosition = Camera.calculateOnScreenPosition(x2, y2);
+        int onScreenX2 = (int) onScreenPosition.getX();
+        int onScreenY2 = (int) onScreenPosition.getY();
 
-        // Set bullet color:
-        Client.getG().setColor(color);
+        Display.getGraphics().setColor(color);
+        Display.getGraphics().drawLine(onScreenX1, onScreenY1, onScreenX2, onScreenY2);
 
-        Client.getG().drawLine((int) displayX, (int) displayY, (int) displayX2, (int) displayY2);
+        collision.render();
+    }
 
+    public void delete() {
+        isValid = false;
+        invalids.add(this);
     }
 
 }

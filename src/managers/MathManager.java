@@ -1,6 +1,7 @@
 package managers;
 
 import client.Constants;
+import basics.BasePoint;
 
 import java.util.Random;
 
@@ -19,12 +20,16 @@ public class MathManager {
 
     public static int randomizeBetween(int min, int max) {
         if (min > max) {
-            // TODO: log
+            String message = "Received min value is grater than max. Values has been swapped.";
+            Log.log("randomizeBetween", message);
             int min_copy = min;
             min = max;
             max = min_copy;
         } else if (min == max) {
-            // TODO: log
+            String message = String.format(
+                    "Min and max values are equal %1$s. Returned %s %1$s once.", min
+            );
+            Log.log("randomizeBetween", message);
             return min;
         }
 
@@ -34,12 +39,16 @@ public class MathManager {
 
     public static float randomizeBetween(float min, float max) {
         if (min > max) {
-            // TODO: log
+            String message = "Received min value is grater than max. Values has been swapped.";
+            Log.log("randomizeBetween", message);
             float min_copy = min;
             min = max;
             max = min_copy;
         } else if (min == max) {
-            // TODO: log
+            String message = String.format(
+                    "Min and max values are equal %1$s. Returned %s %1$s once.", min
+            );
+            Log.log("randomizeBetween", message);
             return min;
         }
 
@@ -53,7 +62,8 @@ public class MathManager {
 
     public static float randomizeFlexibly(float middle, float offset, float flex) {
         if (flex <= 0 || flex > 1) {
-            // TODO: log
+            String message = String.format("Got flex value as %s. replaced with 0.5.", flex);
+            Log.log("randomizeFlexibly", message);
             flex = 0.5f;
         }
 
@@ -68,6 +78,30 @@ public class MathManager {
 
         // Randomize and return result
         return randomizeBetween(resultMin, resultMax);
+    }
+
+    public static float calculateDistanceBetween(BasePoint a, BasePoint b) {
+        return calculateDistanceBetween(a.getX(), a.getY(), b.getX(), b.getY());
+    }
+
+    public static float calculateDistanceBetween(float x1, float y1, float x2, float y2) {
+        double powX = Math.pow(x1 - x2, 2);
+        double powY = Math.pow(y1 - y2, 2);
+        return (float) Math.sqrt(powX + powY);
+    }
+
+    public static float calculateRadiansBetween(BasePoint a, BasePoint b) {
+        return calculateRadiansBetween(a.getX(), a.getY(), b.getX(), b.getY());
+    }
+
+    public static float calculateRadiansBetween(float x1, float y1, float x2, float y2) {
+        float differenceX = x1 - x2;
+        float differenceY = y1 - y2;
+        return (float) Math.atan2(differenceY, differenceX);
+    }
+
+    public static float calculateRoundValue(float value, float round) {
+        return Math.round(value * round) / round;
     }
 
 }
