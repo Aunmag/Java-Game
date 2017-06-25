@@ -11,6 +11,7 @@ import java.awt.*;
 
 public class MenuManager {
 
+    // TODO: Create united abstract menu class
     private static final MenuMain menuMain = new MenuMain();
     private static final MenuHelp menuHelp = new MenuHelp();
     private static final MenuExit menuExit = new MenuExit();
@@ -24,18 +25,15 @@ public class MenuManager {
     }
 
     public static void update() {
-        if (currentMenu != null) {
-            currentMenu.update();
-        }
+        currentMenu.update();
     }
 
     public static void render() {
+        // TODO: Render background inside menu:
         Display.getGraphicsHud().setColor(backgroundColor);
         Display.getGraphicsHud().fillRect(0, 0, Display.getWidth(), Display.getHeight());
 
-        if (currentMenu != null) {
-            currentMenu.render();
-        }
+        currentMenu.render();
     }
 
     /* Getters */
