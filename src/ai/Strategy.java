@@ -55,7 +55,7 @@ abstract class Strategy {
         targetDirection = MathManager.calculateRadiansBetween(targetX, targetY, x, y);
 
         isTargetReached = Collision.calculateIsCollision(
-                ai.getSubject().getCollision(),
+                ai.getSubject().getHands(),
                 target.getCollision()
         );
 
