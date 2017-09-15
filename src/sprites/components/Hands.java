@@ -12,8 +12,8 @@ import java.awt.*;
 public class Hands extends CollisionCircle {
 
     protected static final Color renderColor = new Color(255, 0, 0, 128);
-    private static final float radius = 14;
-    private static final float distance = radius * 1.5f;
+    private static final float radius = 11;
+    private static final float distance = radius;
     private static final float damage = 10;
     private static final long timeAttackPace = 400;
     private final Actor owner;
