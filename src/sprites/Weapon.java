@@ -66,14 +66,18 @@ public class Weapon extends Sprite {
     private void makeShot() {
         soundShot.play();
 
+        float muzzleLength = image.getCenterX() / 2f;
+        float bulletX = x + muzzleLength * (float) Math.cos(radians);
+        float bulletY = y + muzzleLength * (float) Math.sin(radians);
+
         for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
-            makeBullet();
+            makeBullet(bulletX, bulletY);
         }
 
         timeNextShot = Application.getTimeCurrent() + fireRate;
     }
 
-    private void makeBullet() {
+    private void makeBullet(float x, float y) {
         float bulletRadians = MathManager.randomizeFlexibly(radians, deflectionRadians);
         float bulletVelocity = MathManager.randomizeFlexibly(velocityMuzzle, deflectionVelocity);
         Bullet bullet = new Bullet(x, y, bulletRadians, bulletVelocity, velocityRecession, owner);
