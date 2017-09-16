@@ -6,8 +6,7 @@ import managers.MathManager;
 import managers.ImageManager;
 import managers.Inertia;
 import managers.SoundManager;
-import sprites.components.Collision;
-import sprites.components.CollisionCircle;
+import nightingale.collision.CollisionCircle;
 import sprites.components.Hands;
 
 import java.util.*;
@@ -35,7 +34,7 @@ public class Actor extends Sprite {
     private int kills = 0;
     public String type;
     private Hands hands = new Hands(this);
-    private CollisionCircle collision = new CollisionCircle(this, 7.2f);
+    private CollisionCircle collision = new CollisionCircle(getX(), getY(), 7.2f);
 
     private float velocity = 0;
     private float velocityAside = 0;
@@ -143,20 +142,9 @@ public class Actor extends Sprite {
                 continue;
             }
 
-            if (Collision.calculateIsCollision(collision, actor.getCollision())) {
-                float distanceBetween = collision.getLastDistanceBetween();
-                float distanceToCollision = collision.getRadius() + actor.getCollision().getRadius();
-                float distanceIntersection = (distanceToCollision - distanceBetween) / 2;
-                float radiansBetween = MathManager.calculateRadiansBetween(this, actor);
-                addPosition(
-                        distanceIntersection * (float) Math.cos(radiansBetween),
-                        distanceIntersection * (float) Math.sin(radiansBetween)
-                );
-                actor.addPosition(
-                        distanceIntersection * (float) Math.cos(-radiansBetween),
-                        distanceIntersection * (float) Math.sin(-radiansBetween)
-                );
-            }
+            collision.preventCollisionWith(actor.collision);
+            setPosition(collision.getX(), collision.getY());
+            actor.setPosition(actor.collision.getX(), actor.collision.getY());
         }
     }
 
@@ -227,8 +215,8 @@ public class Actor extends Sprite {
 
     public void render() {
         super.render();
-        hands.render();
-        collision.render();
+//        hands.render();
+//        collision.render();
     }
 
     private void soundHurt() {

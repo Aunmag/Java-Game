@@ -2,8 +2,8 @@ package sprites;
 
 import client.*;
 import nightingale.basics.BasePoint;
-import sprites.components.Collision;
-import sprites.components.CollisionLine;
+import nightingale.collision.Collision;
+import nightingale.collision.CollisionLine;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class Bullet extends Sprite {
 
     private float velocity;
     private final float velocityRecession; // TODO: Implement bullet weight
-    private CollisionLine collision = new CollisionLine(this);
+    private CollisionLine collision = new CollisionLine(getX(), getY(), getX(), getY());
 
     Actor shooter;
 
@@ -102,7 +102,7 @@ public class Bullet extends Sprite {
         Display.getGraphics().setColor(color);
         Display.getGraphics().drawLine(onScreenX1, onScreenY1, onScreenX2, onScreenY2);
 
-        collision.render();
+//        collision.render();
     }
 
     public void delete() {

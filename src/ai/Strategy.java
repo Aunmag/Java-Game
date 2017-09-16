@@ -3,7 +3,7 @@ package ai;
 import client.Constants;
 import managers.MathManager;
 import sprites.Actor;
-import sprites.components.Collision;
+import nightingale.collision.Collision;
 
 /**
  * Created by Aunmag on 2016.11.21.

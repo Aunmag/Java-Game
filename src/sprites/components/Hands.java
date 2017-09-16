@@ -1,6 +1,8 @@
 package sprites.components;
 
 import client.Application;
+import nightingale.collision.Collision;
+import nightingale.collision.CollisionCircle;
 import sprites.Actor;
 
 import java.awt.*;
@@ -20,7 +22,7 @@ public class Hands extends CollisionCircle {
     private long timeAttackNext = 0;
 
     public Hands(Actor owner) {
-        super(owner, radius);
+        super(owner.getX(), owner.getY(), radius);
         this.owner = owner;
         updatePosition();
     }
@@ -47,7 +49,7 @@ public class Hands extends CollisionCircle {
             }
 
             if (Collision.calculateIsCollision(this, actor.getCollision())) {
-                actor.hit(damage * owner.getHealth(), getRadians());
+                actor.hit(damage * owner.getHealth(), radius);
             }
         }
 
