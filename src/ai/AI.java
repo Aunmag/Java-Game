@@ -1,6 +1,5 @@
 package ai;
 
-import client.Application;
 import sprites.Actor;
 import java.util.ArrayList;
 import java.util.List;
@@ -26,12 +25,12 @@ public class AI {
     }
 
     public void update() {
-        if (Application.getTimeCurrent() > timeReactionNext) {
+        if (System.currentTimeMillis() > timeReactionNext) {
             isReactionNow = true;
-            timeReactionNext = Application.getTimeCurrent() + timeReaction;
+            timeReactionNext = System.currentTimeMillis() + timeReaction;
         }
 
-        if (!subject.getIsValid() || !subject.getIsAlive()) {
+        if (subject.isRemoved() || !subject.getIsAlive()) {
             delete();
         } else {
             strategy.update();

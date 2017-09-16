@@ -1,15 +1,15 @@
 package client.graphics;
 
-import ai.AI;
-import client.Constants;
-import client.Display;
-import managers.PerformanceManager;
+import nightingale.Application;
+import nightingale.data.DataEngine;
+import nightingale.font.Text;
+import nightingale.gui.GuiLabel;
 import nightingale.utilities.UtilsMath;
+import org.lwjgl.glfw.GLFW;
+import ai.AI;
 import sprites.Actor;
 import sprites.Bullet;
-import sprites.Weapon;
 import sprites.Object;
-import java.awt.*;
 
 /**
  * Created by Aunmag on 2016.11.13.
@@ -17,55 +17,56 @@ import java.awt.*;
 
 public class Hud {
 
+    private static boolean isVisible = false;
+    private static Text text = createText(DataEngine.titleFull);
+
+    private static Text createText(String message) {
+        return new Text(
+                0,
+                0,
+                Application.getWindow().getWidth(),
+                message,
+                1.2f,
+                GuiLabel.font,
+                false
+        );
+    }
+
     public static void render() {
-        int indentation = 20;
-        int y = indentation;
-
-        String[] messages = {
-                String.format("%s v%s", Constants.TITLE, Constants.VERSION),
-                "Performance [F1]"
-        };
-
-        Display.getGraphicsHud().setColor(Color.WHITE);
-
-        for (String message: messages) {
-            Display.getGraphicsHud().drawString(message, indentation, y);
-            y += indentation;
+        if (Application.getInput().isKeyPressed(GLFW.GLFW_KEY_F1)) {
+            isVisible = !isVisible;
         }
 
-        if (!PerformanceManager.isMonitoring) {
+        if (!isVisible) {
             return;
         }
 
-        y += indentation;
-
-        float timeSpentUpdate = PerformanceManager.timerUpdating.getTimeDurationAverage();
-        float timeSpentRender = PerformanceManager.timerRendering.getTimeDurationAverage();
-        float timeSpentFinish = PerformanceManager.timerFinishing.getTimeDurationAverage();
-        float timeSpentTotal = timeSpentUpdate + timeSpentRender + timeSpentFinish;
+        float timeSpentUpdate = 0;
+        float timeSpentRender = 0;
+        float timeSpentTotal = timeSpentUpdate + timeSpentRender;
         float round = 100f;
         timeSpentUpdate = UtilsMath.calculateRoundValue(timeSpentUpdate, round);
         timeSpentRender = UtilsMath.calculateRoundValue(timeSpentRender, round);
-        timeSpentFinish = UtilsMath.calculateRoundValue(timeSpentFinish, round);
         timeSpentTotal = UtilsMath.calculateRoundValue(timeSpentTotal, round);
 
-        String[] messagesPerformance = {
-                String.format("Spent time on updating: %s ms", timeSpentUpdate),
-                String.format("Spent time on rendering: %s ms", timeSpentRender),
-                String.format("Spent time on finishing: %s ms", timeSpentFinish),
-                String.format("Spent time total: %s ms", timeSpentTotal),
-                "",
-                String.format("AIs: %s", AI.all.size()),
-                String.format("Actors: %s", Actor.all.size()),
-                String.format("Weapons: %s", Weapon.all.size()),
-                String.format("Bullets: %s", Bullet.all.size()),
-                String.format("Objects: %s", Object.allGround.size()),
-        };
+        String message = "";
+        message += String.format("Spent time on updating: %s ms\n", timeSpentUpdate);
+        message += String.format("Spent time on rendering: %s ms\n", timeSpentRender);
+        message += String.format("Spent time total: %s ms \n", timeSpentTotal);
+        message += String.format("\nAIs: %s", AI.all.size());
+        message += String.format("\nActors: %s", Actor.all.size());
+        message += String.format("\nBullets: %s", Bullet.all.size());
+        message += String.format("\nTerrains: %s", Object.allGround.size());
+        message += String.format("\nDecorations: %s", Object.allDecoration.size());
+        message += String.format("\nTrees: %s", Object.allAir.size());
 
-        for (String message: messagesPerformance) {
-            Display.getGraphicsHud().drawString(message, indentation, y);
-            y += indentation;
+        if (!text.message.equals(message)) {
+            text.delete();
+            text = createText(message);
         }
+
+        GuiLabel.font.renderPrepare();
+        text.render();
     }
 
 }

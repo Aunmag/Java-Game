@@ -1,6 +1,5 @@
 package ai;
 
-import client.Application;
 import nightingale.utilities.UtilsMath;
 
 /**
@@ -65,9 +64,9 @@ class StrategyChase extends Strategy {
     }
 
     public void update() {
-        if (Application.getTimeCurrent() > timeSearchTargetNext) {
+        if (System.currentTimeMillis() > timeSearchTargetNext) {
             searchTarget();
-            timeSearchTargetNext = Application.getTimeCurrent() + timeSearchTarget;
+            timeSearchTargetNext = System.currentTimeMillis() + timeSearchTarget;
         }
 
         if (target == null) {

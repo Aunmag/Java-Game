@@ -1,9 +1,10 @@
 package sprites;
 
-import client.*;
 import nightingale.basics.BasePoint;
+import nightingale.basics.BaseSprite;
 import nightingale.collision.Collision;
 import nightingale.collision.CollisionLine;
+import nightingale.utilities.UtilsGraphics;
 
 import java.awt.Color;
 import java.util.ArrayList;
@@ -17,19 +18,16 @@ import java.util.List;
  * Created by Aunmag on 2016.10.03.
  */
 
-public class Bullet extends Sprite {
+public class Bullet extends BaseSprite {
 
     public static List<Bullet> all = new ArrayList<>();
-    public static List<Bullet> invalids = new ArrayList<>();
-
     private static final Color color = new Color(255, 204, 51, 160);
 
-    private float x2;
-    private float y2;
+    private BasePoint positionTail;
 
     private float velocity;
     private final float velocityRecession; // TODO: Implement bullet weight
-    private CollisionLine collision = new CollisionLine(getX(), getY(), getX(), getY());
+    private CollisionLine collision;
 
     Actor shooter;
 
@@ -45,7 +43,14 @@ public class Bullet extends Sprite {
         this.velocity = velocity;
         this.velocityRecession = velocityRecession;
         this.shooter = shooter;
+        positionTail = new BasePoint(x, y);
         updatePositionTail();
+        collision = new CollisionLine(
+                getX(),
+                getY(),
+                positionTail.getX(),
+                positionTail.getY()
+        );
     }
 
     public void update() {
@@ -55,10 +60,10 @@ public class Bullet extends Sprite {
     }
 
     private void updateVelocity() {
-        velocity *= velocityRecession / Application.getFpsLimit();
+        velocity *= velocityRecession / 75;
 
         if (velocity <= 1) {
-            delete();
+            remove();
         }
     }
 
@@ -71,12 +76,14 @@ public class Bullet extends Sprite {
     }
 
     private void updatePositionTail() {
-        x2 = getX() - velocity * (float) Math.cos(getRadians());
-        y2 = getY() - velocity * (float) Math.sin(getRadians());
+        positionTail.setPosition(
+                getX() - velocity * (float) Math.cos(getRadians()),
+                getY() - velocity * (float) Math.sin(getRadians())
+        );
     }
 
     private void updateCollision() {
-        collision.setPosition(getX(), getY(), x2, y2);
+        collision.setPosition(getX(), getY(), positionTail.getX(), positionTail.getY());
 
         for (Actor actor: Actor.all) {
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
@@ -87,27 +94,14 @@ public class Bullet extends Sprite {
     }
 
     public void render() {
-        if (!Camera.calculateIsLineVisible(getX(), getY(), x2, y2)) {
-            return;
-        }
+//        if (!Camera.calculateIsLineVisible(x, y, x2, y2)) {
+//            return;
+//        }
 
-        BasePoint onScreenPosition = Camera.calculateOnScreenPosition(getX(), getY());
-        int onScreenX1 = (int) onScreenPosition.getX();
-        int onScreenY1 = (int) onScreenPosition.getY();
-
-        onScreenPosition = Camera.calculateOnScreenPosition(x2, y2);
-        int onScreenX2 = (int) onScreenPosition.getX();
-        int onScreenY2 = (int) onScreenPosition.getY();
-
-        Display.getGraphics().setColor(color);
-        Display.getGraphics().drawLine(onScreenX1, onScreenY1, onScreenX2, onScreenY2);
+        UtilsGraphics.setDrawColor(color);
+        UtilsGraphics.drawLine(this, positionTail, true);
 
 //        collision.render();
-    }
-
-    public void delete() {
-        isValid = false;
-        invalids.add(this);
     }
 
 }
