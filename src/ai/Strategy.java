@@ -1,6 +1,5 @@
 package ai;
 
-import client.Constants;
 import nightingale.utilities.UtilsMath;
 import sprites.Actor;
 import nightingale.collision.Collision;
@@ -65,7 +64,7 @@ abstract class Strategy {
     }
 
     protected boolean calculateIsBehindTarget() {
-        return targetRadiansDifferenceAbsolute < Constants.PI_0_5;
+        return targetRadiansDifferenceAbsolute < UtilsMath.PIx0_5;
     }
 
     abstract void update();

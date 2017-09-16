@@ -3,6 +3,7 @@ package client;
 import gui.menus.MenuManager;
 import client.input.Input;
 import managers.PerformanceManager;
+import nightingale.utilities.UtilsMath;
 import sprites.Actor;
 
 import java.awt.event.*;
@@ -101,7 +102,7 @@ public class Application implements Runnable {
     }
 
     private void rotateGraphics() {
-        float radians = Camera.getRadians() + (float) Constants.PI_0_5;
+        float radians = Camera.getRadians() + (float) UtilsMath.PIx0_5;
         float x = Camera.getCenterX();
         float y = Camera.getCenterY();
         Display.getGraphics().rotate(-radians, x, y);

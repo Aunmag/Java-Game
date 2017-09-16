@@ -1,6 +1,5 @@
 package sprites;
 
-import client.Constants;
 import nightingale.utilities.UtilsLog;
 import nightingale.utilities.UtilsMath;
 import managers.ImageManager;
@@ -158,11 +157,11 @@ public class Actor extends Sprite {
         }
 
         if (isWalkingLeft) {
-            move(getRadians() - (float) Constants.PI_0_5, velocityAside);
+            move(getRadians() - (float) UtilsMath.PIx0_5, velocityAside);
         }
 
         if (isWalkingRight) {
-            move(getRadians() + (float) Constants.PI_0_5, velocityAside);
+            move(getRadians() + (float) UtilsMath.PIx0_5, velocityAside);
         }
     }
 
