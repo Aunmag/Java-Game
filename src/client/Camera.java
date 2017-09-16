@@ -3,8 +3,8 @@ package client;
 import client.input.Input;
 import managers.MathManager;
 import utilities.UtilsGraphics;
-import basics.BasePoint;
-import basics.BasePosition;
+import nightingale.basics.BasePoint;
+import nightingale.basics.BasePosition;
 
 import java.awt.*;
 

@@ -1,7 +1,7 @@
 package sprites;
 
 import client.*;
-import basics.BasePoint;
+import nightingale.basics.BasePoint;
 import sprites.components.Collision;
 import sprites.components.CollisionLine;
 
@@ -63,33 +63,35 @@ public class Bullet extends Sprite {
     }
 
     private void updatePosition() {
-        x += velocity * Math.cos(radians);
-        y += velocity * Math.sin(radians);
+        addPosition(
+                velocity * (float) Math.cos(getRadians()),
+                velocity * (float) Math.sin(getRadians())
+        );
         updatePositionTail();
     }
 
     private void updatePositionTail() {
-        x2 = x - velocity * (float) Math.cos(radians);
-        y2 = y - velocity * (float) Math.sin(radians);
+        x2 = getX() - velocity * (float) Math.cos(getRadians());
+        y2 = getY() - velocity * (float) Math.sin(getRadians());
     }
 
     private void updateCollision() {
-        collision.setPosition(x, y, x2, y2);
+        collision.setPosition(getX(), getY(), x2, y2);
 
         for (Actor actor: Actor.all) {
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
-                actor.hit(velocity, radians, shooter);
+                actor.hit(velocity, getRadians(), shooter);
                 velocity /= 60; // TODO: Improve
             }
         }
     }
 
     public void render() {
-        if (!Camera.calculateIsLineVisible(x, y, x2, y2)) {
+        if (!Camera.calculateIsLineVisible(getX(), getY(), x2, y2)) {
             return;
         }
 
-        BasePoint onScreenPosition = Camera.calculateOnScreenPosition(x, y);
+        BasePoint onScreenPosition = Camera.calculateOnScreenPosition(getX(), getY());
         int onScreenX1 = (int) onScreenPosition.getX();
         int onScreenY1 = (int) onScreenPosition.getY();
 

@@ -2,7 +2,7 @@ package sprites.components;
 
 import managers.MathManager;
 import sprites.Sprite;
-import basics.BasePosition;
+import nightingale.basics.BasePosition;
 
 import java.awt.*;
 

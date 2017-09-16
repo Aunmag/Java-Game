@@ -32,8 +32,7 @@ public class CollisionLine extends Collision {
     /* Setters */
 
     public void setPosition(float x1, float y1, float x2, float y2) {
-        this.x = x1;
-        this.y = y1;
+        setPosition(x1, y1);
         this.x2 = x2;
         this.y2 = y2;
     }

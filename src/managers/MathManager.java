@@ -1,7 +1,7 @@
 package managers;
 
 import client.Constants;
-import basics.BasePoint;
+import nightingale.basics.BasePoint;
 
 import java.util.Random;
 

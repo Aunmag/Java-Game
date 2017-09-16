@@ -136,7 +136,7 @@ public class Actor extends Sprite {
     }
 
     private void updateCollision() {
-        collision.setPosition(x, y);
+        collision.setPosition(getX(), getY());
 
         for (Actor actor: all) {
             if (!actor.isAlive || actor.equals(this)) {
@@ -148,29 +148,33 @@ public class Actor extends Sprite {
                 float distanceToCollision = collision.getRadius() + actor.getCollision().getRadius();
                 float distanceIntersection = (distanceToCollision - distanceBetween) / 2;
                 float radiansBetween = MathManager.calculateRadiansBetween(this, actor);
-                x += distanceIntersection * Math.cos(radiansBetween);
-                y += distanceIntersection * Math.sin(radiansBetween);
-                actor.x += distanceIntersection * Math.cos(-radiansBetween);
-                actor.y += distanceIntersection * Math.sin(-radiansBetween);
+                addPosition(
+                        distanceIntersection * (float) Math.cos(radiansBetween),
+                        distanceIntersection * (float) Math.sin(radiansBetween)
+                );
+                actor.addPosition(
+                        distanceIntersection * (float) Math.cos(-radiansBetween),
+                        distanceIntersection * (float) Math.sin(-radiansBetween)
+                );
             }
         }
     }
 
     private void walk() {
         if (isWalkingForward) {
-            move(radians, velocity);
+            move(getRadians(), velocity);
         }
 
         if (isWalkingBack) {
-            move(radians - (float) Math.PI, velocityBack);
+            move(getRadians() - (float) Math.PI, velocityBack);
         }
 
         if (isWalkingLeft) {
-            move(radians - (float) Constants.PI_0_5, velocityAside);
+            move(getRadians() - (float) Constants.PI_0_5, velocityAside);
         }
 
         if (isWalkingRight) {
-            move(radians + (float) Constants.PI_0_5, velocityAside);
+            move(getRadians() + (float) Constants.PI_0_5, velocityAside);
         }
     }
 
@@ -182,14 +186,18 @@ public class Actor extends Sprite {
         currentMovementRadians = movementRadians;
 
         float velocityCurrent = inertiaVelocity.update(movementVelocity * health);
-        x += velocityCurrent * Math.cos(currentMovementRadians);
-        y += velocityCurrent * Math.sin(currentMovementRadians);
+        addPosition(
+                velocityCurrent * (float) Math.cos(currentMovementRadians),
+                velocityCurrent * (float) Math.sin(currentMovementRadians)
+        );
     }
 
     private void stay() {
         float velocityCurrent = inertiaVelocity.update(0);
-        x += velocityCurrent * Math.cos(currentMovementRadians);
-        y += velocityCurrent * Math.sin(currentMovementRadians);
+        addPosition(
+                velocityCurrent * (float) Math.cos(currentMovementRadians),
+                velocityCurrent * (float) Math.sin(currentMovementRadians)
+        );
     }
 
     public void hit(float intensity, float radians) {
@@ -207,8 +215,10 @@ public class Actor extends Sprite {
         }
 
         float impulse = intensity / 10;
-        x += impulse * Math.cos(radians);
-        y += impulse * Math.sin(radians);
+        addPosition(
+                impulse * (float) Math.cos(radians),
+                impulse * (float) Math.sin(radians)
+        );
 
         if (type.equals("human")) {
             soundHurt();

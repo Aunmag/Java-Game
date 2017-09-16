@@ -5,7 +5,7 @@ import client.Constants;
 import client.Display;
 import utilities.UtilsGraphics;
 import sprites.Sprite;
-import basics.BasePoint;
+import nightingale.basics.BasePoint;
 
 import java.awt.*;
 
