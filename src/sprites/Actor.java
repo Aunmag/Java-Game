@@ -2,7 +2,7 @@ package sprites;
 
 import client.Constants;
 import nightingale.utilities.UtilsLog;
-import managers.MathManager;
+import nightingale.utilities.UtilsMath;
 import managers.ImageManager;
 import managers.Inertia;
 import managers.SoundManager;
@@ -220,7 +220,7 @@ public class Actor extends Sprite {
     }
 
     private void soundHurt() {
-        sounds[MathManager.random.nextInt(6)].play();
+        sounds[UtilsMath.random.nextInt(6)].play();
     }
 
     public void delete() {

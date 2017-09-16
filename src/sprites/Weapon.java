@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import client.Application;
-import managers.MathManager;
+import nightingale.utilities.UtilsMath;
 import managers.SoundManager;
 import managers.ImageManager;
 
@@ -80,8 +80,8 @@ public class Weapon extends Sprite {
     }
 
     private void makeBullet(float x, float y) {
-        float bulletRadians = MathManager.randomizeFlexibly(getRadians(), deflectionRadians);
-        float bulletVelocity = MathManager.randomizeFlexibly(velocityMuzzle, deflectionVelocity);
+        float bulletRadians = UtilsMath.randomizeFlexibly(getRadians(), deflectionRadians);
+        float bulletVelocity = UtilsMath.randomizeFlexibly(velocityMuzzle, deflectionVelocity);
         Bullet bullet = new Bullet(x, y, bulletRadians, bulletVelocity, velocityRecession, owner);
         Bullet.all.add(bullet);
     }

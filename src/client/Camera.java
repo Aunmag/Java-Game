@@ -1,7 +1,7 @@
 package client;
 
 import client.input.Input;
-import managers.MathManager;
+import nightingale.utilities.UtilsMath;
 import utilities.UtilsGraphics;
 import nightingale.basics.BasePoint;
 import nightingale.basics.BasePosition;
@@ -105,7 +105,7 @@ public class Camera {
     }
 
     public static boolean calculateIsPointVisible(float pointX, float pointY) {
-        float distanceBetween = MathManager.calculateDistanceBetween(
+        float distanceBetween = UtilsMath.calculateDistanceBetween(
                 x + centerX,
                 y + centerY,
                 pointX,

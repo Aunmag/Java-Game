@@ -1,6 +1,6 @@
 package utilities;
 
-import managers.MathManager;
+import nightingale.utilities.UtilsMath;
 import managers.ImageManager;
 import sprites.Object;
 
@@ -12,8 +12,8 @@ public class UtilsWorld {
 
     public static void putTrees(int quantity, int spreading) {
         positionChoosing: for (int i = 0; i < quantity; i++) {
-            int x = MathManager.randomizeBetween(-spreading, spreading);
-            int y = MathManager.randomizeBetween(-spreading, spreading);
+            int x = UtilsMath.randomizeBetween(-spreading, spreading);
+            int y = UtilsMath.randomizeBetween(-spreading, spreading);
 
             for (Object air: Object.allAir) {
                 if (Math.abs(x - air.getX()) < 128 && Math.abs(y - air.getY()) < 128) {
@@ -27,7 +27,7 @@ public class UtilsWorld {
                     new ImageManager("objects/air/tree_3"),
             };
 
-            int imageIndex = MathManager.random.nextInt(3);
+            int imageIndex = UtilsMath.random.nextInt(3);
             Object tree = new Object(x, y, images[imageIndex]);
             Object.allAir.add(tree);
         }
