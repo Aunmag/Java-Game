@@ -1,9 +1,8 @@
 package ai;
 
-import client.Constants;
-import managers.MathManager;
+import nightingale.utilities.UtilsMath;
 import sprites.Actor;
-import sprites.components.Collision;
+import nightingale.collision.Collision;
 
 /**
  * Created by Aunmag on 2016.11.21.
@@ -51,8 +50,8 @@ abstract class Strategy {
         float targetX = target.getX();
         float targetY = target.getY();
 
-        targetDistance = MathManager.calculateDistanceBetween(x, y, targetX, targetY);
-        targetDirection = MathManager.calculateRadiansBetween(targetX, targetY, x, y);
+        targetDistance = UtilsMath.calculateDistanceBetween(x, y, targetX, targetY);
+        targetDirection = UtilsMath.calculateRadiansBetween(targetX, targetY, x, y);
 
         isTargetReached = Collision.calculateIsCollision(
                 ai.getSubject().getHands(),
@@ -60,12 +59,12 @@ abstract class Strategy {
         );
 
         targetRadiansDifference = targetDirection - target.getRadians();
-        targetRadiansDifference = MathManager.correctRadians(targetRadiansDifference);
+        targetRadiansDifference = UtilsMath.correctRadians(targetRadiansDifference);
         targetRadiansDifferenceAbsolute = Math.abs(targetRadiansDifference);
     }
 
     protected boolean calculateIsBehindTarget() {
-        return targetRadiansDifferenceAbsolute < Constants.PI_0_5;
+        return targetRadiansDifferenceAbsolute < UtilsMath.PIx0_5;
     }
 
     abstract void update();

@@ -32,7 +32,7 @@ public class GuiButton extends GuiLabel {
 
         int mouseX = Input.getMouseX();
         int mouseY = Input.getMouseY();
-        isTouched = (x < mouseX && mouseX < x + width) && (y < mouseY && mouseY < y + height);
+        isTouched = (getX() < mouseX && mouseX < getX() + width) && (getY() < mouseY && mouseY < getY() + height);
         isPressed = isTouched && Input.getIsButtonJustPressed(MouseEvent.BUTTON1);
 
         if (isPressed && action != null) {
@@ -51,7 +51,7 @@ public class GuiButton extends GuiLabel {
             Display.getGraphicsHud().setColor(colorDefault);
         }
 
-        Display.getGraphicsHud().fillRect((int) x, (int) y, (int) width, (int) height);
+        Display.getGraphicsHud().fillRect((int) getX(), (int) getY(), (int) width, (int) height);
         super.render();
     }
 

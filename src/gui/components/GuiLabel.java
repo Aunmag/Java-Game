@@ -1,13 +1,13 @@
 package gui.components;
 
 import client.Display;
-import basics.BaseRectangle;
+import nightingale.basics.BaseQuad;
 
 /**
  * Created by Aunmag on 2017.06.17.
  */
 
-public class GuiLabel extends BaseRectangle {
+public class GuiLabel extends BaseQuad {
 
     private static final int padding = 2;
     protected GuiText text;
@@ -28,8 +28,8 @@ public class GuiLabel extends BaseRectangle {
     }
 
     private void initializeText(String text, int size, boolean isBold) {
-        float x = this.x + width / 2f;
-        float y = this.y + height / 2f;
+        float x = getX() + width / 2f;
+        float y = getY() + height / 2f;
         this.text = new GuiText((int) x, (int) y, size, isBold, text);
     }
 

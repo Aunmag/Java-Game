@@ -1,7 +1,7 @@
 package ai;
 
 import client.Application;
-import client.Constants;
+import nightingale.utilities.UtilsMath;
 
 /**
  * Created by Aunmag on 2016.11.21.
@@ -42,13 +42,13 @@ class StrategyChase extends Strategy {
         float radiansDeviate = 0;
 
         if (targetDistance > 512) {
-            radiansDeviate = (float) Constants.PI_0_5 / 2f;
+            radiansDeviate = (float) UtilsMath.PIx0_5 / 2f;
         } else if (targetDistance > 256) {
-            radiansDeviate = (float) Constants.PI_0_5 / 4f;
+            radiansDeviate = (float) UtilsMath.PIx0_5 / 4f;
         } else if (targetDistance > 128) {
-            radiansDeviate = (float) Constants.PI_0_5 / 8f;
+            radiansDeviate = (float) UtilsMath.PIx0_5 / 8f;
         } else if (targetDistance > 64) {
-            radiansDeviate = (float) Constants.PI_0_5 / 16f;
+            radiansDeviate = (float) UtilsMath.PIx0_5 / 16f;
         }
 
         if (targetRadiansDifference < 0) {

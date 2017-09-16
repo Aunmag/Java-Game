@@ -1,13 +1,12 @@
 package sprites;
 
-import client.Constants;
-import managers.Log;
-import managers.MathManager;
+import client.Application;
+import nightingale.utilities.FloatSmooth;
+import nightingale.utilities.UtilsLog;
+import nightingale.utilities.UtilsMath;
 import managers.ImageManager;
-import managers.Inertia;
 import managers.SoundManager;
-import sprites.components.Collision;
-import sprites.components.CollisionCircle;
+import nightingale.collision.CollisionCircle;
 import sprites.components.Hands;
 
 import java.util.*;
@@ -35,7 +34,7 @@ public class Actor extends Sprite {
     private int kills = 0;
     public String type;
     private Hands hands = new Hands(this);
-    private CollisionCircle collision = new CollisionCircle(this, 7.2f);
+    private CollisionCircle collision = new CollisionCircle(getX(), getY(), 7.2f);
 
     private float velocity = 0;
     private float velocityAside = 0;
@@ -43,7 +42,7 @@ public class Actor extends Sprite {
     private float velocitySprint = 0;
     public static float velocityForwardZombie = 0.63f; // TODO: Improve
     private float currentMovementRadians = 0;
-    private Inertia inertiaVelocity = new Inertia(0.2f); // TODO: Improve
+    private FloatSmooth inertiaVelocity = new FloatSmooth(250);
 
     public boolean isWalking = false;
     public boolean isWalkingForward = false;
@@ -56,6 +55,8 @@ public class Actor extends Sprite {
     public Actor(float x, float y, float radians, String type) {
         super(x, y, radians, findImage(type));
         this.type = type;
+
+        inertiaVelocity.setFlexDegree(0.75f);
 
         if (type.equals("human")) {
             velocity = 1.38f;
@@ -71,7 +72,7 @@ public class Actor extends Sprite {
                         type,
                         this.type
                 );
-                Log.log("Actor", message);
+                UtilsLog.log("Actor", message);
             }
             velocity = velocityForwardZombie;
             velocityAside = velocity * 0.6f;
@@ -105,6 +106,8 @@ public class Actor extends Sprite {
             return;
         }
 
+        inertiaVelocity.update(Application.getTimeCurrent());
+
         updateIsWalking();
 
         if (isWalking) {
@@ -136,41 +139,34 @@ public class Actor extends Sprite {
     }
 
     private void updateCollision() {
-        collision.setPosition(x, y);
+        collision.setPosition(getX(), getY());
 
         for (Actor actor: all) {
             if (!actor.isAlive || actor.equals(this)) {
                 continue;
             }
 
-            if (Collision.calculateIsCollision(collision, actor.getCollision())) {
-                float distanceBetween = collision.getLastDistanceBetween();
-                float distanceToCollision = collision.getRadius() + actor.getCollision().getRadius();
-                float distanceIntersection = (distanceToCollision - distanceBetween) / 2;
-                float radiansBetween = MathManager.calculateRadiansBetween(this, actor);
-                x += distanceIntersection * Math.cos(radiansBetween);
-                y += distanceIntersection * Math.sin(radiansBetween);
-                actor.x += distanceIntersection * Math.cos(-radiansBetween);
-                actor.y += distanceIntersection * Math.sin(-radiansBetween);
-            }
+            collision.preventCollisionWith(actor.collision);
+            setPosition(collision.getX(), collision.getY());
+            actor.setPosition(actor.collision.getX(), actor.collision.getY());
         }
     }
 
     private void walk() {
         if (isWalkingForward) {
-            move(radians, velocity);
+            move(getRadians(), velocity);
         }
 
         if (isWalkingBack) {
-            move(radians - (float) Math.PI, velocityBack);
+            move(getRadians() - (float) Math.PI, velocityBack);
         }
 
         if (isWalkingLeft) {
-            move(radians - (float) Constants.PI_0_5, velocityAside);
+            move(getRadians() - (float) UtilsMath.PIx0_5, velocityAside);
         }
 
         if (isWalkingRight) {
-            move(radians + (float) Constants.PI_0_5, velocityAside);
+            move(getRadians() + (float) UtilsMath.PIx0_5, velocityAside);
         }
     }
 
@@ -181,15 +177,23 @@ public class Actor extends Sprite {
 
         currentMovementRadians = movementRadians;
 
-        float velocityCurrent = inertiaVelocity.update(movementVelocity * health);
-        x += velocityCurrent * Math.cos(currentMovementRadians);
-        y += velocityCurrent * Math.sin(currentMovementRadians);
+        inertiaVelocity.setValueTarget(movementVelocity * health, Application.getTimeCurrent());
+        float velocityCurrent = inertiaVelocity.getValueCurrent();
+
+        addPosition(
+                velocityCurrent * (float) Math.cos(currentMovementRadians),
+                velocityCurrent * (float) Math.sin(currentMovementRadians)
+        );
     }
 
     private void stay() {
-        float velocityCurrent = inertiaVelocity.update(0);
-        x += velocityCurrent * Math.cos(currentMovementRadians);
-        y += velocityCurrent * Math.sin(currentMovementRadians);
+        inertiaVelocity.setValueTarget(0, Application.getTimeCurrent());
+        float velocityCurrent = inertiaVelocity.getValueCurrent();
+
+        addPosition(
+                velocityCurrent * (float) Math.cos(currentMovementRadians),
+                velocityCurrent * (float) Math.sin(currentMovementRadians)
+        );
     }
 
     public void hit(float intensity, float radians) {
@@ -207,8 +211,10 @@ public class Actor extends Sprite {
         }
 
         float impulse = intensity / 10;
-        x += impulse * Math.cos(radians);
-        y += impulse * Math.sin(radians);
+        addPosition(
+                impulse * (float) Math.cos(radians),
+                impulse * (float) Math.sin(radians)
+        );
 
         if (type.equals("human")) {
             soundHurt();
@@ -217,12 +223,12 @@ public class Actor extends Sprite {
 
     public void render() {
         super.render();
-        hands.render();
-        collision.render();
+//        hands.render();
+//        collision.render();
     }
 
     private void soundHurt() {
-        sounds[MathManager.random.nextInt(6)].play();
+        sounds[UtilsMath.random.nextInt(6)].play();
     }
 
     public void delete() {

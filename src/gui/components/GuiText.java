@@ -2,7 +2,7 @@ package gui.components;
 
 import client.Constants;
 import client.Display;
-import basics.BaseRectangle;
+import nightingale.basics.BaseQuad;
 
 import java.awt.*;
 
@@ -10,7 +10,7 @@ import java.awt.*;
  * Created by Aunmag on 2016.11.19.
  */
 
-public class GuiText extends BaseRectangle {
+public class GuiText extends BaseQuad {
 
     private Color color = Color.WHITE;
     private Font font = Constants.FONT;
@@ -30,7 +30,7 @@ public class GuiText extends BaseRectangle {
     public void render() {
         Display.getGraphicsHud().setFont(font);
         Display.getGraphicsHud().setColor(color);
-        Display.getGraphicsHud().drawString(message, x - width / 2, y + height);
+        Display.getGraphicsHud().drawString(message, getX() - width / 2, getY() + height);
     }
 
     /* Setters */

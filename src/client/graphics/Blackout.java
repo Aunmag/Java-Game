@@ -1,8 +1,9 @@
 package client.graphics;
 
+import client.Application;
 import client.Display;
-import managers.Log;
-import managers.Inertia;
+import nightingale.utilities.FloatSmooth;
+import nightingale.utilities.UtilsLog;
 import utilities.UtilsGraphics;
 import sprites.Actor;
 
@@ -22,9 +23,9 @@ public class Blackout {
     private static final float healthThird = healthMax / 3f;
     private static float healthCurrent = healthMax;
     private static float healthLast = healthCurrent;
-    private static final float timeHurtAscent = 0.06f;
-    private static final float timeHurtDecline = 0.48f;
-    private static Inertia inertia = new Inertia(timeHurtAscent);
+    private static final int timeHurtAscent = 60;
+    private static final int timeHurtDecline = 480;
+    private static FloatSmooth intensity = new FloatSmooth(timeHurtAscent);
 
     static {
         try {
@@ -35,7 +36,7 @@ public class Blackout {
                     BufferedImage.SCALE_SMOOTH
             );
         } catch (IOException e) {
-            Log.log("Error", "Can't load blackout image.", e.toString());
+            UtilsLog.log("Error", "Can't load blackout image.", e.toString());
             image = null;
         }
     }
@@ -77,21 +78,24 @@ public class Blackout {
     }
 
     private static void renderDynamicRectangle() {
-        float alpha;
+        long timeWorld = Application.getTimeCurrent();
 
         if (healthCurrent != healthLast) {
-            if (inertia.getTimeDuration() != timeHurtAscent) {
-                inertia.setTimeDuration(timeHurtAscent);
+            if (intensity.getTimeDuration() != timeHurtAscent) {
+                intensity.setTimeDuration(timeHurtAscent);
             }
-            float intensity = Math.abs(healthLast - healthCurrent) * 8 % 1;
-            alpha = inertia.update(intensity);
-            if (!inertia.getIsProcessing()) {
+            float intensityTarget = Math.abs(healthLast - healthCurrent) * 8 % 1;
+            intensity.setValueTarget(intensityTarget, timeWorld);
+            if (intensity.isTargetReached()) {
                 healthLast = healthCurrent;
-                inertia.setTimeDuration(timeHurtDecline);
+                intensity.setTimeDuration(timeHurtDecline);
             }
         } else {
-            alpha = inertia.update(0);
+            intensity.setValueTarget(0, timeWorld);
         }
+
+        intensity.update(timeWorld);
+        float alpha = intensity.getValueCurrent();
 
         Display.getGraphicsHud().setComposite(AlphaComposite.getInstance(
                 AlphaComposite.SRC_OVER,

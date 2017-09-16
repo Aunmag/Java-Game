@@ -2,9 +2,8 @@ package scenarios;
 
 import ai.AI;
 import client.Application;
-import client.Constants;
 import gui.menus.MenuManager;
-import managers.MathManager;
+import nightingale.utilities.UtilsMath;
 import sprites.Actor;
 
 /**
@@ -74,7 +73,7 @@ public class ScenarioEncircling extends Scenario {
     }
 
     private void spawnZombie() {
-        float direction = MathManager.randomizeBetween(0, (float) Constants.PI_2_0);
+        float direction = UtilsMath.randomizeBetween(0, (float) UtilsMath.PIx2);
         float x = Actor.getPlayer().getX() - spawnDistance * (float) Math.cos(direction);
         float y = Actor.getPlayer().getY() - spawnDistance * (float) Math.sin(direction);
 

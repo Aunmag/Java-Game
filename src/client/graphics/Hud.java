@@ -4,7 +4,7 @@ import ai.AI;
 import client.Constants;
 import client.Display;
 import managers.PerformanceManager;
-import managers.MathManager;
+import nightingale.utilities.UtilsMath;
 import sprites.Actor;
 import sprites.Bullet;
 import sprites.Weapon;
@@ -44,10 +44,10 @@ public class Hud {
         float timeSpentFinish = PerformanceManager.timerFinishing.getTimeDurationAverage();
         float timeSpentTotal = timeSpentUpdate + timeSpentRender + timeSpentFinish;
         float round = 100f;
-        timeSpentUpdate = MathManager.calculateRoundValue(timeSpentUpdate, round);
-        timeSpentRender = MathManager.calculateRoundValue(timeSpentRender, round);
-        timeSpentFinish = MathManager.calculateRoundValue(timeSpentFinish, round);
-        timeSpentTotal = MathManager.calculateRoundValue(timeSpentTotal, round);
+        timeSpentUpdate = UtilsMath.calculateRoundValue(timeSpentUpdate, round);
+        timeSpentRender = UtilsMath.calculateRoundValue(timeSpentRender, round);
+        timeSpentFinish = UtilsMath.calculateRoundValue(timeSpentFinish, round);
+        timeSpentTotal = UtilsMath.calculateRoundValue(timeSpentTotal, round);
 
         String[] messagesPerformance = {
                 String.format("Spent time on updating: %s ms", timeSpentUpdate),

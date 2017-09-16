@@ -3,8 +3,8 @@ package sprites;
 import client.Camera;
 import client.Display;
 import managers.ImageManager;
-import basics.BasePoint;
-import basics.BasePosition;
+import nightingale.basics.BasePoint;
+import nightingale.basics.BasePosition;
 
 /**
  * Abstract class which is base to level sprites, like objects, actors, weapons etc. It has its own
@@ -31,7 +31,7 @@ public abstract class Sprite extends BasePosition {
             return;
         }
 
-        image.setRadians(radians);
+        image.setRadians(getRadians());
 
         BasePoint onScreenPosition = Camera.calculateOnScreenPosition(this);
         int onScreenX = (int) (onScreenPosition.getX() - image.getCenterX());

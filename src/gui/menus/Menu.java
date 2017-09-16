@@ -5,7 +5,7 @@ import client.Display;
 import gui.components.GuiButton;
 import gui.components.GuiLabel;
 import managers.ImageManager;
-import managers.Log;
+import nightingale.utilities.UtilsLog;
 import utilities.UtilsGraphics;
 
 import javax.imageio.ImageIO;
@@ -36,7 +36,7 @@ public abstract class Menu {
         } catch (Exception e) {
             wallpaper = null;
             String message = String.format("Can't load \"%s\" image.", wallpaperPath);
-            Log.log("ImageManager error", message, e.toString());
+            UtilsLog.log("ImageManager error", message, e.toString());
         }
     }
 

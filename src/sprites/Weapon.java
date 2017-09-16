@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import client.Application;
-import managers.MathManager;
+import nightingale.utilities.UtilsMath;
 import managers.SoundManager;
 import managers.ImageManager;
 
@@ -58,17 +58,19 @@ public class Weapon extends Sprite {
     }
 
     private void updatePosition() {
-        radians = owner.getRadians();
-        x = owner.getX() + 12 * (float) Math.cos(radians);
-        y = owner.getY() + 12 * (float) Math.sin(radians);
+        setRadians(owner.getRadians());
+        setPosition(
+                owner.getX() + 12 * (float) Math.cos(getRadians()),
+                owner.getY() + 12 * (float) Math.sin(getRadians())
+        );
     }
 
     private void makeShot() {
         soundShot.play();
 
         float muzzleLength = image.getCenterX() / 2f;
-        float bulletX = x + muzzleLength * (float) Math.cos(radians);
-        float bulletY = y + muzzleLength * (float) Math.sin(radians);
+        float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
+        float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
 
         for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
             makeBullet(bulletX, bulletY);
@@ -78,8 +80,8 @@ public class Weapon extends Sprite {
     }
 
     private void makeBullet(float x, float y) {
-        float bulletRadians = MathManager.randomizeFlexibly(radians, deflectionRadians);
-        float bulletVelocity = MathManager.randomizeFlexibly(velocityMuzzle, deflectionVelocity);
+        float bulletRadians = UtilsMath.randomizeFlexibly(getRadians(), deflectionRadians);
+        float bulletVelocity = UtilsMath.randomizeFlexibly(velocityMuzzle, deflectionVelocity);
         Bullet bullet = new Bullet(x, y, bulletRadians, bulletVelocity, velocityRecession, owner);
         Bullet.all.add(bullet);
     }
