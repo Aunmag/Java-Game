@@ -1,9 +1,10 @@
 package sprites;
 
+import client.Application;
+import nightingale.utilities.FloatSmooth;
 import nightingale.utilities.UtilsLog;
 import nightingale.utilities.UtilsMath;
 import managers.ImageManager;
-import managers.Inertia;
 import managers.SoundManager;
 import nightingale.collision.CollisionCircle;
 import sprites.components.Hands;
@@ -41,7 +42,7 @@ public class Actor extends Sprite {
     private float velocitySprint = 0;
     public static float velocityForwardZombie = 0.63f; // TODO: Improve
     private float currentMovementRadians = 0;
-    private Inertia inertiaVelocity = new Inertia(0.2f); // TODO: Improve
+    private FloatSmooth inertiaVelocity = new FloatSmooth(250);
 
     public boolean isWalking = false;
     public boolean isWalkingForward = false;
@@ -54,6 +55,8 @@ public class Actor extends Sprite {
     public Actor(float x, float y, float radians, String type) {
         super(x, y, radians, findImage(type));
         this.type = type;
+
+        inertiaVelocity.setFlexDegree(0.75f);
 
         if (type.equals("human")) {
             velocity = 1.38f;
@@ -102,6 +105,8 @@ public class Actor extends Sprite {
         if (!isAlive) {
             return;
         }
+
+        inertiaVelocity.update(Application.getTimeCurrent());
 
         updateIsWalking();
 
@@ -172,7 +177,9 @@ public class Actor extends Sprite {
 
         currentMovementRadians = movementRadians;
 
-        float velocityCurrent = inertiaVelocity.update(movementVelocity * health);
+        inertiaVelocity.setValueTarget(movementVelocity * health, Application.getTimeCurrent());
+        float velocityCurrent = inertiaVelocity.getValueCurrent();
+
         addPosition(
                 velocityCurrent * (float) Math.cos(currentMovementRadians),
                 velocityCurrent * (float) Math.sin(currentMovementRadians)
@@ -180,7 +187,9 @@ public class Actor extends Sprite {
     }
 
     private void stay() {
-        float velocityCurrent = inertiaVelocity.update(0);
+        inertiaVelocity.setValueTarget(0, Application.getTimeCurrent());
+        float velocityCurrent = inertiaVelocity.getValueCurrent();
+
         addPosition(
                 velocityCurrent * (float) Math.cos(currentMovementRadians),
                 velocityCurrent * (float) Math.sin(currentMovementRadians)
