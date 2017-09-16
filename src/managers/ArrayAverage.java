@@ -1,5 +1,7 @@
 package managers;
 
+import nightingale.utilities.UtilsLog;
+
 /**
  * Created by Aunmag on 2016.10.27.
  */
@@ -15,7 +17,7 @@ public class ArrayAverage {
             String message = String.format(
                     "Got wrong ArrayAverage depth value (%s). Replaced with 2.", depth
             );
-            Log.log("ArrayAverage", message);
+            UtilsLog.log("ArrayAverage", message);
             depth = 2;
         }
 

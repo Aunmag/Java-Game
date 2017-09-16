@@ -2,6 +2,7 @@ package managers;
 
 import client.Constants;
 import nightingale.basics.BasePoint;
+import nightingale.utilities.UtilsLog;
 
 import java.util.Random;
 
@@ -21,7 +22,7 @@ public class MathManager {
     public static int randomizeBetween(int min, int max) {
         if (min > max) {
             String message = "Received min value is grater than max. Values has been swapped.";
-            Log.log("randomizeBetween", message);
+            UtilsLog.log("randomizeBetween", message);
             int min_copy = min;
             min = max;
             max = min_copy;
@@ -29,7 +30,7 @@ public class MathManager {
             String message = String.format(
                     "Min and max values are equal %1$s. Returned %s %1$s once.", min
             );
-            Log.log("randomizeBetween", message);
+            UtilsLog.log("randomizeBetween", message);
             return min;
         }
 
@@ -40,7 +41,7 @@ public class MathManager {
     public static float randomizeBetween(float min, float max) {
         if (min > max) {
             String message = "Received min value is grater than max. Values has been swapped.";
-            Log.log("randomizeBetween", message);
+            UtilsLog.log("randomizeBetween", message);
             float min_copy = min;
             min = max;
             max = min_copy;
@@ -48,7 +49,7 @@ public class MathManager {
             String message = String.format(
                     "Min and max values are equal %1$s. Returned %s %1$s once.", min
             );
-            Log.log("randomizeBetween", message);
+            UtilsLog.log("randomizeBetween", message);
             return min;
         }
 
@@ -63,7 +64,7 @@ public class MathManager {
     public static float randomizeFlexibly(float middle, float offset, float flex) {
         if (flex <= 0 || flex > 1) {
             String message = String.format("Got flex value as %s. replaced with 0.5.", flex);
-            Log.log("randomizeFlexibly", message);
+            UtilsLog.log("randomizeFlexibly", message);
             flex = 0.5f;
         }
 

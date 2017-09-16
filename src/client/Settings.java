@@ -1,6 +1,6 @@
 package client;
 
-import managers.Log;
+import nightingale.utilities.UtilsLog;
 
 import java.awt.*;
 
@@ -50,7 +50,7 @@ public class Settings {
                     "Got unknown level graphics enum as %s. Used default Java settings.",
                     levelGraphics
             );
-            Log.log("initializeGraphics", message);
+            UtilsLog.log("initializeGraphics", message);
         }
     }
 

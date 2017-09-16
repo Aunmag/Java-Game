@@ -1,7 +1,7 @@
 package client.graphics;
 
 import client.Display;
-import managers.Log;
+import nightingale.utilities.UtilsLog;
 import managers.Inertia;
 import utilities.UtilsGraphics;
 import sprites.Actor;
@@ -35,7 +35,7 @@ public class Blackout {
                     BufferedImage.SCALE_SMOOTH
             );
         } catch (IOException e) {
-            Log.log("Error", "Can't load blackout image.", e.toString());
+            UtilsLog.log("Error", "Can't load blackout image.", e.toString());
             image = null;
         }
     }

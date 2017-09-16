@@ -1,6 +1,7 @@
 package managers;
 
 import client.Settings;
+import nightingale.utilities.UtilsLog;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -61,7 +62,7 @@ public class ImageManager {
                 imagesCached.put(path, image);
             } catch (IOException | IllegalArgumentException e) {
                 String message = String.format("Image manager can't cache image at \"%s\".", path);
-                Log.log("Error", message, e.toString());
+                UtilsLog.log("Error", message, e.toString());
             }
         }
     }

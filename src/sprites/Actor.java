@@ -1,7 +1,7 @@
 package sprites;
 
 import client.Constants;
-import managers.Log;
+import nightingale.utilities.UtilsLog;
 import managers.MathManager;
 import managers.ImageManager;
 import managers.Inertia;
@@ -70,7 +70,7 @@ public class Actor extends Sprite {
                         type,
                         this.type
                 );
-                Log.log("Actor", message);
+                UtilsLog.log("Actor", message);
             }
             velocity = velocityForwardZombie;
             velocityAside = velocity * 0.6f;
