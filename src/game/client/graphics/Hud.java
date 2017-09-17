@@ -11,10 +11,6 @@ import game.sprites.Actor;
 import game.sprites.Bullet;
 import game.sprites.Object;
 
-/**
- * Created by Aunmag on 2016.11.13.
- */
-
 public class Hud {
 
     private static boolean isVisible = false;

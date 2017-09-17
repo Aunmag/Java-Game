@@ -2,10 +2,6 @@ package game.utilities;
 
 import java.awt.*;
 
-/**
- * Created by Aunmag on 2017.06.12.
- */
-
 public class UtilsGraphics {
 
     private static final AlphaComposite alphaDefault = AlphaComposite.getInstance(

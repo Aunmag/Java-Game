@@ -4,10 +4,6 @@ import game.sprites.Actor;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by Aunmag on 2016.10.23.
- */
-
 public class AI {
 
     public static List<AI> all = new ArrayList<>();

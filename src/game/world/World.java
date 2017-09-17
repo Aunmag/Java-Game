@@ -14,10 +14,6 @@ import game.sprites.Object;
 import game.sprites.Weapon;
 import game.utilities.UtilsWorld;
 
-/**
- * Created by Aunmag on 2017.06.24.
- */
-
 public class World extends BaseWorld {
 
     private static final int groundQuantity = 48;

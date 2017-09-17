@@ -10,14 +10,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * A bullet is been made with a weapon. Bullet is a line with its color and it has no image. It has
- * its velocity, direction and position. If a bullet collides an actor then the bullets lose its
- * speed and hit the actor.
- *
- * Created by Aunmag on 2016.10.03.
- */
-
 public class Bullet extends BaseSprite {
 
     public static List<Bullet> all = new ArrayList<>();

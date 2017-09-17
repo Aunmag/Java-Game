@@ -2,10 +2,6 @@ package game.ai;
 
 import nightingale.utilities.UtilsMath;
 
-/**
- * Created by Aunmag on 2016.11.21.
- */
-
 class StrategyChase extends Strategy {
 
     protected static final int timeSearchTarget = 2_000;

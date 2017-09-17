@@ -4,10 +4,6 @@ import nightingale.utilities.UtilsMath;
 import game.sprites.Actor;
 import nightingale.collision.Collision;
 
-/**
- * Created by Aunmag on 2016.11.21.
- */
-
 abstract class Strategy {
 
     protected AI ai;

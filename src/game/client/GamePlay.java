@@ -13,10 +13,6 @@ import game.scenarios.*;
 import game.sprites.Actor;
 import game.world.World;
 
-/**
- * Created by Aunmag on 2016.11.09.
- */
-
 public class GamePlay extends Application {
 
     private static boolean isPause = true;

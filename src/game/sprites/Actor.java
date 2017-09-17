@@ -11,12 +11,6 @@ import game.sprites.components.Hands;
 
 import java.util.*;
 
-/**
- * TODO: Make description
- *
- * Created by Aunmag on 2016.10.23.
- */
-
 public class Actor extends BaseSprite {
 
     public static List<Actor> all = new ArrayList<>();

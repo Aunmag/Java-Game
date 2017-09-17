@@ -4,10 +4,6 @@ import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
 
-/**
- * Created by Aunmag on 2016.11.17.
- */
-
 public class SoundManager {
 
     private Clip clip;
@@ -78,7 +74,7 @@ public class SoundManager {
         close();
     }
 
-    // Setters:
+    /* Setters */
 
     public void setVolume(float volume) {
         floatControl.setValue(volume);

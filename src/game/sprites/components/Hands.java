@@ -6,10 +6,6 @@ import game.sprites.Actor;
 
 import java.awt.*;
 
-/**
- * Created by Aunmag on 2017.05.27.
- */
-
 public class Hands extends CollisionCircle {
 
     protected static final Color renderColor = new Color(255, 0, 0, 128);

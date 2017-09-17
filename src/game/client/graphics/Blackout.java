@@ -8,10 +8,6 @@ import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 import game.sprites.Actor;
 
-/**
- * Created by Aunmag on 2016.11.13.
- */
-
 public class Blackout {
 
     private static Texture texture = Texture.getOrCreate("images/gui/blackout1600");

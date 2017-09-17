@@ -4,10 +4,6 @@ import nightingale.structures.Texture;
 import nightingale.utilities.UtilsMath;
 import game.sprites.Object;
 
-/**
- * Created by Aunmag on 2016.11.23.
- */
-
 public class UtilsWorld {
 
     public static void putTrees(int quantity, int spreading) {

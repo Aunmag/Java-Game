@@ -12,10 +12,6 @@ import nightingale.structures.Texture;
 import nightingale.utilities.UtilsMath;
 import game.sprites.Actor;
 
-/**
- * Created by Aunmag on 2016.11.23.
- */
-
 public class ScenarioEncircling implements BaseOperative {
 
     private static SoundManager sound = new SoundManager("/sounds/music/death.wav");

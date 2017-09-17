@@ -8,14 +8,6 @@ import nightingale.structures.Texture;
 import nightingale.utilities.UtilsMath;
 import game.managers.SoundManager;
 
-/**
- * This is a weapon which is been used by the owner (an actor with this weapon). If the owner is
- * holding this weapon and is attacking (see more in Actor class) then the weapon shoots and makes
- * bullets in according to its characteristics.
- *
- * Created by Aunmag on 2016.10.03.
- */
-
 public class Weapon extends BaseSprite {
 
     public static List<Weapon> all = new ArrayList<>();
