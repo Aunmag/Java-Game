@@ -29,7 +29,7 @@ abstract class Strategy {
         resetTarget();
 
         for (Actor actor: Actor.all) {
-            if (actor.getIsAlive() && actor.type.equals("human")) {
+            if (actor.isAlive() && actor.type.equals("human")) {
                 target = actor;
                 break;
             }

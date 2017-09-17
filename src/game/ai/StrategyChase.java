@@ -70,7 +70,7 @@ class StrategyChase extends Strategy {
             return;
         }
 
-        if (ai.getIsReactionNow()) {
+        if (ai.isReactionNow()) {
             updateTargetData();
         }
 

@@ -48,7 +48,7 @@ public class AI {
             timeReactionNext = System.currentTimeMillis() + timeReaction;
         }
 
-        if (subject.isRemoved() || !subject.getIsAlive()) {
+        if (subject.isRemoved() || !subject.isAlive()) {
             remove();
         } else {
             strategy.update();
@@ -67,7 +67,7 @@ public class AI {
         return subject;
     }
 
-    boolean getIsReactionNow() {
+    boolean isReactionNow() {
         return isReactionNow;
     }
 

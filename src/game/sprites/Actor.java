@@ -269,7 +269,7 @@ public class Actor extends BaseSprite {
         return health;
     }
 
-    public boolean getIsAlive() {
+    public boolean isAlive() {
         return isAlive;
     }
 

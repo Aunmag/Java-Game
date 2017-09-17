@@ -31,7 +31,7 @@ public class ScenarioEncircling implements BaseOperative {
     }
 
     public void update() {
-        if (!Actor.getPlayer().getIsAlive()) {
+        if (!Actor.getPlayer().isAlive()) {
             gameOver();
             return;
         }
