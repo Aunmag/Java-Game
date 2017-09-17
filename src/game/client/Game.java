@@ -13,7 +13,7 @@ import game.scenarios.*;
 import game.sprites.Actor;
 import game.world.World;
 
-public class GamePlay extends Application {
+public class Game extends Application {
 
     private static boolean isPause = true;
     private static BaseOperative scenario = new ScenarioEmpty();
@@ -21,7 +21,7 @@ public class GamePlay extends Application {
     private static GuiButtonBack buttonContinue;
     private static SoundManager soundTheme = new SoundManager("/sounds/music/menu.wav");
 
-    public GamePlay() {
+    public Game() {
         Actor.loadSounds();
         buttonContinue = new GuiButtonBack(4, 7, 4, 1, "Continue");
         buttonContinue.setIsAvailable(false);
@@ -202,7 +202,7 @@ public class GamePlay extends Application {
     /* Setters */
 
     public static void setPause(boolean isPause) {
-        GamePlay.isPause = isPause;
+        Game.isPause = isPause;
         Application.getWindow().setCursorGrabbed(!isPause);
 
         if (isPause) {

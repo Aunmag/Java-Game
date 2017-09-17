@@ -1,7 +1,7 @@
 package game.scenarios;
 
 import game.ai.AI;
-import game.client.GamePlay;
+import game.client.Game;
 import game.managers.SoundManager;
 import nightingale.basics.BaseOperative;
 import nightingale.gui.GuiButton;
@@ -97,7 +97,7 @@ public class ScenarioEncircling implements BaseOperative {
 
     public void gameOver() {
         createGameOverPage();
-        GamePlay.deleteWorld();
+        Game.deleteWorld();
         sound.play();
     }
 
@@ -117,7 +117,7 @@ public class ScenarioEncircling implements BaseOperative {
         wallpaper.scaleAsWallpaper();
 
         new GuiPage(labels, buttons, wallpaper).open();
-        GamePlay.setPause(true);
+        Game.setPause(true);
     }
 
 }
