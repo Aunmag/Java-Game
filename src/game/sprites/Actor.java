@@ -130,16 +130,14 @@ public class Actor extends BaseSprite {
     }
 
     private void updateCollision() {
-        collision.setPosition(getX(), getY());
-
-        for (Actor actor: all) {
-            if (!actor.isAlive || actor.equals(this)) {
+        for (Actor opponent: all) {
+            if (!opponent.isAlive || opponent.equals(this)) {
                 continue;
             }
 
-            collision.preventCollisionWith(actor.collision);
+            collision.preventCollisionWith(opponent.collision);
             setPosition(collision.getX(), collision.getY());
-            actor.setPosition(actor.collision.getX(), actor.collision.getY());
+            opponent.setPosition(opponent.collision.getX(), opponent.collision.getY());
         }
     }
 
@@ -160,36 +158,35 @@ public class Actor extends BaseSprite {
 
     private void walk() {
         if (isWalkingForward) {
-            move(getRadians(), velocity);
+            move(velocity, getRadians());
         }
 
         if (isWalkingBack) {
-            move(getRadians() - (float) Math.PI, velocityBack);
+            move(velocityBack, getRadians() - (float) Math.PI);
         }
 
         if (isWalkingLeft) {
-            move(getRadians() + (float) UtilsMath.PIx0_5, velocityAside);
+            move(velocityAside, getRadians() + (float) UtilsMath.PIx0_5);
         }
 
         if (isWalkingRight) {
-            move(getRadians() - (float) UtilsMath.PIx0_5, velocityAside);
+            move(velocityAside, getRadians() - (float) UtilsMath.PIx0_5);
         }
     }
 
-    private void move(float movementRadians, float movementVelocity) {
+    private void move(float velocity, float radians) {
         if (isSprinting && isWalkingForward) {
-            movementVelocity *= velocitySprint;
+            velocity *= velocitySprint;
         }
 
-        currentMovementRadians = movementRadians;
+        currentMovementRadians = radians;
 
-        inertiaVelocity.setValueTarget(movementVelocity * health, System.currentTimeMillis());
+        inertiaVelocity.setValueTarget(velocity * health, System.currentTimeMillis());
         float velocityCurrent = inertiaVelocity.getValueCurrent();
 
-        addPosition(
-                velocityCurrent * (float) Math.cos(currentMovementRadians),
-                velocityCurrent * (float) Math.sin(currentMovementRadians)
-        );
+        float moveX = velocityCurrent * (float) Math.cos(currentMovementRadians);
+        float moveY = velocityCurrent * (float) Math.sin(currentMovementRadians);
+        addPosition(moveX, moveY);
     }
 
     private void stay() {
@@ -205,18 +202,17 @@ public class Actor extends BaseSprite {
     public void hit(float intensity, float radians, Actor attacker) {
         boolean wasAlreadyDead = !isAlive;
 
-        health -= intensity / 100;
+        health -= intensity / 100f;
         updateIsAlive();
 
         if (!wasAlreadyDead && !isAlive && attacker != null) {
             attacker.increaseKills();
         }
 
-        float impulse = intensity / 10;
-        addPosition(
-                impulse * (float) Math.cos(radians),
-                impulse * (float) Math.sin(radians)
-        );
+        float impulse = intensity / 10f;
+        float impulseX = impulse * (float) Math.cos(radians);
+        float impulseY = impulse * (float) Math.sin(radians);
+        addPosition(impulseX, impulseY);
 
         if (type.equals("human")) {
             soundHurt();
@@ -248,6 +244,12 @@ public class Actor extends BaseSprite {
     }
 
     /* Setters */
+
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+        collision.setPosition(getX(), getY());
+        hands.updatePosition();
+    }
 
     public static void setPlayer(Actor player) {
         Actor.player = player;
