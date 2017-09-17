@@ -1,4 +1,4 @@
-package sprites;
+package game.sprites;
 
 import nightingale.basics.BaseSprite;
 import nightingale.structures.Texture;

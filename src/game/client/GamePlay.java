@@ -1,17 +1,17 @@
-package client;
+package game.client;
 
-import client.graphics.Hud;
-import client.graphics.Blackout;
-import managers.SoundManager;
+import game.client.graphics.Hud;
+import game.client.graphics.Blackout;
+import game.managers.SoundManager;
 import nightingale.Application;
 import nightingale.basics.BaseOperative;
 import nightingale.data.DataEngine;
 import nightingale.gui.*;
 import nightingale.structures.Texture;
 import org.lwjgl.glfw.GLFW;
-import scenarios.*;
-import sprites.Actor;
-import world.World;
+import game.scenarios.*;
+import game.sprites.Actor;
+import game.world.World;
 
 /**
  * Created by Aunmag on 2016.11.09.

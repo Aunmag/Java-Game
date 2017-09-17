@@ -1,4 +1,4 @@
-package scenarios;
+package game.scenarios;
 
 import nightingale.basics.BaseOperative;
 

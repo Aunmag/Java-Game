@@ -1,6 +1,6 @@
-package ai;
+package game.ai;
 
-import sprites.Actor;
+import game.sprites.Actor;
 import java.util.ArrayList;
 import java.util.List;
 

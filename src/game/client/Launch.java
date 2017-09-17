@@ -1,4 +1,4 @@
-import client.GamePlay;
+package game.client;
 
 /**
  * Main single-player launcher.

@@ -1,4 +1,4 @@
-package sprites;
+package game.sprites;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,7 +6,7 @@ import java.util.List;
 import nightingale.basics.BaseSprite;
 import nightingale.structures.Texture;
 import nightingale.utilities.UtilsMath;
-import managers.SoundManager;
+import game.managers.SoundManager;
 
 /**
  * This is a weapon which is been used by the owner (an actor with this weapon). If the owner is

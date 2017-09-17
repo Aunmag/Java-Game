@@ -1,8 +1,8 @@
-package utilities;
+package game.utilities;
 
 import nightingale.structures.Texture;
 import nightingale.utilities.UtilsMath;
-import sprites.Object;
+import game.sprites.Object;
 
 /**
  * Created by Aunmag on 2016.11.23.

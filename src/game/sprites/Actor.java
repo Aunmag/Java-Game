@@ -1,13 +1,13 @@
-package sprites;
+package game.sprites;
 
 import nightingale.basics.BaseSprite;
 import nightingale.structures.Texture;
 import nightingale.utilities.FloatSmooth;
 import nightingale.utilities.UtilsLog;
 import nightingale.utilities.UtilsMath;
-import managers.SoundManager;
+import game.managers.SoundManager;
 import nightingale.collision.CollisionCircle;
-import sprites.components.Hands;
+import game.sprites.components.Hands;
 
 import java.util.*;
 

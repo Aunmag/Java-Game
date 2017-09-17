@@ -1,4 +1,4 @@
-package sprites;
+package game.sprites;
 
 import nightingale.basics.BasePoint;
 import nightingale.basics.BaseSprite;

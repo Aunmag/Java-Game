@@ -1,4 +1,4 @@
-package client.graphics;
+package game.client.graphics;
 
 import nightingale.Application;
 import nightingale.data.DataEngine;
@@ -6,10 +6,10 @@ import nightingale.font.Text;
 import nightingale.gui.GuiLabel;
 import nightingale.utilities.UtilsMath;
 import org.lwjgl.glfw.GLFW;
-import ai.AI;
-import sprites.Actor;
-import sprites.Bullet;
-import sprites.Object;
+import game.ai.AI;
+import game.sprites.Actor;
+import game.sprites.Bullet;
+import game.sprites.Object;
 
 /**
  * Created by Aunmag on 2016.11.13.

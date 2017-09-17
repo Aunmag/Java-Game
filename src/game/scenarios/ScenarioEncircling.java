@@ -1,8 +1,8 @@
-package scenarios;
+package game.scenarios;
 
-import ai.AI;
-import client.GamePlay;
-import managers.SoundManager;
+import game.ai.AI;
+import game.client.GamePlay;
+import game.managers.SoundManager;
 import nightingale.basics.BaseOperative;
 import nightingale.gui.GuiButton;
 import nightingale.gui.GuiButtonBack;
@@ -10,7 +10,7 @@ import nightingale.gui.GuiLabel;
 import nightingale.gui.GuiPage;
 import nightingale.structures.Texture;
 import nightingale.utilities.UtilsMath;
-import sprites.Actor;
+import game.sprites.Actor;
 
 /**
  * Created by Aunmag on 2016.11.23.

@@ -1,4 +1,4 @@
-package managers;
+package game.managers;
 
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;

@@ -1,4 +1,4 @@
-package client;
+package game.client;
 
 import java.awt.*;
 

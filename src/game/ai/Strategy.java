@@ -1,7 +1,7 @@
-package ai;
+package game.ai;
 
 import nightingale.utilities.UtilsMath;
-import sprites.Actor;
+import game.sprites.Actor;
 import nightingale.collision.Collision;
 
 /**

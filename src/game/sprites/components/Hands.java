@@ -1,8 +1,8 @@
-package sprites.components;
+package game.sprites.components;
 
 import nightingale.collision.Collision;
 import nightingale.collision.CollisionCircle;
-import sprites.Actor;
+import game.sprites.Actor;
 
 import java.awt.*;
 

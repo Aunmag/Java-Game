@@ -1,18 +1,18 @@
-package world;
+package game.world;
 
-import ai.AI;
-import managers.SoundManager;
+import game.ai.AI;
+import game.managers.SoundManager;
 import nightingale.Application;
 import nightingale.basics.BaseSprite;
 import nightingale.basics.BaseWorld;
 import nightingale.structures.Texture;
 import nightingale.utilities.UtilsGraphics;
 import nightingale.utilities.UtilsMath;
-import sprites.Actor;
-import sprites.Bullet;
-import sprites.Object;
-import sprites.Weapon;
-import utilities.UtilsWorld;
+import game.sprites.Actor;
+import game.sprites.Bullet;
+import game.sprites.Object;
+import game.sprites.Weapon;
+import game.utilities.UtilsWorld;
 
 /**
  * Created by Aunmag on 2017.06.24.
