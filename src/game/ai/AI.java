@@ -7,9 +7,31 @@ import java.util.List;
 public class AI {
 
     public static List<AI> all = new ArrayList<>();
-    public static List<AI> invalids = new ArrayList<>();
+
+    public static void updateAll() {
+        List<AI> toDelete = new ArrayList<>();
+
+        for (AI ai: all) {
+            ai.update();
+
+            if (ai.isRemoved) {
+                toDelete.add(ai);
+            }
+        }
+
+        all.removeAll(toDelete);
+    }
+
+    public static void removeAll() {
+        for (AI ai: all) {
+            ai.remove();
+        }
+
+        all.clear();
+    }
 
     private Actor subject;
+    private boolean isRemoved = false;
     private Strategy strategy;
     private static final int timeReaction = 300;
     private long timeReactionNext = 0;
@@ -27,7 +49,7 @@ public class AI {
         }
 
         if (subject.isRemoved() || !subject.getIsAlive()) {
-            delete();
+            remove();
         } else {
             strategy.update();
         }
@@ -35,8 +57,8 @@ public class AI {
         isReactionNow = false;
     }
 
-    public void delete() {
-        invalids.add(this);
+    public void remove() {
+        isRemoved = true;
     }
 
     /* Getters */

@@ -106,14 +106,7 @@ public class World extends BaseWorld {
 
     public void update() {
         super.update();
-
-        for (AI ai: AI.all) {
-            ai.update();
-        }
-
-        AI.all.removeAll(AI.invalids);
-        AI.invalids.clear();
-
+        AI.updateAll();
         BaseSprite.updateAll(Actor.all);
         BaseSprite.updateAll(Bullet.all);
     }
@@ -141,8 +134,7 @@ public class World extends BaseWorld {
     }
 
     public void remove() {
-        AI.all.clear();
-        AI.invalids.clear();
+        AI.removeAll();
         BaseSprite.removeAll(Actor.all);
         BaseSprite.removeAll(Bullet.all);
         BaseSprite.removeAll(Object.terrains);
