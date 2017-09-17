@@ -2,6 +2,8 @@ package scenarios;
 
 import ai.AI;
 import client.GamePlay;
+import managers.SoundManager;
+import nightingale.basics.BaseOperative;
 import nightingale.gui.GuiButton;
 import nightingale.gui.GuiButtonBack;
 import nightingale.gui.GuiLabel;
@@ -14,8 +16,9 @@ import sprites.Actor;
  * Created by Aunmag on 2016.11.23.
  */
 
-public class ScenarioEncircling extends Scenario {
+public class ScenarioEncircling implements BaseOperative {
 
+    private static SoundManager sound = new SoundManager("/sounds/music/death.wav");
     private long timeSpawnNext;
     private int timeSpawnStep = 2_000;
     private final int timeSpawnStepMin = 100;
@@ -26,6 +29,10 @@ public class ScenarioEncircling extends Scenario {
     private int actorsSpawnedLimit = 64;
     private int zombiesKilled = 0;
     private float zombiesVelocityAcceleration = 0.005f;
+
+    static {
+        sound.setVolume(-4);
+    }
 
     public void update() {
         if (!Actor.getPlayer().getIsAlive()) {
@@ -41,7 +48,6 @@ public class ScenarioEncircling extends Scenario {
             spawnZombie();
         }
     }
-
 
     private void confinePlayerPosition() {
         int boundary = 128 * 8;
@@ -94,14 +100,9 @@ public class ScenarioEncircling extends Scenario {
     public void remove() {}
 
     public void gameOver() {
-//        sound = new SoundManager("/sounds/music/death.wav");
-//        sound.setVolume(-4);
-//        GamePlay.terminate();
-//        sound.play();
-//        super.activate();
         createGameOverPage();
         GamePlay.deleteWorld();
-//        sound.stop();
+        sound.play();
     }
 
     private void createGameOverPage() {

@@ -2,7 +2,9 @@ package client;
 
 import client.graphics.Hud;
 import client.graphics.Blackout;
+import managers.SoundManager;
 import nightingale.Application;
+import nightingale.basics.BaseOperative;
 import nightingale.data.DataEngine;
 import nightingale.gui.*;
 import nightingale.structures.Texture;
@@ -18,22 +20,24 @@ import world.World;
 public class GamePlay extends Application {
 
     private static boolean isPause = true;
-    private static Scenario scenario;
+    private static BaseOperative scenario = new ScenarioEmpty();
     private static World world;
     private static GuiButtonBack buttonContinue;
+    private static SoundManager soundTheme = new SoundManager("/sounds/music/menu.wav");
 
     public GamePlay() {
-        scenario = new ScenarioEncircling();
         Actor.loadSounds();
         buttonContinue = new GuiButtonBack(4, 7, 4, 1, "Continue");
         buttonContinue.setIsAvailable(false);
         initializePages();
+        themePlay();
     }
 
     private void initializeWorld() {
         deleteWorld();
         world = new World();
         buttonContinue.setIsAvailable(true);
+        scenario = new ScenarioEncircling();
     }
 
     private void initializePages() {
@@ -177,7 +181,6 @@ public class GamePlay extends Application {
 
     protected void gameTerminate() {
         deleteWorld();
-//        scenario = null;
     }
 
     public static void deleteWorld() {
@@ -187,6 +190,17 @@ public class GamePlay extends Application {
         }
 
         buttonContinue.setIsAvailable(false);
+
+        scenario.remove();
+        scenario = new ScenarioEmpty();
+    }
+
+    public static void themePlay() {
+        soundTheme.loop();
+    }
+
+    public static void themeStop() {
+        soundTheme.stop();
     }
 
     /* Setters */
@@ -197,14 +211,14 @@ public class GamePlay extends Application {
 
         if (isPause) {
             GuiManager.activate();
-
-        }
-
-        if (isWorldCreated()) {
-            if (!isPause) {
-                world.play();
-            } else {
+            themePlay();
+            if (isWorldCreated()) {
                 world.stop();
+            }
+        } else {
+            themeStop();
+            if (isWorldCreated()) {
+                world.play();
             }
         }
     }
