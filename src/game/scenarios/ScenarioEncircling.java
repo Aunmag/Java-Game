@@ -1,8 +1,8 @@
-package scenarios;
+package game.scenarios;
 
-import ai.AI;
-import client.GamePlay;
-import managers.SoundManager;
+import game.ai.AI;
+import game.client.Game;
+import game.managers.SoundManager;
 import nightingale.basics.BaseOperative;
 import nightingale.gui.GuiButton;
 import nightingale.gui.GuiButtonBack;
@@ -10,11 +10,7 @@ import nightingale.gui.GuiLabel;
 import nightingale.gui.GuiPage;
 import nightingale.structures.Texture;
 import nightingale.utilities.UtilsMath;
-import sprites.Actor;
-
-/**
- * Created by Aunmag on 2016.11.23.
- */
+import game.sprites.Actor;
 
 public class ScenarioEncircling implements BaseOperative {
 
@@ -35,7 +31,7 @@ public class ScenarioEncircling implements BaseOperative {
     }
 
     public void update() {
-        if (!Actor.getPlayer().getIsAlive()) {
+        if (!Actor.getPlayer().isAlive()) {
             gameOver();
             return;
         }
@@ -101,7 +97,7 @@ public class ScenarioEncircling implements BaseOperative {
 
     public void gameOver() {
         createGameOverPage();
-        GamePlay.deleteWorld();
+        Game.deleteWorld();
         sound.play();
     }
 
@@ -121,7 +117,7 @@ public class ScenarioEncircling implements BaseOperative {
         wallpaper.scaleAsWallpaper();
 
         new GuiPage(labels, buttons, wallpaper).open();
-        GamePlay.setPause(true);
+        Game.setPause(true);
     }
 
 }

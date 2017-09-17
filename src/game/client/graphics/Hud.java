@@ -1,4 +1,4 @@
-package client.graphics;
+package game.client.graphics;
 
 import nightingale.Application;
 import nightingale.data.DataEngine;
@@ -6,14 +6,10 @@ import nightingale.font.Text;
 import nightingale.gui.GuiLabel;
 import nightingale.utilities.UtilsMath;
 import org.lwjgl.glfw.GLFW;
-import ai.AI;
-import sprites.Actor;
-import sprites.Bullet;
-import sprites.Object;
-
-/**
- * Created by Aunmag on 2016.11.13.
- */
+import game.ai.AI;
+import game.sprites.Actor;
+import game.sprites.Bullet;
+import game.sprites.Object;
 
 public class Hud {
 
@@ -56,9 +52,9 @@ public class Hud {
         message += String.format("\nAIs: %s", AI.all.size());
         message += String.format("\nActors: %s", Actor.all.size());
         message += String.format("\nBullets: %s", Bullet.all.size());
-        message += String.format("\nTerrains: %s", Object.allGround.size());
-        message += String.format("\nDecorations: %s", Object.allDecoration.size());
-        message += String.format("\nTrees: %s", Object.allAir.size());
+        message += String.format("\nTerrains: %s", Object.terrains.size());
+        message += String.format("\nDecorations: %s", Object.decorations.size());
+        message += String.format("\nTrees: %s", Object.trees.size());
 
         if (!text.message.equals(message)) {
             text.delete();

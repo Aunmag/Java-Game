@@ -1,10 +1,6 @@
-package client;
+package game.client;
 
 import java.awt.*;
-
-/**
- * Created by Aunmag on 2017.04.21.
- */
 
 public class Constants {
 

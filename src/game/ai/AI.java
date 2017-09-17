@@ -1,19 +1,37 @@
-package ai;
+package game.ai;
 
-import sprites.Actor;
+import game.sprites.Actor;
 import java.util.ArrayList;
 import java.util.List;
-
-/**
- * Created by Aunmag on 2016.10.23.
- */
 
 public class AI {
 
     public static List<AI> all = new ArrayList<>();
-    public static List<AI> invalids = new ArrayList<>();
+
+    public static void updateAll() {
+        List<AI> toDelete = new ArrayList<>();
+
+        for (AI ai: all) {
+            ai.update();
+
+            if (ai.isRemoved) {
+                toDelete.add(ai);
+            }
+        }
+
+        all.removeAll(toDelete);
+    }
+
+    public static void removeAll() {
+        for (AI ai: all) {
+            ai.remove();
+        }
+
+        all.clear();
+    }
 
     private Actor subject;
+    private boolean isRemoved = false;
     private Strategy strategy;
     private static final int timeReaction = 300;
     private long timeReactionNext = 0;
@@ -30,8 +48,8 @@ public class AI {
             timeReactionNext = System.currentTimeMillis() + timeReaction;
         }
 
-        if (subject.isRemoved() || !subject.getIsAlive()) {
-            delete();
+        if (subject.isRemoved() || !subject.isAlive()) {
+            remove();
         } else {
             strategy.update();
         }
@@ -39,8 +57,8 @@ public class AI {
         isReactionNow = false;
     }
 
-    public void delete() {
-        invalids.add(this);
+    public void remove() {
+        isRemoved = true;
     }
 
     /* Getters */
@@ -49,7 +67,7 @@ public class AI {
         return subject;
     }
 
-    boolean getIsReactionNow() {
+    boolean isReactionNow() {
         return isReactionNow;
     }
 

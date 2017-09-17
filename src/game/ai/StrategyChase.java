@@ -1,10 +1,6 @@
-package ai;
+package game.ai;
 
 import nightingale.utilities.UtilsMath;
-
-/**
- * Created by Aunmag on 2016.11.21.
- */
 
 class StrategyChase extends Strategy {
 
@@ -74,7 +70,7 @@ class StrategyChase extends Strategy {
             return;
         }
 
-        if (ai.getIsReactionNow()) {
+        if (ai.isReactionNow()) {
             updateTargetData();
         }
 

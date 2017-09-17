@@ -1,23 +1,19 @@
-package client;
+package game.client;
 
-import client.graphics.Hud;
-import client.graphics.Blackout;
-import managers.SoundManager;
+import game.client.graphics.Hud;
+import game.client.graphics.Blackout;
+import game.managers.SoundManager;
 import nightingale.Application;
 import nightingale.basics.BaseOperative;
 import nightingale.data.DataEngine;
 import nightingale.gui.*;
 import nightingale.structures.Texture;
 import org.lwjgl.glfw.GLFW;
-import scenarios.*;
-import sprites.Actor;
-import world.World;
+import game.scenarios.*;
+import game.sprites.Actor;
+import game.world.World;
 
-/**
- * Created by Aunmag on 2016.11.09.
- */
-
-public class GamePlay extends Application {
+public class Game extends Application {
 
     private static boolean isPause = true;
     private static BaseOperative scenario = new ScenarioEmpty();
@@ -25,7 +21,7 @@ public class GamePlay extends Application {
     private static GuiButtonBack buttonContinue;
     private static SoundManager soundTheme = new SoundManager("/sounds/music/menu.wav");
 
-    public GamePlay() {
+    public Game() {
         Actor.loadSounds();
         buttonContinue = new GuiButtonBack(4, 7, 4, 1, "Continue");
         buttonContinue.setIsAvailable(false);
@@ -206,7 +202,7 @@ public class GamePlay extends Application {
     /* Setters */
 
     public static void setPause(boolean isPause) {
-        GamePlay.isPause = isPause;
+        Game.isPause = isPause;
         Application.getWindow().setCursorGrabbed(!isPause);
 
         if (isPause) {

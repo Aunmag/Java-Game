@@ -1,4 +1,4 @@
-package client.graphics;
+package game.client.graphics;
 
 import nightingale.Application;
 import nightingale.structures.Texture;
@@ -6,11 +6,7 @@ import nightingale.utilities.FloatSmooth;
 import nightingale.utilities.UtilsGraphics;
 import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
-import sprites.Actor;
-
-/**
- * Created by Aunmag on 2016.11.13.
- */
+import game.sprites.Actor;
 
 public class Blackout {
 

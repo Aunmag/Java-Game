@@ -1,12 +1,8 @@
-package ai;
+package game.ai;
 
 import nightingale.utilities.UtilsMath;
-import sprites.Actor;
+import game.sprites.Actor;
 import nightingale.collision.Collision;
-
-/**
- * Created by Aunmag on 2016.11.21.
- */
 
 abstract class Strategy {
 
@@ -33,7 +29,7 @@ abstract class Strategy {
         resetTarget();
 
         for (Actor actor: Actor.all) {
-            if (actor.getIsAlive() && actor.type.equals("human")) {
+            if (actor.isAlive() && actor.type.equals("human")) {
                 target = actor;
                 break;
             }

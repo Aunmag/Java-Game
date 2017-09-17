@@ -1,12 +1,8 @@
-package managers;
+package game.managers;
 
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;
 import java.io.InputStream;
-
-/**
- * Created by Aunmag on 2016.11.17.
- */
 
 public class SoundManager {
 
@@ -78,7 +74,7 @@ public class SoundManager {
         close();
     }
 
-    // Setters:
+    /* Setters */
 
     public void setVolume(float volume) {
         floatControl.setValue(volume);

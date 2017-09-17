@@ -1,14 +1,10 @@
-package sprites.components;
+package game.sprites.components;
 
 import nightingale.collision.Collision;
 import nightingale.collision.CollisionCircle;
-import sprites.Actor;
+import game.sprites.Actor;
 
 import java.awt.*;
-
-/**
- * Created by Aunmag on 2017.05.27.
- */
 
 public class Hands extends CollisionCircle {
 
@@ -34,11 +30,10 @@ public class Hands extends CollisionCircle {
         }
     }
 
-    private void updatePosition() {
-        setPosition(
-                owner.getX() + distance * (float) Math.cos(owner.getRadians()),
-                owner.getY() + distance * (float) Math.sin(owner.getRadians())
-        );
+    public void updatePosition() {
+        float x = owner.getX() + distance * (float) Math.cos(owner.getRadians());
+        float y = owner.getY() + distance * (float) Math.sin(owner.getRadians());
+        setPosition(x, y);
     }
 
     private void attack() {
@@ -48,7 +43,7 @@ public class Hands extends CollisionCircle {
             }
 
             if (Collision.calculateIsCollision(this, actor.getCollision())) {
-                actor.hit(damage * owner.getHealth(), radius, owner);
+                actor.hit(damage * owner.getHealth(), owner.getRadians(), owner);
             }
         }
 
