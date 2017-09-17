@@ -7,11 +7,14 @@ import game.sprites.Bullet;
 import game.sprites.Weapon;
 import game.sprites.Object;
 import nightingale.Application;
-import nightingale.basics.BaseSprite;
 import nightingale.basics.BaseWorld;
 import nightingale.structures.Texture;
+import nightingale.utilities.UtilsBaseOperative;
 import nightingale.utilities.UtilsGraphics;
 import nightingale.utilities.UtilsMath;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class World extends BaseWorld {
 
@@ -19,6 +22,13 @@ public class World extends BaseWorld {
     private static final int groundBlockSize = 128;
     private static final SoundManager soundAmbiance;
     private static final SoundManager soundAtmosphere;
+
+    public static List<AI> ais = new ArrayList<>();
+    public static List<Object> terrains = new ArrayList<>();
+    public static List<Object> decorations = new ArrayList<>();
+    public static List<Actor> actors = new ArrayList<>();
+    public static List<Bullet> bullets = new ArrayList<>();
+    public static List<Object> trees = new ArrayList<>();
 
     static {
         soundAmbiance = new SoundManager("/sounds/ambiance/birds.wav");
@@ -41,7 +51,7 @@ public class World extends BaseWorld {
         player.setWeapon(new Weapon());
 
         Actor.setPlayer(player);
-        Actor.all.add(player);
+        actors.add(player);
 
         Application.getCamera().setTarget(player);
     }
@@ -56,7 +66,7 @@ public class World extends BaseWorld {
 
         for (float x = first; x < last; x += step) {
             for (float y = first; y < last; y += step) {
-                Object.terrains.add(new Object(x, y, 0, texture));
+                terrains.add(new Object(x, y, 0, texture));
             }
         }
     }
@@ -70,17 +80,17 @@ public class World extends BaseWorld {
         float last = first + length - step;
 
         for (float i = first + step; i <= last - step; i += step) {
-            Object.decorations.add(new Object(i, first, (float) Math.PI, texture));
-            Object.decorations.add(new Object(i, last, 0, texture));
-            Object.decorations.add(new Object(first, i, (float) UtilsMath.PIx0_5, texture));
-            Object.decorations.add(new Object(last, i, (float) UtilsMath.PIx1_5, texture));
+            decorations.add(new Object(i, first, (float) Math.PI, texture));
+            decorations.add(new Object(i, last, 0, texture));
+            decorations.add(new Object(first, i, (float) UtilsMath.PIx0_5, texture));
+            decorations.add(new Object(last, i, (float) UtilsMath.PIx1_5, texture));
         }
 
         texture = Texture.getOrCreate("images/objects/ground/bluff_corner");
-        Object.decorations.add(new Object(first, first, (float) Math.PI, texture));
-        Object.decorations.add(new Object(first, last, (float) UtilsMath.PIx0_5, texture));
-        Object.decorations.add(new Object(last, last, 0, texture));
-        Object.decorations.add(new Object(last, first, (float) UtilsMath.PIx1_5, texture));
+        decorations.add(new Object(first, first, (float) Math.PI, texture));
+        decorations.add(new Object(first, last, (float) UtilsMath.PIx0_5, texture));
+        decorations.add(new Object(last, last, 0, texture));
+        decorations.add(new Object(last, first, (float) UtilsMath.PIx1_5, texture));
     }
 
     private void initializeTrees() {
@@ -91,7 +101,7 @@ public class World extends BaseWorld {
             int x = UtilsMath.randomizeBetween(-spreading, spreading);
             int y = UtilsMath.randomizeBetween(-spreading, spreading);
 
-            for (Object air: Object.trees) {
+            for (Object air: trees) {
                 if (Math.abs(x - air.getX()) < 128 && Math.abs(y - air.getY()) < 128) {
                     continue positionChoosing;
                 }
@@ -100,27 +110,27 @@ public class World extends BaseWorld {
             int number = UtilsMath.random.nextInt(3) + 1;
             Texture texture = Texture.getOrCreate("images/objects/air/tree_" + number);
             Object tree = new Object(x, y, 0, texture);
-            Object.trees.add(tree);
+            trees.add(tree);
         }
     }
 
     public void update() {
         super.update();
-        AI.updateAll();
-        BaseSprite.updateAll(Actor.all);
-        BaseSprite.updateAll(Bullet.all);
+        UtilsBaseOperative.updateAll(ais);
+        UtilsBaseOperative.updateAll(actors);
+        UtilsBaseOperative.updateAll(bullets);
     }
 
     public void render() {
-        BaseSprite.renderAll(Object.terrains);
-        BaseSprite.renderAll(Object.decorations);
-        BaseSprite.renderAll(Actor.all);
+        UtilsBaseOperative.renderAll(terrains);
+        UtilsBaseOperative.renderAll(decorations);
+        UtilsBaseOperative.renderAll(actors);
 
         UtilsGraphics.drawPrepare();
-        BaseSprite.renderAll(Bullet.all);
+        UtilsBaseOperative.renderAll(bullets);
         UtilsGraphics.drawFinish();
 
-        BaseSprite.renderAll(Object.trees);
+        UtilsBaseOperative.renderAll(trees);
     }
 
     public void play() {
@@ -134,12 +144,12 @@ public class World extends BaseWorld {
     }
 
     public void remove() {
-        AI.removeAll();
-        BaseSprite.removeAll(Actor.all);
-        BaseSprite.removeAll(Bullet.all);
-        BaseSprite.removeAll(Object.terrains);
-        BaseSprite.removeAll(Object.decorations);
-        BaseSprite.removeAll(Object.trees);
+        UtilsBaseOperative.removeAll(ais);
+        UtilsBaseOperative.removeAll(terrains);
+        UtilsBaseOperative.removeAll(decorations);
+        UtilsBaseOperative.removeAll(actors);
+        UtilsBaseOperative.removeAll(bullets);
+        UtilsBaseOperative.removeAll(trees);
         stop();
     }
 

@@ -1,15 +1,12 @@
 package game.client.graphics;
 
+import game.world.World;
 import nightingale.Application;
 import nightingale.data.DataEngine;
 import nightingale.font.Text;
 import nightingale.gui.GuiLabel;
 import nightingale.utilities.UtilsMath;
 import org.lwjgl.glfw.GLFW;
-import game.ai.AI;
-import game.sprites.Actor;
-import game.sprites.Bullet;
-import game.sprites.Object;
 
 public class Hud {
 
@@ -49,12 +46,12 @@ public class Hud {
         message += String.format("Spent time on updating: %s ms\n", timeSpentUpdate);
         message += String.format("Spent time on rendering: %s ms\n", timeSpentRender);
         message += String.format("Spent time total: %s ms \n", timeSpentTotal);
-        message += String.format("\nAIs: %s", AI.all.size());
-        message += String.format("\nActors: %s", Actor.all.size());
-        message += String.format("\nBullets: %s", Bullet.all.size());
-        message += String.format("\nTerrains: %s", Object.terrains.size());
-        message += String.format("\nDecorations: %s", Object.decorations.size());
-        message += String.format("\nTrees: %s", Object.trees.size());
+        message += String.format("\nAIs: %s", World.ais.size());
+        message += String.format("\nActors: %s", World.actors.size());
+        message += String.format("\nBullets: %s", World.bullets.size());
+        message += String.format("\nTerrains: %s", World.terrains.size());
+        message += String.format("\nDecorations: %s", World.decorations.size());
+        message += String.format("\nTrees: %s", World.trees.size());
 
         if (!text.message.equals(message)) {
             text.delete();

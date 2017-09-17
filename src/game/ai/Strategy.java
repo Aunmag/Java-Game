@@ -1,5 +1,6 @@
 package game.ai;
 
+import game.world.World;
 import nightingale.utilities.UtilsMath;
 import game.sprites.Actor;
 import nightingale.collision.Collision;
@@ -14,7 +15,6 @@ abstract class Strategy {
     protected float targetRadiansDifferenceAbsolute;
     protected boolean isTargetReached;
 
-
     Strategy(AI ai) {
         this.ai = ai;
         resetTarget();
@@ -28,7 +28,7 @@ abstract class Strategy {
     protected void searchTarget() {
         resetTarget();
 
-        for (Actor actor: Actor.all) {
+        for (Actor actor: World.actors) {
             if (actor.isAlive() && actor.type.equals("human")) {
                 target = actor;
                 break;

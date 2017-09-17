@@ -1,5 +1,6 @@
 package game.sprites.components;
 
+import game.world.World;
 import nightingale.collision.Collision;
 import nightingale.collision.CollisionCircle;
 import game.sprites.Actor;
@@ -37,7 +38,7 @@ public class Hands extends CollisionCircle {
     }
 
     private void attack() {
-        for (Actor actor: Actor.all) {
+        for (Actor actor: World.actors) {
             if (actor.type.equals(owner.type) || actor == owner) {
                 continue;
             }

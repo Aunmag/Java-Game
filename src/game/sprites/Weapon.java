@@ -1,5 +1,6 @@
 package game.sprites;
 
+import game.world.World;
 import nightingale.basics.BaseSprite;
 import nightingale.structures.Texture;
 import nightingale.utilities.UtilsMath;
@@ -49,7 +50,7 @@ public class Weapon extends BaseSprite {
         float radians = UtilsMath.randomizeFlexibly(getRadians(), deflectionRadians);
         float velocity = UtilsMath.randomizeFlexibly(velocityMuzzle, deflectionVelocity);
         Bullet bullet = new Bullet(x, y, radians, velocity, velocityRecession, shooter);
-        Bullet.all.add(bullet);
+        World.bullets.add(bullet);
     }
 
 }

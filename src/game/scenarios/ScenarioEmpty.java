@@ -10,4 +10,8 @@ public class ScenarioEmpty implements BaseOperative {
 
     public void remove() {}
 
+    public boolean isRemoved() {
+        return false;
+    }
+
 }
