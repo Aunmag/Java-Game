@@ -8,9 +8,9 @@ import java.util.List;
 
 public class Object extends BaseSprite {
 
-    public static List<Object> allGround = new ArrayList<>();
-    public static List<Object> allDecoration = new ArrayList<>();
-    public static List<Object> allAir = new ArrayList<>();
+    public static List<Object> terrains = new ArrayList<>();
+    public static List<Object> decorations = new ArrayList<>();
+    public static List<Object> trees = new ArrayList<>();
 
     public Object(float x, float y, float radians, Texture texture) {
         super(x, y, radians, texture);

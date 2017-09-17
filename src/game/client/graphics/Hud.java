@@ -52,9 +52,9 @@ public class Hud {
         message += String.format("\nAIs: %s", AI.all.size());
         message += String.format("\nActors: %s", Actor.all.size());
         message += String.format("\nBullets: %s", Bullet.all.size());
-        message += String.format("\nTerrains: %s", Object.allGround.size());
-        message += String.format("\nDecorations: %s", Object.allDecoration.size());
-        message += String.format("\nTrees: %s", Object.allAir.size());
+        message += String.format("\nTerrains: %s", Object.terrains.size());
+        message += String.format("\nDecorations: %s", Object.decorations.size());
+        message += String.format("\nTrees: %s", Object.trees.size());
 
         if (!text.message.equals(message)) {
             text.delete();

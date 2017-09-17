@@ -12,7 +12,6 @@ import game.sprites.Actor;
 import game.sprites.Bullet;
 import game.sprites.Object;
 import game.sprites.Weapon;
-import game.utilities.UtilsWorld;
 
 public class World extends BaseWorld {
 
@@ -31,6 +30,7 @@ public class World extends BaseWorld {
     public World() {
         initializePlayer();
         initializeGround();
+        initializeBluffs();
         initializeTrees();
         Actor.velocityForwardZombie = 0.63f; // TODO: Get ride off this
     }
@@ -47,57 +47,62 @@ public class World extends BaseWorld {
     }
 
     private void initializeGround() {
-        // TODO: Improve all:
+        Texture texture = Texture.getOrCreate("images/objects/ground/grass");
 
-        Texture imageGrass = Texture.getOrCreate("images/objects/ground/grass");
-        Texture imageBluff0 = Texture.getOrCreate("images/objects/ground/bluff_0");
-        Texture imageBluff90 = Texture.getOrCreate("images/objects/ground/bluff_90");
-        Texture imageBluff180 = Texture.getOrCreate("images/objects/ground/bluff_180");
-        Texture imageBluff270 = Texture.getOrCreate("images/objects/ground/bluff_270");
-        Texture imageBluffA0 = Texture.getOrCreate("images/objects/ground/bluff_a0");
-        Texture imageBluffA90 = Texture.getOrCreate("images/objects/ground/bluff_a90");
-        Texture imageBluffA180 = Texture.getOrCreate("images/objects/ground/bluff_a180");
-        Texture imageBluffA270 = Texture.getOrCreate("images/objects/ground/bluff_a270");
+        int step = groundBlockSize;
+        int size = step * groundQuantity;
+        float first = (size / -2f) + (step / 2f);
+        float last = first + size;
 
-        int groundSize = groundBlockSize * groundQuantity;
-        int groundStart = groundQuantity / 2 * groundBlockSize - groundBlockSize / 2;
-
-        for (int x = -groundStart; x < groundSize - groundStart; x += groundBlockSize) {
-            for (int y = -groundStart; y < groundSize - groundStart; y += groundBlockSize) {
-                Object.allGround.add(new Object(x, y, 0, imageGrass));
-
-                int confine = 960 + 8;
-                int zone = 960;
-
-                if (y == -zone && x < confine && -confine < x) {
-                    Object.allDecoration.add(new Object(x, y - 64, 0, imageBluff0));
-                } else if (y == zone && x < confine && -confine < x) {
-                    Object.allDecoration.add(new Object(x, y + 64, 0, imageBluff180));
-                }
-
-                if (x == -zone && y < confine && -confine < y) {
-                    Object.allDecoration.add(new Object(x - 64, y, 0, imageBluff270));
-                } else if (x == zone && y < confine && -confine < y) {
-                    Object.allDecoration.add(new Object(x + 64, y, 0, imageBluff90));
-                }
-
-                if (y == -zone && x == -zone) {
-                    Object.allDecoration.add(new Object(x - 64, y - 64, 0, imageBluffA270));
-                } else if (y == -zone && x == zone) {
-                    Object.allDecoration.add(new Object(x + 64, y - 64, 0, imageBluffA0));
-                } else if (y == zone && x == zone) {
-                    Object.allDecoration.add(new Object(x + 64, y + 64, 0, imageBluffA90));
-                } else if (y == zone && x == -zone) {
-                    Object.allDecoration.add(new Object(x - 64, y + 64, 0, imageBluffA180));
-                }
+        for (float x = first; x < last; x += step) {
+            for (float y = first; y < last; y += step) {
+                Object.terrains.add(new Object(x, y, 0, texture));
             }
         }
     }
 
+    private void initializeBluffs() {
+        Texture texture = Texture.getOrCreate("images/objects/ground/bluff");
+        int quantity = 17;
+        int step = groundBlockSize;
+        int length = step * quantity;
+        float first = (length / -2f) + (step / 2f);
+        float last = first + length - step;
+
+        for (float i = first + step; i <= last - step; i += step) {
+            Object.decorations.add(new Object(i, first, (float) Math.PI, texture));
+            Object.decorations.add(new Object(i, last, 0, texture));
+            Object.decorations.add(new Object(first, i, (float) UtilsMath.PIx0_5, texture));
+            Object.decorations.add(new Object(last, i, (float) UtilsMath.PIx1_5, texture));
+        }
+
+        texture = Texture.getOrCreate("images/objects/ground/bluff_corner");
+        Object.decorations.add(new Object(first, first, (float) Math.PI, texture));
+        Object.decorations.add(new Object(first, last, (float) UtilsMath.PIx0_5, texture));
+        Object.decorations.add(new Object(last, last, 0, texture));
+        Object.decorations.add(new Object(last, first, (float) UtilsMath.PIx1_5, texture));
+    }
+
+
     private void initializeTrees() {
-        int treesQuantity = (groundQuantity * groundQuantity) / 2;
-        int treesSpreading = (groundQuantity * groundBlockSize) / 2;
-        UtilsWorld.putTrees(treesQuantity, treesSpreading);
+        int quantity = (groundQuantity * groundQuantity) / 2;
+        int spreading = (groundQuantity * groundBlockSize) / 2;
+
+        positionChoosing: for (int i = 0; i < quantity; i++) {
+            int x = UtilsMath.randomizeBetween(-spreading, spreading);
+            int y = UtilsMath.randomizeBetween(-spreading, spreading);
+
+            for (Object air: Object.trees) {
+                if (Math.abs(x - air.getX()) < 128 && Math.abs(y - air.getY()) < 128) {
+                    continue positionChoosing;
+                }
+            }
+
+            int number = UtilsMath.random.nextInt(3) + 1;
+            Texture texture = Texture.getOrCreate("images/objects/air/tree_" + number);
+            Object tree = new Object(x, y, 0, texture);
+            Object.trees.add(tree);
+        }
     }
 
     public void update() {
@@ -116,8 +121,8 @@ public class World extends BaseWorld {
     }
 
     public void render() {
-        BaseSprite.renderAll(Object.allGround);
-        BaseSprite.renderAll(Object.allDecoration);
+        BaseSprite.renderAll(Object.terrains);
+        BaseSprite.renderAll(Object.decorations);
         BaseSprite.renderAll(Weapon.all);
         BaseSprite.renderAll(Actor.all);
 
@@ -125,7 +130,7 @@ public class World extends BaseWorld {
         BaseSprite.renderAll(Bullet.all);
         UtilsGraphics.drawFinish();
 
-        BaseSprite.renderAll(Object.allAir);
+        BaseSprite.renderAll(Object.trees);
     }
 
     public void play() {
@@ -144,9 +149,9 @@ public class World extends BaseWorld {
         BaseSprite.removeAll(Actor.all);
         BaseSprite.removeAll(Weapon.all);
         BaseSprite.removeAll(Bullet.all);
-        BaseSprite.removeAll(Object.allGround);
-        BaseSprite.removeAll(Object.allDecoration);
-        BaseSprite.removeAll(Object.allAir);
+        BaseSprite.removeAll(Object.terrains);
+        BaseSprite.removeAll(Object.decorations);
+        BaseSprite.removeAll(Object.trees);
         stop();
     }
 
