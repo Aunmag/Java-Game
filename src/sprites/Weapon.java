@@ -3,10 +3,10 @@ package sprites;
 import java.util.ArrayList;
 import java.util.List;
 
-import client.Application;
+import nightingale.basics.BaseSprite;
+import nightingale.structures.Texture;
 import nightingale.utilities.UtilsMath;
 import managers.SoundManager;
-import managers.ImageManager;
 
 /**
  * This is a weapon which is been used by the owner (an actor with this weapon). If the owner is
@@ -16,12 +16,11 @@ import managers.ImageManager;
  * Created by Aunmag on 2016.10.03.
  */
 
-public class Weapon extends Sprite {
+public class Weapon extends BaseSprite {
 
     public static List<Weapon> all = new ArrayList<>();
-    public static List<Weapon> invalids = new ArrayList<>();
 
-    private static final ImageManager image = new ImageManager("weapons/mp_27");
+    private static final Texture texture = Texture.getOrCreate("images/weapons/mp_27");
     private static final int fireRate = 700; // TODO: Rename
     private static final int bulletsPerShot = 16;
     private static final float velocityMuzzle = 58;
@@ -34,7 +33,7 @@ public class Weapon extends Sprite {
     private SoundManager soundShot;
 
     public Weapon(Actor owner) {
-        super(0, 0, 0, image);
+        super(0, 0, 0, texture);
 
         this.owner = owner;
 
@@ -46,14 +45,14 @@ public class Weapon extends Sprite {
         updateOwner();
         updatePosition();
 
-        if (owner.getHasWeapon() && owner.isAttacking && Application.getTimeCurrent() >= timeNextShot) {
+        if (owner.getHasWeapon() && owner.isAttacking && System.currentTimeMillis() >= timeNextShot) {
             makeShot();
         }
     }
 
     private void updateOwner() {
         if (owner == null || !owner.getIsAlive()) {
-            delete();
+            remove();
         }
     }
 
@@ -68,7 +67,7 @@ public class Weapon extends Sprite {
     private void makeShot() {
         soundShot.play();
 
-        float muzzleLength = image.getCenterX() / 2f;
+        float muzzleLength = texture.getCenterX();
         float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
         float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
 
@@ -76,7 +75,7 @@ public class Weapon extends Sprite {
             makeBullet(bulletX, bulletY);
         }
 
-        timeNextShot = Application.getTimeCurrent() + fireRate;
+        timeNextShot = System.currentTimeMillis() + fireRate;
     }
 
     private void makeBullet(float x, float y) {
@@ -84,11 +83,6 @@ public class Weapon extends Sprite {
         float bulletVelocity = UtilsMath.randomizeFlexibly(velocityMuzzle, deflectionVelocity);
         Bullet bullet = new Bullet(x, y, bulletRadians, bulletVelocity, velocityRecession, owner);
         Bullet.all.add(bullet);
-    }
-
-    public void delete() {
-        isValid = false;
-        invalids.add(this);
     }
 
 }

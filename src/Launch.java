@@ -1,4 +1,4 @@
-import client.Application;
+import client.GamePlay;
 
 /**
  * Main single-player launcher.
@@ -9,8 +9,9 @@ import client.Application;
 public class Launch {
 
     public static void main(String[] args) {
-        Application application = new Application();
-        application.start();
+        GamePlay gamePlay = new GamePlay();
+        gamePlay.run();
+//        application.start();
     }
 
 }

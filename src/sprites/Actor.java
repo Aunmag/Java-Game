@@ -1,10 +1,10 @@
 package sprites;
 
-import client.Application;
+import nightingale.basics.BaseSprite;
+import nightingale.structures.Texture;
 import nightingale.utilities.FloatSmooth;
 import nightingale.utilities.UtilsLog;
 import nightingale.utilities.UtilsMath;
-import managers.ImageManager;
 import managers.SoundManager;
 import nightingale.collision.CollisionCircle;
 import sprites.components.Hands;
@@ -17,15 +17,10 @@ import java.util.*;
  * Created by Aunmag on 2016.10.23.
  */
 
-public class Actor extends Sprite {
+public class Actor extends BaseSprite {
 
     public static List<Actor> all = new ArrayList<>();
-    public static List<Actor> invalids = new ArrayList<>();
     private static SoundManager[] sounds = new SoundManager[6];
-
-    private final static ImageManager imageHuman = new ImageManager("actors/human");
-    private final static ImageManager imageZombie = new ImageManager("actors/zombie");
-
     private static Actor player;
 
     private boolean isAlive = true;
@@ -53,7 +48,7 @@ public class Actor extends Sprite {
     public boolean isAttacking = false;
 
     public Actor(float x, float y, float radians, String type) {
-        super(x, y, radians, findImage(type));
+        super(x, y, radians, findTexture(type));
         this.type = type;
 
         inertiaVelocity.setFlexDegree(0.75f);
@@ -82,11 +77,11 @@ public class Actor extends Sprite {
         }
     }
 
-    private static ImageManager findImage(String type) {
+    private static Texture findTexture(String type) {
         if (type.equals("human")) {
-            return imageHuman;
+            return Texture.getOrCreate("images/actors/human");
         } else {
-            return imageZombie;
+            return Texture.getOrCreate("images/actors/zombie");
         }
     }
 
@@ -106,7 +101,7 @@ public class Actor extends Sprite {
             return;
         }
 
-        inertiaVelocity.update(Application.getTimeCurrent());
+        inertiaVelocity.update(System.currentTimeMillis());
 
         updateIsWalking();
 
@@ -129,7 +124,7 @@ public class Actor extends Sprite {
             health = 0;
             isAlive = false;
             if (type.equals("zombie")) {
-                delete();
+                remove();
             }
         }
     }
@@ -162,11 +157,11 @@ public class Actor extends Sprite {
         }
 
         if (isWalkingLeft) {
-            move(getRadians() - (float) UtilsMath.PIx0_5, velocityAside);
+            move(getRadians() + (float) UtilsMath.PIx0_5, velocityAside);
         }
 
         if (isWalkingRight) {
-            move(getRadians() + (float) UtilsMath.PIx0_5, velocityAside);
+            move(getRadians() - (float) UtilsMath.PIx0_5, velocityAside);
         }
     }
 
@@ -177,7 +172,7 @@ public class Actor extends Sprite {
 
         currentMovementRadians = movementRadians;
 
-        inertiaVelocity.setValueTarget(movementVelocity * health, Application.getTimeCurrent());
+        inertiaVelocity.setValueTarget(movementVelocity * health, System.currentTimeMillis());
         float velocityCurrent = inertiaVelocity.getValueCurrent();
 
         addPosition(
@@ -187,17 +182,13 @@ public class Actor extends Sprite {
     }
 
     private void stay() {
-        inertiaVelocity.setValueTarget(0, Application.getTimeCurrent());
+        inertiaVelocity.setValueTarget(0, System.currentTimeMillis());
         float velocityCurrent = inertiaVelocity.getValueCurrent();
 
         addPosition(
                 velocityCurrent * (float) Math.cos(currentMovementRadians),
                 velocityCurrent * (float) Math.sin(currentMovementRadians)
         );
-    }
-
-    public void hit(float intensity, float radians) {
-        hit(intensity, radians, null);
     }
 
     public void hit(float intensity, float radians, Actor attacker) {
@@ -229,11 +220,6 @@ public class Actor extends Sprite {
 
     private void soundHurt() {
         sounds[UtilsMath.random.nextInt(6)].play();
-    }
-
-    public void delete() {
-        isValid = false;
-        invalids.add(this);
     }
 
     public void increaseKills() {

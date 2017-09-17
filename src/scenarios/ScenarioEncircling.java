@@ -1,8 +1,14 @@
 package scenarios;
 
 import ai.AI;
-import client.Application;
-import gui.menus.MenuManager;
+import client.GamePlay;
+import managers.SoundManager;
+import nightingale.basics.BaseOperative;
+import nightingale.gui.GuiButton;
+import nightingale.gui.GuiButtonBack;
+import nightingale.gui.GuiLabel;
+import nightingale.gui.GuiPage;
+import nightingale.structures.Texture;
 import nightingale.utilities.UtilsMath;
 import sprites.Actor;
 
@@ -10,8 +16,9 @@ import sprites.Actor;
  * Created by Aunmag on 2016.11.23.
  */
 
-public class ScenarioEncircling extends Scenario {
+public class ScenarioEncircling implements BaseOperative {
 
+    private static SoundManager sound = new SoundManager("/sounds/music/death.wav");
     private long timeSpawnNext;
     private int timeSpawnStep = 2_000;
     private final int timeSpawnStepMin = 100;
@@ -23,12 +30,21 @@ public class ScenarioEncircling extends Scenario {
     private int zombiesKilled = 0;
     private float zombiesVelocityAcceleration = 0.005f;
 
+    static {
+        sound.setVolume(-4);
+    }
+
     public void update() {
+        if (!Actor.getPlayer().getIsAlive()) {
+            gameOver();
+            return;
+        }
+
         confinePlayerPosition();
         updateZombiesKilled();
 
-        if (Actor.all.size() < actorsSpawnedLimit && Application.getTimeCurrent() >= timeSpawnNext) {
-            timeSpawnNext = Application.getTimeCurrent() + timeSpawnStep;
+        if (Actor.all.size() < actorsSpawnedLimit && System.currentTimeMillis() >= timeSpawnNext) {
+            timeSpawnNext = System.currentTimeMillis() + timeSpawnStep;
             spawnZombie();
         }
     }
@@ -63,9 +79,6 @@ public class ScenarioEncircling extends Scenario {
         Actor.velocityForwardZombie += zombiesVelocityAcceleration * zombiesKilledDifference;
         zombiesKilled = zombiesKilledNow;
 
-        String gameOverMessage = String.format("You have killed %s zombies.", zombiesKilled);
-        MenuManager.getMenuGameOver().setMessage(gameOverMessage);
-
         int timeSpawnDecreaseNow = timeSpawnDecrease * zombiesKilledDifference;
         if (timeSpawnStep - timeSpawnDecreaseNow > timeSpawnStepMin) {
             timeSpawnStep -= timeSpawnDecreaseNow;
@@ -83,5 +96,32 @@ public class ScenarioEncircling extends Scenario {
     }
 
     public void render() {}
+
+    public void remove() {}
+
+    public void gameOver() {
+        createGameOverPage();
+        GamePlay.deleteWorld();
+        sound.play();
+    }
+
+    private void createGameOverPage() {
+        String messageScore = String.format("You have killed %s zombies.", zombiesKilled);
+
+        GuiLabel[] labels = new GuiLabel[] {
+                new GuiLabel(4, 4, 4, 1, "You have died"),
+                new GuiLabel(4, 5, 4, 1, messageScore)
+        };
+
+        GuiButton[] buttons = new GuiButton[] {
+                new GuiButtonBack(4, 8, 4, 1, "Back to main menu"),
+        };
+
+        Texture wallpaper = Texture.getOrCreate("images/wallpapers/death");
+        wallpaper.scaleAsWallpaper();
+
+        new GuiPage(labels, buttons, wallpaper).open();
+        GamePlay.setPause(true);
+    }
 
 }
