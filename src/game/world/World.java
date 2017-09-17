@@ -2,16 +2,16 @@ package game.world;
 
 import game.ai.AI;
 import game.managers.SoundManager;
+import game.sprites.Actor;
+import game.sprites.Bullet;
+import game.sprites.Weapon;
+import game.sprites.Object;
 import nightingale.Application;
 import nightingale.basics.BaseSprite;
 import nightingale.basics.BaseWorld;
 import nightingale.structures.Texture;
 import nightingale.utilities.UtilsGraphics;
 import nightingale.utilities.UtilsMath;
-import game.sprites.Actor;
-import game.sprites.Bullet;
-import game.sprites.Object;
-import game.sprites.Weapon;
 
 public class World extends BaseWorld {
 
@@ -82,7 +82,6 @@ public class World extends BaseWorld {
         Object.decorations.add(new Object(last, last, 0, texture));
         Object.decorations.add(new Object(last, first, (float) UtilsMath.PIx1_5, texture));
     }
-
 
     private void initializeTrees() {
         int quantity = (groundQuantity * groundQuantity) / 2;
