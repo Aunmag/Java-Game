@@ -31,10 +31,9 @@ public class Hands extends CollisionCircle {
     }
 
     public void updatePosition() {
-        setPosition(
-                owner.getX() + distance * (float) Math.cos(owner.getRadians()),
-                owner.getY() + distance * (float) Math.sin(owner.getRadians())
-        );
+        float x = owner.getX() + distance * (float) Math.cos(owner.getRadians());
+        float y = owner.getY() + distance * (float) Math.sin(owner.getRadians());
+        setPosition(x, y);
     }
 
     private void attack() {
@@ -44,7 +43,7 @@ public class Hands extends CollisionCircle {
             }
 
             if (Collision.calculateIsCollision(this, actor.getCollision())) {
-                actor.hit(damage * owner.getHealth(), radius, owner);
+                actor.hit(damage * owner.getHealth(), owner.getRadians(), owner);
             }
         }
 
