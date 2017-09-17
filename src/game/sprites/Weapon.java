@@ -1,16 +1,11 @@
 package game.sprites;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import nightingale.basics.BaseSprite;
 import nightingale.structures.Texture;
 import nightingale.utilities.UtilsMath;
 import game.managers.SoundManager;
 
 public class Weapon extends BaseSprite {
-
-    public static List<Weapon> all = new ArrayList<>();
 
     private static final Texture texture = Texture.getOrCreate("images/weapons/mp_27");
     private static final int fireRate = 700; // TODO: Rename
@@ -20,43 +15,23 @@ public class Weapon extends BaseSprite {
     private static final float deflectionVelocity = 2;
     private static final float deflectionRadians = 0.06f;
 
-    private Actor owner;
     private long timeNextShot = 0;
     private SoundManager soundShot;
 
-    public Weapon(Actor owner) {
+    public Weapon() {
         super(0, 0, 0, texture);
-
-        this.owner = owner;
 
         soundShot = new SoundManager("/sounds/weapons/shot_mp_27.wav");
         soundShot.setVolume(1);
     }
 
-    public void update() {
-        updateOwner();
-        updatePosition();
+    public void update() {}
 
-        if (owner.getHasWeapon() && owner.isAttacking && System.currentTimeMillis() >= timeNextShot) {
-            makeShot();
+    public void makeShotBy(Actor shooter) {
+        if (System.currentTimeMillis() < timeNextShot) {
+            return;
         }
-    }
 
-    private void updateOwner() {
-        if (owner == null || !owner.getIsAlive()) {
-            remove();
-        }
-    }
-
-    private void updatePosition() {
-        setRadians(owner.getRadians());
-        setPosition(
-                owner.getX() + 12 * (float) Math.cos(getRadians()),
-                owner.getY() + 12 * (float) Math.sin(getRadians())
-        );
-    }
-
-    private void makeShot() {
         soundShot.play();
 
         float muzzleLength = texture.getCenterX();
@@ -64,16 +39,16 @@ public class Weapon extends BaseSprite {
         float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
 
         for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
-            makeBullet(bulletX, bulletY);
+            makeBullet(shooter, bulletX, bulletY);
         }
 
         timeNextShot = System.currentTimeMillis() + fireRate;
     }
 
-    private void makeBullet(float x, float y) {
-        float bulletRadians = UtilsMath.randomizeFlexibly(getRadians(), deflectionRadians);
-        float bulletVelocity = UtilsMath.randomizeFlexibly(velocityMuzzle, deflectionVelocity);
-        Bullet bullet = new Bullet(x, y, bulletRadians, bulletVelocity, velocityRecession, owner);
+    private void makeBullet(Actor shooter, float x, float y) {
+        float radians = UtilsMath.randomizeFlexibly(getRadians(), deflectionRadians);
+        float velocity = UtilsMath.randomizeFlexibly(velocityMuzzle, deflectionVelocity);
+        Bullet bullet = new Bullet(x, y, radians, velocity, velocityRecession, shooter);
         Bullet.all.add(bullet);
     }
 

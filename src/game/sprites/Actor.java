@@ -22,6 +22,7 @@ public class Actor extends BaseSprite {
     private float health = 1;
     private int kills = 0;
     public String type;
+    private Weapon weapon = null;
     private Hands hands = new Hands(this);
     private CollisionCircle collision = new CollisionCircle(getX(), getY(), 7.2f);
 
@@ -107,6 +108,7 @@ public class Actor extends BaseSprite {
 
         updateCollision();
         hands.update();
+        updateWeapon();
     }
 
     private void updateIsAlive() {
@@ -138,6 +140,21 @@ public class Actor extends BaseSprite {
             collision.preventCollisionWith(actor.collision);
             setPosition(collision.getX(), collision.getY());
             actor.setPosition(actor.collision.getX(), actor.collision.getY());
+        }
+    }
+
+    private void updateWeapon() {
+        if (weapon == null) {
+            return;
+        }
+
+        weapon.setRadians(getRadians());
+        float weaponX = getX() + 12 * (float) Math.cos(getRadians());
+        float weaponY = getY() + 12 * (float) Math.sin(getRadians());
+        weapon.setPosition(weaponX, weaponY);
+
+        if (isAttacking) {
+            weapon.makeShotBy(this);
         }
     }
 
@@ -207,9 +224,19 @@ public class Actor extends BaseSprite {
     }
 
     public void render() {
+        if (weapon != null) {
+            weapon.render();
+        }
         super.render();
 //        hands.render();
 //        collision.render();
+    }
+
+    public void remove() {
+        if (weapon != null) {
+            weapon.remove();
+        }
+        super.remove();
     }
 
     private void soundHurt() {
@@ -224,6 +251,10 @@ public class Actor extends BaseSprite {
 
     public static void setPlayer(Actor player) {
         Actor.player = player;
+    }
+
+    public void setWeapon(Weapon weapon) {
+        this.weapon = weapon;
     }
 
     /* Getters */

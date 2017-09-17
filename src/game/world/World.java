@@ -38,7 +38,7 @@ public class World extends BaseWorld {
     private void initializePlayer() {
         // TODO: World should not know about client's player
         Actor player = new Actor(0, 0, (float) -UtilsMath.PIx0_5, "human");
-        Weapon.all.add(new Weapon(player));
+        player.setWeapon(new Weapon());
 
         Actor.setPlayer(player);
         Actor.all.add(player);
@@ -115,14 +115,12 @@ public class World extends BaseWorld {
         AI.invalids.clear();
 
         BaseSprite.updateAll(Actor.all);
-        BaseSprite.updateAll(Weapon.all);
         BaseSprite.updateAll(Bullet.all);
     }
 
     public void render() {
         BaseSprite.renderAll(Object.terrains);
         BaseSprite.renderAll(Object.decorations);
-        BaseSprite.renderAll(Weapon.all);
         BaseSprite.renderAll(Actor.all);
 
         UtilsGraphics.drawPrepare();
@@ -146,7 +144,6 @@ public class World extends BaseWorld {
         AI.all.clear();
         AI.invalids.clear();
         BaseSprite.removeAll(Actor.all);
-        BaseSprite.removeAll(Weapon.all);
         BaseSprite.removeAll(Bullet.all);
         BaseSprite.removeAll(Object.terrains);
         BaseSprite.removeAll(Object.decorations);
