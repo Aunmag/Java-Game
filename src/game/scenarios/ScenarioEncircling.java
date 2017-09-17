@@ -3,6 +3,7 @@ package game.scenarios;
 import game.ai.AI;
 import game.client.Game;
 import game.managers.SoundManager;
+import game.world.World;
 import nightingale.basics.BaseOperative;
 import nightingale.gui.GuiButton;
 import nightingale.gui.GuiButtonBack;
@@ -39,7 +40,7 @@ public class ScenarioEncircling implements BaseOperative {
         confinePlayerPosition();
         updateZombiesKilled();
 
-        if (Actor.all.size() < actorsSpawnedLimit && System.currentTimeMillis() >= timeSpawnNext) {
+        if (World.actors.size() < actorsSpawnedLimit && System.currentTimeMillis() >= timeSpawnNext) {
             timeSpawnNext = System.currentTimeMillis() + timeSpawnStep;
             spawnZombie();
         }
@@ -87,8 +88,8 @@ public class ScenarioEncircling implements BaseOperative {
         float y = Actor.getPlayer().getY() - spawnDistance * (float) Math.sin(direction);
 
         Actor zombie = new Actor(x, y, -direction, "zombie");
-        Actor.all.add(zombie);
-        AI.all.add(new AI(zombie));
+        World.actors.add(zombie);
+        World.ais.add(new AI(zombie));
     }
 
     public void render() {}
@@ -118,6 +119,12 @@ public class ScenarioEncircling implements BaseOperative {
 
         new GuiPage(labels, buttons, wallpaper).open();
         Game.setPause(true);
+    }
+
+    /* Getters */
+
+    public boolean isRemoved() {
+        return false;
     }
 
 }

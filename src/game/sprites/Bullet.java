@@ -1,5 +1,6 @@
 package game.sprites;
 
+import game.world.World;
 import nightingale.basics.BasePoint;
 import nightingale.basics.BaseSprite;
 import nightingale.collision.Collision;
@@ -7,12 +8,9 @@ import nightingale.collision.CollisionLine;
 import nightingale.utilities.UtilsGraphics;
 
 import java.awt.Color;
-import java.util.ArrayList;
-import java.util.List;
 
 public class Bullet extends BaseSprite {
 
-    public static List<Bullet> all = new ArrayList<>();
     private static final Color color = new Color(255, 204, 51, 160);
 
     private BasePoint positionTail;
@@ -77,7 +75,7 @@ public class Bullet extends BaseSprite {
     private void updateCollision() {
         collision.setPosition(getX(), getY(), positionTail.getX(), positionTail.getY());
 
-        for (Actor actor: Actor.all) {
+        for (Actor actor: World.actors) {
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
                 actor.hit(velocity, getRadians(), shooter);
                 velocity /= 60; // TODO: Improve

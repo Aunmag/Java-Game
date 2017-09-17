@@ -1,5 +1,6 @@
 package game.sprites;
 
+import game.world.World;
 import nightingale.basics.BaseSprite;
 import nightingale.structures.Texture;
 import nightingale.utilities.FloatSmooth;
@@ -9,11 +10,8 @@ import game.managers.SoundManager;
 import nightingale.collision.CollisionCircle;
 import game.sprites.components.Hands;
 
-import java.util.*;
-
 public class Actor extends BaseSprite {
 
-    public static List<Actor> all = new ArrayList<>();
     private static SoundManager[] sounds = new SoundManager[6];
     private static Actor player;
 
@@ -130,7 +128,7 @@ public class Actor extends BaseSprite {
     }
 
     private void updateCollision() {
-        for (Actor opponent: all) {
+        for (Actor opponent: World.actors) {
             if (!opponent.isAlive || opponent.equals(this)) {
                 continue;
             }

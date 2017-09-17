@@ -1,34 +1,9 @@
 package game.ai;
 
 import game.sprites.Actor;
-import java.util.ArrayList;
-import java.util.List;
+import nightingale.basics.BaseOperative;
 
-public class AI {
-
-    public static List<AI> all = new ArrayList<>();
-
-    public static void updateAll() {
-        List<AI> toDelete = new ArrayList<>();
-
-        for (AI ai: all) {
-            ai.update();
-
-            if (ai.isRemoved) {
-                toDelete.add(ai);
-            }
-        }
-
-        all.removeAll(toDelete);
-    }
-
-    public static void removeAll() {
-        for (AI ai: all) {
-            ai.remove();
-        }
-
-        all.clear();
-    }
+public class AI implements BaseOperative {
 
     private Actor subject;
     private boolean isRemoved = false;
@@ -57,6 +32,8 @@ public class AI {
         isReactionNow = false;
     }
 
+    public void render() {}
+
     public void remove() {
         isRemoved = true;
     }
@@ -69,6 +46,10 @@ public class AI {
 
     boolean isReactionNow() {
         return isReactionNow;
+    }
+
+    public boolean isRemoved() {
+        return isRemoved;
     }
 
 }
