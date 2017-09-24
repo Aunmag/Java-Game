@@ -2,19 +2,17 @@ package aunmag.shooter.ai;
 
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.utilities.UtilsMath;
+import aunmag.shooter.managers.NextTimer;
 import aunmag.shooter.sprites.Actor;
 import aunmag.nightingale.basics.BaseOperative;
 import aunmag.shooter.world.World;
 
 public class Ai implements BaseOperative {
 
-    private Actor subject;
     private boolean isRemoved = false;
-    private int timeReaction = 300;
-    private long timeReactionNext = 0;
-    private boolean isReactionNow = false;
-    protected static final int timeSearchTarget = 2_000;
-    protected long timeSearchTargetNext = 0;
+    private NextTimer reactionWatch = new NextTimer(300);
+    private NextTimer reactionLookAround = new NextTimer(2_000);
+    private Actor subject;
     protected Actor target;
     protected float targetDistance;
     protected float targetDirection;
@@ -27,19 +25,14 @@ public class Ai implements BaseOperative {
     }
 
     public void update() {
-        if (System.currentTimeMillis() > timeReactionNext) {
-            isReactionNow = true;
-            timeReactionNext = System.currentTimeMillis() + timeReaction;
-        }
-
         if (subject.isRemoved() || !subject.isAlive()) {
             remove();
             return;
         }
 
-        if (System.currentTimeMillis() > timeSearchTargetNext) {
+        reactionLookAround.update(System.currentTimeMillis());
+        if (reactionLookAround.isNow()) {
             searchTarget();
-            timeSearchTargetNext = System.currentTimeMillis() + timeSearchTarget;
         }
 
         if (target == null) {
@@ -47,7 +40,8 @@ public class Ai implements BaseOperative {
             return;
         }
 
-        if (isReactionNow()) {
+        reactionWatch.update(System.currentTimeMillis());
+        if (reactionWatch.isNow()) {
             updateTargetData();
         }
 
@@ -56,11 +50,7 @@ public class Ai implements BaseOperative {
         } else {
             chaseTarget();
         }
-
-        isReactionNow = false;
     }
-
-    private void updateReaction() {}
 
     protected void resetTarget() {
         target = null;
@@ -160,10 +150,6 @@ public class Ai implements BaseOperative {
     }
 
     /* Getters */
-
-    boolean isReactionNow() {
-        return isReactionNow;
-    }
 
     public boolean isRemoved() {
         return isRemoved;
