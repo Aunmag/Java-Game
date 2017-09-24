@@ -1,9 +1,9 @@
-package game.sprites.components;
+package aunmag.shooter.sprites.components;
 
-import game.world.World;
-import nightingale.collision.Collision;
-import nightingale.collision.CollisionCircle;
-import game.sprites.Actor;
+import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.world.World;
+import aunmag.nightingale.collision.Collision;
+import aunmag.nightingale.collision.CollisionCircle;
 
 import java.awt.*;
 
@@ -32,8 +32,8 @@ public class Hands extends CollisionCircle {
     }
 
     public void updatePosition() {
-        float x = owner.getX() + distance * (float) Math.cos(owner.getRadians());
-        float y = owner.getY() + distance * (float) Math.sin(owner.getRadians());
+        float x = owner.getX() + distance * owner.getCos();
+        float y = owner.getY() + distance * owner.getSin();
         setPosition(x, y);
     }
 

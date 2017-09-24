@@ -1,9 +1,9 @@
-package game.ai;
+package aunmag.shooter.ai;
 
-import game.world.World;
-import nightingale.utilities.UtilsMath;
-import game.sprites.Actor;
-import nightingale.collision.Collision;
+import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.world.World;
+import aunmag.nightingale.utilities.UtilsMath;
+import aunmag.nightingale.collision.Collision;
 
 abstract class Strategy {
 

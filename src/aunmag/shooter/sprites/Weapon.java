@@ -1,10 +1,10 @@
-package game.sprites;
+package aunmag.shooter.sprites;
 
-import game.world.World;
-import nightingale.basics.BaseSprite;
-import nightingale.structures.Texture;
-import nightingale.utilities.UtilsMath;
-import game.managers.SoundManager;
+import aunmag.shooter.managers.SoundManager;
+import aunmag.shooter.world.World;
+import aunmag.nightingale.basics.BaseSprite;
+import aunmag.nightingale.structures.Texture;
+import aunmag.nightingale.utilities.UtilsMath;
 
 public class Weapon extends BaseSprite {
 
@@ -36,8 +36,8 @@ public class Weapon extends BaseSprite {
         soundShot.play();
 
         float muzzleLength = texture.getCenterX();
-        float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
-        float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
+        float bulletX = getX() + muzzleLength * getCos();
+        float bulletY = getY() + muzzleLength * getSin();
 
         for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
             makeBullet(shooter, bulletX, bulletY);
