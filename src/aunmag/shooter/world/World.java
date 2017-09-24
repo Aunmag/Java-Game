@@ -2,7 +2,7 @@ package aunmag.shooter.world;
 
 import aunmag.shooter.managers.SoundManager;
 import aunmag.shooter.sprites.Actor;
-import aunmag.shooter.ai.AI;
+import aunmag.shooter.ai.Ai;
 import aunmag.shooter.sprites.Bullet;
 import aunmag.shooter.sprites.Weapon;
 import aunmag.shooter.sprites.Object;
@@ -23,7 +23,7 @@ public class World extends BaseWorld {
     private static final SoundManager soundAmbiance;
     private static final SoundManager soundAtmosphere;
 
-    public static List<AI> ais = new ArrayList<>();
+    public static List<Ai> ais = new ArrayList<>();
     public static List<Object> terrains = new ArrayList<>();
     public static List<Object> decorations = new ArrayList<>();
     public static List<Actor> actors = new ArrayList<>();

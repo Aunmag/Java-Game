@@ -1,6 +1,6 @@
 package aunmag.shooter.scenarios;
 
-import aunmag.shooter.ai.AI;
+import aunmag.shooter.ai.Ai;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.managers.SoundManager;
 import aunmag.shooter.sprites.Actor;
@@ -89,7 +89,7 @@ public class ScenarioEncircling implements BaseOperative {
 
         Actor zombie = new Actor(x, y, -direction, "zombie");
         World.actors.add(zombie);
-        World.ais.add(new AI(zombie));
+        World.ais.add(new Ai(zombie));
     }
 
     public void render() {}
