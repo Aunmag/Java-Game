@@ -1,10 +1,10 @@
 package aunmag.shooter.ai;
 
+import aunmag.nightingale.basics.BaseOperative;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.managers.NextTimer;
 import aunmag.shooter.sprites.Actor;
-import aunmag.nightingale.basics.BaseOperative;
 import aunmag.shooter.world.World;
 
 public class Ai implements BaseOperative {
@@ -12,16 +12,19 @@ public class Ai implements BaseOperative {
     private boolean isRemoved = false;
     private NextTimer reactionWatch = new NextTimer(300);
     private NextTimer reactionLookAround = new NextTimer(2_000);
+    private NextTimer reactionChangeStrategy = new NextTimer(30_000);
+    private int strategyDeviationWay = 0;
     private Actor subject;
-    protected Actor target;
-    protected float targetDistance;
-    protected float targetDirection;
-    protected float targetRadiansDifference;
-    protected float targetRadiansDifferenceAbsolute;
-    protected boolean isTargetReached;
+    private Actor target;
+    private float targetDistance;
+    private float targetDirection;
+    private float targetRadiansDifference;
+    private float targetRadiansDifferenceAbsolute;
+    private boolean isTargetReached;
 
     public Ai(Actor subject) {
         this.subject = subject;
+        changeStrategy();
     }
 
     public void update() {
@@ -30,35 +33,39 @@ public class Ai implements BaseOperative {
             return;
         }
 
+        reactionChangeStrategy.update(System.currentTimeMillis());
+        if (reactionChangeStrategy.isNow()) {
+            changeStrategy();
+        }
+
         reactionLookAround.update(System.currentTimeMillis());
         if (reactionLookAround.isNow()) {
             searchTarget();
         }
 
-        if (target == null) {
-            stop();
-            return;
-        }
+        if (hasTarget()) {
+            reactionWatch.update(System.currentTimeMillis());
+            if (reactionWatch.isNow()) {
+                updateTargetData();
+            }
 
-        reactionWatch.update(System.currentTimeMillis());
-        if (reactionWatch.isNow()) {
-            updateTargetData();
-        }
-
-        if (isTargetReached) {
-            attackTarget();
+            if (isTargetReached) {
+                doAttack();
+            } else {
+                chaseTarget();
+            }
         } else {
-            chaseTarget();
+            doNothing();
         }
     }
 
-    protected void resetTarget() {
-        target = null;
-        isTargetReached = false;
+    private void changeStrategy() {
+        strategyDeviationWay = UtilsMath.randomizeBetween(-1, +1);
     }
 
     protected void searchTarget() {
-        resetTarget();
+        target = null;
+        isTargetReached = false;
 
         for (Actor actor: World.actors) {
             if (actor.isAlive() && actor.type.equals("human")) {
@@ -69,7 +76,7 @@ public class Ai implements BaseOperative {
     }
 
     protected void updateTargetData() {
-        if (target == null) {
+        if (!hasTarget()) {
             return;
         }
 
@@ -105,39 +112,30 @@ public class Ai implements BaseOperative {
         subject.isWalkingForward = true;
         subject.isSprinting = calculateIsBehindTarget();
 
-        if (96 < targetDistance && targetDistance < 512 && targetRadiansDifferenceAbsolute > Math.PI / 1.4) { // TODO: Improve
+        if (targetRadiansDifferenceAbsolute > UtilsMath.PIx0_5) {
             deviateRoute();
         } else if (targetDistance < 96) {
             subject.isSprinting = true;
         }
     }
 
-    private void attackTarget() {
+    private void deviateRoute() {
+        int distanceMin = 96; // 3m
+        int distanceMax = 640; // 20m
+
+        if (distanceMin < targetDistance && targetDistance < distanceMax) {
+            float intensity = targetDistance / distanceMax;
+            float radians = (float) (UtilsMath.PIx0_5) * intensity;
+            subject.addRadiansCarefully(radians * strategyDeviationWay);
+        }
+    }
+
+    private void doAttack() {
         subject.isAttacking = true;
         subject.isWalkingForward = false;
     }
 
-    private void deviateRoute() {
-        float radiansDeviate = 0;
-
-        if (targetDistance > 512) {
-            radiansDeviate = (float) UtilsMath.PIx0_5 / 2f;
-        } else if (targetDistance > 256) {
-            radiansDeviate = (float) UtilsMath.PIx0_5 / 4f;
-        } else if (targetDistance > 128) {
-            radiansDeviate = (float) UtilsMath.PIx0_5 / 8f;
-        } else if (targetDistance > 64) {
-            radiansDeviate = (float) UtilsMath.PIx0_5 / 16f;
-        }
-
-        if (targetRadiansDifference < 0) {
-            subject.setRadians(subject.getRadians() - radiansDeviate);
-        } else {
-            subject.setRadians(subject.getRadians() + radiansDeviate);
-        }
-    }
-
-    private void stop() {
+    private void doNothing() {
         subject.isAttacking = false;
         subject.isSprinting = false;
         subject.isWalkingForward = false;
@@ -153,6 +151,10 @@ public class Ai implements BaseOperative {
 
     public boolean isRemoved() {
         return isRemoved;
+    }
+
+    public boolean hasTarget() {
+        return target != null;
     }
 
 }
