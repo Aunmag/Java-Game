@@ -2,6 +2,7 @@ package aunmag.shooter.scenarios;
 
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.client.Game;
+import aunmag.shooter.managers.NextTimer;
 import aunmag.shooter.managers.SoundManager;
 import aunmag.shooter.sprites.Actor;
 import aunmag.shooter.world.World;
@@ -16,11 +17,7 @@ import aunmag.nightingale.utilities.UtilsMath;
 public class ScenarioEncircling implements BaseOperative {
 
     private static SoundManager sound = new SoundManager("/sounds/music/death.wav");
-    private long timeSpawnNext;
-    private int timeSpawnStep = 2_000;
-    private final int timeSpawnStepMin = 100;
-    private final int timeSpawnDecrease = 20;
-
+    private NextTimer timeSpawn = new NextTimer(1_000);
     private final int spawnDistance = 1000;
 
     private int actorsSpawnedLimit = 64;
@@ -40,8 +37,8 @@ public class ScenarioEncircling implements BaseOperative {
         confinePlayerPosition();
         updateZombiesKilled();
 
-        if (World.actors.size() < actorsSpawnedLimit && System.currentTimeMillis() >= timeSpawnNext) {
-            timeSpawnNext = System.currentTimeMillis() + timeSpawnStep;
+        timeSpawn.update(System.currentTimeMillis());
+        if (World.actors.size() < actorsSpawnedLimit && timeSpawn.isNow()) {
             spawnZombie();
         }
     }
@@ -75,11 +72,6 @@ public class ScenarioEncircling implements BaseOperative {
         int zombiesKilledDifference = zombiesKilledNow - zombiesKilled;
         Actor.velocityForwardZombie += zombiesVelocityAcceleration * zombiesKilledDifference;
         zombiesKilled = zombiesKilledNow;
-
-        int timeSpawnDecreaseNow = timeSpawnDecrease * zombiesKilledDifference;
-        if (timeSpawnStep - timeSpawnDecreaseNow > timeSpawnStepMin) {
-            timeSpawnStep -= timeSpawnDecreaseNow;
-        }
     }
 
     private void spawnZombie() {
