@@ -63,7 +63,7 @@ public class Ai implements BaseOperative {
         strategyDeviationWay = UtilsMath.randomizeBetween(-1, +1);
     }
 
-    protected void searchTarget() {
+    private void searchTarget() {
         target = null;
         isTargetReached = false;
 
@@ -75,7 +75,7 @@ public class Ai implements BaseOperative {
         }
     }
 
-    protected void updateTargetData() {
+    private void updateTargetData() {
         if (!hasTarget()) {
             return;
         }
@@ -98,7 +98,7 @@ public class Ai implements BaseOperative {
         targetRadiansDifferenceAbsolute = Math.abs(targetRadiansDifference);
     }
 
-    protected boolean calculateIsBehindTarget() {
+    private boolean calculateIsBehindTarget() {
         return targetRadiansDifferenceAbsolute < UtilsMath.PIx0_5;
     }
 
