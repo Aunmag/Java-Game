@@ -1,14 +1,13 @@
-package game.sprites;
+package aunmag.shooter.sprites;
 
-import game.world.World;
-import nightingale.basics.BaseSprite;
-import nightingale.structures.Texture;
-import nightingale.utilities.FloatSmooth;
-import nightingale.utilities.UtilsLog;
-import nightingale.utilities.UtilsMath;
-import game.managers.SoundManager;
-import nightingale.collision.CollisionCircle;
-import game.sprites.components.Hands;
+import aunmag.shooter.world.World;
+import aunmag.nightingale.basics.BaseSprite;
+import aunmag.nightingale.structures.Texture;
+import aunmag.nightingale.utilities.FloatSmooth;
+import aunmag.nightingale.utilities.UtilsMath;
+import aunmag.shooter.managers.SoundManager;
+import aunmag.nightingale.collision.CollisionCircle;
+import aunmag.shooter.sprites.components.Hands;
 
 public class Actor extends BaseSprite {
 
@@ -58,9 +57,8 @@ public class Actor extends BaseSprite {
                 String message = String.format(
                         "Got unknown \"%s\" actor type. Used \"%s\" instead.",
                         type,
-                        this.type
-                );
-                UtilsLog.log("Actor", message);
+                        this.type);
+                System.err.println(message);
             }
             velocity = velocityForwardZombie;
             velocityAside = velocity * 0.6f;
@@ -145,8 +143,8 @@ public class Actor extends BaseSprite {
         }
 
         weapon.setRadians(getRadians());
-        float weaponX = getX() + 12 * (float) Math.cos(getRadians());
-        float weaponY = getY() + 12 * (float) Math.sin(getRadians());
+        float weaponX = getX() + 12 * getCos();
+        float weaponY = getY() + 12 * getSin();
         weapon.setPosition(weaponX, weaponY);
 
         if (isAttacking) {

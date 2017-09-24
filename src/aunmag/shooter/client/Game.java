@@ -1,17 +1,18 @@
-package game.client;
+package aunmag.shooter.client;
 
-import game.client.graphics.Hud;
-import game.client.graphics.Blackout;
-import game.managers.SoundManager;
-import nightingale.Application;
-import nightingale.basics.BaseOperative;
-import nightingale.data.DataEngine;
-import nightingale.gui.*;
-import nightingale.structures.Texture;
+import aunmag.shooter.scenarios.ScenarioEmpty;
+import aunmag.shooter.client.graphics.Hud;
+import aunmag.shooter.client.graphics.Blackout;
+import aunmag.shooter.managers.SoundManager;
+import aunmag.shooter.scenarios.ScenarioEncircling;
+import aunmag.nightingale.Application;
+import aunmag.nightingale.basics.BaseOperative;
+import aunmag.nightingale.data.DataEngine;
+import aunmag.nightingale.gui.*;
+import aunmag.nightingale.structures.Texture;
 import org.lwjgl.glfw.GLFW;
-import game.scenarios.*;
-import game.sprites.Actor;
-import game.world.World;
+import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.world.World;
 
 public class Game extends Application {
 
@@ -61,7 +62,7 @@ public class Game extends Application {
                 new GuiButtonLink(4, 10, 4, 1, "Exit", createPageExit()),
         };
 
-        Texture wallpaper = Texture.getOrCreate("images/wallpapers/main_menu");
+        Texture wallpaper = Texture.getOrCreate("images/wallpapers/main_menu", true, false);
         wallpaper.scaleAsWallpaper();
 
         new GuiPage(labels, buttons, wallpaper).open();
@@ -95,7 +96,7 @@ public class Game extends Application {
             new GuiButtonBack(4, 10, 4, 1, "Back"),
         };
 
-        Texture wallpaper = Texture.getOrCreate("images/wallpapers/help");
+        Texture wallpaper = Texture.getOrCreate("images/wallpapers/help", true, false);
         wallpaper.scaleAsWallpaper();
 
         return new GuiPage(labels, buttons, wallpaper);
@@ -106,13 +107,12 @@ public class Game extends Application {
                 new GuiLabel(3, 5, 6, 1, "Are you sure you want to exit?"),
         };
 
-        Runnable actionExit = () -> Application.isRunning = false;
         GuiButton[] buttons = new GuiButton[] {
                 new GuiButtonBack(3, 9, 3, 1, "No"),
-                new GuiButtonAction(6, 9, 3, 1, "Yes", actionExit),
+                new GuiButtonAction(6, 9, 3, 1, "Yes", Application::stopRunning),
         };
 
-        Texture wallpaper = Texture.getOrCreate("images/wallpapers/exit");
+        Texture wallpaper = Texture.getOrCreate("images/wallpapers/exit", true, false);
         wallpaper.scaleAsWallpaper();
 
         return new GuiPage(labels, buttons, wallpaper);

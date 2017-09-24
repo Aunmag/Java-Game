@@ -1,17 +1,17 @@
-package game.world;
+package aunmag.shooter.world;
 
-import game.ai.AI;
-import game.managers.SoundManager;
-import game.sprites.Actor;
-import game.sprites.Bullet;
-import game.sprites.Weapon;
-import game.sprites.Object;
-import nightingale.Application;
-import nightingale.basics.BaseWorld;
-import nightingale.structures.Texture;
-import nightingale.utilities.UtilsBaseOperative;
-import nightingale.utilities.UtilsGraphics;
-import nightingale.utilities.UtilsMath;
+import aunmag.shooter.managers.SoundManager;
+import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.ai.AI;
+import aunmag.shooter.sprites.Bullet;
+import aunmag.shooter.sprites.Weapon;
+import aunmag.shooter.sprites.Object;
+import aunmag.nightingale.Application;
+import aunmag.nightingale.basics.BaseWorld;
+import aunmag.nightingale.structures.Texture;
+import aunmag.nightingale.utilities.UtilsBaseOperative;
+import aunmag.nightingale.utilities.UtilsGraphics;
+import aunmag.nightingale.utilities.UtilsMath;
 
 import java.util.ArrayList;
 import java.util.List;

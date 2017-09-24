@@ -1,7 +1,7 @@
-package game.ai;
+package aunmag.shooter.ai;
 
-import game.sprites.Actor;
-import nightingale.basics.BaseOperative;
+import aunmag.shooter.sprites.Actor;
+import aunmag.nightingale.basics.BaseOperative;
 
 public class AI implements BaseOperative {
 

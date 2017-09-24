@@ -1,17 +1,17 @@
-package game.scenarios;
+package aunmag.shooter.scenarios;
 
-import game.ai.AI;
-import game.client.Game;
-import game.managers.SoundManager;
-import game.world.World;
-import nightingale.basics.BaseOperative;
-import nightingale.gui.GuiButton;
-import nightingale.gui.GuiButtonBack;
-import nightingale.gui.GuiLabel;
-import nightingale.gui.GuiPage;
-import nightingale.structures.Texture;
-import nightingale.utilities.UtilsMath;
-import game.sprites.Actor;
+import aunmag.shooter.ai.AI;
+import aunmag.shooter.client.Game;
+import aunmag.shooter.managers.SoundManager;
+import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.world.World;
+import aunmag.nightingale.basics.BaseOperative;
+import aunmag.nightingale.gui.GuiButton;
+import aunmag.nightingale.gui.GuiButtonBack;
+import aunmag.nightingale.gui.GuiLabel;
+import aunmag.nightingale.gui.GuiPage;
+import aunmag.nightingale.structures.Texture;
+import aunmag.nightingale.utilities.UtilsMath;
 
 public class ScenarioEncircling implements BaseOperative {
 
@@ -114,7 +114,7 @@ public class ScenarioEncircling implements BaseOperative {
                 new GuiButtonBack(4, 8, 4, 1, "Back to main menu"),
         };
 
-        Texture wallpaper = Texture.getOrCreate("images/wallpapers/death");
+        Texture wallpaper = Texture.getOrCreate("images/wallpapers/death", true, false);
         wallpaper.scaleAsWallpaper();
 
         new GuiPage(labels, buttons, wallpaper).open();

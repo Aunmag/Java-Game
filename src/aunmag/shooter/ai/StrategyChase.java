@@ -1,6 +1,6 @@
-package game.ai;
+package aunmag.shooter.ai;
 
-import nightingale.utilities.UtilsMath;
+import aunmag.nightingale.utilities.UtilsMath;
 
 class StrategyChase extends Strategy {
 

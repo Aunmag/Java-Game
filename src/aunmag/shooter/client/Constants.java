@@ -1,4 +1,4 @@
-package game.client;
+package aunmag.shooter.client;
 
 import java.awt.*;
 

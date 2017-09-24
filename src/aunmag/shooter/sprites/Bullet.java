@@ -1,11 +1,11 @@
-package game.sprites;
+package aunmag.shooter.sprites;
 
-import game.world.World;
-import nightingale.basics.BasePoint;
-import nightingale.basics.BaseSprite;
-import nightingale.collision.Collision;
-import nightingale.collision.CollisionLine;
-import nightingale.utilities.UtilsGraphics;
+import aunmag.shooter.world.World;
+import aunmag.nightingale.basics.BasePoint;
+import aunmag.nightingale.basics.BaseSprite;
+import aunmag.nightingale.collision.Collision;
+import aunmag.nightingale.collision.CollisionLine;
+import aunmag.nightingale.utilities.UtilsGraphics;
 
 import java.awt.Color;
 
@@ -58,17 +58,14 @@ public class Bullet extends BaseSprite {
     }
 
     private void updatePosition() {
-        addPosition(
-                velocity * (float) Math.cos(getRadians()),
-                velocity * (float) Math.sin(getRadians())
-        );
+        addPosition(velocity * getCos(), velocity * getSin());
         updatePositionTail();
     }
 
     private void updatePositionTail() {
         positionTail.setPosition(
-                getX() - velocity * (float) Math.cos(getRadians()),
-                getY() - velocity * (float) Math.sin(getRadians())
+                getX() - velocity * getCos(),
+                getY() - velocity * getSin()
         );
     }
 
@@ -89,7 +86,12 @@ public class Bullet extends BaseSprite {
 //        }
 
         UtilsGraphics.setDrawColor(color);
-        UtilsGraphics.drawLine(this, positionTail, true);
+        UtilsGraphics.drawLine(
+                getX(),
+                getY(),
+                positionTail.getX(),
+                positionTail.getY(),
+                true);
 
 //        collision.render();
     }

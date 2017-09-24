@@ -1,6 +1,6 @@
-package game.scenarios;
+package aunmag.shooter.scenarios;
 
-import nightingale.basics.BaseOperative;
+import aunmag.nightingale.basics.BaseOperative;
 
 public class ScenarioEmpty implements BaseOperative {
 

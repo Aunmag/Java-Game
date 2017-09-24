@@ -1,4 +1,4 @@
-package game.managers;
+package aunmag.shooter.managers;
 
 import javax.sound.sampled.*;
 import java.io.BufferedInputStream;

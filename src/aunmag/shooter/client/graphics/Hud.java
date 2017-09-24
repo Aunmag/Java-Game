@@ -1,11 +1,11 @@
-package game.client.graphics;
+package aunmag.shooter.client.graphics;
 
-import game.world.World;
-import nightingale.Application;
-import nightingale.data.DataEngine;
-import nightingale.font.Text;
-import nightingale.gui.GuiLabel;
-import nightingale.utilities.UtilsMath;
+import aunmag.shooter.world.World;
+import aunmag.nightingale.Application;
+import aunmag.nightingale.data.DataEngine;
+import aunmag.nightingale.font.Text;
+import aunmag.nightingale.gui.GuiLabel;
+import aunmag.nightingale.utilities.UtilsMath;
 import org.lwjgl.glfw.GLFW;
 
 public class Hud {

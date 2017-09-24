@@ -1,7 +1,7 @@
-package game.sprites;
+package aunmag.shooter.sprites;
 
-import nightingale.basics.BaseSprite;
-import nightingale.structures.Texture;
+import aunmag.nightingale.basics.BaseSprite;
+import aunmag.nightingale.structures.Texture;
 
 public class Object extends BaseSprite {
 

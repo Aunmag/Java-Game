@@ -1,16 +1,15 @@
-package game.client.graphics;
+package aunmag.shooter.client.graphics;
 
-import nightingale.Application;
-import nightingale.structures.Texture;
-import nightingale.utilities.FloatSmooth;
-import nightingale.utilities.UtilsGraphics;
-import org.joml.Vector2f;
+import aunmag.nightingale.Application;
+import aunmag.nightingale.structures.Texture;
+import aunmag.nightingale.utilities.FloatSmooth;
+import aunmag.nightingale.utilities.UtilsGraphics;
 import org.lwjgl.opengl.GL11;
-import game.sprites.Actor;
+import aunmag.shooter.sprites.Actor;
 
 public class Blackout {
 
-    private static Texture texture = Texture.getOrCreate("images/gui/blackout1600");
+    private static Texture texture;
     private static final float healthMax = 1;
     private static final float healthThird = healthMax / 3f;
     private static float healthCurrent = healthMax;
@@ -20,6 +19,7 @@ public class Blackout {
     private static FloatSmooth intensity = new FloatSmooth(timeHurtAscent);
 
     static {
+        texture = Texture.getOrCreate("images/gui/blackout1600", false, false);
         texture.scaleAsWindow();
     }
 
@@ -54,14 +54,7 @@ public class Blackout {
             float width = Application.getWindow().getWidth();
             float height = Application.getWindow().getHeight();
             GL11.glColor4f(0f, 0f, 0f, alpha);
-            UtilsGraphics.drawQuad(
-                    new Vector2f(0, 0),
-                    new Vector2f(width, 0),
-                    new Vector2f(width, height),
-                    new Vector2f(0, height),
-                    true,
-                    false
-            );
+            UtilsGraphics.drawQuad(0, 0, width, height, true, false);
         }
     }
 
@@ -88,14 +81,7 @@ public class Blackout {
         float width = Application.getWindow().getWidth();
         float height = Application.getWindow().getHeight();
         GL11.glColor4f(0f, 0f, 0f, alpha);
-        UtilsGraphics.drawQuad(
-                new Vector2f(0, 0),
-                new Vector2f(width, 0),
-                new Vector2f(width, height),
-                new Vector2f(0, height),
-                true,
-                false
-        );
+        UtilsGraphics.drawQuad(0, 0, width, height, true, false);
     }
 
     private static float correctHealth(float health) {
