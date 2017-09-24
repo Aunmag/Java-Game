@@ -1,5 +1,6 @@
 package aunmag.shooter.scenarios;
 
+import aunmag.nightingale.Application;
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.managers.NextTimer;
@@ -18,8 +19,6 @@ public class ScenarioEncircling implements BaseOperative {
 
     private static SoundManager sound = new SoundManager("/sounds/music/death.wav");
     private NextTimer timeSpawn = new NextTimer(1_000);
-    private final int spawnDistance = 1000;
-
     private int actorsSpawnedLimit = 64;
     private int zombiesKilled = 0;
     private float zombiesVelocityAcceleration = 0.005f;
@@ -76,8 +75,9 @@ public class ScenarioEncircling implements BaseOperative {
 
     private void spawnZombie() {
         float direction = UtilsMath.randomizeBetween(0, (float) UtilsMath.PIx2);
-        float x = Actor.getPlayer().getX() - spawnDistance * (float) Math.cos(direction);
-        float y = Actor.getPlayer().getY() - spawnDistance * (float) Math.sin(direction);
+        float distance = Application.getCamera().getDistanceView() + 20;
+        float x = Actor.getPlayer().getX() - distance * (float) Math.cos(direction);
+        float y = Actor.getPlayer().getY() - distance * (float) Math.sin(direction);
 
         Actor zombie = new Actor(x, y, -direction, "zombie");
         World.actors.add(zombie);
