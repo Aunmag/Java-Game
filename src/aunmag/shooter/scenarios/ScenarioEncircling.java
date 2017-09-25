@@ -158,7 +158,7 @@ public class ScenarioEncircling implements BaseOperative {
         };
 
         Texture wallpaper = Texture.getOrCreate(
-                isVictory ? "images/wallpapers/exit" : "images/wallpapers/death",
+                isVictory ? "images/wallpapers/victory" : "images/wallpapers/death",
                 true,
                 false);
         wallpaper.scaleAsWallpaper();
