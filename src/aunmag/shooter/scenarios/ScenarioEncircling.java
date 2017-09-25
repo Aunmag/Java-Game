@@ -1,7 +1,9 @@
 package aunmag.shooter.scenarios;
 
+import aunmag.nightingale.Application;
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.client.Game;
+import aunmag.shooter.managers.NextTimer;
 import aunmag.shooter.managers.SoundManager;
 import aunmag.shooter.sprites.Actor;
 import aunmag.shooter.world.World;
@@ -16,33 +18,40 @@ import aunmag.nightingale.utilities.UtilsMath;
 public class ScenarioEncircling implements BaseOperative {
 
     private static SoundManager sound = new SoundManager("/sounds/music/death.wav");
-    private long timeSpawnNext;
-    private int timeSpawnStep = 2_000;
-    private final int timeSpawnStepMin = 100;
-    private final int timeSpawnDecrease = 20;
+    private NextTimer timeSpawn = new NextTimer(250);
 
-    private final int spawnDistance = 1000;
+    private int wave = 0;
+    private int waveFinal = 8;
+    private final int zombiesQuantityInitial = 32;
+    private int zombiesQuantityToSpawn = zombiesQuantityInitial;
+    private final float zombiesVelocityIncrease = 0.05f;
 
-    private int actorsSpawnedLimit = 64;
-    private int zombiesKilled = 0;
-    private float zombiesVelocityAcceleration = 0.005f;
+    private NextTimer timeNotification = new NextTimer(5_000);
+    private GuiLabel notification = null;
 
     static {
         sound.setVolume(-4);
     }
 
+    public ScenarioEncircling() {
+        startNextWave();
+    }
+
     public void update() {
         if (!Actor.getPlayer().isAlive()) {
-            gameOver();
+            gameOver(false);
             return;
         }
 
         confinePlayerPosition();
-        updateZombiesKilled();
 
-        if (World.actors.size() < actorsSpawnedLimit && System.currentTimeMillis() >= timeSpawnNext) {
-            timeSpawnNext = System.currentTimeMillis() + timeSpawnStep;
-            spawnZombie();
+        if (zombiesQuantityToSpawn > 0) {
+            timeSpawn.update(System.currentTimeMillis());
+            if (timeSpawn.isNow()) {
+                spawnZombie();
+            }
+        } else if (countAliveZombies() == 0) {
+            startNextWave();
         }
     }
 
@@ -65,56 +74,93 @@ public class ScenarioEncircling implements BaseOperative {
         }
     }
 
-    public void updateZombiesKilled() {
-        int zombiesKilledNow = Actor.getPlayer().getKills();
-
-        if (zombiesKilled == zombiesKilledNow) {
+    private void startNextWave() {
+        if (wave == waveFinal) {
+            gameOver(true);
             return;
         }
 
-        int zombiesKilledDifference = zombiesKilledNow - zombiesKilled;
-        Actor.velocityForwardZombie += zombiesVelocityAcceleration * zombiesKilledDifference;
-        zombiesKilled = zombiesKilledNow;
+        wave++;
+        zombiesQuantityToSpawn = zombiesQuantityInitial * wave;
+        Actor.velocityForwardZombie += zombiesVelocityIncrease;
 
-        int timeSpawnDecreaseNow = timeSpawnDecrease * zombiesKilledDifference;
-        if (timeSpawnStep - timeSpawnDecreaseNow > timeSpawnStepMin) {
-            timeSpawnStep -= timeSpawnDecreaseNow;
-        }
+        notification = createNotification();
+        timeNotification.update(System.currentTimeMillis());
     }
 
     private void spawnZombie() {
         float direction = UtilsMath.randomizeBetween(0, (float) UtilsMath.PIx2);
-        float x = Actor.getPlayer().getX() - spawnDistance * (float) Math.cos(direction);
-        float y = Actor.getPlayer().getY() - spawnDistance * (float) Math.sin(direction);
+        float distance = Application.getCamera().getDistanceView() + 20;
+        float x = Actor.getPlayer().getX() - distance * (float) Math.cos(direction);
+        float y = Actor.getPlayer().getY() - distance * (float) Math.sin(direction);
 
         Actor zombie = new Actor(x, y, -direction, "zombie");
         World.actors.add(zombie);
         World.ais.add(new Ai(zombie));
+
+        zombiesQuantityToSpawn--;
     }
 
-    public void render() {}
+    private GuiLabel createNotification() {
+        if (notification != null) {
+            notification.delete();
+        }
 
-    public void remove() {}
+        String message = String.format("Wave %s / %s", wave, waveFinal);
+        return new GuiLabel(5, 1, 2, 1, message);
+    }
 
-    public void gameOver() {
-        createGameOverPage();
+    private int countAliveZombies() {
+        return World.actors.size() - 1;
+    }
+
+    public void render() {
+        if (notification != null) {
+            timeNotification.update(System.currentTimeMillis());
+            if (!timeNotification.isNow()) {
+                notification.render();
+            } else {
+                notification.delete();
+                notification = null;
+            }
+        }
+    }
+
+    public void remove() {
+        if (notification != null) {
+            notification.delete();
+        }
+    }
+
+    public void gameOver(boolean isVictory) {
+        createGameOverPage(isVictory);
         Game.deleteWorld();
-        sound.play();
+
+        if (!isVictory) {
+            sound.play();
+        }
     }
 
-    private void createGameOverPage() {
-        String messageScore = String.format("You have killed %s zombies.", zombiesKilled);
+    private void createGameOverPage(boolean isVictory) {
+        int wavesSurvived = isVictory ? wave : wave - 1;
+        String title = isVictory ? "Well done!" : "You have died";
+        String kills = String.format("Zombies killed: %s", Actor.getPlayer().getKills());
+        String waves = String.format("Waves survived: %s / %s", wavesSurvived, waveFinal);
 
         GuiLabel[] labels = new GuiLabel[] {
-                new GuiLabel(4, 4, 4, 1, "You have died"),
-                new GuiLabel(4, 5, 4, 1, messageScore)
+                new GuiLabel(4, 4, 4, 1, title),
+                new GuiLabel(4, 5, 4, 1, kills),
+                new GuiLabel(4, 6, 4, 1, waves),
         };
 
         GuiButton[] buttons = new GuiButton[] {
                 new GuiButtonBack(4, 8, 4, 1, "Back to main menu"),
         };
 
-        Texture wallpaper = Texture.getOrCreate("images/wallpapers/death", true, false);
+        Texture wallpaper = Texture.getOrCreate(
+                isVictory ? "images/wallpapers/victory" : "images/wallpapers/death",
+                true,
+                false);
         wallpaper.scaleAsWallpaper();
 
         new GuiPage(labels, buttons, wallpaper).open();
