@@ -1,5 +1,7 @@
 package aunmag.shooter.client;
 
+import aunmag.nightingale.basics.BaseGrid;
+import aunmag.nightingale.font.Font;
 import aunmag.shooter.scenarios.ScenarioEmpty;
 import aunmag.shooter.client.graphics.Hud;
 import aunmag.shooter.client.graphics.Blackout;
@@ -42,17 +44,16 @@ public class Game extends Application {
     }
 
     private void initializePageMain() {
+        BaseGrid grid = BaseGrid.grid24;
+        String detailsEngint = "Made with " + DataEngine.title;
+        String detailsGame = "version " + Constants.VERSION + " by " + Constants.DEVELOPER;
         GuiLabel[] labels = new GuiLabel[] {
-                new GuiLabel(3, 3, 6, 1, DataEngine.name),
-                new GuiLabel(5, 4, 2, 1, String.format(
-                        "v%s by %s", DataEngine.version, DataEngine.developer
-                )),
+                new GuiLabel(grid, 6, 8, 12, 1, detailsEngint, Font.fontDefault, 1),
+                new GuiLabel(3, 3, 6, 1, Constants.TITLE),
+                new GuiLabel(grid, 6, 9, 12, 1, detailsGame, Font.fontDefault, 1),
         };
 
         GuiButton[] buttons = new GuiButton[] {
-//                Runnable action = () -> {
-//                    sound.stop();
-//                };
                 buttonContinue,
                 new GuiButtonAction(4, 8, 4, 1, "New game", () -> {
                     initializeWorld();
@@ -72,23 +73,23 @@ public class Game extends Application {
         GuiLabel[] labels = new GuiLabel[] {
                 new GuiLabel(5, 1, 2, 1, "Help"),
 
-                new GuiLabel(4, 3, 1, 1, "Movement"),
-                new GuiLabel(7, 3, 1, 1, "W, A, S, D"),
+                new GuiLabel(4, 3, 1, 1, "Movement", Font.fontDefault, 1),
+                new GuiLabel(7, 3, 1, 1, "W, A, S, D", Font.fontDefault, 1),
 
-                new GuiLabel(4, 4, 1, 1, "Rotation"),
-                new GuiLabel(7, 4, 1, 1, "Mouse"),
+                new GuiLabel(4, 4, 1, 1, "Rotation", Font.fontDefault, 1),
+                new GuiLabel(7, 4, 1, 1, "Mouse", Font.fontDefault, 1),
 
-                new GuiLabel(4, 5, 1, 1, "Sprint"),
-                new GuiLabel(7, 5, 1, 1, "Shift"),
+                new GuiLabel(4, 5, 1, 1, "Sprint", Font.fontDefault, 1),
+                new GuiLabel(7, 5, 1, 1, "Shift", Font.fontDefault, 1),
 
-                new GuiLabel(4, 6, 1, 1, "Attack"),
-                new GuiLabel(7, 6, 1, 1, "LMB"),
+                new GuiLabel(4, 6, 1, 1, "Attack", Font.fontDefault, 1),
+                new GuiLabel(7, 6, 1, 1, "LMB", Font.fontDefault, 1),
 
-                new GuiLabel(4, 7, 1, 1, "Zoom in/out"),
-                new GuiLabel(7, 7, 1, 1, "+/- or Wheel Up/Down"),
+                new GuiLabel(4, 7, 1, 1, "Zoom in/out", Font.fontDefault, 1),
+                new GuiLabel(7, 7, 1, 1, "+/-", Font.fontDefault, 1),
 
-                new GuiLabel(4, 8, 1, 1, "Menu"),
-                new GuiLabel(7, 8, 1, 1, "Escape"),
+                new GuiLabel(4, 8, 1, 1, "Menu", Font.fontDefault, 1),
+                new GuiLabel(7, 8, 1, 1, "Escape", Font.fontDefault, 1),
         };
 
 
@@ -104,12 +105,12 @@ public class Game extends Application {
 
     private GuiPage createPageExit() {
         GuiLabel[] labels = new GuiLabel[] {
-                new GuiLabel(3, 5, 6, 1, "Are you sure you want to exit?"),
+                new GuiLabel(3, 3, 6, 1, "Are you sure you want to exit?"),
         };
 
         GuiButton[] buttons = new GuiButton[] {
-                new GuiButtonBack(3, 9, 3, 1, "No"),
-                new GuiButtonAction(6, 9, 3, 1, "Yes", Application::stopRunning),
+                new GuiButtonAction(4, 8, 4, 1, "Yes", Application::stopRunning),
+                new GuiButtonBack(4, 9, 4, 1, "No"),
         };
 
         Texture wallpaper = Texture.getOrCreate("images/wallpapers/exit", true, false);
