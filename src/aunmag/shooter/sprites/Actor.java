@@ -3,7 +3,7 @@ package aunmag.shooter.sprites;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.structures.Texture;
-import aunmag.nightingale.utilities.FloatSmooth;
+import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.managers.SoundManager;
 import aunmag.nightingale.collision.CollisionCircle;
@@ -29,7 +29,7 @@ public class Actor extends BaseSprite {
     private float velocitySprint = 0;
     public static float velocityForwardZombie = 0.63f; // TODO: Improve
     private float currentMovementRadians = 0;
-    private FloatSmooth inertiaVelocity = new FloatSmooth(250);
+    private FluidValue inertiaVelocity = new FluidValue(250);
 
     public boolean isWalking = false;
     public boolean isWalkingForward = false;
