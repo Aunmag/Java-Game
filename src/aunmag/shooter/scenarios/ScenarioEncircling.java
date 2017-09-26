@@ -1,6 +1,7 @@
 package aunmag.shooter.scenarios;
 
 import aunmag.nightingale.Application;
+import aunmag.nightingale.font.Font;
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.managers.NextTimer;
@@ -27,7 +28,8 @@ public class ScenarioEncircling implements BaseOperative {
     private final float zombiesVelocityIncrease = 0.05f;
 
     private NextTimer timeNotification = new NextTimer(5_000);
-    private GuiLabel notification = null;
+    private GuiLabel notificationWave = null;
+    private GuiLabel notificationKills = null;
 
     static {
         sound.setVolume(-4);
@@ -84,7 +86,7 @@ public class ScenarioEncircling implements BaseOperative {
         zombiesQuantityToSpawn = zombiesQuantityInitial * wave;
         Actor.velocityForwardZombie += zombiesVelocityIncrease;
 
-        notification = createNotification();
+        createNotifications();
         timeNotification.update(System.currentTimeMillis());
     }
 
@@ -101,13 +103,14 @@ public class ScenarioEncircling implements BaseOperative {
         zombiesQuantityToSpawn--;
     }
 
-    private GuiLabel createNotification() {
-        if (notification != null) {
-            notification.delete();
-        }
+    private void createNotifications() {
+        removeNotifications();
 
-        String message = String.format("Wave %s / %s", wave, waveFinal);
-        return new GuiLabel(5, 1, 2, 1, message);
+        String messageWave = String.format("Wave %s/%s", wave, waveFinal);
+        notificationWave = new GuiLabel(5, 4, 2, 1, messageWave);
+
+        String messageKills = String.format("Kill %s zombies", zombiesQuantityToSpawn);
+        notificationKills = new GuiLabel(5, 5, 2, 1, messageKills, Font.fontDefault, 1);
     }
 
     private int countAliveZombies() {
@@ -115,21 +118,32 @@ public class ScenarioEncircling implements BaseOperative {
     }
 
     public void render() {
-        if (notification != null) {
+        if (notificationWave != null && notificationKills != null) {
             timeNotification.update(System.currentTimeMillis());
             if (!timeNotification.isNow()) {
-                notification.render();
+                notificationWave.render();
+                notificationKills.render();
             } else {
-                notification.delete();
-                notification = null;
+                removeNotifications();
             }
         }
     }
 
     public void remove() {
-        if (notification != null) {
-            notification.delete();
+        removeNotifications();
+    }
+
+    private void removeNotifications() {
+        if (notificationWave != null) {
+            notificationWave.delete();
         }
+
+        if (notificationKills != null) {
+            notificationKills.delete();
+        }
+
+        notificationWave = null;
+        notificationKills = null;
     }
 
     public void gameOver(boolean isVictory) {
@@ -142,19 +156,23 @@ public class ScenarioEncircling implements BaseOperative {
     }
 
     private void createGameOverPage(boolean isVictory) {
+        int kills = Actor.getPlayer().getKills();
         int wavesSurvived = isVictory ? wave : wave - 1;
         String title = isVictory ? "Well done!" : "You have died";
-        String kills = String.format("Zombies killed: %s", Actor.getPlayer().getKills());
-        String waves = String.format("Waves survived: %s / %s", wavesSurvived, waveFinal);
+        String score = String.format(
+                "You killed %s zombies and survived %s/%s waves.",
+                kills,
+                wavesSurvived,
+                waveFinal
+        );
 
         GuiLabel[] labels = new GuiLabel[] {
-                new GuiLabel(4, 4, 4, 1, title),
-                new GuiLabel(4, 5, 4, 1, kills),
-                new GuiLabel(4, 6, 4, 1, waves),
+                new GuiLabel(4, 3, 4, 1, title),
+                new GuiLabel(4, 4, 4, 1, score, Font.fontDefault, 1),
         };
 
         GuiButton[] buttons = new GuiButton[] {
-                new GuiButtonBack(4, 8, 4, 1, "Back to main menu"),
+                new GuiButtonBack(4, 9, 4, 1, "Back to main menu"),
         };
 
         Texture wallpaper = Texture.getOrCreate(

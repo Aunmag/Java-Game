@@ -4,7 +4,7 @@ import aunmag.shooter.world.World;
 import aunmag.nightingale.Application;
 import aunmag.nightingale.data.DataEngine;
 import aunmag.nightingale.font.Text;
-import aunmag.nightingale.gui.GuiLabel;
+import aunmag.nightingale.font.Font;
 import aunmag.nightingale.utilities.UtilsMath;
 import org.lwjgl.glfw.GLFW;
 
@@ -15,12 +15,12 @@ public class Hud {
 
     private static Text createText(String message) {
         return new Text(
-                0,
-                0,
+                10,
+                10,
                 Application.getWindow().getWidth(),
                 message,
-                1.2f,
-                GuiLabel.font,
+                1f,
+                Font.fontDefault,
                 false
         );
     }
@@ -58,7 +58,7 @@ public class Hud {
             text = createText(message);
         }
 
-        GuiLabel.font.renderPrepare();
+        Font.fontDefault.renderPrepare();
         text.render();
     }
 
