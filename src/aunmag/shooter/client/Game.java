@@ -1,7 +1,10 @@
 package aunmag.shooter.client;
 
+import aunmag.nightingale.Camera;
+import aunmag.nightingale.Input;
 import aunmag.nightingale.basics.BaseGrid;
 import aunmag.nightingale.font.Font;
+import aunmag.shooter.client.graphics.MuzzleSight;
 import aunmag.shooter.scenarios.ScenarioEmpty;
 import aunmag.shooter.client.graphics.Hud;
 import aunmag.shooter.client.graphics.Blackout;
@@ -23,6 +26,7 @@ public class Game extends Application {
     private static World world;
     private static GuiButtonBack buttonContinue;
     private static SoundManager soundTheme = new SoundManager("/sounds/music/menu.wav");
+    private MuzzleSight muzzleSight = null;
 
     public Game() {
         Actor.loadSounds();
@@ -35,6 +39,7 @@ public class Game extends Application {
     private void initializeWorld() {
         deleteWorld();
         world = new World();
+        muzzleSight = new MuzzleSight(Actor.getPlayer());
         buttonContinue.setIsAvailable(true);
         scenario = new ScenarioEncircling();
     }
@@ -137,13 +142,15 @@ public class Game extends Application {
     }
 
     private void updateInputForCamera() {
-        float zoom = Application.getCamera().getZoom();
+        Camera camera = Application.getCamera();
+
+        float zoom = camera.getZoom();
         float zoomChange = zoom * 0.01f;
 
         if (Application.getInput().isKeyDown(GLFW.GLFW_KEY_KP_ADD)) {
-            Application.getCamera().setZoom(zoom + zoomChange);
+            camera.setZoom(zoom + zoomChange);
         } else if (Application.getInput().isKeyDown(GLFW.GLFW_KEY_KP_SUBTRACT)) {
-            Application.getCamera().setZoom(zoom - zoomChange);
+            camera.setZoom(zoom - zoomChange);
         }
     }
 
@@ -154,15 +161,26 @@ public class Game extends Application {
             return;
         }
 
-        float mouseVelocityX = Application.getInput().getMouseVelocity().x;
-        player.addRadiansCarefully(mouseVelocityX * 0.005f);
+        Input input = Application.getInput();
 
-        player.isWalkingForward = Application.getInput().isKeyDown(GLFW.GLFW_KEY_W);
-        player.isWalkingBack = Application.getInput().isKeyDown(GLFW.GLFW_KEY_S);
-        player.isWalkingLeft = Application.getInput().isKeyDown(GLFW.GLFW_KEY_A);
-        player.isWalkingRight = Application.getInput().isKeyDown(GLFW.GLFW_KEY_D);
-        player.isSprinting = Application.getInput().isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT);
-        player.isAttacking = Application.getInput().isMouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_1);
+        player.isWalkingForward = input.isKeyDown(GLFW.GLFW_KEY_W);
+        player.isWalkingBack = input.isKeyDown(GLFW.GLFW_KEY_S);
+        player.isWalkingLeft = input.isKeyDown(GLFW.GLFW_KEY_A);
+        player.isWalkingRight = input.isKeyDown(GLFW.GLFW_KEY_D);
+        player.isSprinting = input.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT);
+        player.isAttacking = input.isMouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_1);
+
+        if (input.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_2)) {
+            player.isAiming.toggle(System.currentTimeMillis());
+        }
+
+        float mouseSensitivity = 0.005f;
+        mouseSensitivity -= mouseSensitivity * player.isAiming.getValueCurrent() * 0.75f;
+        player.addRadiansCarefully(input.getMouseVelocity().x * mouseSensitivity);
+
+        Camera camera = Application.getCamera();
+        float offset = Application.getWindow().getCenterY() - camera.getOffsetYBase();
+        camera.addOffsetYTemporary(offset * player.isAiming.getValueCurrent());
     }
 
     protected void gameRender() {
@@ -171,6 +189,7 @@ public class Game extends Application {
         } else {
             world.render();
             Blackout.render();
+            muzzleSight.render();
             scenario.render();
             Hud.render();
         }

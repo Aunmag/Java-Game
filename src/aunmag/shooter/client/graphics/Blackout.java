@@ -2,7 +2,7 @@ package aunmag.shooter.client.graphics;
 
 import aunmag.nightingale.Application;
 import aunmag.nightingale.structures.Texture;
-import aunmag.nightingale.utilities.FloatSmooth;
+import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsGraphics;
 import org.lwjgl.opengl.GL11;
 import aunmag.shooter.sprites.Actor;
@@ -16,7 +16,7 @@ public class Blackout {
     private static float healthLast = healthCurrent;
     private static final int timeHurtAscent = 60;
     private static final int timeHurtDecline = 480;
-    private static FloatSmooth intensity = new FloatSmooth(timeHurtAscent);
+    private static FluidValue intensity = new FluidValue(timeHurtAscent);
 
     static {
         texture = Texture.getOrCreate("images/gui/blackout1600", false, false);
