@@ -1,5 +1,6 @@
 package aunmag.shooter.sprites;
 
+import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.structures.Texture;
@@ -38,12 +39,14 @@ public class Actor extends BaseSprite {
     public boolean isWalkingRight = false;
     public boolean isSprinting = false;
     public boolean isAttacking = false;
+    public FluidToggle isAiming = new FluidToggle(500);
 
     public Actor(float x, float y, float radians, String type) {
         super(x, y, radians, findTexture(type));
         this.type = type;
 
         inertiaVelocity.setFlexDegree(0.75f);
+        isAiming.setFlexDegree(2);
 
         if (type.equals("human")) {
             velocity = 1.38f;
@@ -93,6 +96,7 @@ public class Actor extends BaseSprite {
         }
 
         inertiaVelocity.update(System.currentTimeMillis());
+        isAiming.update(System.currentTimeMillis());
 
         updateIsWalking();
 
@@ -174,6 +178,7 @@ public class Actor extends BaseSprite {
         if (isSprinting && isWalkingForward) {
             velocity *= velocitySprint;
         }
+        velocity -= velocity * isAiming.getValueCurrent() / 2f;
 
         currentMovementRadians = radians;
 
