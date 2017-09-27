@@ -15,6 +15,7 @@ public class Weapon extends BaseSprite {
     private static final float velocityRecession = 69; // TODO: Implement bullet weight
     private static final float deflectionVelocity = 2;
     private static final float deflectionRadians = 0.06f;
+    private static final float recoil = 0.06f;
 
     private long timeNextShot = 0;
     private SoundManager soundShot;
@@ -32,6 +33,9 @@ public class Weapon extends BaseSprite {
         if (System.currentTimeMillis() < timeNextShot) {
             return;
         }
+
+        float push = UtilsMath.randomizeFlexibly(recoil, recoil / 4f);
+        shooter.push(UtilsMath.random.nextBoolean() ? push : -push);
 
         soundShot.play();
 
