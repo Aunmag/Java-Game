@@ -33,11 +33,6 @@ public class MuzzleSight {
         UtilsGraphics.drawLine(x, y - offsetA, x, y - offsetB, false);
         UtilsGraphics.drawLine(x + offsetA, y, x + offsetB, y, false);
         UtilsGraphics.drawLine(x - offsetA, y, x - offsetB, y, false);
-
-        GL11.glColor4f(1f, 1f, 1f, alpha / 2f);
-        float offsetC = offsetA * 2f + offsetB;
-        float offsetD = Application.getCamera().getOffsetYTemporary();
-        UtilsGraphics.drawLine(x, y + offsetD, x, y + offsetC, false);
     }
 
 }
