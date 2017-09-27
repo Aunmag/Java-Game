@@ -4,6 +4,7 @@ import aunmag.nightingale.Application;
 import aunmag.nightingale.font.Font;
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.client.Game;
+import aunmag.shooter.factories.FactoryActor;
 import aunmag.shooter.managers.NextTimer;
 import aunmag.shooter.managers.SoundManager;
 import aunmag.shooter.sprites.Actor;
@@ -84,8 +85,6 @@ public class ScenarioEncircling implements BaseOperative {
 
         wave++;
         zombiesQuantityToSpawn = zombiesQuantityInitial * wave;
-        Actor.velocityForwardZombie += zombiesVelocityIncrease;
-
         createNotifications();
         timeNotification.update(System.currentTimeMillis());
     }
@@ -96,7 +95,10 @@ public class ScenarioEncircling implements BaseOperative {
         float x = Actor.getPlayer().getX() - distance * (float) Math.cos(direction);
         float y = Actor.getPlayer().getY() - distance * (float) Math.sin(direction);
 
-        Actor zombie = new Actor(x, y, -direction, "zombie");
+        Actor zombie = FactoryActor.zombie();
+        zombie.setPosition(x, y);
+        zombie.setRadians(-direction);
+        zombie.setVelocity(zombie.getVelocity() + zombiesVelocityIncrease * (wave - 1));
         World.actors.add(zombie);
         World.ais.add(new Ai(zombie));
 
