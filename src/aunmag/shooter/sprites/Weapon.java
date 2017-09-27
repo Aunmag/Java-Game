@@ -15,6 +15,7 @@ public class Weapon extends BaseSprite {
     private static final float velocityRecession = 69; // TODO: Implement bullet weight
     private static final float deflectionVelocity = 2;
     private static final float deflectionRadians = 0.06f;
+    private static final float recoil = 0.06f;
 
     private long timeNextShot = 0;
     private SoundManager soundShot;
@@ -33,11 +34,14 @@ public class Weapon extends BaseSprite {
             return;
         }
 
+        float push = UtilsMath.randomizeFlexibly(recoil, recoil / 4f);
+        shooter.push(UtilsMath.random.nextBoolean() ? push : -push);
+
         soundShot.play();
 
         float muzzleLength = texture.getCenterX();
-        float bulletX = getX() + muzzleLength * getCos();
-        float bulletY = getY() + muzzleLength * getSin();
+        float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
+        float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
 
         for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
             makeBullet(shooter, bulletX, bulletY);

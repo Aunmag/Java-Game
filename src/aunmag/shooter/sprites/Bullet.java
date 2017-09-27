@@ -58,14 +58,17 @@ public class Bullet extends BaseSprite {
     }
 
     private void updatePosition() {
-        addPosition(velocity * getCos(), velocity * getSin());
+        addPosition(
+                velocity * (float) Math.cos(getRadians()),
+                velocity * (float) Math.sin(getRadians())
+        );
         updatePositionTail();
     }
 
     private void updatePositionTail() {
         positionTail.setPosition(
-                getX() - velocity * getCos(),
-                getY() - velocity * getSin()
+                getX() - velocity * (float) Math.cos(getRadians()),
+                getY() - velocity * (float) Math.sin(getRadians())
         );
     }
 

@@ -1,6 +1,7 @@
 package aunmag.shooter.sprites;
 
 import aunmag.nightingale.utilities.FluidToggle;
+import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.structures.Texture;
@@ -31,6 +32,7 @@ public class Actor extends BaseSprite {
     public static float velocityForwardZombie = 0.63f; // TODO: Improve
     private float currentMovementRadians = 0;
     private FluidValue inertiaVelocity = new FluidValue(250);
+    private FluidValue offsetRadians = new FluidValue(60);
 
     public boolean isWalking = false;
     public boolean isWalkingForward = false;
@@ -46,6 +48,7 @@ public class Actor extends BaseSprite {
         this.type = type;
 
         inertiaVelocity.setFlexDegree(0.75f);
+        offsetRadians.setFlexDegree(0.5f);
         isAiming.setFlexDegree(2);
 
         if (type.equals("human")) {
@@ -89,6 +92,13 @@ public class Actor extends BaseSprite {
     }
 
     public void update() {
+        offsetRadians.update(System.currentTimeMillis());
+        if (offsetRadians.getValueTarget() != 0 && offsetRadians.isTargetReached()) {
+            addRadiansCarefully(offsetRadians.getValueCurrent());
+            offsetRadians.setValueTarget(0, System.currentTimeMillis());
+            offsetRadians.reachTargetNow();
+        }
+
         updateIsAlive();
 
         if (!isAlive) {
@@ -147,8 +157,8 @@ public class Actor extends BaseSprite {
         }
 
         weapon.setRadians(getRadians());
-        float weaponX = getX() + 12 * getCos();
-        float weaponY = getY() + 12 * getSin();
+        float weaponX = getX() + 12 * (float) Math.cos(getRadians());
+        float weaponY = getY() + 12 * (float) Math.sin(getRadians());
         weapon.setPosition(weaponX, weaponY);
 
         if (isAttacking) {
@@ -220,6 +230,14 @@ public class Actor extends BaseSprite {
         }
     }
 
+    public void push(float force) {
+        offsetRadians.setValueTarget(force, System.currentTimeMillis());
+
+        if (this.equals(Actor.player)) {
+            CameraShaker.shake(force);
+        }
+    }
+
     public void render() {
         if (weapon != null) {
             weapon.render();
@@ -261,6 +279,14 @@ public class Actor extends BaseSprite {
     }
 
     /* Getters */
+
+    public float getRadians() {
+        if (offsetRadians != null) {
+            return super.getRadians() + offsetRadians.getValueCurrent();
+        } else {
+            return super.getRadians();
+        }
+    }
 
     public static Actor getPlayer() {
         return player;
