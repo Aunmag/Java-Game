@@ -41,7 +41,7 @@ public class Actor extends BaseSprite {
     public boolean isWalkingRight = false;
     public boolean isSprinting = false;
     public boolean isAttacking = false;
-    public FluidToggle isAiming = new FluidToggle(500);
+    public FluidToggle isAiming = new FluidToggle(250);
 
     public Actor(float x, float y, float radians, String type) {
         super(x, y, radians, findTexture(type));
@@ -49,7 +49,7 @@ public class Actor extends BaseSprite {
 
         inertiaVelocity.setFlexDegree(0.75f);
         offsetRadians.setFlexDegree(0.5f);
-        isAiming.setFlexDegree(2);
+        isAiming.setFlexDegree(1.25f);
 
         if (type.equals("human")) {
             velocity = 1.38f;
