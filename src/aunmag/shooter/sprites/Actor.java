@@ -17,7 +17,6 @@ public class Actor extends BaseSprite {
     private static Actor player;
 
     private boolean isAlive = true;
-    private boolean hasWeapon = false;
     private float health = 1;
     private int kills = 0;
     public String type;
@@ -25,11 +24,11 @@ public class Actor extends BaseSprite {
     private Hands hands = new Hands(this);
     private CollisionCircle collision = new CollisionCircle(getX(), getY(), 7.2f);
 
-    private float velocity = 0;
-    private float velocityAside = 0;
-    private float velocityBack = 0;
-    private float velocitySprint = 0;
-    public static float velocityForwardZombie = 0.63f; // TODO: Improve
+    private float velocity;
+    private float velocityFactorAside;
+    private float velocityFactorBack;
+    private float velocityFactorSprint;
+
     private float currentMovementRadians = 0;
     private FluidValue inertiaVelocity = new FluidValue(250);
     private FluidValue offsetRadians = new FluidValue(60);
@@ -43,43 +42,24 @@ public class Actor extends BaseSprite {
     public boolean isAttacking = false;
     public FluidToggle isAiming = new FluidToggle(250);
 
-    public Actor(float x, float y, float radians, String type) {
-        super(x, y, radians, findTexture(type));
+    public Actor(
+            float velocity,
+            float velocityFactorAside,
+            float velocityFactorBack,
+            float velocityFactorSprint,
+            Texture texture,
+            String type
+    ) {
+        super(0, 0, 0, texture);
+        this.velocity = velocity;
+        this.velocityFactorAside = velocityFactorAside;
+        this.velocityFactorBack = velocityFactorBack;
+        this.velocityFactorSprint = velocityFactorSprint;
         this.type = type;
 
         inertiaVelocity.setFlexDegree(0.75f);
         offsetRadians.setFlexDegree(0.5f);
         isAiming.setFlexDegree(1.25f);
-
-        if (type.equals("human")) {
-            velocity = 1.38f;
-            velocityAside = velocity * 0.6f;
-            velocityBack = velocity * 0.8f;
-            velocitySprint = 2.76f;
-            hasWeapon = true;
-        } else {
-            if (!type.equals("zombie")) {
-                this.type = "zombie";
-                String message = String.format(
-                        "Got unknown \"%s\" actor type. Used \"%s\" instead.",
-                        type,
-                        this.type);
-                System.err.println(message);
-            }
-            velocity = velocityForwardZombie;
-            velocityAside = velocity * 0.6f;
-            velocityBack = velocity * 0.8f;
-            velocitySprint = 1.63f;
-            hasWeapon = false;
-        }
-    }
-
-    private static Texture findTexture(String type) {
-        if (type.equals("human")) {
-            return Texture.getOrCreate("images/actors/human");
-        } else {
-            return Texture.getOrCreate("images/actors/zombie");
-        }
     }
 
     public static void loadSounds() {
@@ -172,21 +152,21 @@ public class Actor extends BaseSprite {
         }
 
         if (isWalkingBack) {
-            move(velocityBack, getRadians() - (float) Math.PI);
+            move(velocity * velocityFactorBack, getRadians() - (float) Math.PI);
         }
 
         if (isWalkingLeft) {
-            move(velocityAside, getRadians() + (float) UtilsMath.PIx0_5);
+            move(velocity * velocityFactorAside, getRadians() + (float) UtilsMath.PIx0_5);
         }
 
         if (isWalkingRight) {
-            move(velocityAside, getRadians() - (float) UtilsMath.PIx0_5);
+            move(velocity * velocityFactorAside, getRadians() - (float) UtilsMath.PIx0_5);
         }
     }
 
     private void move(float velocity, float radians) {
         if (isSprinting && isWalkingForward) {
-            velocity *= velocitySprint;
+            velocity *= velocityFactorSprint;
         }
         velocity -= velocity * isAiming.getValueCurrent() / 2f;
 
@@ -278,6 +258,10 @@ public class Actor extends BaseSprite {
         this.weapon = weapon;
     }
 
+    public void setVelocity(float velocity) {
+        this.velocity = velocity;
+    }
+
     /* Getters */
 
     public float getRadians() {
@@ -301,7 +285,7 @@ public class Actor extends BaseSprite {
     }
 
     public boolean getHasWeapon() {
-        return hasWeapon;
+        return weapon != null;
     }
 
     public CollisionCircle getCollision() {
@@ -314,6 +298,10 @@ public class Actor extends BaseSprite {
 
     public int getKills() {
         return kills;
+    }
+
+    public float getVelocity() {
+        return velocity;
     }
 
 }

@@ -1,5 +1,7 @@
 package aunmag.shooter.world;
 
+import aunmag.shooter.factories.FactoryActor;
+import aunmag.shooter.factories.FactoryWeapon;
 import aunmag.shooter.managers.SoundManager;
 import aunmag.shooter.sprites.Actor;
 import aunmag.shooter.ai.Ai;
@@ -42,13 +44,13 @@ public class World extends BaseWorld {
         initializeGround();
         initializeBluffs();
         initializeTrees();
-        Actor.velocityForwardZombie = 0.63f; // TODO: Get ride off this
     }
 
     private void initializePlayer() {
         // TODO: World should not know about client's player
-        Actor player = new Actor(0, 0, (float) -UtilsMath.PIx0_5, "human");
-        player.setWeapon(new Weapon());
+        Actor player = FactoryActor.human();
+        player.setRadians((float) -UtilsMath.PIx0_5);
+        player.setWeapon(FactoryWeapon.mp27());
 
         Actor.setPlayer(player);
         actors.add(player);

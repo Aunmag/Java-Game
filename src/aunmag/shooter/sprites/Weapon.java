@@ -8,23 +8,43 @@ import aunmag.nightingale.utilities.UtilsMath;
 
 public class Weapon extends BaseSprite {
 
-    private static final Texture texture = Texture.getOrCreate("images/weapons/mp_27");
-    private static final int fireRate = 700; // TODO: Rename
-    private static final int bulletsPerShot = 16;
-    private static final float velocityMuzzle = 58;
-    private static final float velocityRecession = 69; // TODO: Implement bullet weight
-    private static final float deflectionVelocity = 2;
-    private static final float deflectionRadians = 0.06f;
-    private static final float recoil = 0.06f;
+    private static final Texture texture;
+    private static final SoundManager sound;
+
+    static {
+        texture = Texture.getOrCreate("images/weapons/mp_27");
+        sound = new SoundManager("/sounds/weapons/shot_mp_27.wav");
+        sound.setVolume(1);
+    }
+
+    private int fireRate;
+    private int bulletsPerShot;
+    private float velocityMuzzle;
+    private float velocityRecession; // TODO: Implement bullet weight
+    private float deflectionVelocity;
+    private float deflectionRadians;
+    private float recoil;
 
     private long timeNextShot = 0;
-    private SoundManager soundShot;
 
-    public Weapon() {
+    public Weapon(
+            int fireRate,
+            int bulletsPerShot,
+            float velocityMuzzle,
+            float velocityRecession,
+            float deflectionVelocity,
+            float deflectionRadians,
+            float recoil
+    ) {
         super(0, 0, 0, texture);
 
-        soundShot = new SoundManager("/sounds/weapons/shot_mp_27.wav");
-        soundShot.setVolume(1);
+        this.fireRate = fireRate;
+        this.bulletsPerShot = bulletsPerShot;
+        this.velocityMuzzle = velocityMuzzle;
+        this.velocityRecession = velocityRecession;
+        this.deflectionVelocity = deflectionVelocity;
+        this.deflectionRadians = deflectionRadians;
+        this.recoil = recoil;
     }
 
     public void update() {}
@@ -37,7 +57,7 @@ public class Weapon extends BaseSprite {
         float push = UtilsMath.randomizeFlexibly(recoil, recoil / 4f);
         shooter.push(UtilsMath.random.nextBoolean() ? push : -push);
 
-        soundShot.play();
+        sound.play();
 
         float muzzleLength = texture.getCenterX();
         float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
