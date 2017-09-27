@@ -1,6 +1,7 @@
 package aunmag.shooter.world;
 
 import aunmag.shooter.factories.FactoryActor;
+import aunmag.shooter.factories.FactoryWeapon;
 import aunmag.shooter.managers.SoundManager;
 import aunmag.shooter.sprites.Actor;
 import aunmag.shooter.ai.Ai;
@@ -49,7 +50,7 @@ public class World extends BaseWorld {
         // TODO: World should not know about client's player
         Actor player = FactoryActor.human();
         player.setRadians((float) -UtilsMath.PIx0_5);
-        player.setWeapon(new Weapon());
+        player.setWeapon(FactoryWeapon.mp27());
 
         Actor.setPlayer(player);
         actors.add(player);
