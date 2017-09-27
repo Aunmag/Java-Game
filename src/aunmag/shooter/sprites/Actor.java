@@ -1,6 +1,7 @@
 package aunmag.shooter.sprites;
 
 import aunmag.nightingale.utilities.FluidToggle;
+import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.structures.Texture;
@@ -231,6 +232,10 @@ public class Actor extends BaseSprite {
 
     public void push(float force) {
         offsetRadians.setValueTarget(force, System.currentTimeMillis());
+
+        if (this.equals(Actor.player)) {
+            CameraShaker.shake(force);
+        }
     }
 
     public void render() {

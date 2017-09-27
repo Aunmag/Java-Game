@@ -4,6 +4,7 @@ import aunmag.nightingale.Camera;
 import aunmag.nightingale.Input;
 import aunmag.nightingale.basics.BaseGrid;
 import aunmag.nightingale.font.Font;
+import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.client.graphics.MuzzleSight;
 import aunmag.shooter.scenarios.ScenarioEmpty;
 import aunmag.shooter.client.graphics.Hud;
@@ -135,6 +136,7 @@ public class Game extends Application {
             updateInputForPlayer();
             world.update();
             scenario.update();
+            CameraShaker.update();
             if (Application.getInput().isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
                 setPause(true);
             }
