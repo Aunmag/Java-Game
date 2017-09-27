@@ -134,6 +134,7 @@ public class Game extends Application {
         } else {
             updateInputForCamera();
             updateInputForPlayer();
+            muzzleSight.update();
             world.update();
             scenario.update();
             CameraShaker.update();
