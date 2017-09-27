@@ -32,8 +32,8 @@ public class Hands extends CollisionCircle {
     }
 
     public void updatePosition() {
-        float x = owner.getX() + distance * owner.getCos();
-        float y = owner.getY() + distance * owner.getSin();
+        float x = owner.getX() + distance * (float) Math.cos(owner.getRadians());
+        float y = owner.getY() + distance * (float) Math.sin(owner.getRadians());
         setPosition(x, y);
     }
 

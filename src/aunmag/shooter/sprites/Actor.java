@@ -147,8 +147,8 @@ public class Actor extends BaseSprite {
         }
 
         weapon.setRadians(getRadians());
-        float weaponX = getX() + 12 * getCos();
-        float weaponY = getY() + 12 * getSin();
+        float weaponX = getX() + 12 * (float) Math.cos(getRadians());
+        float weaponY = getY() + 12 * (float) Math.sin(getRadians());
         weapon.setPosition(weaponX, weaponY);
 
         if (isAttacking) {

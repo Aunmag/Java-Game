@@ -36,8 +36,8 @@ public class Weapon extends BaseSprite {
         soundShot.play();
 
         float muzzleLength = texture.getCenterX();
-        float bulletX = getX() + muzzleLength * getCos();
-        float bulletY = getY() + muzzleLength * getSin();
+        float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
+        float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
 
         for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
             makeBullet(shooter, bulletX, bulletY);
