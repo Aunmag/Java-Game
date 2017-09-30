@@ -19,10 +19,10 @@ public class Weapon extends BaseSprite {
 
     private int fireRate;
     private int bulletsPerShot;
-    private float velocityMuzzle;
+    private float velocity;
     private float velocityRecession; // TODO: Implement bullet weight
     private float velocityDeflectionFactor;
-    private float deflectionRadians;
+    private float radiansDeflection;
     private float recoil;
 
     private long timeNextShot = 0;
@@ -30,20 +30,20 @@ public class Weapon extends BaseSprite {
     public Weapon(
             int fireRate,
             int bulletsPerShot,
-            float velocityMuzzle,
+            float velocity,
             float velocityRecession,
             float velocityDeflectionFactor,
-            float deflectionRadians,
+            float radiansDeflection,
             float recoil
     ) {
         super(0, 0, 0, texture);
 
         this.fireRate = fireRate;
         this.bulletsPerShot = bulletsPerShot;
-        this.velocityMuzzle = velocityMuzzle;
+        this.velocity = velocity;
         this.velocityRecession = velocityRecession;
         this.velocityDeflectionFactor = velocityDeflectionFactor;
-        this.deflectionRadians = deflectionRadians;
+        this.radiansDeflection = radiansDeflection;
         this.recoil = recoil;
     }
 
@@ -54,7 +54,7 @@ public class Weapon extends BaseSprite {
             return;
         }
 
-        float push = UtilsMath.randomizeFlexibly(recoil, recoil / 4f);
+        float push = UtilsMath.randomizeFlexibly(recoil, recoil * 0.25f);
         shooter.push(UtilsMath.random.nextBoolean() ? push : -push);
 
         sound.play();
@@ -71,10 +71,10 @@ public class Weapon extends BaseSprite {
     }
 
     private void makeBullet(Actor shooter, float x, float y) {
-        float radians = UtilsMath.randomizeFlexibly(getRadians(), deflectionRadians);
+        float radians = UtilsMath.randomizeFlexibly(getRadians(), radiansDeflection);
         float velocity = UtilsMath.randomizeFlexibly(
-                velocityMuzzle,
-                velocityMuzzle * velocityDeflectionFactor
+                this.velocity,
+                this.velocity * velocityDeflectionFactor
         );
         Bullet bullet = new Bullet(x, y, radians, velocity, velocityRecession, shooter);
         World.bullets.add(bullet);
