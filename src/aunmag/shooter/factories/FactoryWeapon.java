@@ -10,7 +10,7 @@ public class FactoryWeapon {
                 16,
                 58,
                 69,
-                2,
+                0.03f,
                 0.06f,
                 0.06f
         );
