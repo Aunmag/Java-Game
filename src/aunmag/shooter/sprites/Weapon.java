@@ -23,7 +23,7 @@ public class Weapon extends BaseSprite {
     private float velocityRecessionFactor;
     private float velocityDeflectionFactor;
     private float radiansDeflection;
-    private float recoil;
+    private float recoilRadians;
 
     private long timeNextShot = 0;
 
@@ -34,7 +34,7 @@ public class Weapon extends BaseSprite {
             float velocityRecessionFactor,
             float velocityDeflectionFactor,
             float radiansDeflection,
-            float recoil
+            float recoilRadians
     ) {
         super(0, 0, 0, texture);
 
@@ -44,7 +44,7 @@ public class Weapon extends BaseSprite {
         this.velocityRecessionFactor = velocityRecessionFactor;
         this.velocityDeflectionFactor = velocityDeflectionFactor;
         this.radiansDeflection = radiansDeflection;
-        this.recoil = recoil;
+        this.recoilRadians = recoilRadians;
     }
 
     public void update() {}
@@ -54,7 +54,7 @@ public class Weapon extends BaseSprite {
             return;
         }
 
-        float push = UtilsMath.randomizeFlexibly(recoil, recoil * 0.25f);
+        float push = UtilsMath.randomizeFlexibly(recoilRadians, recoilRadians * 0.25f);
         shooter.push(UtilsMath.random.nextBoolean() ? push : -push);
 
         sound.play();
@@ -76,7 +76,14 @@ public class Weapon extends BaseSprite {
                 this.velocity,
                 this.velocity * velocityDeflectionFactor
         );
-        Bullet bullet = new Bullet(x, y, radians, velocity, velocityRecessionFactor, shooter);
+        Bullet bullet = new Bullet(
+                x,
+                y,
+                radians,
+                velocity,
+                velocityRecessionFactor,
+                shooter
+        );
         World.bullets.add(bullet);
     }
 

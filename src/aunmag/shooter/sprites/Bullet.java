@@ -1,17 +1,19 @@
 package aunmag.shooter.sprites;
 
+import aunmag.nightingale.data.DataTime;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionLine;
 import aunmag.nightingale.utilities.UtilsGraphics;
 import org.joml.Vector2f;
-
-import java.awt.Color;
+import org.joml.Vector4f;
+import org.lwjgl.opengl.GL11;
 
 public class Bullet extends BaseSprite {
 
-    private static final Color color = new Color(255, 204, 51, 160);
+    private static final Vector4f color = new Vector4f(1.0f, 0.8f, 0.2f, 0.6f);
+    private static final int VELOCITY_MIN = 1;
 
     private float velocity;
     private float velocityRecessionFactor;
@@ -36,20 +38,13 @@ public class Bullet extends BaseSprite {
     }
 
     public void update() {
-        updateVelocity();
         updatePosition();
         updateCollision();
-    }
-
-    private void updateVelocity() {
-        velocity -= (velocity * (velocityRecessionFactor / 75f));
-
-        if (velocity <= 1) {
-            remove();
-        }
+        updateVelocity();
     }
 
     private void updatePosition() {
+        float velocity = this.velocity / DataTime.getFpsLimit();
         addPosition(
                 velocity * (float) Math.cos(getRadians()),
                 velocity * (float) Math.sin(getRadians())
@@ -60,14 +55,27 @@ public class Bullet extends BaseSprite {
         for (Actor actor: World.actors) {
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
                 actor.hit(velocity, getRadians(), shooter);
-                velocity /= 60; // TODO: Improve
+                remove();
             }
         }
     }
 
+    private void updateVelocity() {
+        velocity -= velocity * (velocityRecessionFactor / DataTime.getFpsLimit());
+
+        if (velocity <= VELOCITY_MIN) {
+            remove();
+        }
+    }
+
     public void render() {
-        UtilsGraphics.setDrawColor(color);
+        GL11.glColor4f(color.x, color.y, color.z, color.w);
         UtilsGraphics.drawLine(getX(), getY(), positionTail.x(), positionTail.y(), true);
+    }
+
+    public void remove() {
+        velocity = 0;
+        super.remove();
     }
 
     /* Setters */

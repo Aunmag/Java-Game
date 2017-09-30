@@ -193,14 +193,14 @@ public class Actor extends BaseSprite {
     public void hit(float intensity, float radians, Actor attacker) {
         boolean wasAlreadyDead = !isAlive;
 
-        health -= intensity / 100f;
+        health -= intensity / 7500f;
         updateIsAlive();
 
         if (!wasAlreadyDead && !isAlive && attacker != null) {
             attacker.increaseKills();
         }
 
-        float impulse = intensity / 10f;
+        float impulse = intensity / 750f;
         float impulseX = impulse * (float) Math.cos(radians);
         float impulseY = impulse * (float) Math.sin(radians);
         addPosition(impulseX, impulseY);
