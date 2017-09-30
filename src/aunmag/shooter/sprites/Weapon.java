@@ -20,7 +20,7 @@ public class Weapon extends BaseSprite {
     private int fireRate;
     private int bulletsPerShot;
     private float velocity;
-    private float velocityRecession; // TODO: Implement bullet weight
+    private float velocityRecessionFactor;
     private float velocityDeflectionFactor;
     private float radiansDeflection;
     private float recoil;
@@ -31,7 +31,7 @@ public class Weapon extends BaseSprite {
             int fireRate,
             int bulletsPerShot,
             float velocity,
-            float velocityRecession,
+            float velocityRecessionFactor,
             float velocityDeflectionFactor,
             float radiansDeflection,
             float recoil
@@ -41,7 +41,7 @@ public class Weapon extends BaseSprite {
         this.fireRate = fireRate;
         this.bulletsPerShot = bulletsPerShot;
         this.velocity = velocity;
-        this.velocityRecession = velocityRecession;
+        this.velocityRecessionFactor = velocityRecessionFactor;
         this.velocityDeflectionFactor = velocityDeflectionFactor;
         this.radiansDeflection = radiansDeflection;
         this.recoil = recoil;
@@ -76,7 +76,7 @@ public class Weapon extends BaseSprite {
                 this.velocity,
                 this.velocity * velocityDeflectionFactor
         );
-        Bullet bullet = new Bullet(x, y, radians, velocity, velocityRecession, shooter);
+        Bullet bullet = new Bullet(x, y, radians, velocity, velocityRecessionFactor, shooter);
         World.bullets.add(bullet);
     }
 

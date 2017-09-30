@@ -14,7 +14,7 @@ public class Bullet extends BaseSprite {
     private static final Color color = new Color(255, 204, 51, 160);
 
     private float velocity;
-    private final float velocityRecession; // TODO: Implement bullet weight
+    private float velocityRecessionFactor;
     private Vector2f positionTail;
     private CollisionLine collision;
     private Actor shooter;
@@ -24,12 +24,12 @@ public class Bullet extends BaseSprite {
             float y,
             float radians,
             float velocity,
-            float velocityRecession,
+            float velocityRecessionFactor,
             Actor shooter
     ) {
         super(x, y, radians, null);
         this.velocity = velocity;
-        this.velocityRecession = velocityRecession;
+        this.velocityRecessionFactor = velocityRecessionFactor;
         this.shooter = shooter;
         positionTail = new Vector2f(x, y);
         collision = new CollisionLine(x, y, x, y);
@@ -42,7 +42,7 @@ public class Bullet extends BaseSprite {
     }
 
     private void updateVelocity() {
-        velocity *= velocityRecession / 75;
+        velocity -= (velocity * (velocityRecessionFactor / 75f));
 
         if (velocity <= 1) {
             remove();
