@@ -1,102 +1,89 @@
 package aunmag.shooter.sprites;
 
+import aunmag.nightingale.data.DataTime;
 import aunmag.shooter.world.World;
-import aunmag.nightingale.basics.BasePoint;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionLine;
 import aunmag.nightingale.utilities.UtilsGraphics;
-
-import java.awt.Color;
+import org.joml.Vector2f;
+import org.joml.Vector4f;
+import org.lwjgl.opengl.GL11;
 
 public class Bullet extends BaseSprite {
 
-    private static final Color color = new Color(255, 204, 51, 160);
-
-    private BasePoint positionTail;
+    private static final Vector4f color = new Vector4f(1.0f, 0.8f, 0.2f, 0.6f);
+    private static final int VELOCITY_MIN = 1;
 
     private float velocity;
-    private final float velocityRecession; // TODO: Implement bullet weight
+    private float velocityRecessionFactor;
+    private Vector2f positionTail;
     private CollisionLine collision;
-
-    Actor shooter;
+    private Actor shooter;
 
     public Bullet(
             float x,
             float y,
             float radians,
             float velocity,
-            float velocityRecession,
+            float velocityRecessionFactor,
             Actor shooter
     ) {
         super(x, y, radians, null);
         this.velocity = velocity;
-        this.velocityRecession = velocityRecession;
+        this.velocityRecessionFactor = velocityRecessionFactor;
         this.shooter = shooter;
-        positionTail = new BasePoint(x, y);
-        updatePositionTail();
-        collision = new CollisionLine(
-                getX(),
-                getY(),
-                positionTail.getX(),
-                positionTail.getY()
-        );
+        positionTail = new Vector2f(x, y);
+        collision = new CollisionLine(x, y, x, y);
     }
 
     public void update() {
-        updateVelocity();
         updatePosition();
         updateCollision();
-    }
-
-    private void updateVelocity() {
-        velocity *= velocityRecession / 75;
-
-        if (velocity <= 1) {
-            remove();
-        }
+        updateVelocity();
     }
 
     private void updatePosition() {
+        float velocity = this.velocity / DataTime.getFpsLimit();
         addPosition(
                 velocity * (float) Math.cos(getRadians()),
                 velocity * (float) Math.sin(getRadians())
         );
-        updatePositionTail();
-    }
-
-    private void updatePositionTail() {
-        positionTail.setPosition(
-                getX() - velocity * (float) Math.cos(getRadians()),
-                getY() - velocity * (float) Math.sin(getRadians())
-        );
     }
 
     private void updateCollision() {
-        collision.setPosition(getX(), getY(), positionTail.getX(), positionTail.getY());
-
         for (Actor actor: World.actors) {
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
                 actor.hit(velocity, getRadians(), shooter);
-                velocity /= 60; // TODO: Improve
+                remove();
             }
         }
     }
 
+    private void updateVelocity() {
+        velocity -= velocity * (velocityRecessionFactor / DataTime.getFpsLimit());
+
+        if (velocity <= VELOCITY_MIN) {
+            remove();
+        }
+    }
+
     public void render() {
-//        if (!Camera.calculateIsLineVisible(x, y, x2, y2)) {
-//            return;
-//        }
+        GL11.glColor4f(color.x, color.y, color.z, color.w);
+        UtilsGraphics.drawLine(getX(), getY(), positionTail.x(), positionTail.y(), true);
+    }
 
-        UtilsGraphics.setDrawColor(color);
-        UtilsGraphics.drawLine(
-                getX(),
-                getY(),
-                positionTail.getX(),
-                positionTail.getY(),
-                true);
+    public void remove() {
+        velocity = 0;
+        super.remove();
+    }
 
-//        collision.render();
+    /* Setters */
+
+    public void setPosition(float x, float y) {
+        positionTail.set(getX(), getY());
+        collision.setPosition(x, y, getX(), getY());
+        super.setPosition(x, y);
     }
 
 }

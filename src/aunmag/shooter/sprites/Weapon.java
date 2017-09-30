@@ -19,32 +19,32 @@ public class Weapon extends BaseSprite {
 
     private int fireRate;
     private int bulletsPerShot;
-    private float velocityMuzzle;
-    private float velocityRecession; // TODO: Implement bullet weight
-    private float deflectionVelocity;
-    private float deflectionRadians;
-    private float recoil;
+    private float velocity;
+    private float velocityRecessionFactor;
+    private float velocityDeflectionFactor;
+    private float radiansDeflection;
+    private float recoilRadians;
 
     private long timeNextShot = 0;
 
     public Weapon(
             int fireRate,
             int bulletsPerShot,
-            float velocityMuzzle,
-            float velocityRecession,
-            float deflectionVelocity,
-            float deflectionRadians,
-            float recoil
+            float velocity,
+            float velocityRecessionFactor,
+            float velocityDeflectionFactor,
+            float radiansDeflection,
+            float recoilRadians
     ) {
         super(0, 0, 0, texture);
 
         this.fireRate = fireRate;
         this.bulletsPerShot = bulletsPerShot;
-        this.velocityMuzzle = velocityMuzzle;
-        this.velocityRecession = velocityRecession;
-        this.deflectionVelocity = deflectionVelocity;
-        this.deflectionRadians = deflectionRadians;
-        this.recoil = recoil;
+        this.velocity = velocity;
+        this.velocityRecessionFactor = velocityRecessionFactor;
+        this.velocityDeflectionFactor = velocityDeflectionFactor;
+        this.radiansDeflection = radiansDeflection;
+        this.recoilRadians = recoilRadians;
     }
 
     public void update() {}
@@ -54,7 +54,7 @@ public class Weapon extends BaseSprite {
             return;
         }
 
-        float push = UtilsMath.randomizeFlexibly(recoil, recoil / 4f);
+        float push = UtilsMath.randomizeFlexibly(recoilRadians, recoilRadians * 0.25f);
         shooter.push(UtilsMath.random.nextBoolean() ? push : -push);
 
         sound.play();
@@ -71,9 +71,19 @@ public class Weapon extends BaseSprite {
     }
 
     private void makeBullet(Actor shooter, float x, float y) {
-        float radians = UtilsMath.randomizeFlexibly(getRadians(), deflectionRadians);
-        float velocity = UtilsMath.randomizeFlexibly(velocityMuzzle, deflectionVelocity);
-        Bullet bullet = new Bullet(x, y, radians, velocity, velocityRecession, shooter);
+        float radians = UtilsMath.randomizeFlexibly(getRadians(), radiansDeflection);
+        float velocity = UtilsMath.randomizeFlexibly(
+                this.velocity,
+                this.velocity * velocityDeflectionFactor
+        );
+        Bullet bullet = new Bullet(
+                x,
+                y,
+                radians,
+                velocity,
+                velocityRecessionFactor,
+                shooter
+        );
         World.bullets.add(bullet);
     }
 
