@@ -23,6 +23,7 @@ import aunmag.shooter.world.World;
 public class Game extends Application {
 
     private static boolean isPause = true;
+    private static boolean isVirtualMode = false;
     private static BaseOperative scenario = new ScenarioEmpty();
     private static World world;
     private static GuiButtonBack buttonContinue;
@@ -51,10 +52,10 @@ public class Game extends Application {
 
     private void initializePageMain() {
         BaseGrid grid = BaseGrid.grid24;
-        String detailsEngint = "Made with " + DataEngine.title;
+        String detailsEngine = "Made with " + DataEngine.title;
         String detailsGame = "version " + Constants.VERSION + " by " + Constants.DEVELOPER;
         GuiLabel[] labels = new GuiLabel[] {
-                new GuiLabel(grid, 6, 8, 12, 1, detailsEngint, Font.fontDefault, 1),
+                new GuiLabel(grid, 6, 8, 12, 1, detailsEngine, Font.fontDefault, 1),
                 new GuiLabel(3, 3, 6, 1, Constants.TITLE),
                 new GuiLabel(grid, 6, 9, 12, 1, detailsGame, Font.fontDefault, 1),
         };
@@ -184,6 +185,10 @@ public class Game extends Application {
         Camera camera = Application.getCamera();
         float offset = Application.getWindow().getCenterY() - camera.getOffsetYBase();
         camera.addOffsetYTemporary(offset * player.isAiming.getValueCurrent());
+
+        if (input.isKeyPressed(GLFW.GLFW_KEY_BACKSPACE)) {
+            isVirtualMode = !isVirtualMode;
+        }
     }
 
     protected void gameRender() {
@@ -246,6 +251,10 @@ public class Game extends Application {
 
     public static boolean isPause() {
         return isPause;
+    }
+
+    public static boolean isVirtualMode() {
+        return isVirtualMode;
     }
 
     public static World getWorld() {

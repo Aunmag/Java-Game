@@ -1,6 +1,7 @@
 package aunmag.shooter.sprites;
 
 import aunmag.nightingale.utilities.FluidToggle;
+import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
@@ -222,9 +223,13 @@ public class Actor extends BaseSprite {
         if (weapon != null) {
             weapon.render();
         }
-        super.render();
-//        hands.render();
-//        collision.render();
+
+        if (Game.isVirtualMode()) {
+            hands.render();
+            collision.render();
+        } else {
+            super.render();
+        }
     }
 
     public void remove() {

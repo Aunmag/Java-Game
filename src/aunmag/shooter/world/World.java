@@ -1,12 +1,13 @@
 package aunmag.shooter.world;
 
+import aunmag.shooter.client.Game;
+import aunmag.shooter.client.graphics.WorldGrid;
 import aunmag.shooter.factories.FactoryActor;
 import aunmag.shooter.factories.FactoryWeapon;
 import aunmag.shooter.managers.SoundManager;
 import aunmag.shooter.sprites.Actor;
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.sprites.Bullet;
-import aunmag.shooter.sprites.Weapon;
 import aunmag.shooter.sprites.Object;
 import aunmag.nightingale.Application;
 import aunmag.nightingale.basics.BaseWorld;
@@ -14,6 +15,7 @@ import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.UtilsBaseOperative;
 import aunmag.nightingale.utilities.UtilsGraphics;
 import aunmag.nightingale.utilities.UtilsMath;
+import org.lwjgl.opengl.GL11;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +26,7 @@ public class World extends BaseWorld {
     private static final int groundBlockSize = 128;
     private static final SoundManager soundAmbiance;
     private static final SoundManager soundAtmosphere;
+    private WorldGrid worldGrid = new WorldGrid();
 
     public static List<Ai> ais = new ArrayList<>();
     public static List<Object> terrains = new ArrayList<>();
@@ -124,15 +127,36 @@ public class World extends BaseWorld {
     }
 
     public void render() {
-        UtilsBaseOperative.renderAll(terrains);
-        UtilsBaseOperative.renderAll(decorations);
+        if (Game.isVirtualMode()) {
+            UtilsGraphics.drawPrepare();
+
+            GL11.glColor3f(1, 0, 0);
+            GL11.glLineWidth(2);
+            float n = groundBlockSize * 8;
+            UtilsGraphics.drawLine(-n, -n, +n, -n, true);
+            UtilsGraphics.drawLine(+n, -n, +n, +n, true);
+            UtilsGraphics.drawLine(+n, +n, -n, +n, true);
+            UtilsGraphics.drawLine(-n, +n, -n, -n, true);
+
+            GL11.glColor4f(1, 1, 1, 0.2f);
+            GL11.glLineWidth(1);
+            worldGrid.render();
+
+            UtilsGraphics.drawFinish();
+        } else {
+            UtilsBaseOperative.renderAll(terrains);
+            UtilsBaseOperative.renderAll(decorations);
+        }
+
         UtilsBaseOperative.renderAll(actors);
 
         UtilsGraphics.drawPrepare();
         UtilsBaseOperative.renderAll(bullets);
         UtilsGraphics.drawFinish();
 
-        UtilsBaseOperative.renderAll(trees);
+        if (!Game.isVirtualMode()) {
+            UtilsBaseOperative.renderAll(trees);
+        }
     }
 
     public void play() {
