@@ -1,6 +1,7 @@
 package aunmag.shooter.sprites;
 
-import aunmag.shooter.managers.SoundManager;
+import aunmag.nightingale.audio.AudioMaster;
+import aunmag.nightingale.audio.AudioSource;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.structures.Texture;
@@ -9,12 +10,12 @@ import aunmag.nightingale.utilities.UtilsMath;
 public class Weapon extends BaseSprite {
 
     private static final Texture texture;
-    private static final SoundManager sound;
+    private static final int sound;
+    private AudioSource audioSource = new AudioSource();
 
     static {
         texture = Texture.getOrCreate("images/weapons/mp_27");
-        sound = new SoundManager("/sounds/weapons/shot_mp_27.wav");
-        sound.setVolume(1);
+        sound = AudioMaster.getOrCreate("sounds/weapons/shot_mp_27");
     }
 
     private int fireRate;
@@ -57,7 +58,7 @@ public class Weapon extends BaseSprite {
         float push = UtilsMath.randomizeFlexibly(recoilRadians, recoilRadians * 0.25f);
         shooter.push(UtilsMath.random.nextBoolean() ? push : -push);
 
-        sound.play();
+        audioSource.play(sound);
 
         float muzzleLength = texture.getCenterX();
         float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
@@ -85,6 +86,13 @@ public class Weapon extends BaseSprite {
                 shooter
         );
         World.bullets.add(bullet);
+    }
+
+    /* Setters */
+
+    public void setPosition(float x, float y) {
+        super.setPosition(x, y);
+        audioSource.setPosition(getX(), getY());
     }
 
 }
