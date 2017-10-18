@@ -10,7 +10,6 @@ import aunmag.shooter.ai.Ai;
 import aunmag.shooter.sprites.Bullet;
 import aunmag.shooter.sprites.Object;
 import aunmag.nightingale.Application;
-import aunmag.nightingale.basics.BaseWorld;
 import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.UtilsBaseOperative;
 import aunmag.nightingale.utilities.UtilsGraphics;
@@ -20,7 +19,7 @@ import org.lwjgl.opengl.GL11;
 import java.util.ArrayList;
 import java.util.List;
 
-public class World extends BaseWorld {
+public class World {
 
     private static final int groundQuantity = 48;
     private static final int groundBlockSize = 128;
@@ -120,7 +119,6 @@ public class World extends BaseWorld {
     }
 
     public void update() {
-        super.update();
         UtilsBaseOperative.updateAll(ais);
         UtilsBaseOperative.updateAll(actors);
         UtilsBaseOperative.updateAll(bullets);
