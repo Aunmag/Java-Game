@@ -21,7 +21,7 @@ public class MuzzleSight {
     }
 
     public void update() {
-        if (shooter.isAiming.isCompitelyOff()) {
+        if (shooter.isAiming.isCompletelyOff()) {
             offsetY = 0;
             return;
         }
@@ -53,7 +53,7 @@ public class MuzzleSight {
     }
 
     public void render() {
-        if (shooter.isAiming.isCompitelyOff()) {
+        if (shooter.isAiming.isCompletelyOff()) {
             return;
         }
 
