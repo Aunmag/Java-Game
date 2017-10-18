@@ -1,6 +1,6 @@
 package aunmag.shooter.sprites;
 
-import aunmag.nightingale.data.DataTime;
+import aunmag.nightingale.Configs;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.collision.Collision;
@@ -44,7 +44,7 @@ public class Bullet extends BaseSprite {
     }
 
     private void updatePosition() {
-        float velocity = this.velocity / DataTime.getFpsLimit();
+        float velocity = this.velocity / Configs.getFpsLimit();
         addPosition(
                 velocity * (float) Math.cos(getRadians()),
                 velocity * (float) Math.sin(getRadians())
@@ -61,7 +61,7 @@ public class Bullet extends BaseSprite {
     }
 
     private void updateVelocity() {
-        velocity -= velocity * (velocityRecessionFactor / DataTime.getFpsLimit());
+        velocity -= velocity * (velocityRecessionFactor / Configs.getFpsLimit());
 
         if (velocity <= VELOCITY_MIN) {
             remove();

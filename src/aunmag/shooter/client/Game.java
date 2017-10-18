@@ -180,7 +180,7 @@ public class Game extends Application {
 
         float mouseSensitivity = 0.005f;
         mouseSensitivity -= mouseSensitivity * player.isAiming.getValueCurrent() * 0.75f;
-        player.addRadiansCarefully(input.getMouseVelocity().x * mouseSensitivity);
+        player.addRadiansCarefully(input.getMouseVelocity().x() * mouseSensitivity);
 
         Camera camera = Application.getCamera();
         float offset = Application.getWindow().getCenterY() - camera.getOffsetYBase();

@@ -40,7 +40,7 @@ public class Blackout {
         texture.bind();
         Application.getShader().setUniformSampler(0);
         Application.getShader().setUniformProjection(
-                Application.getWindow().getProjectionCopy() // TODO: Optimize
+                Application.getWindow().getProjection()
         );
         Application.getShader().setUniformColour(1, 1, 1, alpha);
         texture.render();
