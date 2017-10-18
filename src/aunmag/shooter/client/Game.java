@@ -31,7 +31,6 @@ public class Game extends Application {
     private MuzzleSight muzzleSight = null;
 
     public Game() {
-        Actor.loadSounds();
         buttonContinue = new GuiButtonBack(4, 7, 4, 1, "Continue");
         buttonContinue.setIsAvailable(false);
         initializePages();
