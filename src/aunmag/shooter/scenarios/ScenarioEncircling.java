@@ -21,7 +21,7 @@ import aunmag.nightingale.utilities.UtilsMath;
 public class ScenarioEncircling implements BaseOperative {
 
     private static final AudioSource sound;
-    private NextTimer timeSpawn = new NextTimer(250);
+    private NextTimer timeSpawn = new NextTimer(1000);
 
     private int wave = 0;
     private int waveFinal = 8;
