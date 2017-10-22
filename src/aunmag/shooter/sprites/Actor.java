@@ -1,5 +1,7 @@
 package aunmag.shooter.sprites;
 
+import aunmag.nightingale.audio.AudioSample;
+import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.CameraShaker;
@@ -8,13 +10,12 @@ import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsMath;
-import aunmag.shooter.managers.SoundManager;
 import aunmag.nightingale.collision.CollisionCircle;
 import aunmag.shooter.sprites.components.Hands;
 
 public class Actor extends BaseSprite {
 
-    private static SoundManager[] sounds = new SoundManager[6];
+    private static int[] samples = new int[6];
     private static Actor player;
 
     private boolean isAlive = true;
@@ -24,6 +25,7 @@ public class Actor extends BaseSprite {
     private Weapon weapon = null;
     private Hands hands = new Hands(this);
     private CollisionCircle collision = new CollisionCircle(getX(), getY(), 7.2f);
+    private AudioSource audioSource = new AudioSource();
 
     private float velocity;
     private float velocityFactorAside;
@@ -43,6 +45,12 @@ public class Actor extends BaseSprite {
     public boolean isAttacking = false;
     public FluidToggle isAiming = new FluidToggle(250);
 
+    static {
+        for (int i = 0; i < samples.length; i++) {
+            samples[i] = AudioSample.getOrCreate("sounds/actors/human_hurt_" + (i + 1));
+        }
+    }
+
     public Actor(
             float velocity,
             float velocityFactorAside,
@@ -61,15 +69,6 @@ public class Actor extends BaseSprite {
         inertiaVelocity.setFlexDegree(0.75f);
         offsetRadians.setFlexDegree(0.5f);
         isAiming.setFlexDegree(1.25f);
-    }
-
-    public static void loadSounds() {
-        for (int i = 0; i < sounds.length; i++) {
-            int number = i + 1;
-            SoundManager sound = new SoundManager("/sounds/actors/human_hurt_" + number +".wav");
-            sound.setVolume(6);
-            sounds[i] = sound;
-        }
     }
 
     public void update() {
@@ -240,7 +239,13 @@ public class Actor extends BaseSprite {
     }
 
     private void soundHurt() {
-        sounds[UtilsMath.random.nextInt(6)].play();
+        if (audioSource.isPlaying()) {
+            return;
+        }
+
+        int sample = samples[UtilsMath.random.nextInt(6)];
+        audioSource.setSample(sample);
+        audioSource.play();
     }
 
     public void increaseKills() {
@@ -253,6 +258,7 @@ public class Actor extends BaseSprite {
         super.setPosition(x, y);
         collision.setPosition(getX(), getY());
         hands.updatePosition();
+        audioSource.setPosition(getX(), getY());
     }
 
     public static void setPlayer(Actor player) {
