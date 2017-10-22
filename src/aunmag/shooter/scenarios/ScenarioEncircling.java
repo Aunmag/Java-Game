@@ -28,6 +28,7 @@ public class ScenarioEncircling implements BaseOperative {
     private final int zombiesQuantityInitial = 32;
     private int zombiesQuantityToSpawn = zombiesQuantityInitial;
     private final float zombiesVelocityIncrease = 0.05f;
+    private float zombiesSpawnDirection = 0f;
 
     private NextTimer timeNotification = new NextTimer(5_000);
     private GuiLabel notificationWave = null;
@@ -86,13 +87,18 @@ public class ScenarioEncircling implements BaseOperative {
         }
 
         wave++;
+        zombiesSpawnDirection = UtilsMath.randomizeBetween(0, (float) UtilsMath.PIx2);
         zombiesQuantityToSpawn = zombiesQuantityInitial * wave;
         createNotifications();
         timeNotification.update(System.currentTimeMillis());
     }
 
     private void spawnZombie() {
-        float direction = UtilsMath.randomizeBetween(0, (float) UtilsMath.PIx2);
+        float done = wave / (float) waveFinal;
+        float directionSpread = (float) UtilsMath.PIx2 * done;
+        float direction = UtilsMath.randomizeBetween(0, directionSpread);
+        direction += UtilsMath.correctRadians(direction + zombiesSpawnDirection);
+
         float distance = Application.getCamera().getDistanceView() + 20;
         float x = Actor.getPlayer().getX() - distance * (float) Math.cos(direction);
         float y = Actor.getPlayer().getY() - distance * (float) Math.sin(direction);
