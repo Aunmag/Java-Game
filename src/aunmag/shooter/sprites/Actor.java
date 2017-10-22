@@ -1,6 +1,6 @@
 package aunmag.shooter.sprites;
 
-import aunmag.nightingale.audio.AudioMaster;
+import aunmag.nightingale.audio.AudioSample;
 import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.shooter.client.Game;
@@ -15,7 +15,7 @@ import aunmag.shooter.sprites.components.Hands;
 
 public class Actor extends BaseSprite {
 
-    private static int[] sounds = new int[6];
+    private static int[] samples = new int[6];
     private static Actor player;
 
     private boolean isAlive = true;
@@ -46,8 +46,8 @@ public class Actor extends BaseSprite {
     public FluidToggle isAiming = new FluidToggle(250);
 
     static {
-        for (int i = 0; i < sounds.length; i++) {
-            sounds[i] = AudioMaster.getOrCreate("sounds/actors/human_hurt_" + (i + 1));
+        for (int i = 0; i < samples.length; i++) {
+            samples[i] = AudioSample.getOrCreate("sounds/actors/human_hurt_" + (i + 1));
         }
     }
 
@@ -239,8 +239,13 @@ public class Actor extends BaseSprite {
     }
 
     private void soundHurt() {
-        int sound = sounds[UtilsMath.random.nextInt(6)];
-        audioSource.play(sound);
+        if (audioSource.isPlaying()) {
+            return;
+        }
+
+        int sample = samples[UtilsMath.random.nextInt(6)];
+        audioSource.setSample(sample);
+        audioSource.play();
     }
 
     public void increaseKills() {

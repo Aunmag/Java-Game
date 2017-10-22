@@ -1,7 +1,7 @@
 package aunmag.shooter.sprites;
 
-import aunmag.nightingale.audio.AudioMaster;
 import aunmag.nightingale.audio.AudioSource;
+import aunmag.nightingale.utilities.UtilsAudio;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.structures.Texture;
@@ -9,15 +9,9 @@ import aunmag.nightingale.utilities.UtilsMath;
 
 public class Weapon extends BaseSprite {
 
-    private static final Texture texture;
-    private static final int sound;
-    private AudioSource audioSource = new AudioSource();
+    private static final Texture texture = Texture.getOrCreate("images/weapons/mp_27");
 
-    static {
-        texture = Texture.getOrCreate("images/weapons/mp_27");
-        sound = AudioMaster.getOrCreate("sounds/weapons/shot_mp_27");
-    }
-
+    private AudioSource audioSource;
     private int fireRate;
     private int bulletsPerShot;
     private float velocity;
@@ -25,7 +19,6 @@ public class Weapon extends BaseSprite {
     private float velocityDeflectionFactor;
     private float radiansDeflection;
     private float recoilRadians;
-
     private long timeNextShot = 0;
 
     public Weapon(
@@ -46,6 +39,8 @@ public class Weapon extends BaseSprite {
         this.velocityDeflectionFactor = velocityDeflectionFactor;
         this.radiansDeflection = radiansDeflection;
         this.recoilRadians = recoilRadians;
+
+        audioSource = UtilsAudio.getOrCreateSound("sounds/weapons/shot_mp_27");
     }
 
     public void update() {}
@@ -58,7 +53,7 @@ public class Weapon extends BaseSprite {
         float push = UtilsMath.randomizeFlexibly(recoilRadians, recoilRadians * 0.25f);
         shooter.push(UtilsMath.random.nextBoolean() ? push : -push);
 
-        audioSource.play(sound);
+        audioSource.play();
 
         float muzzleLength = texture.getCenterX();
         float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
