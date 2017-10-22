@@ -2,14 +2,15 @@ package aunmag.shooter.client;
 
 import aunmag.nightingale.Camera;
 import aunmag.nightingale.Input;
+import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.basics.BaseGrid;
 import aunmag.nightingale.font.Font;
+import aunmag.nightingale.utilities.UtilsAudio;
 import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.client.graphics.MuzzleSight;
 import aunmag.shooter.scenarios.ScenarioEmpty;
 import aunmag.shooter.client.graphics.Hud;
 import aunmag.shooter.client.graphics.Blackout;
-import aunmag.shooter.managers.SoundManager;
 import aunmag.shooter.scenarios.ScenarioEncircling;
 import aunmag.nightingale.Application;
 import aunmag.nightingale.basics.BaseOperative;
@@ -27,14 +28,14 @@ public class Game extends Application {
     private static BaseOperative scenario = new ScenarioEmpty();
     private static World world;
     private static GuiButtonBack buttonContinue;
-    private static SoundManager soundTheme = new SoundManager("/sounds/music/menu.wav");
+    private static AudioSource soundTheme;
     private MuzzleSight muzzleSight = null;
 
     public Game() {
         buttonContinue = new GuiButtonBack(4, 7, 4, 1, "Continue");
         buttonContinue.setIsAvailable(false);
         initializePages();
-        themePlay();
+        initializeSoundTheme();
     }
 
     private void initializeWorld() {
@@ -123,6 +124,12 @@ public class Game extends Application {
         wallpaper.scaleAsWallpaper();
 
         return new GuiPage(labels, buttons, wallpaper);
+    }
+
+    private void initializeSoundTheme() {
+        soundTheme = UtilsAudio.getOrCreateSound("sounds/music/menu");
+        soundTheme.setIsLooped(true);
+        themePlay();
     }
 
     protected void gameUpdate() {
@@ -219,7 +226,7 @@ public class Game extends Application {
     }
 
     public static void themePlay() {
-        soundTheme.loop();
+        soundTheme.play();
     }
 
     public static void themeStop() {

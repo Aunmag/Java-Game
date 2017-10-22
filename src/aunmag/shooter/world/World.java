@@ -1,10 +1,11 @@
 package aunmag.shooter.world;
 
+import aunmag.nightingale.audio.AudioSource;
+import aunmag.nightingale.utilities.UtilsAudio;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.WorldGrid;
 import aunmag.shooter.factories.FactoryActor;
 import aunmag.shooter.factories.FactoryWeapon;
-import aunmag.shooter.managers.SoundManager;
 import aunmag.shooter.sprites.Actor;
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.sprites.Bullet;
@@ -23,8 +24,9 @@ public class World {
 
     private static final int groundQuantity = 48;
     private static final int groundBlockSize = 128;
-    private static final SoundManager soundAmbiance;
-    private static final SoundManager soundAtmosphere;
+    private static final AudioSource soundAmbiance;
+    private static final AudioSource soundAtmosphere;
+
     private WorldGrid worldGrid = new WorldGrid();
 
     public static List<Ai> ais = new ArrayList<>();
@@ -35,10 +37,13 @@ public class World {
     public static List<Object> trees = new ArrayList<>();
 
     static {
-        soundAmbiance = new SoundManager("/sounds/ambiance/birds.wav");
-        soundAmbiance.setVolume(-8);
-        soundAtmosphere = new SoundManager("/sounds/music/gameplay_atmosphere.wav");
-        soundAtmosphere.setVolume(-24);
+        soundAmbiance = UtilsAudio.getOrCreateSound("sounds/ambiance/birds");
+        soundAmbiance.setVolume(0.4f);
+        soundAmbiance.setIsLooped(true);
+
+        soundAtmosphere = UtilsAudio.getOrCreateSound("sounds/music/gameplay_atmosphere");
+        soundAtmosphere.setVolume(0.06f);
+        soundAtmosphere.setIsLooped(true);
     }
 
     public World() {
@@ -158,8 +163,8 @@ public class World {
     }
 
     public void play() {
-        soundAmbiance.loop();
-        soundAtmosphere.loop();
+        soundAmbiance.play();
+        soundAtmosphere.play();
     }
 
     public void stop() {

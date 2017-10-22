@@ -1,12 +1,13 @@
 package aunmag.shooter.scenarios;
 
 import aunmag.nightingale.Application;
+import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.font.Font;
+import aunmag.nightingale.utilities.UtilsAudio;
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.factories.FactoryActor;
 import aunmag.shooter.managers.NextTimer;
-import aunmag.shooter.managers.SoundManager;
 import aunmag.shooter.sprites.Actor;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseOperative;
@@ -19,7 +20,7 @@ import aunmag.nightingale.utilities.UtilsMath;
 
 public class ScenarioEncircling implements BaseOperative {
 
-    private static SoundManager sound = new SoundManager("/sounds/music/death.wav");
+    private static final AudioSource sound;
     private NextTimer timeSpawn = new NextTimer(250);
 
     private int wave = 0;
@@ -33,7 +34,8 @@ public class ScenarioEncircling implements BaseOperative {
     private GuiLabel notificationKills = null;
 
     static {
-        sound.setVolume(-4);
+        sound = UtilsAudio.getOrCreateSound("sounds/music/death");
+        sound.setVolume(0.6f);
     }
 
     public ScenarioEncircling() {
