@@ -95,7 +95,7 @@ public class ScenarioEncircling implements BaseOperative {
 
     private void spawnZombie() {
         float done = wave / (float) waveFinal;
-        float directionSpread = (float) UtilsMath.PIx2 * done;
+        float directionSpread = (float) UtilsMath.PIx2 * (done * done);
         float direction = UtilsMath.randomizeBetween(0, directionSpread);
         direction += UtilsMath.correctRadians(direction + zombiesSpawnDirection);
 
