@@ -3,16 +3,16 @@ package aunmag.shooter.ai;
 import aunmag.nightingale.basics.BaseOperative;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.utilities.UtilsMath;
-import aunmag.shooter.managers.NextTimer;
+import aunmag.nightingale.utilities.TimerNext;
 import aunmag.shooter.sprites.Actor;
 import aunmag.shooter.world.World;
 
 public class Ai implements BaseOperative {
 
     private boolean isRemoved = false;
-    private NextTimer reactionWatch = new NextTimer(300);
-    private NextTimer reactionLookAround = new NextTimer(2_000);
-    private NextTimer reactionChangeStrategy = new NextTimer(30_000);
+    private TimerNext reactionWatch = new TimerNext(300);
+    private TimerNext reactionLookAround = new TimerNext(2_000);
+    private TimerNext reactionChangeStrategy = new TimerNext(30_000);
     private int strategyDeviationWay = 0;
     private Actor subject;
     private Actor target;

@@ -1,6 +1,7 @@
 package aunmag.shooter.sprites;
 
 import aunmag.nightingale.audio.AudioSource;
+import aunmag.nightingale.utilities.TimerNext;
 import aunmag.nightingale.utilities.UtilsAudio;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
@@ -12,14 +13,13 @@ public class Weapon extends BaseSprite {
     private static final Texture texture = Texture.getOrCreate("images/weapons/mp_27");
 
     private AudioSource audioSource;
-    private int fireRate;
     private int bulletsPerShot;
     private float velocity;
     private float velocityRecessionFactor;
     private float velocityDeflectionFactor;
     private float radiansDeflection;
     private float recoilRadians;
-    private long timeNextShot = 0;
+    private TimerNext nextShootTime;
 
     public Weapon(
             int fireRate,
@@ -32,7 +32,6 @@ public class Weapon extends BaseSprite {
     ) {
         super(0, 0, 0, texture);
 
-        this.fireRate = fireRate;
         this.bulletsPerShot = bulletsPerShot;
         this.velocity = velocity;
         this.velocityRecessionFactor = velocityRecessionFactor;
@@ -40,13 +39,15 @@ public class Weapon extends BaseSprite {
         this.radiansDeflection = radiansDeflection;
         this.recoilRadians = recoilRadians;
 
-        audioSource = UtilsAudio.getOrCreateSound("sounds/weapons/shot_mp_27");
+        nextShootTime = new TimerNext(fireRate);
+        audioSource = UtilsAudio.getOrCreateSoundOgg("sounds/weapons/shot_mp_27");
     }
 
     public void update() {}
 
     public void makeShotBy(Actor shooter) {
-        if (System.currentTimeMillis() < timeNextShot) {
+        nextShootTime.update(System.currentTimeMillis());
+        if (!nextShootTime.isNow()) {
             return;
         }
 
@@ -62,8 +63,6 @@ public class Weapon extends BaseSprite {
         for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
             makeBullet(shooter, bulletX, bulletY);
         }
-
-        timeNextShot = System.currentTimeMillis() + fireRate;
     }
 
     private void makeBullet(Actor shooter, float x, float y) {

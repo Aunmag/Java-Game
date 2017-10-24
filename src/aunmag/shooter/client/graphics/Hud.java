@@ -1,5 +1,6 @@
 package aunmag.shooter.client.graphics;
 
+import aunmag.nightingale.Input;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.Application;
 import aunmag.nightingale.data.DataEngine;
@@ -26,7 +27,7 @@ public class Hud {
     }
 
     public static void render() {
-        if (Application.getInput().isKeyPressed(GLFW.GLFW_KEY_F1)) {
+        if (Input.isKeyPressed(GLFW.GLFW_KEY_F1)) {
             isVisible = !isVisible;
         }
 
