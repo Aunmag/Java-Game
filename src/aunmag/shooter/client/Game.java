@@ -8,7 +8,7 @@ import aunmag.nightingale.font.Font;
 import aunmag.nightingale.utilities.UtilsAudio;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.client.graphics.CameraShaker;
-import aunmag.shooter.client.graphics.MuzzleSight;
+import aunmag.shooter.client.graphics.Crosshair;
 import aunmag.shooter.scenarios.ScenarioEmpty;
 import aunmag.shooter.client.graphics.Hud;
 import aunmag.shooter.client.graphics.Blackout;
@@ -30,7 +30,7 @@ public class Game extends Application {
     private static World world;
     private static GuiButtonBack buttonContinue;
     private static AudioSource soundTheme;
-    private MuzzleSight muzzleSight = null;
+    private Crosshair crosshair = null;
 
     public Game() {
         buttonContinue = new GuiButtonBack(4, 7, 4, 1, "Continue");
@@ -42,7 +42,7 @@ public class Game extends Application {
     private void initializeWorld() {
         deleteWorld();
         world = new World();
-        muzzleSight = new MuzzleSight(Actor.getPlayer());
+        crosshair = new Crosshair(Actor.getPlayer());
         buttonContinue.setIsAvailable(true);
         scenario = new ScenarioEncircling();
     }
@@ -146,7 +146,6 @@ public class Game extends Application {
 
             CameraShaker.update();
             updateCamera();
-            muzzleSight.update();
 
             scenario.update();
             if (Input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
@@ -217,7 +216,7 @@ public class Game extends Application {
         } else {
             world.render();
             Blackout.render();
-            muzzleSight.render();
+            crosshair.render();
             scenario.render();
             Hud.render();
         }
