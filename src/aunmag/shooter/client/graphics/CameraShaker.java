@@ -27,7 +27,7 @@ public class CameraShaker {
             fluidRadians.setValueTarget(0, System.currentTimeMillis());
         }
 
-        Application.getCamera().addRadiansTemporary(fluidRadians.getValueCurrent());
+        Application.getCamera().addRadiansOffset(fluidRadians.getValueCurrent());
     }
 
 }

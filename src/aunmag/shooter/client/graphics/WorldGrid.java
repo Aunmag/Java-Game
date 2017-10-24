@@ -12,7 +12,7 @@ public class WorldGrid {
         Camera camera = Application.getCamera();
 
         int size = calculateAliquotValue(
-                camera.getDistanceView() / camera.getZoomView() * 2,
+                camera.getDistanceView() / camera.getScaleFull() * 2,
                 step * 2
         );
         int start = size / -2;

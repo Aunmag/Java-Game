@@ -10,7 +10,6 @@ import aunmag.shooter.sprites.Actor;
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.sprites.Bullet;
 import aunmag.shooter.sprites.Object;
-import aunmag.nightingale.Application;
 import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.UtilsBaseOperative;
 import aunmag.nightingale.utilities.UtilsGraphics;
@@ -37,11 +36,11 @@ public class World {
     public static List<Object> trees = new ArrayList<>();
 
     static {
-        soundAmbiance = UtilsAudio.getOrCreateSound("sounds/ambiance/birds");
+        soundAmbiance = UtilsAudio.getOrCreateSoundOgg("sounds/ambiance/birds");
         soundAmbiance.setVolume(0.4f);
         soundAmbiance.setIsLooped(true);
 
-        soundAtmosphere = UtilsAudio.getOrCreateSound("sounds/music/gameplay_atmosphere");
+        soundAtmosphere = UtilsAudio.getOrCreateSoundOgg("sounds/music/gameplay_atmosphere");
         soundAtmosphere.setVolume(0.06f);
         soundAtmosphere.setIsLooped(true);
     }
@@ -61,8 +60,6 @@ public class World {
 
         Actor.setPlayer(player);
         actors.add(player);
-
-        Application.getCamera().setTarget(player);
     }
 
     private void initializeGround() {

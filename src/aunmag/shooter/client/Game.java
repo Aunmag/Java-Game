@@ -6,6 +6,7 @@ import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.basics.BaseGrid;
 import aunmag.nightingale.font.Font;
 import aunmag.nightingale.utilities.UtilsAudio;
+import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.client.graphics.MuzzleSight;
 import aunmag.shooter.scenarios.ScenarioEmpty;
@@ -127,7 +128,7 @@ public class Game extends Application {
     }
 
     private void initializeSoundTheme() {
-        soundTheme = UtilsAudio.getOrCreateSound("sounds/music/menu");
+        soundTheme = UtilsAudio.getOrCreateSoundOgg("sounds/music/menu");
         soundTheme.setIsLooped(true);
         themePlay();
     }
@@ -141,11 +142,14 @@ public class Game extends Application {
         } else {
             updateInputForCamera();
             updateInputForPlayer();
-            muzzleSight.update();
             world.update();
-            scenario.update();
+
             CameraShaker.update();
-            if (Application.getInput().isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
+            updateCamera();
+            muzzleSight.update();
+
+            scenario.update();
+            if (Input.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
                 setPause(true);
             }
         }
@@ -154,13 +158,13 @@ public class Game extends Application {
     private void updateInputForCamera() {
         Camera camera = Application.getCamera();
 
-        float zoom = camera.getZoom();
+        float zoom = camera.getScaleZoom();
         float zoomChange = zoom * 0.01f;
 
-        if (Application.getInput().isKeyDown(GLFW.GLFW_KEY_KP_ADD)) {
-            camera.setZoom(zoom + zoomChange);
-        } else if (Application.getInput().isKeyDown(GLFW.GLFW_KEY_KP_SUBTRACT)) {
-            camera.setZoom(zoom - zoomChange);
+        if (Input.isKeyDown(GLFW.GLFW_KEY_KP_ADD)) {
+            camera.setScaleZoom(zoom + zoomChange);
+        } else if (Input.isKeyDown(GLFW.GLFW_KEY_KP_SUBTRACT)) {
+            camera.setScaleZoom(zoom - zoomChange);
         }
     }
 
@@ -171,30 +175,40 @@ public class Game extends Application {
             return;
         }
 
-        Input input = Application.getInput();
+        player.isWalkingForward = Input.isKeyDown(GLFW.GLFW_KEY_W);
+        player.isWalkingBack = Input.isKeyDown(GLFW.GLFW_KEY_S);
+        player.isWalkingLeft = Input.isKeyDown(GLFW.GLFW_KEY_A);
+        player.isWalkingRight = Input.isKeyDown(GLFW.GLFW_KEY_D);
+        player.isSprinting = Input.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT);
+        player.isAttacking = Input.isMouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_1);
 
-        player.isWalkingForward = input.isKeyDown(GLFW.GLFW_KEY_W);
-        player.isWalkingBack = input.isKeyDown(GLFW.GLFW_KEY_S);
-        player.isWalkingLeft = input.isKeyDown(GLFW.GLFW_KEY_A);
-        player.isWalkingRight = input.isKeyDown(GLFW.GLFW_KEY_D);
-        player.isSprinting = input.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT);
-        player.isAttacking = input.isMouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_1);
-
-        if (input.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_2)) {
+        if (Input.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_2)) {
             player.isAiming.toggle(System.currentTimeMillis());
         }
 
         float mouseSensitivity = 0.005f;
         mouseSensitivity -= mouseSensitivity * player.isAiming.getValueCurrent() * 0.75f;
-        player.addRadiansCarefully(input.getMouseVelocity().x() * mouseSensitivity);
+        player.addRadiansCarefully(Input.getMouseVelocity().x() * mouseSensitivity);
 
-        Camera camera = Application.getCamera();
-        float offset = Application.getWindow().getCenterY() - camera.getOffsetYBase();
-        camera.addOffsetYTemporary(offset * player.isAiming.getValueCurrent());
-
-        if (input.isKeyPressed(GLFW.GLFW_KEY_BACKSPACE)) {
+        if (Input.isKeyPressed(GLFW.GLFW_KEY_BACKSPACE)) {
             isVirtualMode = !isVirtualMode;
         }
+    }
+
+    private void updateCamera() {
+        Actor player = Actor.getPlayer();
+
+        if (player == null) {
+            return;
+        }
+
+        Camera camera = Application.getCamera();
+        camera.setPosition(player.getX(), player.getY());
+        camera.setRadians(player.getRadians() - (float) UtilsMath.PIx0_5);
+
+        float offset = Application.getWindow().getCenterY() / 2f;
+        camera.addOffset(0, offset, true);
+        camera.addOffset(0, offset * player.isAiming.getValueCurrent(), true);
     }
 
     protected void gameRender() {

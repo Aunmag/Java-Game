@@ -3,11 +3,12 @@ package aunmag.shooter.scenarios;
 import aunmag.nightingale.Application;
 import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.font.Font;
+import aunmag.nightingale.utilities.TimerDone;
 import aunmag.nightingale.utilities.UtilsAudio;
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.factories.FactoryActor;
-import aunmag.shooter.managers.NextTimer;
+import aunmag.nightingale.utilities.TimerNext;
 import aunmag.shooter.sprites.Actor;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseOperative;
@@ -21,7 +22,7 @@ import aunmag.nightingale.utilities.UtilsMath;
 public class ScenarioEncircling implements BaseOperative {
 
     private static final AudioSource sound;
-    private NextTimer timeSpawn = new NextTimer(500);
+    private TimerNext timeSpawn = new TimerNext(500);
 
     private int wave = 0;
     private int waveFinal = 8;
@@ -30,12 +31,12 @@ public class ScenarioEncircling implements BaseOperative {
     private final float zombiesVelocityIncrease = 0.05f;
     private float zombiesSpawnDirection = 0f;
 
-    private NextTimer timeNotification = new NextTimer(5_000);
+    private TimerDone timeNotification = new TimerDone(5_000);
     private GuiLabel notificationWave = null;
     private GuiLabel notificationKills = null;
 
     static {
-        sound = UtilsAudio.getOrCreateSound("sounds/music/death");
+        sound = UtilsAudio.getOrCreateSoundOgg("sounds/music/death");
         sound.setVolume(0.6f);
     }
 
@@ -90,7 +91,6 @@ public class ScenarioEncircling implements BaseOperative {
         zombiesSpawnDirection = UtilsMath.randomizeBetween(0, (float) UtilsMath.PIx2);
         zombiesQuantityToSpawn = zombiesQuantityInitial * wave;
         createNotifications();
-        timeNotification.update(System.currentTimeMillis());
     }
 
     private void spawnZombie() {
@@ -121,6 +121,8 @@ public class ScenarioEncircling implements BaseOperative {
 
         String messageKills = String.format("Kill %s zombies", zombiesQuantityToSpawn);
         notificationKills = new GuiLabel(5, 5, 2, 1, messageKills, Font.fontDefault, 1);
+
+        timeNotification.setTimeInitial(System.currentTimeMillis());
     }
 
     private int countAliveZombies() {
@@ -128,14 +130,15 @@ public class ScenarioEncircling implements BaseOperative {
     }
 
     public void render() {
-        if (notificationWave != null && notificationKills != null) {
-            timeNotification.update(System.currentTimeMillis());
-            if (!timeNotification.isNow()) {
-                notificationWave.render();
-                notificationKills.render();
-            } else {
-                removeNotifications();
-            }
+        if (notificationWave == null || notificationKills == null) {
+            return;
+        }
+
+        if (!timeNotification.calculateIsDone(System.currentTimeMillis())) {
+            notificationWave.render();
+            notificationKills.render();
+        } else {
+            removeNotifications();
         }
     }
 
@@ -156,7 +159,7 @@ public class ScenarioEncircling implements BaseOperative {
         notificationKills = null;
     }
 
-    public void gameOver(boolean isVictory) {
+    private void gameOver(boolean isVictory) {
         createGameOverPage(isVictory);
         Game.deleteWorld();
 

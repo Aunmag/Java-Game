@@ -2,6 +2,7 @@ package aunmag.shooter.client.graphics;
 
 import aunmag.nightingale.Application;
 import aunmag.nightingale.Camera;
+import aunmag.nightingale.Input;
 import aunmag.nightingale.utilities.UtilsGraphics;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.sprites.Actor;
@@ -10,10 +11,10 @@ import org.lwjgl.opengl.GL11;
 public class MuzzleSight {
 
     private Actor shooter;
+    private float distance = Application.getWindow().getHeight() / 2f;
     private float length = 10;
     private final float OFFSET_Y_MIN = 0;
     private final float OFFSET_Y_MAX = 3200;
-
     private float offsetY = OFFSET_Y_MIN;
 
     public MuzzleSight(Actor shooter) {
@@ -26,7 +27,7 @@ public class MuzzleSight {
             return;
         }
 
-        float velocity = Application.getInput().getMouseVelocity().y();
+        float velocity = Input.getMouseVelocity().y();
         float acceleration = 1f;
         float smoothRange = 8f;
 
@@ -49,7 +50,11 @@ public class MuzzleSight {
             offsetY = OFFSET_Y_MAX;
         }
 
-        Application.getCamera().addOffsetYTemporary(offsetY * shooter.isAiming.getValueCurrent());
+        Application.getCamera().addOffset(
+                0,
+                offsetY * shooter.isAiming.getValueCurrent(),
+                true
+        );
     }
 
     public void render() {
@@ -65,12 +70,11 @@ public class MuzzleSight {
         float sinSide = (float) Math.sin(shooter.getRadians() + UtilsMath.PIx0_5);
 
         Camera camera = Application.getCamera();
-        float distance = camera.getOffsetYBase() + camera.getOffsetYTemporary();
-        distance /= camera.getZoomView();
+        float distance = (this.distance + offsetY) / camera.getScaleFull();
         float x = shooter.getX() + distance * cos;
         float y = shooter.getY() + distance * sin;
 
-        float length = this.length / camera.getZoomView();
+        float length = this.length / camera.getScaleFull();
         float offsetA = length / 2f;
         float offsetB = offsetA + length;
 

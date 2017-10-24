@@ -1,6 +1,7 @@
 package aunmag.shooter.sprites;
 
 import aunmag.nightingale.audio.AudioSample;
+import aunmag.nightingale.audio.AudioSampleType;
 import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.shooter.client.Game;
@@ -47,7 +48,8 @@ public class Actor extends BaseSprite {
 
     static {
         for (int i = 0; i < samples.length; i++) {
-            samples[i] = AudioSample.getOrCreate("sounds/actors/human_hurt_" + (i + 1));
+            String sampleName = "sounds/actors/human_hurt_" + (i + 1);
+            samples[i] = AudioSample.getOrCreate(sampleName, AudioSampleType.OGG);
         }
     }
 

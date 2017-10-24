@@ -1,5 +1,6 @@
 package aunmag.shooter.sprites.components;
 
+import aunmag.nightingale.utilities.TimerNext;
 import aunmag.shooter.sprites.Actor;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.collision.Collision;
@@ -13,9 +14,8 @@ public class Hands extends CollisionCircle {
     private static final float radius = 11;
     private static final float distance = radius;
     private static final float damage = 750;
-    private static final long timeAttackPace = 400;
+    private TimerNext nextAttackTime = new TimerNext(400);
     private final Actor owner;
-    private long timeAttackNext = 0;
 
     public Hands(Actor owner) {
         super(owner.getX(), owner.getY(), radius);
@@ -26,7 +26,8 @@ public class Hands extends CollisionCircle {
     public void update() {
         updatePosition();
 
-        if (owner.isAttacking && !owner.getHasWeapon() && System.currentTimeMillis() >= timeAttackNext) {
+        nextAttackTime.update(System.currentTimeMillis());
+        if (owner.isAttacking && !owner.getHasWeapon() && nextAttackTime.isNow()) {
             attack();
         }
     }
@@ -47,8 +48,6 @@ public class Hands extends CollisionCircle {
                 actor.hit(damage * owner.getHealth(), owner.getRadians(), owner);
             }
         }
-
-        timeAttackNext = System.currentTimeMillis() + timeAttackPace;
     }
 
     public void render() {
