@@ -152,6 +152,7 @@ public class World {
 
         UtilsGraphics.drawPrepare();
         UtilsBaseOperative.renderAll(bullets);
+        GL11.glLineWidth(1);
         UtilsGraphics.drawFinish();
 
         if (!Game.isVirtualMode()) {
