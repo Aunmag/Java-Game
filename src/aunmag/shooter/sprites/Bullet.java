@@ -1,5 +1,6 @@
 package aunmag.shooter.sprites;
 
+import aunmag.nightingale.Application;
 import aunmag.nightingale.Configs;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
@@ -7,16 +8,18 @@ import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionLine;
 import aunmag.nightingale.utilities.UtilsGraphics;
 import org.joml.Vector2f;
-import org.joml.Vector4f;
+import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
 public class Bullet extends BaseSprite {
 
-    private static final Vector4f color = new Vector4f(1.0f, 0.8f, 0.2f, 0.6f);
+    private static final float sizeScale = 2f;
+    private static final Vector3f color = new Vector3f(1.0f, 0.8f, 0.2f);
     private static final int VELOCITY_MIN = 1;
 
     private float velocity;
     private float velocityRecessionFactor;
+    private float size;
     private Vector2f positionTail;
     private CollisionLine collision;
     private Actor shooter;
@@ -27,11 +30,13 @@ public class Bullet extends BaseSprite {
             float radians,
             float velocity,
             float velocityRecessionFactor,
+            float size,
             Actor shooter
     ) {
         super(x, y, radians, null);
         this.velocity = velocity;
         this.velocityRecessionFactor = velocityRecessionFactor;
+        this.size = size;
         this.shooter = shooter;
         positionTail = new Vector2f(x, y);
         collision = new CollisionLine(x, y, x, y);
@@ -69,7 +74,8 @@ public class Bullet extends BaseSprite {
     }
 
     public void render() {
-        GL11.glColor4f(color.x, color.y, color.z, color.w);
+        GL11.glLineWidth(size * sizeScale * Application.getCamera().getScaleFull());
+        GL11.glColor3f(color.x, color.y, color.z);
         UtilsGraphics.drawLine(getX(), getY(), positionTail.x(), positionTail.y(), true);
     }
 
