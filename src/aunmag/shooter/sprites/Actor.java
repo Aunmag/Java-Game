@@ -6,6 +6,7 @@ import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.CameraShaker;
+import aunmag.shooter.weapon.Weapon;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.structures.Texture;
@@ -144,8 +145,12 @@ public class Actor extends BaseSprite {
         weapon.setPosition(weaponX, weaponY);
 
         if (isAttacking) {
-            weapon.makeShotBy(this);
+            weapon.trigger.pressBy(this);
+        } else {
+            weapon.trigger.release();
         }
+
+        weapon.update();
     }
 
     private void walk() {
@@ -315,6 +320,10 @@ public class Actor extends BaseSprite {
 
     public float getVelocity() {
         return velocity;
+    }
+
+    public Weapon getWeapon() {
+        return weapon;
     }
 
 }
