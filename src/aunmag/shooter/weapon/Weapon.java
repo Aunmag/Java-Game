@@ -1,8 +1,8 @@
-package aunmag.shooter.sprites;
+package aunmag.shooter.weapon;
 
 import aunmag.nightingale.audio.AudioSource;
-import aunmag.nightingale.utilities.TimerNext;
 import aunmag.nightingale.utilities.UtilsAudio;
+import aunmag.shooter.sprites.Bullet;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.structures.Texture;
@@ -19,16 +19,20 @@ public class Weapon extends BaseSprite {
     private float velocityDeflectionFactor;
     private float radiansDeflection;
     private float recoilRadians;
-    private TimerNext nextShootTime;
+    public final WeaponMagazine magazine;
+    public final WeaponStriker striker;
+    public final WeaponTrigger trigger;
 
     public Weapon(
-            int fireRate,
             int bulletsPerShot,
             float velocity,
             float velocityRecessionFactor,
             float velocityDeflectionFactor,
             float radiansDeflection,
-            float recoilRadians
+            float recoilRadians,
+            WeaponMagazine magazine,
+            WeaponStriker striker,
+            WeaponTrigger trigger
     ) {
         super(0, 0, 0, texture);
 
@@ -39,20 +43,24 @@ public class Weapon extends BaseSprite {
         this.radiansDeflection = radiansDeflection;
         this.recoilRadians = recoilRadians;
 
-        nextShootTime = new TimerNext(fireRate);
         audioSource = UtilsAudio.getOrCreateSoundOgg("sounds/weapons/shot_mp_27");
+
+        this.magazine = magazine;
+        this.striker = striker;
+        this.trigger = trigger;
     }
 
-    public void update() {}
+    public void update() {
+        magazine.update();
 
-    public void makeShotBy(Actor shooter) {
-        nextShootTime.update(System.currentTimeMillis());
-        if (!nextShootTime.isNow()) {
-            return;
+        if (trigger.isFiring() && striker.isCocked() && magazine.takeNextCartridge()) {
+            makeShot();
         }
+    }
 
+    private void makeShot() {
         float push = UtilsMath.randomizeFlexibly(recoilRadians, recoilRadians * 0.25f);
-        shooter.push(UtilsMath.random.nextBoolean() ? push : -push);
+        trigger.getShooter().push(UtilsMath.random.nextBoolean() ? push : -push);
 
         audioSource.play();
 
@@ -61,11 +69,11 @@ public class Weapon extends BaseSprite {
         float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
 
         for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
-            makeBullet(shooter, bulletX, bulletY);
+            makeBullet(bulletX, bulletY);
         }
     }
 
-    private void makeBullet(Actor shooter, float x, float y) {
+    private void makeBullet(float x, float y) {
         float radians = UtilsMath.randomizeFlexibly(getRadians(), radiansDeflection);
         float velocity = UtilsMath.randomizeFlexibly(
                 this.velocity,
@@ -77,7 +85,7 @@ public class Weapon extends BaseSprite {
                 radians,
                 velocity,
                 velocityRecessionFactor,
-                shooter
+                trigger.getShooter()
         );
         World.bullets.add(bullet);
     }

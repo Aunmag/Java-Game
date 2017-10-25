@@ -192,6 +192,10 @@ public class Game extends Application {
         if (Input.isKeyPressed(GLFW.GLFW_KEY_BACKSPACE)) {
             isVirtualMode = !isVirtualMode;
         }
+
+        if (Input.isKeyPressed(GLFW.GLFW_KEY_R) && player.getHasWeapon()) {
+            player.getWeapon().magazine.reload();
+        }
     }
 
     private void updateCamera() {
@@ -217,6 +221,11 @@ public class Game extends Application {
             world.render();
             Blackout.render();
             crosshair.render();
+
+            if (Actor.getPlayer().getHasWeapon()) {
+                Actor.getPlayer().getWeapon().magazine.renderHud();
+            }
+
             scenario.render();
             Hud.render();
         }
