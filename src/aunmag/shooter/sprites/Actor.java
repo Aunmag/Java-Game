@@ -196,10 +196,6 @@ public class Actor extends BaseSprite {
         float impulseX = impulse * (float) Math.cos(radians);
         float impulseY = impulse * (float) Math.sin(radians);
         addPosition(impulseX, impulseY);
-
-        if (type.equals("human")) {
-            soundHurt();
-        }
     }
 
     public void push(float force) {
@@ -236,6 +232,10 @@ public class Actor extends BaseSprite {
     }
 
     private void soundHurt() {
+        if (!type.equals("human")) {
+            return;
+        }
+
         if (audioSource.isPlaying()) {
             return;
         }
@@ -262,6 +262,8 @@ public class Actor extends BaseSprite {
 
         if (!isAlive()) {
             remove();
+        } else if (addHealth < -0.005) {
+            soundHurt();
         }
     }
 
