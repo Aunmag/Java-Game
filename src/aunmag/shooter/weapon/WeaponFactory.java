@@ -1,8 +1,6 @@
-package aunmag.shooter.factories;
+package aunmag.shooter.weapon;
 
-import aunmag.shooter.weapon.*;
-
-public class FactoryWeapon {
+public class WeaponFactory {
 
     public static Weapon mp27() {
         return new Weapon(

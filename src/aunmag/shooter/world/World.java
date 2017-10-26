@@ -5,7 +5,7 @@ import aunmag.nightingale.utilities.UtilsAudio;
 import aunmag.shooter.actor.ActorType;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.WorldGrid;
-import aunmag.shooter.factories.FactoryWeapon;
+import aunmag.shooter.weapon.WeaponFactory;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.weapon.Projectile;
@@ -55,7 +55,7 @@ public class World {
         // TODO: World should not know about client's player
         Actor player = new Actor(ActorType.human);
         player.setRadians((float) -UtilsMath.PIx0_5);
-        player.setWeapon(FactoryWeapon.mp27());
+        player.setWeapon(WeaponFactory.mp27());
 
         Actor.setPlayer(player);
         actors.add(player);
