@@ -21,7 +21,6 @@ public class Actor extends BaseSprite {
     private static int[] samples = new int[6];
     private static Actor player;
 
-    private boolean isAlive = true; // TODO: Remove (use method with condition)
     private float health = 1;
     private int kills = 0;
     public String type;
@@ -76,17 +75,16 @@ public class Actor extends BaseSprite {
     }
 
     public void update() {
+        if (!isAlive()) {
+            remove();
+            return;
+        }
+
         offsetRadians.update(System.currentTimeMillis());
         if (offsetRadians.getValueTarget() != 0 && offsetRadians.isTargetReached()) {
             addRadiansCarefully(offsetRadians.getValueCurrent());
             offsetRadians.setValueTarget(0, System.currentTimeMillis());
             offsetRadians.reachTargetNow();
-        }
-
-        updateIsAlive();
-
-        if (!isAlive) {
-            return;
         }
 
         inertiaVelocity.update(System.currentTimeMillis());
@@ -103,20 +101,6 @@ public class Actor extends BaseSprite {
         updateCollision();
         hands.update();
         updateWeapon();
-    }
-
-    private void updateIsAlive() {
-        if (!isAlive) {
-            return;
-        }
-
-        if (health <= 0) {
-            health = 0;
-            isAlive = false;
-            if (type.equals("zombie")) {
-                remove();
-            }
-        }
     }
 
     private void updateIsWalking() {
@@ -200,12 +184,11 @@ public class Actor extends BaseSprite {
 
     // TODO: Change
     public void hit(float intensity, float radians, Actor attacker) {
-        boolean wasAlreadyDead = !isAlive;
+        boolean wasDeadBefore = !isAlive();
 
-        health -= intensity * Configs.getPixelsPerMeter() / 7500f;
-        updateIsAlive();
+        addHealth(-intensity * Configs.getPixelsPerMeter() / 7500f);
 
-        if (!wasAlreadyDead && !isAlive && attacker != null) {
+        if (!wasDeadBefore && !isAlive() && attacker != null) {
             attacker.increaseKills();
         }
 
@@ -241,9 +224,14 @@ public class Actor extends BaseSprite {
     }
 
     public void remove() {
+        if (isRemoved()) {
+            return;
+        }
+
         if (weapon != null) {
             weapon.remove();
         }
+
         super.remove();
     }
 
@@ -262,6 +250,20 @@ public class Actor extends BaseSprite {
     }
 
     /* Setters */
+
+    private void addHealth(float addHealth) {
+        health += addHealth;
+
+        if (health < 0) {
+            health = 0;
+        } else if (health > 1) {
+            health = 1;
+        }
+
+        if (!isAlive()) {
+            remove();
+        }
+    }
 
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
@@ -301,7 +303,7 @@ public class Actor extends BaseSprite {
     }
 
     public boolean isAlive() {
-        return isAlive;
+        return health > 0;
     }
 
     public boolean getHasWeapon() {
