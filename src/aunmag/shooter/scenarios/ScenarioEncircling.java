@@ -9,7 +9,7 @@ import aunmag.shooter.ai.Ai;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.factories.FactoryActor;
 import aunmag.nightingale.utilities.TimerNext;
-import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseOperative;
 import aunmag.nightingale.gui.GuiButton;

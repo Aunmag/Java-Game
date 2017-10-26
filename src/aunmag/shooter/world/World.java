@@ -6,7 +6,7 @@ import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.WorldGrid;
 import aunmag.shooter.factories.FactoryActor;
 import aunmag.shooter.factories.FactoryWeapon;
-import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.actor.Actor;
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.sprites.Bullet;
 import aunmag.shooter.sprites.Object;

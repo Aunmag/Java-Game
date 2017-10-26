@@ -1,4 +1,4 @@
-package aunmag.shooter.sprites;
+package aunmag.shooter.actor;
 
 import aunmag.nightingale.audio.AudioSample;
 import aunmag.nightingale.audio.AudioSampleType;
@@ -13,7 +13,6 @@ import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.collision.CollisionCircle;
-import aunmag.shooter.sprites.components.Hands;
 
 public class Actor extends BaseSprite {
 

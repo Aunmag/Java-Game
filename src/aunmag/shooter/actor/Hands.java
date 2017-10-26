@@ -1,7 +1,7 @@
-package aunmag.shooter.sprites.components;
+package aunmag.shooter.actor;
 
 import aunmag.nightingale.utilities.TimerNext;
-import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionCircle;

@@ -2,6 +2,7 @@ package aunmag.shooter.sprites;
 
 import aunmag.nightingale.Application;
 import aunmag.nightingale.Configs;
+import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.collision.Collision;

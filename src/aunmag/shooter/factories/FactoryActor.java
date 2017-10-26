@@ -1,7 +1,7 @@
 package aunmag.shooter.factories;
 
 import aunmag.nightingale.structures.Texture;
-import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.actor.Actor;
 
 public class FactoryActor {
 
