@@ -13,8 +13,8 @@ import org.lwjgl.opengl.GL11;
 
 public class Projectile extends BaseSprite {
 
-    private static final float sizeScale = 2f;
-    private static final float VELOCITY_MIN = 0.03125f; // TODO: Change
+    private static final float VELOCITY_MIN = 0.5f;
+    private static final float VELOCITY_FACTOR = 1f;
 
     public final ProjectileType type;
     private float velocity;
@@ -45,7 +45,7 @@ public class Projectile extends BaseSprite {
     }
 
     private void updatePosition() {
-        float velocity = this.velocity / Configs.getFpsLimit();
+        float velocity = this.velocity * VELOCITY_FACTOR / Configs.getFpsLimit();
         addPosition(
                 velocity * (float) Math.cos(getRadians()),
                 velocity * (float) Math.sin(getRadians())
@@ -59,7 +59,7 @@ public class Projectile extends BaseSprite {
             }
 
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
-                actor.hit(velocity * type.weight, shooter); // TODO: Implement weight
+                actor.hit(velocity * type.weight, shooter);
                 remove();
             }
         }
@@ -74,7 +74,7 @@ public class Projectile extends BaseSprite {
     }
 
     public void render() {
-        GL11.glLineWidth(type.size * sizeScale * Application.getCamera().getScaleFull() / Configs.getPixelsPerMeter()); // TODO: Change
+        GL11.glLineWidth(type.size * Application.getCamera().getScaleFull());
         GL11.glColor3f(type.color.x(), type.color.y(), type.color.z());
         UtilsGraphics.drawLine(getX(), getY(), positionTail.x(), positionTail.y(), true);
     }

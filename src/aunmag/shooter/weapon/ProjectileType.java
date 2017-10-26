@@ -27,7 +27,7 @@ public class ProjectileType {
     public static final ProjectileType small = new ProjectileType(
             0.16f,
             6f,
-            0.25f,
+            0.02f,
             new Vector3f(1.0f, 0.8f, 0.2f)
     );
 
