@@ -16,9 +16,11 @@ import aunmag.nightingale.collision.CollisionCircle;
 
 public class Actor extends BaseSprite {
 
+    private static Actor player;
     private static final int[] samples = new int[6];
     private static final float strength = 37.5f;
-    private static Actor player;
+    private static final float velocityFactorAside = 0.6f;
+    private static final float velocityFactorBack = 0.8f;
 
     private float health = 1;
     private int kills = 0;
@@ -29,8 +31,6 @@ public class Actor extends BaseSprite {
     private AudioSource audioSource = new AudioSource();
 
     private float velocity;
-    private float velocityFactorAside;
-    private float velocityFactorBack;
     private float velocityFactorSprint;
     private FluidValue offsetRadians = new FluidValue(60);
     public boolean isWalkingForward = false;
@@ -50,16 +50,12 @@ public class Actor extends BaseSprite {
 
     public Actor(
             float velocity,
-            float velocityFactorAside,
-            float velocityFactorBack,
             float velocityFactorSprint,
             Texture texture,
             String type
     ) {
         super(0, 0, 0, texture);
         this.velocity = velocity;
-        this.velocityFactorAside = velocityFactorAside;
-        this.velocityFactorBack = velocityFactorBack;
         this.velocityFactorSprint = velocityFactorSprint;
         this.type = type;
 
