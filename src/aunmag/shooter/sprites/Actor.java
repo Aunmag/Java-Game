@@ -1,6 +1,5 @@
 package aunmag.shooter.sprites;
 
-import aunmag.nightingale.Configs;
 import aunmag.nightingale.audio.AudioSample;
 import aunmag.nightingale.audio.AudioSampleType;
 import aunmag.nightingale.audio.AudioSource;
@@ -147,13 +146,16 @@ public class Actor extends BaseSprite {
     }
 
     public void hit(float intensity, Actor attacker) {
-        boolean wasDeadBefore = !isAlive();
+        intensity /= strength;
 
-        addHealth(-intensity / strength);
+        boolean wasDeadBefore = !isAlive();
+        addHealth(-intensity);
 
         if (!wasDeadBefore && !isAlive() && attacker != null) {
             attacker.increaseKills();
         }
+
+        push(UtilsMath.random.nextBoolean() ? intensity : -intensity);
     }
 
     public void push(float force) {
