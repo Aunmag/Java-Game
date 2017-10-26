@@ -10,7 +10,7 @@ import aunmag.nightingale.utilities.UtilsMath;
 
 public class Weapon extends BaseSprite {
 
-    private static final Texture texture = Texture.getOrCreate("images/weapons/mp_27");
+    private static final Texture texture = Texture.getOrCreateAsSprite("images/weapons/mp_27");
 
     private AudioSource audioSource;
     private int bulletsPerShot;

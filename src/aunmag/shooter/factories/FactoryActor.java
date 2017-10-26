@@ -7,22 +7,22 @@ public class FactoryActor {
 
     public static Actor human() {
         return new Actor(
-                1.38f,
+                0.043f,
                 0.6f,
                 0.8f,
                 2.76f,
-                Texture.getOrCreate("images/actors/human"),
+                Texture.getOrCreateAsSprite("images/actors/human"),
                 "human"
         );
     }
 
     public static Actor zombie() {
         return new Actor(
-                0.63f,
+                0.02f,
                 0.6f,
                 0.8f,
                 1.63f,
-                Texture.getOrCreate("images/actors/zombie"),
+                Texture.getOrCreateAsSprite("images/actors/zombie"),
                 "zombie"
         );
     }

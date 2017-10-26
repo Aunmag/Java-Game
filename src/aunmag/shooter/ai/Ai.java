@@ -114,14 +114,14 @@ public class Ai implements BaseOperative {
 
         if (targetRadiansDifferenceAbsolute > UtilsMath.PIx0_5) {
             deviateRoute();
-        } else if (targetDistance < 96) {
+        } else if (targetDistance < 3) {
             subject.isSprinting = true;
         }
     }
 
     private void deviateRoute() {
-        int distanceMin = 96; // 3m
-        int distanceMax = 640; // 20m
+        int distanceMin = 3;
+        int distanceMax = 20;
 
         if (distanceMin < targetDistance && targetDistance < distanceMax) {
             float intensity = targetDistance / distanceMax;
