@@ -58,7 +58,10 @@ public class Bullet extends BaseSprite {
 
     private void updateCollision() {
         for (Actor actor: World.actors) {
-            // TODO: Consider removed actors
+            if (!actor.isAlive() || actor.isRemoved()) {
+                continue;
+            }
+
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
                 actor.hit(velocity, getRadians(), shooter);
                 remove();
