@@ -5,11 +5,11 @@ import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.font.Font;
 import aunmag.nightingale.utilities.TimerDone;
 import aunmag.nightingale.utilities.UtilsAudio;
+import aunmag.shooter.actor.ActorType;
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.client.Game;
-import aunmag.shooter.factories.FactoryActor;
 import aunmag.nightingale.utilities.TimerNext;
-import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseOperative;
 import aunmag.nightingale.gui.GuiButton;
@@ -103,10 +103,10 @@ public class ScenarioEncircling implements BaseOperative {
         float x = Actor.getPlayer().getX() - distance * (float) Math.cos(direction);
         float y = Actor.getPlayer().getY() - distance * (float) Math.sin(direction);
 
-        Actor zombie = FactoryActor.zombie();
+        Actor zombie = new Actor(ActorType.zombieEasy); // TODO: Use different types
         zombie.setPosition(x, y);
         zombie.setRadians(-direction);
-        zombie.setVelocity(zombie.getVelocity() + zombiesVelocityIncrease * (wave - 1));
+//        zombie.setVelocity(zombie.getVelocity() + zombiesVelocityIncrease * (wave - 1));
         World.actors.add(zombie);
         World.ais.add(new Ai(zombie));
 

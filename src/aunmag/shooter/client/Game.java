@@ -19,7 +19,7 @@ import aunmag.nightingale.data.DataEngine;
 import aunmag.nightingale.gui.*;
 import aunmag.nightingale.structures.Texture;
 import org.lwjgl.glfw.GLFW;
-import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
 
 public class Game extends Application {

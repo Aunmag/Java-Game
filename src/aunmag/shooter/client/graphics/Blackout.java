@@ -5,7 +5,7 @@ import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsGraphics;
 import org.lwjgl.opengl.GL11;
-import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.actor.Actor;
 
 public class Blackout {
 

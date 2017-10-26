@@ -1,6 +1,6 @@
 package aunmag.shooter.weapon;
 
-import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.actor.Actor;
 
 public class WeaponTrigger {
 

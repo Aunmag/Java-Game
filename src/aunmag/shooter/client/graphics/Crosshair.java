@@ -3,7 +3,7 @@ package aunmag.shooter.client.graphics;
 import aunmag.nightingale.Application;
 import aunmag.nightingale.utilities.UtilsGraphics;
 import aunmag.nightingale.utilities.UtilsMath;
-import aunmag.shooter.sprites.Actor;
+import aunmag.shooter.actor.Actor;
 import org.lwjgl.opengl.GL11;
 
 public class Crosshair {
