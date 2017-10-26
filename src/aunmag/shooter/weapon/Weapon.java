@@ -2,7 +2,6 @@ package aunmag.shooter.weapon;
 
 import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.utilities.UtilsAudio;
-import aunmag.shooter.sprites.Bullet;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.structures.Texture;
@@ -12,42 +11,33 @@ public class Weapon extends BaseSprite {
 
     private static final Texture texture = Texture.getOrCreateAsSprite("images/weapons/mp_27");
 
+    public final float velocity;
+    public final float velocityDeflectionFactor;
+    public final float radiansDeflection;
+    public final float recoilRadians;
+    public final Magazine magazine;
+    public final Striker striker;
+    public final Trigger trigger;
     private AudioSource audioSource;
-    private int bulletsPerShot;
-    private float velocity;
-    private float velocityRecessionFactor;
-    private float velocityDeflectionFactor;
-    private float radiansDeflection;
-    private float recoilRadians;
-    public final WeaponMagazine magazine;
-    public final WeaponStriker striker;
-    public final WeaponTrigger trigger;
 
     public Weapon(
-            int bulletsPerShot,
             float velocity,
-            float velocityRecessionFactor,
             float velocityDeflectionFactor,
             float radiansDeflection,
             float recoilRadians,
-            WeaponMagazine magazine,
-            WeaponStriker striker,
-            WeaponTrigger trigger
+            Magazine magazine,
+            Striker striker,
+            Trigger trigger
     ) {
         super(0, 0, 0, texture);
-
-        this.bulletsPerShot = bulletsPerShot;
         this.velocity = velocity;
-        this.velocityRecessionFactor = velocityRecessionFactor;
         this.velocityDeflectionFactor = velocityDeflectionFactor;
         this.radiansDeflection = radiansDeflection;
         this.recoilRadians = recoilRadians;
-
-        audioSource = UtilsAudio.getOrCreateSoundOgg("sounds/weapons/shot_mp_27");
-
         this.magazine = magazine;
         this.striker = striker;
         this.trigger = trigger;
+        audioSource = UtilsAudio.getOrCreateSoundOgg("sounds/weapons/shot_mp_27");
     }
 
     public void update() {
@@ -68,33 +58,26 @@ public class Weapon extends BaseSprite {
         float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
         float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
 
-        float bulletSize = bulletsPerShot / 4f;
-        if (bulletSize < 1) {
-            bulletSize = 1;
-        }
-        bulletSize = 1 / bulletSize;
-
-        for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
-            makeBullet(bulletX, bulletY, bulletSize);
+        for (int bullet = 0; bullet < magazine.cartridgeType.projectilesQuantity; bullet++) {
+            makeBullet(bulletX, bulletY);
         }
     }
 
-    private void makeBullet(float x, float y, float size) {
+    private void makeBullet(float x, float y) {
         float radians = UtilsMath.randomizeFlexibly(getRadians(), radiansDeflection);
         float velocity = UtilsMath.randomizeFlexibly(
                 this.velocity,
                 this.velocity * velocityDeflectionFactor
         );
-        Bullet bullet = new Bullet(
+        Projectile projectile = new Projectile(
+                magazine.cartridgeType.projectile,
                 x,
                 y,
                 radians,
                 velocity,
-                velocityRecessionFactor,
-                size,
                 trigger.getShooter()
         );
-        World.bullets.add(bullet);
+        World.projectiles.add(projectile);
     }
 
     /* Setters */

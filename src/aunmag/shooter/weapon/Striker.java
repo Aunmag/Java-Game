@@ -2,11 +2,11 @@ package aunmag.shooter.weapon;
 
 import aunmag.nightingale.utilities.TimerNext;
 
-public class WeaponStriker {
+public class Striker {
 
     private TimerNext nextShootTime;
 
-    public WeaponStriker(int rate) {
+    public Striker(int rate) {
         nextShootTime = new TimerNext(rate);
     }
 

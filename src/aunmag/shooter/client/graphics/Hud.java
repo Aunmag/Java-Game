@@ -49,7 +49,7 @@ public class Hud {
         message += String.format("Spent time total: %s ms \n", timeSpentTotal);
         message += String.format("\nAIs: %s", World.ais.size());
         message += String.format("\nActors: %s", World.actors.size());
-        message += String.format("\nBullets: %s", World.bullets.size());
+        message += String.format("\nBullets: %s", World.projectiles.size());
         message += String.format("\nTerrains: %s", World.terrains.size());
         message += String.format("\nDecorations: %s", World.decorations.size());
         message += String.format("\nTrees: %s", World.trees.size());

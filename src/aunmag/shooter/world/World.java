@@ -5,11 +5,10 @@ import aunmag.nightingale.utilities.UtilsAudio;
 import aunmag.shooter.actor.ActorType;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.WorldGrid;
-import aunmag.shooter.factories.FactoryWeapon;
+import aunmag.shooter.weapon.WeaponFactory;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.ai.Ai;
-import aunmag.shooter.sprites.Bullet;
-import aunmag.shooter.sprites.Object;
+import aunmag.shooter.weapon.Projectile;
 import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.UtilsBaseOperative;
 import aunmag.nightingale.utilities.UtilsGraphics;
@@ -32,7 +31,7 @@ public class World {
     public static List<Object> terrains = new ArrayList<>();
     public static List<Object> decorations = new ArrayList<>();
     public static List<Actor> actors = new ArrayList<>();
-    public static List<Bullet> bullets = new ArrayList<>();
+    public static List<Projectile> projectiles = new ArrayList<>();
     public static List<Object> trees = new ArrayList<>();
 
     static {
@@ -56,7 +55,7 @@ public class World {
         // TODO: World should not know about client's player
         Actor player = new Actor(ActorType.human);
         player.setRadians((float) -UtilsMath.PIx0_5);
-        player.setWeapon(FactoryWeapon.mp27());
+        player.setWeapon(WeaponFactory.mp27());
 
         Actor.setPlayer(player);
         actors.add(player);
@@ -123,7 +122,7 @@ public class World {
     public void update() {
         UtilsBaseOperative.updateAll(ais);
         UtilsBaseOperative.updateAll(actors);
-        UtilsBaseOperative.updateAll(bullets);
+        UtilsBaseOperative.updateAll(projectiles);
     }
 
     public void render() {
@@ -151,7 +150,7 @@ public class World {
         UtilsBaseOperative.renderAll(actors);
 
         UtilsGraphics.drawPrepare();
-        UtilsBaseOperative.renderAll(bullets);
+        UtilsBaseOperative.renderAll(projectiles);
         GL11.glLineWidth(1);
         UtilsGraphics.drawFinish();
 
@@ -175,7 +174,7 @@ public class World {
         UtilsBaseOperative.removeAll(terrains);
         UtilsBaseOperative.removeAll(decorations);
         UtilsBaseOperative.removeAll(actors);
-        UtilsBaseOperative.removeAll(bullets);
+        UtilsBaseOperative.removeAll(projectiles);
         UtilsBaseOperative.removeAll(trees);
         stop();
     }
