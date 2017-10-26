@@ -18,7 +18,7 @@ import aunmag.shooter.sprites.components.Hands;
 
 public class Actor extends BaseSprite {
 
-    private static int[] samples = new int[6];
+    private static final int[] samples = new int[6];
     private static Actor player;
 
     private float health = 1;
@@ -33,12 +33,7 @@ public class Actor extends BaseSprite {
     private float velocityFactorAside;
     private float velocityFactorBack;
     private float velocityFactorSprint;
-
-    private float currentMovementRadians = 0;
-    private FluidValue inertiaVelocity = new FluidValue(250);
     private FluidValue offsetRadians = new FluidValue(60);
-
-    public boolean isWalking = false;
     public boolean isWalkingForward = false;
     public boolean isWalkingBack = false;
     public boolean isWalkingLeft = false;
@@ -69,7 +64,6 @@ public class Actor extends BaseSprite {
         this.velocityFactorSprint = velocityFactorSprint;
         this.type = type;
 
-        inertiaVelocity.setFlexDegree(0.75f);
         offsetRadians.setFlexDegree(0.5f);
         isAiming.setFlexDegree(1.25f);
     }
@@ -87,24 +81,11 @@ public class Actor extends BaseSprite {
             offsetRadians.reachTargetNow();
         }
 
-        inertiaVelocity.update(System.currentTimeMillis());
         isAiming.update(System.currentTimeMillis());
-
-        updateIsWalking();
-
-        if (isWalking) {
-            walk();
-        } else {
-            stay();
-        }
-
+        walk();
         updateCollision();
         hands.update();
         updateWeapon();
-    }
-
-    private void updateIsWalking() {
-        isWalking = isWalkingForward || isWalkingLeft || isWalkingRight || isWalkingBack;
     }
 
     private void updateCollision() {
@@ -135,46 +116,33 @@ public class Actor extends BaseSprite {
 
     private void walk() {
         if (isWalkingForward) {
-            move(velocity, getRadians());
+            move(velocity, 0);
         }
 
         if (isWalkingBack) {
-            move(velocity * velocityFactorBack, getRadians() - (float) Math.PI);
+            move(velocity * velocityFactorBack, (float) -Math.PI);
         }
 
         if (isWalkingLeft) {
-            move(velocity * velocityFactorAside, getRadians() + (float) UtilsMath.PIx0_5);
+            move(velocity * velocityFactorAside, (float) UtilsMath.PIx0_5);
         }
 
         if (isWalkingRight) {
-            move(velocity * velocityFactorAside, getRadians() - (float) UtilsMath.PIx0_5);
+            move(velocity * velocityFactorAside, (float) -UtilsMath.PIx0_5);
         }
     }
 
-    private void move(float velocity, float radians) {
+    private void move(float velocity, float radiansTurn) {
         if (isSprinting && isWalkingForward) {
             velocity *= velocityFactorSprint;
         }
+
         velocity -= velocity * isAiming.getValueCurrent() / 2f;
+        velocity *= health;
 
-        currentMovementRadians = radians;
-
-        inertiaVelocity.setValueTarget(velocity * health, System.currentTimeMillis());
-        float velocityCurrent = inertiaVelocity.getValueCurrent();
-
-        float moveX = velocityCurrent * (float) Math.cos(currentMovementRadians);
-        float moveY = velocityCurrent * (float) Math.sin(currentMovementRadians);
+        float moveX = velocity * (float) Math.cos(getRadians() + radiansTurn);
+        float moveY = velocity * (float) Math.sin(getRadians() + radiansTurn);
         addPosition(moveX, moveY);
-    }
-
-    private void stay() {
-        inertiaVelocity.setValueTarget(0, System.currentTimeMillis());
-        float velocityCurrent = inertiaVelocity.getValueCurrent();
-
-        addPosition(
-                velocityCurrent * (float) Math.cos(currentMovementRadians),
-                velocityCurrent * (float) Math.sin(currentMovementRadians)
-        );
     }
 
     // TODO: Change
