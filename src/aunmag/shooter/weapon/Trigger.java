@@ -2,14 +2,14 @@ package aunmag.shooter.weapon;
 
 import aunmag.shooter.actor.Actor;
 
-public class WeaponTrigger {
+public class Trigger {
 
     private boolean isAutomaticMode;
     private boolean isClicked = false;
     private boolean isPressed = false;
     private Actor shooter = null;
 
-    public WeaponTrigger(boolean isAutomaticMode) {
+    public Trigger(boolean isAutomaticMode) {
         this.isAutomaticMode = isAutomaticMode;
     }
 

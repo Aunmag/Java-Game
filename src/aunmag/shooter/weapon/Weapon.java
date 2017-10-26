@@ -2,7 +2,6 @@ package aunmag.shooter.weapon;
 
 import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.utilities.UtilsAudio;
-import aunmag.shooter.sprites.Bullet;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.structures.Texture;
@@ -19,9 +18,9 @@ public class Weapon extends BaseSprite {
     private float velocityDeflectionFactor;
     private float radiansDeflection;
     private float recoilRadians;
-    public final WeaponMagazine magazine;
-    public final WeaponStriker striker;
-    public final WeaponTrigger trigger;
+    public final Magazine magazine;
+    public final Striker striker;
+    public final Trigger trigger;
 
     public Weapon(
             int bulletsPerShot,
@@ -30,9 +29,9 @@ public class Weapon extends BaseSprite {
             float velocityDeflectionFactor,
             float radiansDeflection,
             float recoilRadians,
-            WeaponMagazine magazine,
-            WeaponStriker striker,
-            WeaponTrigger trigger
+            Magazine magazine,
+            Striker striker,
+            Trigger trigger
     ) {
         super(0, 0, 0, texture);
 
@@ -85,7 +84,7 @@ public class Weapon extends BaseSprite {
                 this.velocity,
                 this.velocity * velocityDeflectionFactor
         );
-        Bullet bullet = new Bullet(
+        Projectile projectile = new Projectile(
                 x,
                 y,
                 radians,
@@ -94,7 +93,7 @@ public class Weapon extends BaseSprite {
                 size,
                 trigger.getShooter()
         );
-        World.bullets.add(bullet);
+        World.projectiles.add(projectile);
     }
 
     /* Setters */

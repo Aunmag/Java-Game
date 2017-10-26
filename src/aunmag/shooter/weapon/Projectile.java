@@ -1,4 +1,4 @@
-package aunmag.shooter.sprites;
+package aunmag.shooter.weapon;
 
 import aunmag.nightingale.Application;
 import aunmag.nightingale.Configs;
@@ -12,7 +12,7 @@ import org.joml.Vector2f;
 import org.joml.Vector3f;
 import org.lwjgl.opengl.GL11;
 
-public class Bullet extends BaseSprite {
+public class Projectile extends BaseSprite {
 
     private static final float sizeScale = 2f;
     private static final Vector3f color = new Vector3f(1.0f, 0.8f, 0.2f);
@@ -25,7 +25,7 @@ public class Bullet extends BaseSprite {
     private CollisionLine collision;
     private Actor shooter;
 
-    public Bullet(
+    public Projectile(
             float x,
             float y,
             float radians,

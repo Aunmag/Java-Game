@@ -1,4 +1,4 @@
-package aunmag.shooter.sprites;
+package aunmag.shooter.world;
 
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.structures.Texture;

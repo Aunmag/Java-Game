@@ -5,7 +5,7 @@ import aunmag.nightingale.utilities.TimerDone;
 import aunmag.nightingale.utilities.UtilsGraphics;
 import org.lwjgl.opengl.GL11;
 
-public class WeaponMagazine {
+public class Magazine {
 
     private final boolean isAutomatic;
     private final int capacity;
@@ -13,7 +13,7 @@ public class WeaponMagazine {
     private boolean isReloading = false;
     private TimerDone timeReloading;
 
-    public WeaponMagazine(boolean isAutomatic, int capacity, int reloadingTime) {
+    public Magazine(boolean isAutomatic, int capacity, int reloadingTime) {
         this.isAutomatic = isAutomatic;
         this.capacity = capacity;
         cartridgesQuantity = capacity;

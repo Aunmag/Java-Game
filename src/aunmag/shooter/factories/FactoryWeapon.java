@@ -1,9 +1,9 @@
 package aunmag.shooter.factories;
 
 import aunmag.shooter.weapon.Weapon;
-import aunmag.shooter.weapon.WeaponMagazine;
-import aunmag.shooter.weapon.WeaponStriker;
-import aunmag.shooter.weapon.WeaponTrigger;
+import aunmag.shooter.weapon.Magazine;
+import aunmag.shooter.weapon.Striker;
+import aunmag.shooter.weapon.Trigger;
 
 public class FactoryWeapon {
 
@@ -15,9 +15,9 @@ public class FactoryWeapon {
                 0.03f,
                 0.06f,
                 0.06f,
-                new WeaponMagazine(false, 2, 250),
-                new WeaponStriker(100),
-                new WeaponTrigger(false)
+                new Magazine(false, 2, 250),
+                new Striker(100),
+                new Trigger(false)
         );
     }
 
