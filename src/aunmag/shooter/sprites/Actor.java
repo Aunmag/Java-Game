@@ -19,6 +19,7 @@ import aunmag.shooter.sprites.components.Hands;
 public class Actor extends BaseSprite {
 
     private static final int[] samples = new int[6];
+    private static final float strength = 37.5f;
     private static Actor player;
 
     private float health = 1;
@@ -145,20 +146,14 @@ public class Actor extends BaseSprite {
         addPosition(moveX, moveY);
     }
 
-    // TODO: Change
-    public void hit(float intensity, float radians, Actor attacker) {
+    public void hit(float intensity, Actor attacker) {
         boolean wasDeadBefore = !isAlive();
 
-        addHealth(-intensity * Configs.getPixelsPerMeter() / 7500f);
+        addHealth(-intensity / strength);
 
         if (!wasDeadBefore && !isAlive() && attacker != null) {
             attacker.increaseKills();
         }
-
-        float impulse = intensity / 750f / Configs.getPixelsPerMeter();
-        float impulseX = impulse * (float) Math.cos(radians);
-        float impulseY = impulse * (float) Math.sin(radians);
-        addPosition(impulseX, impulseY);
     }
 
     public void push(float force) {
