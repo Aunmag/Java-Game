@@ -12,41 +12,23 @@ public class Weapon extends BaseSprite {
     private static final Texture texture = Texture.getOrCreateAsSprite("images/weapons/mp_27");
 
     private AudioSource audioSource;
-    private int bulletsPerShot;
-    private float velocity;
-    private float velocityRecessionFactor;
-    private float velocityDeflectionFactor;
-    private float radiansDeflection;
-    private float recoilRadians;
+    public final WeaponType type;
     public final Magazine magazine;
     public final Striker striker;
     public final Trigger trigger;
 
     public Weapon(
-            int bulletsPerShot,
-            float velocity,
-            float velocityRecessionFactor,
-            float velocityDeflectionFactor,
-            float radiansDeflection,
-            float recoilRadians,
+            WeaponType type,
             Magazine magazine,
             Striker striker,
             Trigger trigger
     ) {
         super(0, 0, 0, texture);
-
-        this.bulletsPerShot = bulletsPerShot;
-        this.velocity = velocity;
-        this.velocityRecessionFactor = velocityRecessionFactor;
-        this.velocityDeflectionFactor = velocityDeflectionFactor;
-        this.radiansDeflection = radiansDeflection;
-        this.recoilRadians = recoilRadians;
-
-        audioSource = UtilsAudio.getOrCreateSoundOgg("sounds/weapons/shot_mp_27");
-
+        this.type = type;
         this.magazine = magazine;
         this.striker = striker;
         this.trigger = trigger;
+        audioSource = UtilsAudio.getOrCreateSoundOgg("sounds/weapons/shot_mp_27");
     }
 
     public void update() {
@@ -58,7 +40,10 @@ public class Weapon extends BaseSprite {
     }
 
     private void makeShot() {
-        float push = UtilsMath.randomizeFlexibly(recoilRadians, recoilRadians * 0.25f);
+        float push = UtilsMath.randomizeFlexibly(
+                type.recoilRadians,
+                type.recoilRadians * 0.25f
+        );
         trigger.getShooter().push(UtilsMath.random.nextBoolean() ? push : -push);
 
         audioSource.play();
@@ -67,29 +52,29 @@ public class Weapon extends BaseSprite {
         float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
         float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
 
-        float bulletSize = bulletsPerShot / 4f;
+        float bulletSize = type.bulletsPerShot / 4f;
         if (bulletSize < 1) {
             bulletSize = 1;
         }
         bulletSize = 1 / bulletSize;
 
-        for (int bullet = 0; bullet < bulletsPerShot; bullet++) {
+        for (int bullet = 0; bullet < type.bulletsPerShot; bullet++) {
             makeBullet(bulletX, bulletY, bulletSize);
         }
     }
 
     private void makeBullet(float x, float y, float size) {
-        float radians = UtilsMath.randomizeFlexibly(getRadians(), radiansDeflection);
+        float radians = UtilsMath.randomizeFlexibly(getRadians(), type.radiansDeflection);
         float velocity = UtilsMath.randomizeFlexibly(
-                this.velocity,
-                this.velocity * velocityDeflectionFactor
+                type.velocity,
+                type.velocity * type.velocityDeflectionFactor
         );
         Projectile projectile = new Projectile(
                 x,
                 y,
                 radians,
                 velocity,
-                velocityRecessionFactor,
+                type.velocityRecessionFactor,
                 size,
                 trigger.getShooter()
         );
