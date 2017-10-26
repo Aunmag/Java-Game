@@ -11,20 +11,29 @@ public class Weapon extends BaseSprite {
 
     private static final Texture texture = Texture.getOrCreateAsSprite("images/weapons/mp_27");
 
-    private AudioSource audioSource;
-    public final WeaponType type;
+    public final float velocity;
+    public final float velocityDeflectionFactor;
+    public final float radiansDeflection;
+    public final float recoilRadians;
     public final Magazine magazine;
     public final Striker striker;
     public final Trigger trigger;
+    private AudioSource audioSource;
 
     public Weapon(
-            WeaponType type,
+            float velocity,
+            float velocityDeflectionFactor,
+            float radiansDeflection,
+            float recoilRadians,
             Magazine magazine,
             Striker striker,
             Trigger trigger
     ) {
         super(0, 0, 0, texture);
-        this.type = type;
+        this.velocity = velocity;
+        this.velocityDeflectionFactor = velocityDeflectionFactor;
+        this.radiansDeflection = radiansDeflection;
+        this.recoilRadians = recoilRadians;
         this.magazine = magazine;
         this.striker = striker;
         this.trigger = trigger;
@@ -40,10 +49,7 @@ public class Weapon extends BaseSprite {
     }
 
     private void makeShot() {
-        float push = UtilsMath.randomizeFlexibly(
-                type.recoilRadians,
-                type.recoilRadians * 0.25f
-        );
+        float push = UtilsMath.randomizeFlexibly(recoilRadians, recoilRadians * 0.25f);
         trigger.getShooter().push(UtilsMath.random.nextBoolean() ? push : -push);
 
         audioSource.play();
@@ -58,10 +64,10 @@ public class Weapon extends BaseSprite {
     }
 
     private void makeBullet(float x, float y) {
-        float radians = UtilsMath.randomizeFlexibly(getRadians(), type.radiansDeflection);
+        float radians = UtilsMath.randomizeFlexibly(getRadians(), radiansDeflection);
         float velocity = UtilsMath.randomizeFlexibly(
-                type.velocity,
-                type.velocity * type.velocityDeflectionFactor
+                this.velocity,
+                this.velocity * velocityDeflectionFactor
         );
         Projectile projectile = new Projectile(
                 magazine.cartridgeType.projectile,
