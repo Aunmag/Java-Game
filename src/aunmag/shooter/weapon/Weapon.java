@@ -52,7 +52,7 @@ public class Weapon extends BaseSprite {
         float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
         float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
 
-        for (int bullet = 0; bullet < type.bulletsPerShot; bullet++) {
+        for (int bullet = 0; bullet < magazine.cartridgeType.projectilesQuantity; bullet++) {
             makeBullet(bulletX, bulletY);
         }
     }
@@ -64,7 +64,7 @@ public class Weapon extends BaseSprite {
                 type.velocity * type.velocityDeflectionFactor
         );
         Projectile projectile = new Projectile(
-                ProjectileType.small,
+                magazine.cartridgeType.projectile,
                 x,
                 y,
                 radians,

@@ -7,13 +7,20 @@ import org.lwjgl.opengl.GL11;
 
 public class Magazine {
 
+    public final CartridgeType cartridgeType;
     private final boolean isAutomatic;
     private final int capacity;
     private int cartridgesQuantity;
     private boolean isReloading = false;
     private TimerDone timeReloading;
 
-    public Magazine(boolean isAutomatic, int capacity, int reloadingTime) {
+    public Magazine(
+            CartridgeType cartridgeType,
+            boolean isAutomatic,
+            int capacity,
+            int reloadingTime
+    ) {
+        this.cartridgeType = cartridgeType;
         this.isAutomatic = isAutomatic;
         this.capacity = capacity;
         cartridgesQuantity = capacity;
