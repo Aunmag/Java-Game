@@ -39,13 +39,17 @@ public class Hands extends CollisionCircle {
     }
 
     private void attack() {
-        for (Actor actor: World.actors) {
-            if (actor.type.equals(owner.type) || actor == owner) {
+        for (Actor opponent: World.actors) {
+            if (!opponent.isAlive() || opponent.isRemoved()) {
                 continue;
             }
 
-            if (Collision.calculateIsCollision(this, actor.getCollision())) {
-                actor.hit(damage * owner.getHealth(), owner.getRadians(), owner);
+            if (opponent.type.equals(owner.type) || opponent == owner) {
+                continue;
+            }
+
+            if (Collision.calculateIsCollision(this, opponent.getCollision())) {
+                opponent.hit(damage * owner.getHealth(), owner.getRadians(), owner);
             }
         }
     }

@@ -68,7 +68,7 @@ public class Ai implements BaseOperative {
         isTargetReached = false;
 
         for (Actor actor: World.actors) {
-            if (actor.isAlive() && actor.type.equals("human")) {
+            if (actor.isAlive() && !actor.isRemoved() && actor.type.equals("human")) {
                 target = actor;
                 break;
             }

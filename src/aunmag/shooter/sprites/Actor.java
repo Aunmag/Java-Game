@@ -21,7 +21,7 @@ public class Actor extends BaseSprite {
     private static int[] samples = new int[6];
     private static Actor player;
 
-    private boolean isAlive = true;
+    private boolean isAlive = true; // TODO: Remove (use method with condition)
     private float health = 1;
     private int kills = 0;
     public String type;
@@ -125,7 +125,7 @@ public class Actor extends BaseSprite {
 
     private void updateCollision() {
         for (Actor opponent: World.actors) {
-            if (!opponent.isAlive || opponent.equals(this)) {
+            if (!opponent.isAlive() || opponent.isRemoved() || opponent == this) {
                 continue;
             }
 
@@ -222,7 +222,7 @@ public class Actor extends BaseSprite {
     public void push(float force) {
         offsetRadians.setValueTarget(force, System.currentTimeMillis());
 
-        if (this.equals(Actor.player)) {
+        if (this == Actor.player) {
             CameraShaker.shake(force);
         }
     }
