@@ -52,30 +52,23 @@ public class Weapon extends BaseSprite {
         float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
         float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
 
-        float bulletSize = type.bulletsPerShot / 4f;
-        if (bulletSize < 1) {
-            bulletSize = 1;
-        }
-        bulletSize = 1 / bulletSize;
-
         for (int bullet = 0; bullet < type.bulletsPerShot; bullet++) {
-            makeBullet(bulletX, bulletY, bulletSize);
+            makeBullet(bulletX, bulletY);
         }
     }
 
-    private void makeBullet(float x, float y, float size) {
+    private void makeBullet(float x, float y) {
         float radians = UtilsMath.randomizeFlexibly(getRadians(), type.radiansDeflection);
         float velocity = UtilsMath.randomizeFlexibly(
                 type.velocity,
                 type.velocity * type.velocityDeflectionFactor
         );
         Projectile projectile = new Projectile(
+                ProjectileType.small,
                 x,
                 y,
                 radians,
                 velocity,
-                type.velocityRecessionFactor,
-                size,
                 trigger.getShooter()
         );
         World.projectiles.add(projectile);

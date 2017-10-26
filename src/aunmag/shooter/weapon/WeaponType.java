@@ -4,7 +4,6 @@ public class WeaponType {
 
     public final int bulletsPerShot;
     public final float velocity;
-    public final float velocityRecessionFactor;
     public final float velocityDeflectionFactor;
     public final float radiansDeflection;
     public final float recoilRadians;
@@ -12,14 +11,12 @@ public class WeaponType {
     private WeaponType(
             int bulletsPerShot,
             float velocity,
-            float velocityRecessionFactor,
             float velocityDeflectionFactor,
             float radiansDeflection,
             float recoilRadians
     ) {
         this.bulletsPerShot = bulletsPerShot;
         this.velocity = velocity;
-        this.velocityRecessionFactor = velocityRecessionFactor;
         this.velocityDeflectionFactor = velocityDeflectionFactor;
         this.radiansDeflection = radiansDeflection;
         this.recoilRadians = recoilRadians;
@@ -30,7 +27,6 @@ public class WeaponType {
     public static final WeaponType mp27 = new WeaponType(
                 16,
                 136,
-                6,
                 0.03f,
                 0.06f,
                 0.06f
