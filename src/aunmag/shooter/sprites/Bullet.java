@@ -63,7 +63,7 @@ public class Bullet extends BaseSprite {
             }
 
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
-                actor.hit(velocity, getRadians(), shooter);
+                actor.hit(velocity * 0.16f, shooter); // TODO: Implement weight
                 remove();
             }
         }
