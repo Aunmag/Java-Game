@@ -1,7 +1,6 @@
 package aunmag.shooter.actor;
 
 import aunmag.nightingale.utilities.TimerNext;
-import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionCircle;
@@ -44,7 +43,7 @@ public class Hands extends CollisionCircle {
                 continue;
             }
 
-            if (opponent.type.equals(owner.type) || opponent == owner) {
+            if (owner.type == opponent.type || opponent == owner) {
                 continue;
             }
 

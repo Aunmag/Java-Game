@@ -5,6 +5,7 @@ import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.utilities.TimerNext;
 import aunmag.shooter.actor.Actor;
+import aunmag.shooter.actor.ActorType;
 import aunmag.shooter.world.World;
 
 public class Ai implements BaseOperative {
@@ -68,7 +69,7 @@ public class Ai implements BaseOperative {
         isTargetReached = false;
 
         for (Actor actor: World.actors) {
-            if (actor.isAlive() && !actor.isRemoved() && actor.type.equals("human")) {
+            if (actor.isAlive() && !actor.isRemoved() && actor.type == ActorType.human) {
                 target = actor;
                 break;
             }

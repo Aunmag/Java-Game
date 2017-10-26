@@ -9,7 +9,6 @@ import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.weapon.Weapon;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
-import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.collision.CollisionCircle;
@@ -18,20 +17,17 @@ public class Actor extends BaseSprite {
 
     private static Actor player;
     private static final int[] samples = new int[6];
-    private static final float strength = 37.5f;
     private static final float velocityFactorAside = 0.6f;
     private static final float velocityFactorBack = 0.8f;
 
+    public final ActorType type;
     private float health = 1;
     private int kills = 0;
-    public String type;
     private Weapon weapon = null;
     private Hands hands = new Hands(this);
     private CollisionCircle collision = new CollisionCircle(getX(), getY(), 0.225f);
     private AudioSource audioSource = new AudioSource();
 
-    private float velocity;
-    private float velocityFactorSprint;
     private FluidValue offsetRadians = new FluidValue(60);
     public boolean isWalkingForward = false;
     public boolean isWalkingBack = false;
@@ -48,17 +44,9 @@ public class Actor extends BaseSprite {
         }
     }
 
-    public Actor(
-            float velocity,
-            float velocityFactorSprint,
-            Texture texture,
-            String type
-    ) {
-        super(0, 0, 0, texture);
-        this.velocity = velocity;
-        this.velocityFactorSprint = velocityFactorSprint;
+    public Actor(ActorType type) {
+        super(0, 0, 0, type.texture);
         this.type = type;
-
         offsetRadians.setFlexDegree(0.5f);
         isAiming.setFlexDegree(1.25f);
     }
@@ -111,25 +99,25 @@ public class Actor extends BaseSprite {
 
     private void walk() {
         if (isWalkingForward) {
-            move(velocity, 0);
+            move(type.velocity, 0);
         }
 
         if (isWalkingBack) {
-            move(velocity * velocityFactorBack, (float) -Math.PI);
+            move(type.velocity * velocityFactorBack, (float) -Math.PI);
         }
 
         if (isWalkingLeft) {
-            move(velocity * velocityFactorAside, (float) UtilsMath.PIx0_5);
+            move(type.velocity * velocityFactorAside, (float) UtilsMath.PIx0_5);
         }
 
         if (isWalkingRight) {
-            move(velocity * velocityFactorAside, (float) -UtilsMath.PIx0_5);
+            move(type.velocity * velocityFactorAside, (float) -UtilsMath.PIx0_5);
         }
     }
 
     private void move(float velocity, float radiansTurn) {
         if (isSprinting && isWalkingForward) {
-            velocity *= velocityFactorSprint;
+            velocity *= type.velocityFactorSprint;
         }
 
         velocity -= velocity * isAiming.getValueCurrent() / 2f;
@@ -141,7 +129,7 @@ public class Actor extends BaseSprite {
     }
 
     public void hit(float intensity, Actor attacker) {
-        intensity /= strength;
+        intensity /= type.strength;
 
         boolean wasDeadBefore = !isAlive();
         addHealth(-intensity);
@@ -187,7 +175,7 @@ public class Actor extends BaseSprite {
     }
 
     private void soundHurt() {
-        if (!type.equals("human")) {
+        if (type != ActorType.human) {
             return;
         }
 
@@ -245,10 +233,6 @@ public class Actor extends BaseSprite {
         this.weapon = weapon;
     }
 
-    public void setVelocity(float velocity) {
-        this.velocity = velocity;
-    }
-
     /* Getters */
 
     public float getRadians() {
@@ -285,10 +269,6 @@ public class Actor extends BaseSprite {
 
     public int getKills() {
         return kills;
-    }
-
-    public float getVelocity() {
-        return velocity;
     }
 
     public Weapon getWeapon() {
