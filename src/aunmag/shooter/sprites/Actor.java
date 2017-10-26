@@ -124,11 +124,6 @@ public class Actor extends BaseSprite {
             return;
         }
 
-        weapon.setRadians(getRadians());
-        float weaponX = getX() + 0.375f * (float) Math.cos(getRadians());
-        float weaponY = getY() + 0.375f * (float) Math.sin(getRadians());
-        weapon.setPosition(weaponX, weaponY);
-
         if (isAttacking) {
             weapon.trigger.pressBy(this);
         } else {
@@ -269,9 +264,17 @@ public class Actor extends BaseSprite {
 
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
+
         collision.setPosition(getX(), getY());
         hands.updatePosition();
         audioSource.setPosition(getX(), getY());
+
+        if (weapon != null) {
+            weapon.setRadians(getRadians());
+            float weaponX = getX() + 0.375f * (float) Math.cos(getRadians());
+            float weaponY = getY() + 0.375f * (float) Math.sin(getRadians());
+            weapon.setPosition(weaponX, weaponY);
+        }
     }
 
     public static void setPlayer(Actor player) {
