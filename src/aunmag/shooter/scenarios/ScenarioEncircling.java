@@ -28,7 +28,7 @@ public class ScenarioEncircling implements BaseOperative {
     private int waveFinal = 8;
     private final int zombiesQuantityInitial = 32;
     private int zombiesQuantityToSpawn = zombiesQuantityInitial;
-    private final float zombiesVelocityIncrease = 0.05f;
+    private final float zombiesVelocityIncrease = 0.00156f;
     private float zombiesSpawnDirection = 0f;
 
     private TimerDone timeNotification = new TimerDone(5_000);
@@ -63,7 +63,7 @@ public class ScenarioEncircling implements BaseOperative {
     }
 
     private void confinePlayerPosition() {
-        int boundary = 128 * 8;
+        int boundary = 4 * 8;
         Actor player = Actor.getPlayer();
         float playerX = player.getX();
         float playerY = player.getY();
@@ -99,7 +99,7 @@ public class ScenarioEncircling implements BaseOperative {
         float direction = UtilsMath.randomizeBetween(0, directionSpread);
         direction += UtilsMath.correctRadians(direction + zombiesSpawnDirection);
 
-        float distance = Application.getCamera().getDistanceView() + 20;
+        float distance = Application.getCamera().getDistanceView() + 0.625f;
         float x = Actor.getPlayer().getX() - distance * (float) Math.cos(direction);
         float y = Actor.getPlayer().getY() - distance * (float) Math.sin(direction);
 
@@ -191,7 +191,8 @@ public class ScenarioEncircling implements BaseOperative {
         Texture wallpaper = Texture.getOrCreate(
                 isVictory ? "images/wallpapers/victory" : "images/wallpapers/death",
                 true,
-                false);
+                false
+        );
         wallpaper.scaleAsWallpaper();
 
         new GuiPage(labels, buttons, wallpaper).open();

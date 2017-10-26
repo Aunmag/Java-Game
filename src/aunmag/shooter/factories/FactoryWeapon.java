@@ -10,7 +10,7 @@ public class FactoryWeapon {
     public static Weapon mp27() {
         return new Weapon(
                 16,
-                4350,
+                136,
                 6,
                 0.03f,
                 0.06f,

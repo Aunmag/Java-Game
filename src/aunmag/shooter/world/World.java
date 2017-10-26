@@ -22,7 +22,7 @@ import java.util.List;
 public class World {
 
     private static final int groundQuantity = 48;
-    private static final int groundBlockSize = 128;
+    private static final int groundBlockSize = 4;
     private static final AudioSource soundAmbiance;
     private static final AudioSource soundAtmosphere;
 
@@ -63,7 +63,7 @@ public class World {
     }
 
     private void initializeGround() {
-        Texture texture = Texture.getOrCreate("images/objects/ground/grass");
+        Texture texture = Texture.getOrCreateAsSprite("images/objects/ground/grass");
 
         int step = groundBlockSize;
         int size = step * groundQuantity;
@@ -78,7 +78,7 @@ public class World {
     }
 
     private void initializeBluffs() {
-        Texture texture = Texture.getOrCreate("images/objects/ground/bluff");
+        Texture texture = Texture.getOrCreateAsSprite("images/objects/ground/bluff");
         int quantity = 17;
         int step = groundBlockSize;
         int length = step * quantity;
@@ -92,7 +92,7 @@ public class World {
             decorations.add(new Object(last, i, (float) UtilsMath.PIx1_5, texture));
         }
 
-        texture = Texture.getOrCreate("images/objects/ground/bluff_corner");
+        texture = Texture.getOrCreateAsSprite("images/objects/ground/bluff_corner");
         decorations.add(new Object(first, first, (float) Math.PI, texture));
         decorations.add(new Object(first, last, (float) UtilsMath.PIx0_5, texture));
         decorations.add(new Object(last, last, 0, texture));
@@ -108,13 +108,13 @@ public class World {
             int y = UtilsMath.randomizeBetween(-spreading, spreading);
 
             for (Object air: trees) {
-                if (Math.abs(x - air.getX()) < 128 && Math.abs(y - air.getY()) < 128) {
+                if (Math.abs(x - air.getX()) < groundBlockSize && Math.abs(y - air.getY()) < groundBlockSize) {
                     continue positionChoosing;
                 }
             }
 
             int number = UtilsMath.random.nextInt(3) + 1;
-            Texture texture = Texture.getOrCreate("images/objects/air/tree_" + number);
+            Texture texture = Texture.getOrCreateAsSprite("images/objects/air/tree_" + number);
             Object tree = new Object(x, y, 0, texture);
             trees.add(tree);
         }

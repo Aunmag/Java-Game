@@ -1,5 +1,6 @@
 package aunmag.shooter.sprites;
 
+import aunmag.nightingale.Configs;
 import aunmag.nightingale.audio.AudioSample;
 import aunmag.nightingale.audio.AudioSampleType;
 import aunmag.nightingale.audio.AudioSource;
@@ -26,7 +27,7 @@ public class Actor extends BaseSprite {
     public String type;
     private Weapon weapon = null;
     private Hands hands = new Hands(this);
-    private CollisionCircle collision = new CollisionCircle(getX(), getY(), 7.2f);
+    private CollisionCircle collision = new CollisionCircle(getX(), getY(), 0.225f);
     private AudioSource audioSource = new AudioSource();
 
     private float velocity;
@@ -140,8 +141,8 @@ public class Actor extends BaseSprite {
         }
 
         weapon.setRadians(getRadians());
-        float weaponX = getX() + 12 * (float) Math.cos(getRadians());
-        float weaponY = getY() + 12 * (float) Math.sin(getRadians());
+        float weaponX = getX() + 0.375f * (float) Math.cos(getRadians());
+        float weaponY = getY() + 0.375f * (float) Math.sin(getRadians());
         weapon.setPosition(weaponX, weaponY);
 
         if (isAttacking) {
@@ -197,17 +198,18 @@ public class Actor extends BaseSprite {
         );
     }
 
+    // TODO: Change
     public void hit(float intensity, float radians, Actor attacker) {
         boolean wasAlreadyDead = !isAlive;
 
-        health -= intensity / 7500f;
+        health -= intensity * Configs.getPixelsPerMeter() / 7500f;
         updateIsAlive();
 
         if (!wasAlreadyDead && !isAlive && attacker != null) {
             attacker.increaseKills();
         }
 
-        float impulse = intensity / 750f;
+        float impulse = intensity / 750f / Configs.getPixelsPerMeter();
         float impulseX = impulse * (float) Math.cos(radians);
         float impulseY = impulse * (float) Math.sin(radians);
         addPosition(impulseX, impulseY);

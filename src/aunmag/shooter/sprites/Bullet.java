@@ -15,7 +15,7 @@ public class Bullet extends BaseSprite {
 
     private static final float sizeScale = 2f;
     private static final Vector3f color = new Vector3f(1.0f, 0.8f, 0.2f);
-    private static final int VELOCITY_MIN = 1;
+    private static final float VELOCITY_MIN = 0.03125f;
 
     private float velocity;
     private float velocityRecessionFactor;
@@ -58,6 +58,7 @@ public class Bullet extends BaseSprite {
 
     private void updateCollision() {
         for (Actor actor: World.actors) {
+            // TODO: Consider removed actors
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
                 actor.hit(velocity, getRadians(), shooter);
                 remove();
@@ -74,7 +75,7 @@ public class Bullet extends BaseSprite {
     }
 
     public void render() {
-        GL11.glLineWidth(size * sizeScale * Application.getCamera().getScaleFull());
+        GL11.glLineWidth(size * sizeScale * Application.getCamera().getScaleFull() / Configs.getPixelsPerMeter());
         GL11.glColor3f(color.x, color.y, color.z);
         UtilsGraphics.drawLine(getX(), getY(), positionTail.x(), positionTail.y(), true);
     }
