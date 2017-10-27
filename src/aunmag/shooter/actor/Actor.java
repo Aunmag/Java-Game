@@ -3,7 +3,6 @@ package aunmag.shooter.actor;
 import aunmag.nightingale.audio.AudioSample;
 import aunmag.nightingale.audio.AudioSampleType;
 import aunmag.nightingale.audio.AudioSource;
-import aunmag.nightingale.data.DataTime;
 import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.CameraShaker;
@@ -13,6 +12,7 @@ import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.collision.CollisionCircle;
+import aunmag.shooter.world.WorldTime;
 
 public class Actor extends BaseSprite {
 
@@ -116,17 +116,17 @@ public class Actor extends BaseSprite {
         }
     }
 
-    private void move(float velocity, float radiansTurn) {
+    private void move(double velocity, float radiansTurn) {
         if (isSprinting && isWalkingForward) {
             velocity *= type.velocityFactorSprint;
         }
 
         velocity -= velocity * isAiming.getValueCurrent() / 2f;
         velocity *= health;
-        velocity *= DataTime.getTimeDelta();
+        velocity *= WorldTime.getDelta();
 
-        float moveX = velocity * (float) Math.cos(getRadians() + radiansTurn);
-        float moveY = velocity * (float) Math.sin(getRadians() + radiansTurn);
+        float moveX = (float) (velocity * Math.cos(getRadians() + radiansTurn));
+        float moveY = (float) (velocity * Math.sin(getRadians() + radiansTurn));
         addPosition(moveX, moveY);
     }
 
