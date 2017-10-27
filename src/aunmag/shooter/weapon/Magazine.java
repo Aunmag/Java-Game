@@ -105,7 +105,7 @@ public class Magazine {
     }
 
     public boolean isEmpty() {
-        return cartridgesQuantity == 0 && !isUnlimited();
+        return isReloading || (cartridgesQuantity == 0 && !isUnlimited());
     }
 
     public boolean isUnlimited() {
