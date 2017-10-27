@@ -2,6 +2,7 @@ package aunmag.shooter.weapon;
 
 import aunmag.nightingale.Application;
 import aunmag.nightingale.Configs;
+import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
@@ -56,10 +57,15 @@ public class Projectile extends BaseSprite {
 
     private void updatePosition() {
         float velocity = this.velocity * VELOCITY_FACTOR / Configs.getFpsLimit();
+
+        positionTail.set(getX(), getY());
+
         addPosition(
                 velocity * (float) Math.cos(getRadians()),
                 velocity * (float) Math.sin(getRadians())
         );
+
+        collision.setPosition(getX(), getY(), positionTail.x(), positionTail.y());
     }
 
     private void updateCollision() {
@@ -70,6 +76,19 @@ public class Projectile extends BaseSprite {
 
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
                 actor.hit(velocity * type.weight, shooter);
+
+                float distanceOverhead = UtilsMath.calculateDistanceBetween(
+                        actor.getX(),
+                        actor.getY(),
+                        getX(),
+                        getY()
+                );
+
+                addPosition(
+                        -distanceOverhead * (float) Math.cos(getRadians()),
+                        -distanceOverhead * (float) Math.sin(getRadians())
+                );
+
                 isStopped = true;
                 break;
             }
@@ -88,19 +107,6 @@ public class Projectile extends BaseSprite {
         GL11.glLineWidth(type.size * Application.getCamera().getScaleFull());
         GL11.glColor3f(type.color.x(), type.color.y(), type.color.z());
         UtilsGraphics.drawLine(getX(), getY(), positionTail.x(), positionTail.y(), true);
-    }
-
-    public void remove() {
-        velocity = 0;
-        super.remove();
-    }
-
-    /* Setters */
-
-    public void setPosition(float x, float y) {
-        positionTail.set(getX(), getY());
-        collision.setPosition(x, y, getX(), getY());
-        super.setPosition(x, y);
     }
 
 }
