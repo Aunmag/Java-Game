@@ -18,6 +18,8 @@ import aunmag.nightingale.basics.BaseOperative;
 import aunmag.nightingale.data.DataEngine;
 import aunmag.nightingale.gui.*;
 import aunmag.nightingale.structures.Texture;
+import aunmag.shooter.weapon.Weapon;
+import aunmag.shooter.weapon.WeaponFactory;
 import org.lwjgl.glfw.GLFW;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
@@ -31,6 +33,9 @@ public class Game extends Application {
     private static GuiButtonBack buttonContinue;
     private static AudioSource soundTheme;
     private Crosshair crosshair = null;
+
+    private Weapon laserGun = WeaponFactory.laserGun();
+    private Weapon mp27 = WeaponFactory.mp27();
 
     public Game() {
         buttonContinue = new GuiButtonBack(4, 7, 4, 1, "Continue");
@@ -195,6 +200,14 @@ public class Game extends Application {
 
         if (Input.isKeyPressed(GLFW.GLFW_KEY_R) && player.getHasWeapon()) {
             player.getWeapon().magazine.reload();
+        }
+
+        if (Input.isKeyPressed(GLFW.GLFW_KEY_0)) {
+            Actor.getPlayer().setWeapon(laserGun);
+        }
+
+        if (Input.isKeyPressed(GLFW.GLFW_KEY_1)) {
+            Actor.getPlayer().setWeapon(mp27);
         }
     }
 

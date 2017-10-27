@@ -5,6 +5,8 @@ import org.joml.Vector3fc;
 
 public class ProjectileType {
 
+    public static final Vector3fc colorDefault = new Vector3f(1.0f, 0.8f, 0.2f);
+
     public final float weight;
     public final float velocityRecessionFactor;
     public final float size;
@@ -24,11 +26,18 @@ public class ProjectileType {
 
     /* Types */
 
+    public static final ProjectileType LASER = new ProjectileType(
+            1f,
+            0f,
+            0.05f,
+            colorDefault
+    );
+
     public static final ProjectileType _12_76_MAGNUM = new ProjectileType(
             48f / 16f,
             4f,
             0.02f,
-            new Vector3f(1.0f, 0.8f, 0.2f)
+            colorDefault
     );
 
 }
