@@ -25,7 +25,9 @@ public class Magazine {
         this.capacity = capacity;
         cartridgesQuantity = capacity;
 
-        if (isAutomatic) {
+        if (isUnlimited()) {
+            reloadingTime = 0;
+        } else if (isAutomatic) {
             reloadingTime /= capacity;
         }
 
@@ -45,12 +47,13 @@ public class Magazine {
     }
 
     boolean takeNextCartridge() {
-        if (isEmpty()) {
-            return false;
-        } else {
+        boolean hasCartridge = !isEmpty();
+
+        if (hasCartridge && !isUnlimited()) {
             cartridgesQuantity--;
-            return true;
         }
+
+        return hasCartridge;
     }
 
     public void reload() {
@@ -70,9 +73,13 @@ public class Magazine {
         float alpha = 0.75f;
         float height = 10f;
         float width = Application.getWindow().getCenterX() / 4;
-        float widthLoaded = (float) cartridgesQuantity / capacity * width;
+        float widthLoaded = width;
         float x = (Application.getWindow().getWidth() - width) / 2;
         float y = Application.getWindow().getHeight() - height * 1.5f;
+
+        if (!isUnlimited()) {
+            widthLoaded *= cartridgesQuantity / (float) capacity;
+        }
 
         if (isReloading && isAutomatic) {
             alpha = 1 - alpha;
@@ -98,7 +105,11 @@ public class Magazine {
     }
 
     public boolean isEmpty() {
-        return cartridgesQuantity == 0;
+        return cartridgesQuantity == 0 && !isUnlimited();
+    }
+
+    public boolean isUnlimited() {
+        return capacity == 0;
     }
 
 }

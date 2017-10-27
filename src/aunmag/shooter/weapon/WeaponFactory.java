@@ -8,7 +8,7 @@ public class WeaponFactory {
                 0f,
                 0f,
                 0f,
-                new Magazine(CartridgeType.LASER, true, 20, 50),
+                new Magazine(CartridgeType.LASER, true, 0, 0),
                 new Striker(50),
                 new Trigger(true)
         );
