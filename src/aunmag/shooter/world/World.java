@@ -45,6 +45,7 @@ public class World {
     }
 
     public World() {
+        WorldTime.reset();
         initializePlayer();
         initializeGround();
         initializeBluffs();
@@ -120,6 +121,7 @@ public class World {
     }
 
     public void update() {
+        WorldTime.update();
         UtilsBaseOperative.updateAll(ais);
         UtilsBaseOperative.updateAll(actors);
         UtilsBaseOperative.updateAll(projectiles);

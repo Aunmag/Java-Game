@@ -1,6 +1,7 @@
 package aunmag.shooter.weapon;
 
 import aunmag.nightingale.utilities.TimerNext;
+import aunmag.shooter.world.WorldTime;
 
 public class Striker {
 
@@ -13,7 +14,7 @@ public class Striker {
     }
 
     boolean isCocked() {
-        nextShotTime.update(System.currentTimeMillis());
+        nextShotTime.update(WorldTime.getCurrentMilliseconds());
         return nextShotTime.isNow();
     }
 

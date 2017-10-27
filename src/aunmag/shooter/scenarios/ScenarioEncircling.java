@@ -18,6 +18,7 @@ import aunmag.nightingale.gui.GuiLabel;
 import aunmag.nightingale.gui.GuiPage;
 import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.UtilsMath;
+import aunmag.shooter.world.WorldTime;
 
 public class ScenarioEncircling implements BaseOperative {
 
@@ -53,7 +54,7 @@ public class ScenarioEncircling implements BaseOperative {
         confinePlayerPosition();
 
         if (zombiesQuantityToSpawn > 0) {
-            timeSpawn.update(System.currentTimeMillis());
+            timeSpawn.update(WorldTime.getCurrentMilliseconds());
             if (timeSpawn.isNow()) {
                 spawnZombie();
             }
@@ -122,7 +123,7 @@ public class ScenarioEncircling implements BaseOperative {
         String messageKills = String.format("Kill %s zombies", zombiesQuantityToSpawn);
         notificationKills = new GuiLabel(5, 5, 2, 1, messageKills, Font.fontDefault, 1);
 
-        timeNotification.setTimeInitial(System.currentTimeMillis());
+        timeNotification.setTimeInitial(WorldTime.getCurrentMilliseconds());
     }
 
     private int countAliveZombies() {
@@ -134,7 +135,7 @@ public class ScenarioEncircling implements BaseOperative {
             return;
         }
 
-        if (!timeNotification.calculateIsDone(System.currentTimeMillis())) {
+        if (!timeNotification.calculateIsDone(WorldTime.getCurrentMilliseconds())) {
             notificationWave.render();
             notificationKills.render();
         } else {

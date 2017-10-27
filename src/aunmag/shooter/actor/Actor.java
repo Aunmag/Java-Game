@@ -3,7 +3,6 @@ package aunmag.shooter.actor;
 import aunmag.nightingale.audio.AudioSample;
 import aunmag.nightingale.audio.AudioSampleType;
 import aunmag.nightingale.audio.AudioSource;
-import aunmag.nightingale.data.DataTime;
 import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.CameraShaker;
@@ -13,6 +12,7 @@ import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.collision.CollisionCircle;
+import aunmag.shooter.world.WorldTime;
 
 public class Actor extends BaseSprite {
 
@@ -58,14 +58,14 @@ public class Actor extends BaseSprite {
             return;
         }
 
-        offsetRadians.update(System.currentTimeMillis());
+        offsetRadians.update(WorldTime.getCurrentMilliseconds());
         if (offsetRadians.getValueTarget() != 0 && offsetRadians.isTargetReached()) {
             addRadiansCarefully(offsetRadians.getValueCurrent());
-            offsetRadians.setValueTarget(0, System.currentTimeMillis());
+            offsetRadians.setValueTarget(0, WorldTime.getCurrentMilliseconds());
             offsetRadians.reachTargetNow();
         }
 
-        isAiming.update(System.currentTimeMillis());
+        isAiming.update(WorldTime.getCurrentMilliseconds());
         walk();
         updateCollision();
         hands.update();
@@ -116,17 +116,17 @@ public class Actor extends BaseSprite {
         }
     }
 
-    private void move(float velocity, float radiansTurn) {
+    private void move(double velocity, float radiansTurn) {
         if (isSprinting && isWalkingForward) {
             velocity *= type.velocityFactorSprint;
         }
 
         velocity -= velocity * isAiming.getValueCurrent() / 2f;
         velocity *= health;
-        velocity *= DataTime.getTimeDelta();
+        velocity *= WorldTime.getDelta();
 
-        float moveX = velocity * (float) Math.cos(getRadians() + radiansTurn);
-        float moveY = velocity * (float) Math.sin(getRadians() + radiansTurn);
+        float moveX = (float) (velocity * Math.cos(getRadians() + radiansTurn));
+        float moveY = (float) (velocity * Math.sin(getRadians() + radiansTurn));
         addPosition(moveX, moveY);
     }
 
@@ -144,7 +144,7 @@ public class Actor extends BaseSprite {
     }
 
     public void push(float force) {
-        offsetRadians.setValueTarget(force, System.currentTimeMillis());
+        offsetRadians.setValueTarget(force, WorldTime.getCurrentMilliseconds());
 
         if (this == Actor.player) {
             CameraShaker.shake(force);

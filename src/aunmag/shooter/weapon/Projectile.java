@@ -1,7 +1,6 @@
 package aunmag.shooter.weapon;
 
 import aunmag.nightingale.Application;
-import aunmag.nightingale.data.DataTime;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
@@ -9,6 +8,7 @@ import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionLine;
 import aunmag.nightingale.utilities.UtilsGraphics;
+import aunmag.shooter.world.WorldTime;
 import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 
@@ -55,13 +55,13 @@ public class Projectile extends BaseSprite {
     }
 
     private void updatePosition() {
-        float velocity = this.velocity * VELOCITY_FACTOR * (float) DataTime.getTimeDelta();
+        double velocity = this.velocity * VELOCITY_FACTOR * WorldTime.getDelta();
 
         positionTail.set(getX(), getY());
 
         addPosition(
-                velocity * (float) Math.cos(getRadians()),
-                velocity * (float) Math.sin(getRadians())
+                (float) (velocity * Math.cos(getRadians())),
+                (float) (velocity * Math.sin(getRadians()))
         );
 
         collision.setPosition(getX(), getY(), positionTail.x(), positionTail.y());
@@ -96,7 +96,7 @@ public class Projectile extends BaseSprite {
     }
 
     private void updateVelocity() {
-        velocity -= velocity * (type.velocityRecessionFactor * DataTime.getTimeDelta());
+        velocity -= velocity * (type.velocityRecessionFactor * WorldTime.getDelta());
 
         if (velocity <= VELOCITY_MIN) {
             stop();
