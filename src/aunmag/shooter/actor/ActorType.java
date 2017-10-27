@@ -4,6 +4,8 @@ import aunmag.nightingale.structures.Texture;
 
 public class ActorType {
 
+    private static final float strengthDefault = 37.5f;
+
     public final Texture texture;
     public final float strength;
     public final float velocity;
@@ -28,10 +30,10 @@ public class ActorType {
 
     public static final ActorType human = new ActorType(
             "human",
-            37.5f,
+            strengthDefault,
             0.043f,
             2.76f,
-            37.5f / 16f
+            strengthDefault / 16f
     );
 
     public static final ActorType zombieEasy = new ActorType(
