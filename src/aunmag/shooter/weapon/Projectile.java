@@ -21,6 +21,7 @@ public class Projectile extends BaseSprite {
     private Vector2f positionTail;
     private CollisionLine collision;
     private Actor shooter;
+    private boolean wasHit = false;
 
     public Projectile(
             ProjectileType type,
@@ -39,9 +40,18 @@ public class Projectile extends BaseSprite {
     }
 
     public void update() {
+        if (wasHit) {
+            remove();
+            return;
+        }
+
         updatePosition();
         updateCollision();
         updateVelocity();
+
+        if (type.velocityRecessionFactor <= 0) {
+            wasHit = true;
+        }
     }
 
     private void updatePosition() {
@@ -60,7 +70,8 @@ public class Projectile extends BaseSprite {
 
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
                 actor.hit(velocity * type.weight, shooter);
-                remove();
+                wasHit = true;
+                break;
             }
         }
     }
