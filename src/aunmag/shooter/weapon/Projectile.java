@@ -1,7 +1,7 @@
 package aunmag.shooter.weapon;
 
 import aunmag.nightingale.Application;
-import aunmag.nightingale.Configs;
+import aunmag.nightingale.data.DataTime;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
@@ -55,7 +55,7 @@ public class Projectile extends BaseSprite {
     }
 
     private void updatePosition() {
-        float velocity = this.velocity * VELOCITY_FACTOR / Configs.getFpsLimit();
+        float velocity = this.velocity * VELOCITY_FACTOR * (float) DataTime.getTimeDelta();
 
         positionTail.set(getX(), getY());
 
@@ -96,7 +96,7 @@ public class Projectile extends BaseSprite {
     }
 
     private void updateVelocity() {
-        velocity -= velocity * (type.velocityRecessionFactor / Configs.getFpsLimit());
+        velocity -= velocity * (type.velocityRecessionFactor * DataTime.getTimeDelta());
 
         if (velocity <= VELOCITY_MIN) {
             stop();

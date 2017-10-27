@@ -6,7 +6,6 @@ import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.basics.BaseGrid;
 import aunmag.nightingale.font.Font;
 import aunmag.nightingale.utilities.UtilsAudio;
-import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.client.graphics.Crosshair;
 import aunmag.shooter.scenarios.ScenarioEmpty;
@@ -220,7 +219,7 @@ public class Game extends Application {
 
         Camera camera = Application.getCamera();
         camera.setPosition(player.getX(), player.getY());
-        camera.setRadians(player.getRadians() - (float) UtilsMath.PIx0_5);
+        camera.setRadians(player.getRadians());
 
         float offset = Application.getWindow().getCenterY() / 2f;
         camera.addOffset(0, offset, true);
