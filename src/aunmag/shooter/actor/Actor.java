@@ -3,6 +3,7 @@ package aunmag.shooter.actor;
 import aunmag.nightingale.audio.AudioSample;
 import aunmag.nightingale.audio.AudioSampleType;
 import aunmag.nightingale.audio.AudioSource;
+import aunmag.nightingale.data.DataTime;
 import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.CameraShaker;
@@ -122,6 +123,7 @@ public class Actor extends BaseSprite {
 
         velocity -= velocity * isAiming.getValueCurrent() / 2f;
         velocity *= health;
+        velocity *= DataTime.getTimeDelta();
 
         float moveX = velocity * (float) Math.cos(getRadians() + radiansTurn);
         float moveY = velocity * (float) Math.sin(getRadians() + radiansTurn);

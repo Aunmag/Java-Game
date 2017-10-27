@@ -31,7 +31,7 @@ public class ActorType {
     public static final ActorType human = new ActorType(
             "human",
             strengthDefault,
-            0.043f,
+            2.58f,
             2.76f,
             strengthDefault / 16f
     );
