@@ -9,7 +9,7 @@ public class WeaponFactory {
                 0f,
                 0f,
                 new Magazine(CartridgeType.LASER, true, 0, 0),
-                new Striker(50),
+                new Striker(1200),
                 new Trigger(true)
         );
     }
@@ -21,7 +21,7 @@ public class WeaponFactory {
                 0.06f,
                 0.06f,
                 new Magazine(CartridgeType._12_76_MAGNUM, false, 2, 250),
-                new Striker(100),
+                new Striker(600),
                 new Trigger(false)
         );
     }

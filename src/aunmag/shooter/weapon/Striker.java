@@ -4,15 +4,17 @@ import aunmag.nightingale.utilities.TimerNext;
 
 public class Striker {
 
-    private TimerNext nextShootTime;
+    private static final int convert = 1000 * 60;
 
-    public Striker(int rate) {
-        nextShootTime = new TimerNext(rate);
+    private final TimerNext nextShotTime;
+
+    public Striker(int shotsPerMinute) {
+        nextShotTime = new TimerNext(convert / shotsPerMinute);
     }
 
     boolean isCocked() {
-        nextShootTime.update(System.currentTimeMillis());
-        return nextShootTime.isNow();
+        nextShotTime.update(System.currentTimeMillis());
+        return nextShotTime.isNow();
     }
 
 }
