@@ -4,7 +4,7 @@ import aunmag.nightingale.structures.Texture;
 
 public class ActorType {
 
-    private static final float strengthDefault = 37.5f;
+    private static final float strengthDefault = 37.5f * 200f;
 
     public final Texture texture;
     public final float strength;

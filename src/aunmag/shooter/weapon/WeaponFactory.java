@@ -4,7 +4,7 @@ public class WeaponFactory {
 
     public static Weapon mp27() {
         return new Weapon(
-                136,
+                410,
                 0.03f,
                 0.06f,
                 0.06f,

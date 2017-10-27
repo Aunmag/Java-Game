@@ -14,7 +14,7 @@ import org.lwjgl.opengl.GL11;
 public class Projectile extends BaseSprite {
 
     private static final float VELOCITY_MIN = 0.5f;
-    private static final float VELOCITY_FACTOR = 1f;
+    private static final float VELOCITY_FACTOR = 1f / 5f;
 
     public final ProjectileType type;
     private float velocity;

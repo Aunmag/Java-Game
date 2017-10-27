@@ -25,8 +25,8 @@ public class ProjectileType {
     /* Types */
 
     public static final ProjectileType _12_76_MAGNUM = new ProjectileType(
-            0.16f,
-            6f,
+            48f / 16f,
+            4f,
             0.02f,
             new Vector3f(1.0f, 0.8f, 0.2f)
     );
