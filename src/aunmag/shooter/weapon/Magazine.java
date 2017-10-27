@@ -61,6 +61,15 @@ public class Magazine {
             return;
         }
 
+        if (timeReloading.getTimeDuration() == 0) {
+            if (isAutomatic) {
+                cartridgesQuantity = capacity;
+            } else {
+                cartridgesQuantity++;
+            }
+            return;
+        }
+
         isReloading = true;
         timeReloading.setTimeInitial(System.currentTimeMillis());
 
