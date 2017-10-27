@@ -22,7 +22,6 @@ public class Projectile extends BaseSprite {
     private Vector2f positionTail;
     private CollisionLine collision;
     private Actor shooter;
-    private boolean isStopped = false;
 
     public Projectile(
             ProjectileType type,
@@ -41,7 +40,7 @@ public class Projectile extends BaseSprite {
     }
 
     public void update() {
-        if (isStopped) {
+        if (isStopped()) {
             remove();
             return;
         }
@@ -51,7 +50,7 @@ public class Projectile extends BaseSprite {
         updateVelocity();
 
         if (type.velocityRecessionFactor <= 0) {
-            isStopped = true;
+            stop();
         }
     }
 
@@ -69,29 +68,30 @@ public class Projectile extends BaseSprite {
     }
 
     private void updateCollision() {
+        Actor farthestActor = null;
+        float farthestActorDistance = 0;
+
         for (Actor actor: World.actors) {
             if (!actor.isAlive() || actor.isRemoved()) {
                 continue;
             }
 
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
-                actor.hit(velocity * type.weight, shooter);
-
-                float distanceOverhead = UtilsMath.calculateDistanceBetween(
-                        actor.getX(),
-                        actor.getY(),
-                        getX(),
-                        getY()
-                );
-
-                addPosition(
-                        -distanceOverhead * (float) Math.cos(getRadians()),
-                        -distanceOverhead * (float) Math.sin(getRadians())
-                );
-
-                isStopped = true;
-                break;
+                float distance = UtilsMath.calculateDistanceBetween(this, actor);
+                if (farthestActor == null || distance > farthestActorDistance) {
+                    farthestActor = actor;
+                    farthestActorDistance = distance;
+                }
             }
+        }
+
+        if (farthestActor != null) {
+            farthestActor.hit(velocity * type.weight, shooter);
+            addPosition(
+                    -farthestActorDistance * (float) Math.cos(getRadians()),
+                    -farthestActorDistance * (float) Math.sin(getRadians())
+            );
+            stop();
         }
     }
 
@@ -99,14 +99,24 @@ public class Projectile extends BaseSprite {
         velocity -= velocity * (type.velocityRecessionFactor / Configs.getFpsLimit());
 
         if (velocity <= VELOCITY_MIN) {
-            remove();
+            stop();
         }
+    }
+
+    private void stop() {
+        velocity = 0;
     }
 
     public void render() {
         GL11.glLineWidth(type.size * Application.getCamera().getScaleFull());
         GL11.glColor3f(type.color.x(), type.color.y(), type.color.z());
         UtilsGraphics.drawLine(getX(), getY(), positionTail.x(), positionTail.y(), true);
+    }
+
+    /* Getters */
+
+    public boolean isStopped() {
+        return velocity <= 0;
     }
 
 }
