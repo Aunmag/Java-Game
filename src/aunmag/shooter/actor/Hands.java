@@ -12,7 +12,6 @@ public class Hands extends CollisionCircle {
     protected static final Color renderColor = new Color(255, 0, 0, 128);
     private static final float radius = 0.34f;
     private static final float distance = radius;
-    private static final float damage = 4f;
     private TimerNext nextAttackTime = new TimerNext(400);
     private final Actor owner;
 
@@ -48,7 +47,7 @@ public class Hands extends CollisionCircle {
             }
 
             if (Collision.calculateIsCollision(this, opponent.getCollision())) {
-                opponent.hit(damage * owner.getHealth(), owner);
+                opponent.hit(owner.type.damage * owner.getHealth(), owner);
             }
         }
     }
