@@ -3,6 +3,7 @@ package aunmag.shooter.weapon;
 import aunmag.nightingale.Application;
 import aunmag.nightingale.utilities.TimerDone;
 import aunmag.nightingale.utilities.UtilsGraphics;
+import aunmag.shooter.world.WorldTime;
 import org.lwjgl.opengl.GL11;
 
 public class Magazine {
@@ -35,13 +36,13 @@ public class Magazine {
     }
 
     void update() {
-        if (isReloading && timeReloading.calculateIsDone(System.currentTimeMillis())) {
+        if (isReloading && timeReloading.calculateIsDone(WorldTime.getCurrentMilliseconds())) {
             cartridgesQuantity++;
 
             if (isFull() || !isAutomatic) {
                 isReloading = false;
             } else {
-                timeReloading.setTimeInitial(System.currentTimeMillis());
+                timeReloading.setTimeInitial(WorldTime.getCurrentMilliseconds());
             }
         }
     }
@@ -71,7 +72,7 @@ public class Magazine {
         }
 
         isReloading = true;
-        timeReloading.setTimeInitial(System.currentTimeMillis());
+        timeReloading.setTimeInitial(WorldTime.getCurrentMilliseconds());
 
         if (isAutomatic) {
             cartridgesQuantity = 0;

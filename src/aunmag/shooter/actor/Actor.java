@@ -58,14 +58,14 @@ public class Actor extends BaseSprite {
             return;
         }
 
-        offsetRadians.update(System.currentTimeMillis());
+        offsetRadians.update(WorldTime.getCurrentMilliseconds());
         if (offsetRadians.getValueTarget() != 0 && offsetRadians.isTargetReached()) {
             addRadiansCarefully(offsetRadians.getValueCurrent());
-            offsetRadians.setValueTarget(0, System.currentTimeMillis());
+            offsetRadians.setValueTarget(0, WorldTime.getCurrentMilliseconds());
             offsetRadians.reachTargetNow();
         }
 
-        isAiming.update(System.currentTimeMillis());
+        isAiming.update(WorldTime.getCurrentMilliseconds());
         walk();
         updateCollision();
         hands.update();
@@ -144,7 +144,7 @@ public class Actor extends BaseSprite {
     }
 
     public void push(float force) {
-        offsetRadians.setValueTarget(force, System.currentTimeMillis());
+        offsetRadians.setValueTarget(force, WorldTime.getCurrentMilliseconds());
 
         if (this == Actor.player) {
             CameraShaker.shake(force);
