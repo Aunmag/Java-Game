@@ -24,7 +24,7 @@ public class ProjectileType {
 
     /* Types */
 
-    public static final ProjectileType small = new ProjectileType(
+    public static final ProjectileType _12_76_MAGNUM = new ProjectileType(
             0.16f,
             6f,
             0.02f,
