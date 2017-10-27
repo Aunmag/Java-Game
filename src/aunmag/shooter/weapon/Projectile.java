@@ -2,6 +2,7 @@ package aunmag.shooter.weapon;
 
 import aunmag.nightingale.Application;
 import aunmag.nightingale.Configs;
+import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
@@ -21,7 +22,6 @@ public class Projectile extends BaseSprite {
     private Vector2f positionTail;
     private CollisionLine collision;
     private Actor shooter;
-    private boolean isStopped = false;
 
     public Projectile(
             ProjectileType type,
@@ -40,7 +40,7 @@ public class Projectile extends BaseSprite {
     }
 
     public void update() {
-        if (isStopped) {
+        if (isStopped()) {
             remove();
             return;
         }
@@ -50,29 +50,48 @@ public class Projectile extends BaseSprite {
         updateVelocity();
 
         if (type.velocityRecessionFactor <= 0) {
-            isStopped = true;
+            stop();
         }
     }
 
     private void updatePosition() {
         float velocity = this.velocity * VELOCITY_FACTOR / Configs.getFpsLimit();
+
+        positionTail.set(getX(), getY());
+
         addPosition(
                 velocity * (float) Math.cos(getRadians()),
                 velocity * (float) Math.sin(getRadians())
         );
+
+        collision.setPosition(getX(), getY(), positionTail.x(), positionTail.y());
     }
 
     private void updateCollision() {
+        Actor farthestActor = null;
+        float farthestActorDistance = 0;
+
         for (Actor actor: World.actors) {
             if (!actor.isAlive() || actor.isRemoved()) {
                 continue;
             }
 
             if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
-                actor.hit(velocity * type.weight, shooter);
-                isStopped = true;
-                break;
+                float distance = UtilsMath.calculateDistanceBetween(this, actor);
+                if (farthestActor == null || distance > farthestActorDistance) {
+                    farthestActor = actor;
+                    farthestActorDistance = distance;
+                }
             }
+        }
+
+        if (farthestActor != null) {
+            farthestActor.hit(velocity * type.weight, shooter);
+            addPosition(
+                    -farthestActorDistance * (float) Math.cos(getRadians()),
+                    -farthestActorDistance * (float) Math.sin(getRadians())
+            );
+            stop();
         }
     }
 
@@ -80,8 +99,12 @@ public class Projectile extends BaseSprite {
         velocity -= velocity * (type.velocityRecessionFactor / Configs.getFpsLimit());
 
         if (velocity <= VELOCITY_MIN) {
-            remove();
+            stop();
         }
+    }
+
+    private void stop() {
+        velocity = 0;
     }
 
     public void render() {
@@ -90,17 +113,10 @@ public class Projectile extends BaseSprite {
         UtilsGraphics.drawLine(getX(), getY(), positionTail.x(), positionTail.y(), true);
     }
 
-    public void remove() {
-        velocity = 0;
-        super.remove();
-    }
+    /* Getters */
 
-    /* Setters */
-
-    public void setPosition(float x, float y) {
-        positionTail.set(getX(), getY());
-        collision.setPosition(x, y, getX(), getY());
-        super.setPosition(x, y);
+    public boolean isStopped() {
+        return velocity <= 0;
     }
 
 }
