@@ -27,4 +27,9 @@ public class CartridgeType {
             16
     );
 
+    public static final CartridgeType _5_45x39mm = new CartridgeType(
+            ProjectileType._5_45x39mm,
+            1
+    );
+
 }

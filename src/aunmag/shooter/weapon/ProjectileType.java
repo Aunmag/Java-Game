@@ -47,4 +47,11 @@ public class ProjectileType {
             colorDefault
     );
 
+    public static final ProjectileType _5_45x39mm = new ProjectileType(
+            3.4f,
+            6f,
+            0.08f,
+            colorDefault
+    );
+
 }

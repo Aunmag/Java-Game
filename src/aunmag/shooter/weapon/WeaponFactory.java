@@ -38,4 +38,16 @@ public class WeaponFactory {
         );
     }
 
+    public static Weapon aks74u() {
+        return new Weapon(
+                735,
+                0.03f,
+                0.03f,
+                0.02f,
+                new Magazine(CartridgeType._5_45x39mm, true, 30, 2000),
+                new Striker(675),
+                new Trigger(true)
+        );
+    }
+
 }
