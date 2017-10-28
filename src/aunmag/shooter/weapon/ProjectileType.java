@@ -54,4 +54,11 @@ public class ProjectileType {
             colorDefault
     );
 
+    public static final ProjectileType _7_62x54mmR = new ProjectileType(
+            9.6f,
+            4.5f,
+            0.08f,
+            colorDefault
+    );
+
 }
