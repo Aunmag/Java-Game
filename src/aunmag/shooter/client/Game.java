@@ -37,6 +37,7 @@ public class Game extends Application {
     private final Weapon laserGun = WeaponFactory.laserGun();
     private final Weapon makarovPistol = WeaponFactory.makarovPistol();
     private final Weapon mp27 = WeaponFactory.mp27();
+    private final Weapon aks74u = WeaponFactory.aks74u();
 
     public Game() {
         buttonContinue = new GuiButtonBack(4, 7, 4, 1, "Continue");
@@ -209,6 +210,8 @@ public class Game extends Application {
             player.setWeapon(makarovPistol);
         } else if (Input.isKeyPressed(GLFW.GLFW_KEY_2)) {
             player.setWeapon(mp27);
+        } else if (Input.isKeyPressed(GLFW.GLFW_KEY_3)) {
+            player.setWeapon(aks74u);
         }
     }
 

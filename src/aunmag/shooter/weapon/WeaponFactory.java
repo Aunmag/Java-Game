@@ -32,9 +32,21 @@ public class WeaponFactory {
                 0.03f,
                 0.06f,
                 0.06f,
-                new Magazine(CartridgeType._12_76_MAGNUM, false, 2, 250),
+                new Magazine(CartridgeType._12_76_Magnum, false, 2, 250),
                 new Striker(600),
                 new Trigger(false)
+        );
+    }
+
+    public static Weapon aks74u() {
+        return new Weapon(
+                735,
+                0.03f,
+                0.03f,
+                0.02f,
+                new Magazine(CartridgeType._5_45x39mm, true, 30, 2000),
+                new Striker(675),
+                new Trigger(true)
         );
     }
 

@@ -40,10 +40,17 @@ public class ProjectileType {
             colorDefault
     );
 
-    public static final ProjectileType _12_76_MAGNUM = new ProjectileType(
+    public static final ProjectileType _12_76_Magnum = new ProjectileType(
             48f / 16f,
             4f,
             0.02f,
+            colorDefault
+    );
+
+    public static final ProjectileType _5_45x39mm = new ProjectileType(
+            3.4f,
+            6f,
+            0.08f,
             colorDefault
     );
 
