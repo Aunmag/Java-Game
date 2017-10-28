@@ -33,6 +33,13 @@ public class ProjectileType {
             colorDefault
     );
 
+    public static final ProjectileType _9x18mm_Makarov = new ProjectileType(
+            6.1f,
+            6f,
+            0.08f,
+            colorDefault
+    );
+
     public static final ProjectileType _12_76_MAGNUM = new ProjectileType(
             48f / 16f,
             4f,

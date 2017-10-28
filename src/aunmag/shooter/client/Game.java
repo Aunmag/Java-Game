@@ -34,8 +34,9 @@ public class Game extends Application {
     private static AudioSource soundTheme;
     private Crosshair crosshair = null;
 
-    private Weapon laserGun = WeaponFactory.laserGun();
-    private Weapon mp27 = WeaponFactory.mp27();
+    private final Weapon laserGun = WeaponFactory.laserGun();
+    private final Weapon makarovPistol = WeaponFactory.makarovPistol();
+    private final Weapon mp27 = WeaponFactory.mp27();
 
     public Game() {
         buttonContinue = new GuiButtonBack(4, 7, 4, 1, "Continue");
@@ -203,11 +204,11 @@ public class Game extends Application {
         }
 
         if (Input.isKeyPressed(GLFW.GLFW_KEY_0)) {
-            Actor.getPlayer().setWeapon(laserGun);
-        }
-
-        if (Input.isKeyPressed(GLFW.GLFW_KEY_1)) {
-            Actor.getPlayer().setWeapon(mp27);
+            player.setWeapon(laserGun);
+        } else if (Input.isKeyPressed(GLFW.GLFW_KEY_1)) {
+            player.setWeapon(makarovPistol);
+        } else if (Input.isKeyPressed(GLFW.GLFW_KEY_2)) {
+            player.setWeapon(mp27);
         }
     }
 
