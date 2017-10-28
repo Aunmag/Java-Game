@@ -17,6 +17,11 @@ public class CartridgeType {
             1
     );
 
+    public static final CartridgeType _9x18mm_Makarov = new CartridgeType(
+            ProjectileType._9x18mm_Makarov,
+            1
+    );
+
     public static final CartridgeType _12_76_MAGNUM = new CartridgeType(
             ProjectileType._12_76_MAGNUM,
             16

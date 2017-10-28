@@ -14,6 +14,18 @@ public class WeaponFactory {
         );
     }
 
+    public static Weapon makarovPistol() {
+        return new Weapon(
+                315,
+                0.3f,
+                0.05f,
+                0.01f,
+                new Magazine(CartridgeType._9x18mm_Makarov, true, 8, 2000),
+                new Striker(300),
+                new Trigger(false)
+        );
+    }
+
     public static Weapon mp27() {
         return new Weapon(
                 410,
