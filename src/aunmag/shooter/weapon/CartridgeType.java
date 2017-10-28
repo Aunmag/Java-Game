@@ -22,8 +22,8 @@ public class CartridgeType {
             1
     );
 
-    public static final CartridgeType _12_76_MAGNUM = new CartridgeType(
-            ProjectileType._12_76_MAGNUM,
+    public static final CartridgeType _12_76_Magnum = new CartridgeType(
+            ProjectileType._12_76_Magnum,
             16
     );
 
