@@ -32,4 +32,9 @@ public class CartridgeType {
             1
     );
 
+    public static final CartridgeType _7_62x54mmR = new CartridgeType(
+            ProjectileType._7_62x54mmR,
+            1
+    );
+
 }

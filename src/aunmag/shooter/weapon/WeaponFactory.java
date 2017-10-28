@@ -50,4 +50,16 @@ public class WeaponFactory {
         );
     }
 
+    public static Weapon pecheneg() {
+        return new Weapon(
+                825,
+                0.03f,
+                0.02f,
+                0.035f,
+                new Magazine(CartridgeType._7_62x54mmR, true, 200, 8000),
+                new Striker(650),
+                new Trigger(true)
+        );
+    }
+
 }
