@@ -38,8 +38,7 @@ public class Weapon extends BaseSprite {
     }
 
     private void makeShot() {
-        float push = UtilsMath.randomizeFlexibly(type.recoilRadians, type.recoilRadians * 0.25f);
-        trigger.getShooter().push(UtilsMath.random.nextBoolean() ? push : -push);
+        trigger.getShooter().push(calculateRandomRecoil());
 
         audioSource.play();
 
@@ -53,20 +52,36 @@ public class Weapon extends BaseSprite {
     }
 
     private void makeBullet(float x, float y) {
-        float radians = UtilsMath.randomizeFlexibly(getRadians(), type.radiansDeflection);
-        float velocity = UtilsMath.randomizeFlexibly(
-                type.velocity,
-                type.velocityDeflection
-        );
         Projectile projectile = new Projectile(
                 magazine.cartridgeType.projectile,
                 x,
                 y,
-                radians,
-                velocity,
+                calculateRandomRadians(),
+                calculateRandomVelocity(),
                 trigger.getShooter()
         );
         World.projectiles.add(projectile);
+    }
+
+    private float calculateRandomRecoil() {
+        float recoil = UtilsMath.randomizeFlexibly(
+                type.recoilRadians,
+                type.recoilRadians * 0.25f
+        );
+
+        if (UtilsMath.random.nextBoolean()) {
+            recoil = -recoil;
+        }
+
+        return recoil;
+    }
+
+    private float calculateRandomRadians() {
+        return UtilsMath.randomizeFlexibly(getRadians(), type.radiansDeflection);
+    }
+
+    private float calculateRandomVelocity() {
+        return UtilsMath.randomizeFlexibly(type.velocity, type.velocityDeflection);
     }
 
     /* Setters */
