@@ -17,14 +17,14 @@ public class Projectile extends BaseSprite {
     private static final float VELOCITY_MIN = 0.5f;
     private static final float VELOCITY_FACTOR = 1f / 5f;
 
-    public final ProjectileType type;
+    public final CartridgeType type;
     private float velocity;
     private Vector2f positionTail;
     private CollisionLine collision;
     private Actor shooter;
 
     public Projectile(
-            ProjectileType type,
+            CartridgeType type,
             float x,
             float y,
             float radians,
