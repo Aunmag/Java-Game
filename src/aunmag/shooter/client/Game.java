@@ -39,6 +39,7 @@ public class Game extends Application {
     private final Weapon mp27 = WeaponFactory.mp27();
     private final Weapon aks74u = WeaponFactory.aks74u();
     private final Weapon pecheneg = WeaponFactory.pecheneg();
+    private final Weapon saiga12k = WeaponFactory.saiga12k();
 
     public Game() {
         buttonContinue = new GuiButtonBack(4, 7, 4, 1, "Continue");
@@ -215,6 +216,8 @@ public class Game extends Application {
             player.setWeapon(aks74u);
         } else if (Input.isKeyPressed(GLFW.GLFW_KEY_4)) {
             player.setWeapon(pecheneg);
+        } else if (Input.isKeyPressed(GLFW.GLFW_KEY_5)) {
+            player.setWeapon(saiga12k);
         }
     }
 
