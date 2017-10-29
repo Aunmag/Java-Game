@@ -64,10 +64,7 @@ public class Weapon extends BaseSprite {
     }
 
     private float calculateRandomRecoil() {
-        float recoil = UtilsMath.randomizeFlexibly(
-                type.recoilRadians,
-                type.recoilRadians * 0.25f
-        );
+        float recoil = UtilsMath.randomizeFlexibly(type.recoil, type.recoilDeflection);
 
         if (UtilsMath.random.nextBoolean()) {
             recoil = -recoil;

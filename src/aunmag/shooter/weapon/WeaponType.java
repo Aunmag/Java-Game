@@ -12,14 +12,15 @@ public class WeaponType {
     public final float velocity;
     public final float velocityDeflection;
     public final float radiansDeflection;
-    public final float recoilRadians;
+    public final float recoil;
+    public final float recoilDeflection;
 
     private WeaponType(
             String name,
             String path,
             float velocity,
             float radiansDeflection,
-            float recoilRadians
+            float recoil
     ) {
         path = "weapons/" + path;
         this.name = name;
@@ -28,7 +29,8 @@ public class WeaponType {
         this.velocity = velocity;
         this.velocityDeflection = velocity * 0.03f;
         this.radiansDeflection = radiansDeflection;
-        this.recoilRadians = recoilRadians;
+        this.recoil = recoil;
+        this.recoilDeflection = recoil * 0.25f;
     }
 
     /* Types */
