@@ -1,43 +1,32 @@
 package aunmag.shooter.weapon;
 
 import aunmag.nightingale.audio.AudioSource;
-import aunmag.nightingale.utilities.UtilsAudio;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
-import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.UtilsMath;
 
 public class Weapon extends BaseSprite {
 
-    private static final Texture texture = Texture.getOrCreateAsSprite("images/weapons/mp_27");
-
-    public final float velocity;
-    public final float velocityDeflectionFactor;
-    public final float radiansDeflection;
-    public final float recoilRadians;
+    public final WeaponType type;
     public final Magazine magazine;
     public final Striker striker;
     public final Trigger trigger;
     private AudioSource audioSource;
 
     public Weapon(
-            float velocity,
-            float velocityDeflectionFactor,
-            float radiansDeflection,
-            float recoilRadians,
+            WeaponType type,
             Magazine magazine,
             Striker striker,
             Trigger trigger
     ) {
-        super(0, 0, 0, texture);
-        this.velocity = velocity;
-        this.velocityDeflectionFactor = velocityDeflectionFactor;
-        this.radiansDeflection = radiansDeflection;
-        this.recoilRadians = recoilRadians;
+        super(0, 0, 0, type.texture);
+        this.type = type;
         this.magazine = magazine;
         this.striker = striker;
         this.trigger = trigger;
-        audioSource = UtilsAudio.getOrCreateSoundOgg("sounds/weapons/shot_mp_27");
+
+        audioSource = new AudioSource();
+        audioSource.setSample(type.sample);
     }
 
     public void update() {
@@ -49,12 +38,12 @@ public class Weapon extends BaseSprite {
     }
 
     private void makeShot() {
-        float push = UtilsMath.randomizeFlexibly(recoilRadians, recoilRadians * 0.25f);
+        float push = UtilsMath.randomizeFlexibly(type.recoilRadians, type.recoilRadians * 0.25f);
         trigger.getShooter().push(UtilsMath.random.nextBoolean() ? push : -push);
 
         audioSource.play();
 
-        float muzzleLength = texture.getCenterX();
+        float muzzleLength = type.texture.getCenterX();
         float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
         float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
 
@@ -64,10 +53,10 @@ public class Weapon extends BaseSprite {
     }
 
     private void makeBullet(float x, float y) {
-        float radians = UtilsMath.randomizeFlexibly(getRadians(), radiansDeflection);
+        float radians = UtilsMath.randomizeFlexibly(getRadians(), type.radiansDeflection);
         float velocity = UtilsMath.randomizeFlexibly(
-                this.velocity,
-                this.velocity * velocityDeflectionFactor
+                type.velocity,
+                type.velocityDeflection
         );
         Projectile projectile = new Projectile(
                 magazine.cartridgeType.projectile,
