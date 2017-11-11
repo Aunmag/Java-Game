@@ -124,6 +124,7 @@ public class World {
         WorldTime.update();
         UtilsBaseOperative.updateAll(ais);
         UtilsBaseOperative.updateAll(actors);
+        Actor.finalizeUpdate();
         UtilsBaseOperative.updateAll(projectiles);
     }
 

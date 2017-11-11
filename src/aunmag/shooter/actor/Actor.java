@@ -20,6 +20,7 @@ public class Actor extends BaseSprite {
     private static final int[] samples = new int[6];
     private static final float velocityFactorAside = 0.6f;
     private static final float velocityFactorBack = 0.8f;
+    private static int indexOfLastCollisionCheckedActor = 0;
 
     public final ActorType type;
     private float health = 1;
@@ -73,7 +74,13 @@ public class Actor extends BaseSprite {
     }
 
     private void updateCollision() {
-        for (Actor opponent: World.actors) {
+        for (int index = World.actors.size() - 1; index >= 0; index--) {
+            if (index == indexOfLastCollisionCheckedActor) {
+                break;
+            }
+
+            Actor opponent = World.actors.get(index);
+
             if (!opponent.isAlive() || opponent.isRemoved() || opponent == this) {
                 continue;
             }
@@ -82,6 +89,8 @@ public class Actor extends BaseSprite {
             setPosition(collision.getX(), collision.getY());
             opponent.setPosition(opponent.collision.getX(), opponent.collision.getY());
         }
+
+        indexOfLastCollisionCheckedActor++;
     }
 
     private void updateWeapon() {
@@ -192,6 +201,10 @@ public class Actor extends BaseSprite {
 
     public void increaseKills() {
         kills++;
+    }
+
+    public static void finalizeUpdate() {
+        indexOfLastCollisionCheckedActor = 0;
     }
 
     /* Setters */
