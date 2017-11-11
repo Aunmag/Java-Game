@@ -4,49 +4,38 @@ import aunmag.nightingale.data.DataTime;
 
 public class WorldTime {
 
-    private static long currentMilliseconds;
-    private static double current;
-    private static double delta;
-    private static double speed;
+    private static long currentMilliseconds = 0L;
+    private static double current = 0d;
+    private static double delta = 0d;
+    private static double speed = 1d;
 
-    static {
-        reset();
-    }
-
-    static void update() {
+    void update() {
         delta = DataTime.getTimeDelta() * speed;
         current += delta;
         currentMilliseconds = (long) (current * 1000);
     }
 
-    static void reset() {
-        currentMilliseconds = 0L;
-        current = 0d;
-        delta = 0d;
-        speed = 1d;
-    }
-
     /* Getters */
 
-    public static long getCurrentMilliseconds() {
+    public long getCurrentMilliseconds() {
         return currentMilliseconds;
     }
 
-    public static double getCurrent() {
+    public double getCurrent() {
         return current;
     }
 
-    public static double getDelta() {
+    public double getDelta() {
         return delta;
     }
 
-    public static double getSpeed() {
+    public double getSpeed() {
         return speed;
     }
 
     /* Setters */
 
-    public static void setSpeed(double speed) {
+    public void setSpeed(double speed) {
         WorldTime.speed = speed;
     }
 

@@ -1,10 +1,9 @@
 package aunmag.shooter.actor;
 
 import aunmag.nightingale.utilities.TimerNext;
-import aunmag.shooter.world.World;
+import aunmag.shooter.client.Game;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionCircle;
-import aunmag.shooter.world.WorldTime;
 
 import java.awt.*;
 
@@ -25,7 +24,7 @@ public class Hands extends CollisionCircle {
     public void update() {
         updatePosition();
 
-        nextAttackTime.update(WorldTime.getCurrentMilliseconds());
+        nextAttackTime.update(Game.getWorld().time.getCurrentMilliseconds());
         if (owner.isAttacking && !owner.getHasWeapon() && nextAttackTime.isNow()) {
             attack();
         }
@@ -38,7 +37,7 @@ public class Hands extends CollisionCircle {
     }
 
     private void attack() {
-        for (Actor opponent: World.actors) {
+        for (Actor opponent: Game.getWorld().actors) {
             if (!opponent.isAlive() || opponent.isRemoved()) {
                 continue;
             }

@@ -19,7 +19,6 @@ import aunmag.nightingale.gui.*;
 import aunmag.nightingale.structures.Texture;
 import aunmag.shooter.weapon.Weapon;
 import aunmag.shooter.weapon.WeaponFactory;
-import aunmag.shooter.world.WorldTime;
 import org.lwjgl.glfw.GLFW;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
@@ -190,7 +189,7 @@ public class Game extends Application {
         player.isAttacking = Input.isMouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_1);
 
         if (Input.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_2)) {
-            player.isAiming.toggle(WorldTime.getCurrentMilliseconds());
+            player.isAiming.toggle(Game.getWorld().time.getCurrentMilliseconds());
         }
 
         float mouseSensitivity = 0.005f;
