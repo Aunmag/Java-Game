@@ -4,7 +4,6 @@ import aunmag.nightingale.audio.AudioSample;
 import aunmag.nightingale.audio.AudioSampleType;
 import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.utilities.FluidToggle;
-import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.weapon.Weapon;
 import aunmag.shooter.world.World;
@@ -47,7 +46,7 @@ public class Actor extends BaseSprite {
     }
 
     public Actor(ActorType type) {
-        super(0, 0, 0, type.texture);
+        super(0, 0, 0, null);
         this.type = type;
         offsetRadians.setFlexDegree(0.5f);
         isAiming.setFlexDegree(1.25f);
@@ -165,12 +164,8 @@ public class Actor extends BaseSprite {
             weapon.render();
         }
 
-        if (Game.isVirtualMode()) {
-            hands.render();
-            collision.render();
-        } else {
-            super.render();
-        }
+        hands.render();
+        collision.render();
     }
 
     public void remove() {
@@ -199,7 +194,7 @@ public class Actor extends BaseSprite {
         audioSource.play();
     }
 
-    public void increaseKills() {
+    private void increaseKills() {
         kills++;
     }
 

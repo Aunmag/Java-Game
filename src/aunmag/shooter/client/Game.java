@@ -27,7 +27,6 @@ import aunmag.shooter.world.World;
 public class Game extends Application {
 
     private static boolean isPause = true;
-    private static boolean isVirtualMode = false;
     private static BaseOperative scenario = new ScenarioEmpty();
     private static World world;
     private static GuiButtonBack buttonContinue;
@@ -198,10 +197,6 @@ public class Game extends Application {
         mouseSensitivity -= mouseSensitivity * player.isAiming.getValueCurrent() * 0.75f;
         player.addRadiansCarefully(Input.getMouseVelocity().x() * mouseSensitivity);
 
-        if (Input.isKeyPressed(GLFW.GLFW_KEY_BACKSPACE)) {
-            isVirtualMode = !isVirtualMode;
-        }
-
         if (Input.isKeyPressed(GLFW.GLFW_KEY_R) && player.getHasWeapon()) {
             player.getWeapon().magazine.reload();
         }
@@ -302,10 +297,6 @@ public class Game extends Application {
 
     public static boolean isPause() {
         return isPause;
-    }
-
-    public static boolean isVirtualMode() {
-        return isVirtualMode;
     }
 
     public static World getWorld() {
