@@ -32,7 +32,6 @@ public class World {
     public static List<Object> decorations = new ArrayList<>();
     public static List<Actor> actors = new ArrayList<>();
     public static List<Projectile> projectiles = new ArrayList<>();
-    public static List<Object> trees = new ArrayList<>();
 
     static {
         soundAmbiance = UtilsAudio.getOrCreateSoundOgg("sounds/ambiance/birds");
@@ -49,7 +48,6 @@ public class World {
         initializePlayer();
         initializeGround();
         initializeBluffs();
-        initializeTrees();
     }
 
     private void initializePlayer() {
@@ -99,27 +97,6 @@ public class World {
         decorations.add(new Object(last, first, (float) UtilsMath.PIx1_5, texture));
     }
 
-    private void initializeTrees() {
-        int quantity = (groundQuantity * groundQuantity) / 2;
-        int spreading = (groundQuantity * groundBlockSize) / 2;
-
-        positionChoosing: for (int i = 0; i < quantity; i++) {
-            int x = UtilsMath.randomizeBetween(-spreading, spreading);
-            int y = UtilsMath.randomizeBetween(-spreading, spreading);
-
-            for (Object air: trees) {
-                if (Math.abs(x - air.getX()) < groundBlockSize && Math.abs(y - air.getY()) < groundBlockSize) {
-                    continue positionChoosing;
-                }
-            }
-
-            int number = UtilsMath.random.nextInt(3) + 1;
-            Texture texture = Texture.getOrCreateAsSprite("images/objects/air/tree_" + number);
-            Object tree = new Object(x, y, 0, texture);
-            trees.add(tree);
-        }
-    }
-
     public void update() {
         WorldTime.update();
         UtilsBaseOperative.updateAll(ais);
@@ -156,10 +133,6 @@ public class World {
         UtilsBaseOperative.renderAll(projectiles);
         GL11.glLineWidth(1);
         UtilsGraphics.drawFinish();
-
-        if (!Game.isVirtualMode()) {
-            UtilsBaseOperative.renderAll(trees);
-        }
     }
 
     public void play() {
@@ -178,7 +151,6 @@ public class World {
         UtilsBaseOperative.removeAll(decorations);
         UtilsBaseOperative.removeAll(actors);
         UtilsBaseOperative.removeAll(projectiles);
-        UtilsBaseOperative.removeAll(trees);
         stop();
     }
 
