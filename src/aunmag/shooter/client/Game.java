@@ -19,7 +19,6 @@ import aunmag.nightingale.gui.*;
 import aunmag.nightingale.structures.Texture;
 import aunmag.shooter.weapon.Weapon;
 import aunmag.shooter.weapon.WeaponFactory;
-import aunmag.shooter.world.WorldTime;
 import org.lwjgl.glfw.GLFW;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
@@ -27,7 +26,6 @@ import aunmag.shooter.world.World;
 public class Game extends Application {
 
     private static boolean isPause = true;
-    private static boolean isVirtualMode = false;
     private static BaseOperative scenario = new ScenarioEmpty();
     private static World world;
     private static GuiButtonBack buttonContinue;
@@ -191,16 +189,12 @@ public class Game extends Application {
         player.isAttacking = Input.isMouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_1);
 
         if (Input.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_2)) {
-            player.isAiming.toggle(WorldTime.getCurrentMilliseconds());
+            player.isAiming.toggle(Game.getWorld().time.getCurrentMilliseconds());
         }
 
         float mouseSensitivity = 0.005f;
         mouseSensitivity -= mouseSensitivity * player.isAiming.getValueCurrent() * 0.75f;
         player.addRadiansCarefully(Input.getMouseVelocity().x() * mouseSensitivity);
-
-        if (Input.isKeyPressed(GLFW.GLFW_KEY_BACKSPACE)) {
-            isVirtualMode = !isVirtualMode;
-        }
 
         if (Input.isKeyPressed(GLFW.GLFW_KEY_R) && player.getHasWeapon()) {
             player.getWeapon().magazine.reload();
@@ -302,10 +296,6 @@ public class Game extends Application {
 
     public static boolean isPause() {
         return isPause;
-    }
-
-    public static boolean isVirtualMode() {
-        return isVirtualMode;
     }
 
     public static World getWorld() {

@@ -6,8 +6,7 @@ import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.utilities.TimerNext;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.actor.ActorType;
-import aunmag.shooter.world.World;
-import aunmag.shooter.world.WorldTime;
+import aunmag.shooter.client.Game;
 
 public class Ai implements BaseOperative {
 
@@ -35,18 +34,18 @@ public class Ai implements BaseOperative {
             return;
         }
 
-        reactionChangeStrategy.update(WorldTime.getCurrentMilliseconds());
+        reactionChangeStrategy.update(Game.getWorld().time.getCurrentMilliseconds());
         if (reactionChangeStrategy.isNow()) {
             changeStrategy();
         }
 
-        reactionLookAround.update(WorldTime.getCurrentMilliseconds());
+        reactionLookAround.update(Game.getWorld().time.getCurrentMilliseconds());
         if (reactionLookAround.isNow()) {
             searchTarget();
         }
 
         if (hasTarget()) {
-            reactionWatch.update(WorldTime.getCurrentMilliseconds());
+            reactionWatch.update(Game.getWorld().time.getCurrentMilliseconds());
             if (reactionWatch.isNow()) {
                 updateTargetData();
             }
@@ -69,7 +68,7 @@ public class Ai implements BaseOperative {
         target = null;
         isTargetReached = false;
 
-        for (Actor actor: World.actors) {
+        for (Actor actor: Game.getWorld().actors) {
             if (actor.isAlive() && !actor.isRemoved() && actor.type == ActorType.human) {
                 target = actor;
                 break;

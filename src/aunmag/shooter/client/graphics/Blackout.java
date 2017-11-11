@@ -4,7 +4,7 @@ import aunmag.nightingale.Application;
 import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsGraphics;
-import aunmag.shooter.world.WorldTime;
+import aunmag.shooter.client.Game;
 import org.lwjgl.opengl.GL11;
 import aunmag.shooter.actor.Actor;
 
@@ -58,7 +58,7 @@ public class Blackout {
     }
 
     private static void renderDynamicRectangle() {
-        long timeWorld = WorldTime.getCurrentMilliseconds();
+        long timeWorld = Game.getWorld().time.getCurrentMilliseconds();
 
         if (healthCurrent != healthLast) {
             if (intensity.getTimeDuration() != timeHurtAscent) {
