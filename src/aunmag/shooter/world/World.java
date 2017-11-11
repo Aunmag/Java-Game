@@ -8,7 +8,6 @@ import aunmag.shooter.weapon.WeaponFactory;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.ai.Ai;
 import aunmag.shooter.weapon.Projectile;
-import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.UtilsBaseOperative;
 import aunmag.nightingale.utilities.UtilsGraphics;
 import aunmag.nightingale.utilities.UtilsMath;
@@ -19,15 +18,12 @@ import java.util.List;
 
 public class World {
 
-    private static final int groundQuantity = 48;
-    private static final int groundBlockSize = 4;
     private static final AudioSource soundAmbiance;
     private static final AudioSource soundAtmosphere;
 
     private WorldGrid worldGrid = new WorldGrid();
 
     public static List<Ai> ais = new ArrayList<>();
-    public static List<Object> terrains = new ArrayList<>();
     public static List<Actor> actors = new ArrayList<>();
     public static List<Projectile> projectiles = new ArrayList<>();
 
@@ -44,7 +40,6 @@ public class World {
     public World() {
         WorldTime.reset();
         initializePlayer();
-        initializeGround();
     }
 
     private void initializePlayer() {
@@ -57,21 +52,6 @@ public class World {
         actors.add(player);
     }
 
-    private void initializeGround() {
-        Texture texture = Texture.getOrCreateAsSprite("images/objects/ground/grass");
-
-        int step = groundBlockSize;
-        int size = step * groundQuantity;
-        float first = (size / -2f) + (step / 2f);
-        float last = first + size;
-
-        for (float x = first; x < last; x += step) {
-            for (float y = first; y < last; y += step) {
-                terrains.add(new Object(x, y, 0, texture));
-            }
-        }
-    }
-
     public void update() {
         WorldTime.update();
         UtilsBaseOperative.updateAll(ais);
@@ -81,10 +61,8 @@ public class World {
     }
 
     public void render() {
-        UtilsBaseOperative.renderAll(terrains);
         renderGrid();
         UtilsBaseOperative.renderAll(actors);
-
         UtilsGraphics.drawPrepare();
         UtilsBaseOperative.renderAll(projectiles);
         GL11.glLineWidth(1);
@@ -96,7 +74,7 @@ public class World {
 
         GL11.glColor3f(1, 0, 0);
         GL11.glLineWidth(2);
-        float n = groundBlockSize * 8;
+        float n = 32f;
         UtilsGraphics.drawLine(-n, -n, +n, -n, true);
         UtilsGraphics.drawLine(+n, -n, +n, +n, true);
         UtilsGraphics.drawLine(+n, +n, -n, +n, true);
@@ -121,7 +99,6 @@ public class World {
 
     public void remove() {
         UtilsBaseOperative.removeAll(ais);
-        UtilsBaseOperative.removeAll(terrains);
         UtilsBaseOperative.removeAll(actors);
         UtilsBaseOperative.removeAll(projectiles);
         stop();
