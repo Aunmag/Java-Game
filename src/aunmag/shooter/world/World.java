@@ -21,11 +21,11 @@ public class World {
     private static final AudioSource soundAmbiance;
     private static final AudioSource soundAtmosphere;
 
-    private WorldGrid worldGrid = new WorldGrid();
-
-    public static List<Ai> ais = new ArrayList<>();
-    public static List<Actor> actors = new ArrayList<>();
-    public static List<Projectile> projectiles = new ArrayList<>();
+    private final WorldGrid grid = new WorldGrid();
+    public final WorldTime time = new WorldTime();
+    public final List<Ai> ais = new ArrayList<>();
+    public final List<Actor> actors = new ArrayList<>();
+    public final List<Projectile> projectiles = new ArrayList<>();
 
     static {
         soundAmbiance = UtilsAudio.getOrCreateSoundOgg("sounds/ambiance/birds");
@@ -38,7 +38,6 @@ public class World {
     }
 
     public World() {
-        WorldTime.reset();
         initializePlayer();
     }
 
@@ -53,7 +52,7 @@ public class World {
     }
 
     public void update() {
-        WorldTime.update();
+        time.update();
         UtilsBaseOperative.updateAll(ais);
         UtilsBaseOperative.updateAll(actors);
         Actor.finalizeUpdate();
@@ -82,7 +81,7 @@ public class World {
 
         GL11.glColor4f(1, 1, 1, 0.2f);
         GL11.glLineWidth(1);
-        worldGrid.render();
+        grid.render();
 
         UtilsGraphics.drawFinish();
     }

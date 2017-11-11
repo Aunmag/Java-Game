@@ -18,7 +18,6 @@ import aunmag.nightingale.gui.GuiLabel;
 import aunmag.nightingale.gui.GuiPage;
 import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.UtilsMath;
-import aunmag.shooter.world.WorldTime;
 
 public class ScenarioEncircling implements BaseOperative {
 
@@ -54,7 +53,7 @@ public class ScenarioEncircling implements BaseOperative {
         confinePlayerPosition();
 
         if (zombiesQuantityToSpawn > 0) {
-            timeSpawn.update(WorldTime.getCurrentMilliseconds());
+            timeSpawn.update(Game.getWorld().time.getCurrentMilliseconds());
             if (timeSpawn.isNow()) {
                 spawnZombie();
             }
@@ -108,8 +107,8 @@ public class ScenarioEncircling implements BaseOperative {
         zombie.setPosition(x, y);
         zombie.setRadians(-direction);
 //        zombie.setVelocity(zombie.getVelocity() + zombiesVelocityIncrease * (wave - 1));
-        World.actors.add(zombie);
-        World.ais.add(new Ai(zombie));
+        Game.getWorld().actors.add(zombie);
+        Game.getWorld().ais.add(new Ai(zombie));
 
         zombiesQuantityToSpawn--;
     }
@@ -123,11 +122,11 @@ public class ScenarioEncircling implements BaseOperative {
         String messageKills = String.format("Kill %s zombies", zombiesQuantityToSpawn);
         notificationKills = new GuiLabel(5, 5, 2, 1, messageKills, Font.fontDefault, 1);
 
-        timeNotification.setTimeInitial(WorldTime.getCurrentMilliseconds());
+        timeNotification.setTimeInitial(Game.getWorld().time.getCurrentMilliseconds());
     }
 
     private int countAliveZombies() {
-        return World.actors.size() - 1;
+        return Game.getWorld().actors.size() - 1;
     }
 
     public void render() {
@@ -135,7 +134,7 @@ public class ScenarioEncircling implements BaseOperative {
             return;
         }
 
-        if (!timeNotification.calculateIsDone(WorldTime.getCurrentMilliseconds())) {
+        if (!timeNotification.calculateIsDone(Game.getWorld().time.getCurrentMilliseconds())) {
             notificationWave.render();
             notificationKills.render();
         } else {

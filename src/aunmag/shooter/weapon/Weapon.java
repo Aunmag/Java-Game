@@ -1,6 +1,7 @@
 package aunmag.shooter.weapon;
 
 import aunmag.nightingale.audio.AudioSource;
+import aunmag.shooter.client.Game;
 import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.utilities.UtilsMath;
@@ -60,7 +61,7 @@ public class Weapon extends BaseSprite {
                 calculateRandomVelocity(),
                 trigger.getShooter()
         );
-        World.projectiles.add(projectile);
+        Game.getWorld().projectiles.add(projectile);
     }
 
     private float calculateRandomRecoil() {

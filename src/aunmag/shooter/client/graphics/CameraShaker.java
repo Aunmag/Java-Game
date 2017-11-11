@@ -2,7 +2,7 @@ package aunmag.shooter.client.graphics;
 
 import aunmag.nightingale.Application;
 import aunmag.nightingale.utilities.FluidValue;
-import aunmag.shooter.world.WorldTime;
+import aunmag.shooter.client.Game;
 
 public class CameraShaker {
 
@@ -18,14 +18,14 @@ public class CameraShaker {
 
     public static void shake(float force) {
         fluidRadians.setTimeDuration(timeUp);
-        fluidRadians.setValueTarget(force, WorldTime.getCurrentMilliseconds());
+        fluidRadians.setValueTarget(force, Game.getWorld().time.getCurrentMilliseconds());
     }
 
     public static void update() {
-        fluidRadians.update(WorldTime.getCurrentMilliseconds());
+        fluidRadians.update(Game.getWorld().time.getCurrentMilliseconds());
         if (fluidRadians.isTargetReached() && fluidRadians.getValueTarget() != 0) {
             fluidRadians.setTimeDuration(timeDown);
-            fluidRadians.setValueTarget(0, WorldTime.getCurrentMilliseconds());
+            fluidRadians.setValueTarget(0, Game.getWorld().time.getCurrentMilliseconds());
         }
 
         Application.getCamera().addRadiansOffset(fluidRadians.getValueCurrent());
