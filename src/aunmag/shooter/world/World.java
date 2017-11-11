@@ -3,7 +3,6 @@ package aunmag.shooter.world;
 import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.utilities.UtilsAudio;
 import aunmag.shooter.actor.ActorType;
-import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.WorldGrid;
 import aunmag.shooter.weapon.WeaponFactory;
 import aunmag.shooter.actor.Actor;
@@ -106,32 +105,33 @@ public class World {
     }
 
     public void render() {
-        if (Game.isVirtualMode()) {
-            UtilsGraphics.drawPrepare();
-
-            GL11.glColor3f(1, 0, 0);
-            GL11.glLineWidth(2);
-            float n = groundBlockSize * 8;
-            UtilsGraphics.drawLine(-n, -n, +n, -n, true);
-            UtilsGraphics.drawLine(+n, -n, +n, +n, true);
-            UtilsGraphics.drawLine(+n, +n, -n, +n, true);
-            UtilsGraphics.drawLine(-n, +n, -n, -n, true);
-
-            GL11.glColor4f(1, 1, 1, 0.2f);
-            GL11.glLineWidth(1);
-            worldGrid.render();
-
-            UtilsGraphics.drawFinish();
-        } else {
-            UtilsBaseOperative.renderAll(terrains);
-            UtilsBaseOperative.renderAll(decorations);
-        }
+        UtilsBaseOperative.renderAll(terrains);
+        renderGrid();
+        UtilsBaseOperative.renderAll(decorations);
 
         UtilsBaseOperative.renderAll(actors);
 
         UtilsGraphics.drawPrepare();
         UtilsBaseOperative.renderAll(projectiles);
         GL11.glLineWidth(1);
+        UtilsGraphics.drawFinish();
+    }
+
+    private void renderGrid() {
+        UtilsGraphics.drawPrepare();
+
+        GL11.glColor3f(1, 0, 0);
+        GL11.glLineWidth(2);
+        float n = groundBlockSize * 8;
+        UtilsGraphics.drawLine(-n, -n, +n, -n, true);
+        UtilsGraphics.drawLine(+n, -n, +n, +n, true);
+        UtilsGraphics.drawLine(+n, +n, -n, +n, true);
+        UtilsGraphics.drawLine(-n, +n, -n, -n, true);
+
+        GL11.glColor4f(1, 1, 1, 0.2f);
+        GL11.glLineWidth(1);
+        worldGrid.render();
+
         UtilsGraphics.drawFinish();
     }
 
