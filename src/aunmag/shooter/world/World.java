@@ -28,7 +28,6 @@ public class World {
 
     public static List<Ai> ais = new ArrayList<>();
     public static List<Object> terrains = new ArrayList<>();
-    public static List<Object> decorations = new ArrayList<>();
     public static List<Actor> actors = new ArrayList<>();
     public static List<Projectile> projectiles = new ArrayList<>();
 
@@ -46,7 +45,6 @@ public class World {
         WorldTime.reset();
         initializePlayer();
         initializeGround();
-        initializeBluffs();
     }
 
     private void initializePlayer() {
@@ -74,28 +72,6 @@ public class World {
         }
     }
 
-    private void initializeBluffs() {
-        Texture texture = Texture.getOrCreateAsSprite("images/objects/ground/bluff");
-        int quantity = 17;
-        int step = groundBlockSize;
-        int length = step * quantity;
-        float first = (length / -2f) + (step / 2f);
-        float last = first + length - step;
-
-        for (float i = first + step; i <= last - step; i += step) {
-            decorations.add(new Object(i, first, (float) Math.PI, texture));
-            decorations.add(new Object(i, last, 0, texture));
-            decorations.add(new Object(first, i, (float) UtilsMath.PIx0_5, texture));
-            decorations.add(new Object(last, i, (float) UtilsMath.PIx1_5, texture));
-        }
-
-        texture = Texture.getOrCreateAsSprite("images/objects/ground/bluff_corner");
-        decorations.add(new Object(first, first, (float) Math.PI, texture));
-        decorations.add(new Object(first, last, (float) UtilsMath.PIx0_5, texture));
-        decorations.add(new Object(last, last, 0, texture));
-        decorations.add(new Object(last, first, (float) UtilsMath.PIx1_5, texture));
-    }
-
     public void update() {
         WorldTime.update();
         UtilsBaseOperative.updateAll(ais);
@@ -107,8 +83,6 @@ public class World {
     public void render() {
         UtilsBaseOperative.renderAll(terrains);
         renderGrid();
-        UtilsBaseOperative.renderAll(decorations);
-
         UtilsBaseOperative.renderAll(actors);
 
         UtilsGraphics.drawPrepare();
@@ -148,7 +122,6 @@ public class World {
     public void remove() {
         UtilsBaseOperative.removeAll(ais);
         UtilsBaseOperative.removeAll(terrains);
-        UtilsBaseOperative.removeAll(decorations);
         UtilsBaseOperative.removeAll(actors);
         UtilsBaseOperative.removeAll(projectiles);
         stop();

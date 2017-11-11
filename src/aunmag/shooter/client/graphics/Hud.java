@@ -51,7 +51,6 @@ public class Hud {
         message += String.format("\nActors: %s", World.actors.size());
         message += String.format("\nBullets: %s", World.projectiles.size());
         message += String.format("\nTerrains: %s", World.terrains.size());
-        message += String.format("\nDecorations: %s", World.decorations.size());
 
         if (!text.message.equals(message)) {
             text.delete();
