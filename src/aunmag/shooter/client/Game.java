@@ -8,15 +8,13 @@ import aunmag.nightingale.font.Font;
 import aunmag.nightingale.utilities.UtilsAudio;
 import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.client.graphics.Crosshair;
-import aunmag.shooter.scenarios.ScenarioEmpty;
 import aunmag.shooter.client.graphics.Hud;
 import aunmag.shooter.client.graphics.Blackout;
-import aunmag.shooter.scenarios.ScenarioEncircling;
 import aunmag.nightingale.Application;
-import aunmag.nightingale.basics.BaseOperative;
 import aunmag.nightingale.data.DataEngine;
 import aunmag.nightingale.gui.*;
 import aunmag.nightingale.structures.Texture;
+import aunmag.shooter.scenarios.ScenarioEncircling;
 import aunmag.shooter.weapon.Weapon;
 import aunmag.shooter.weapon.WeaponFactory;
 import org.lwjgl.glfw.GLFW;
@@ -26,7 +24,7 @@ import aunmag.shooter.world.World;
 public class Game extends Application {
 
     private static boolean isPause = true;
-    private static BaseOperative scenario = new ScenarioEmpty();
+    private static ScenarioEncircling scenario = null;
     private static World world;
     private static GuiButtonBack buttonContinue;
     private static AudioSource soundTheme;
@@ -51,7 +49,7 @@ public class Game extends Application {
         world = new World();
         crosshair = new Crosshair(Actor.getPlayer());
         buttonContinue.setIsAvailable(true);
-        scenario = new ScenarioEncircling();
+        scenario = new ScenarioEncircling(world);
     }
 
     private void initializePages() {
@@ -260,8 +258,10 @@ public class Game extends Application {
 
         buttonContinue.setIsAvailable(false);
 
-        scenario.remove();
-        scenario = new ScenarioEmpty();
+        if (scenario != null) {
+            scenario.remove();
+            scenario = null;
+        }
     }
 
     public static void themePlay() {
