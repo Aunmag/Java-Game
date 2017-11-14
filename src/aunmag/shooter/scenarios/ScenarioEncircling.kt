@@ -24,7 +24,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     private val zombiesQuantityInitial = 32
     private var zombiesQuantityToSpawn = 0
     private val zombiesSpawnTimer = TimerNext(500)
-    private val notificationTimer = TimerDone(5000)
+    private val notificationTimer = TimerDone(3000)
     private var notificationWave: GuiLabel? = null
     private var notificationKills: GuiLabel? = null
 
