@@ -54,18 +54,22 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     override fun render() {
-//        renderBorders()
+        renderBorders()
         renderNotifications()
     }
 
+    // TODO: Clean
     private fun renderBorders() {
-        val n = bordersDistance
         GL11.glLineWidth(2f)
         GL11.glColor3f(1f, 0f, 0f)
+        UtilsGraphics.drawPrepare()
+
+        val n = bordersDistance
         UtilsGraphics.drawLine(-n, -n, +n, -n, true)
         UtilsGraphics.drawLine(+n, -n, +n, +n, true)
         UtilsGraphics.drawLine(+n, +n, -n, +n, true)
         UtilsGraphics.drawLine(-n, +n, -n, -n, true)
+
         GL11.glLineWidth(1f)
     }
 
