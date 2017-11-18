@@ -18,14 +18,14 @@ public class CameraShaker {
 
     public static void shake(float force) {
         fluidRadians.setTimeDuration(timeUp);
-        fluidRadians.setValueTarget(force, Game.getWorld().time.getCurrentMilliseconds());
+        fluidRadians.setValueTarget(force, Game.getWorld().getTime().getCurrentMilliseconds());
     }
 
     public static void update() {
-        fluidRadians.update(Game.getWorld().time.getCurrentMilliseconds());
+        fluidRadians.update(Game.getWorld().getTime().getCurrentMilliseconds());
         if (fluidRadians.isTargetReached() && fluidRadians.getValueTarget() != 0) {
             fluidRadians.setTimeDuration(timeDown);
-            fluidRadians.setValueTarget(0, Game.getWorld().time.getCurrentMilliseconds());
+            fluidRadians.setValueTarget(0, Game.getWorld().getTime().getCurrentMilliseconds());
         }
 
         Application.getCamera().addRadiansOffset(fluidRadians.getValueCurrent());

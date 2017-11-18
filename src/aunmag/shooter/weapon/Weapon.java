@@ -61,7 +61,7 @@ public class Weapon extends BaseSprite {
                 calculateRandomVelocity(),
                 trigger.getShooter()
         );
-        Game.getWorld().projectiles.add(projectile);
+        Game.getWorld().getProjectiles().add(projectile);
     }
 
     private float calculateRandomRecoil() {

@@ -4,7 +4,6 @@ import aunmag.nightingale.Application;
 import aunmag.nightingale.utilities.TimerDone;
 import aunmag.nightingale.utilities.UtilsGraphics;
 import aunmag.shooter.client.Game;
-import aunmag.shooter.world.WorldTime;
 import org.lwjgl.opengl.GL11;
 
 public class Magazine {
@@ -37,13 +36,13 @@ public class Magazine {
     }
 
     void update() {
-        if (isReloading && timeReloading.calculateIsDone(Game.getWorld().time.getCurrentMilliseconds())) {
+        if (isReloading && timeReloading.calculateIsDone(Game.getWorld().getTime().getCurrentMilliseconds())) {
             cartridgesQuantity++;
 
             if (isFull() || !isAutomatic) {
                 isReloading = false;
             } else {
-                timeReloading.setTimeInitial(Game.getWorld().time.getCurrentMilliseconds());
+                timeReloading.setTimeInitial(Game.getWorld().getTime().getCurrentMilliseconds());
             }
         }
     }
@@ -73,7 +72,7 @@ public class Magazine {
         }
 
         isReloading = true;
-        timeReloading.setTimeInitial(Game.getWorld().time.getCurrentMilliseconds());
+        timeReloading.setTimeInitial(Game.getWorld().getTime().getCurrentMilliseconds());
 
         if (isAutomatic) {
             cartridgesQuantity = 0;

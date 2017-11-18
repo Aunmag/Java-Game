@@ -57,14 +57,14 @@ public class Actor extends BaseSprite {
             return;
         }
 
-        offsetRadians.update(Game.getWorld().time.getCurrentMilliseconds());
+        offsetRadians.update(Game.getWorld().getTime().getCurrentMilliseconds());
         if (offsetRadians.getValueTarget() != 0 && offsetRadians.isTargetReached()) {
             addRadiansCarefully(offsetRadians.getValueCurrent());
-            offsetRadians.setValueTarget(0, Game.getWorld().time.getCurrentMilliseconds());
+            offsetRadians.setValueTarget(0, Game.getWorld().getTime().getCurrentMilliseconds());
             offsetRadians.reachTargetNow();
         }
 
-        isAiming.update(Game.getWorld().time.getCurrentMilliseconds());
+        isAiming.update(Game.getWorld().getTime().getCurrentMilliseconds());
         walk();
         updateCollision();
         hands.update();
@@ -72,12 +72,12 @@ public class Actor extends BaseSprite {
     }
 
     private void updateCollision() {
-        for (int index = Game.getWorld().actors.size() - 1; index >= 0; index--) {
+        for (int index = Game.getWorld().getActors().size() - 1; index >= 0; index--) {
             if (index == indexOfLastCollisionCheckedActor) {
                 break;
             }
 
-            Actor opponent = Game.getWorld().actors.get(index);
+            Actor opponent = Game.getWorld().getActors().get(index);
 
             if (!opponent.isAlive() || opponent.isRemoved() || opponent == this) {
                 continue;
@@ -130,7 +130,7 @@ public class Actor extends BaseSprite {
 
         velocity -= velocity * isAiming.getValueCurrent() / 2f;
         velocity *= health;
-        velocity *= Game.getWorld().time.getDelta();
+        velocity *= Game.getWorld().getTime().getDelta();
 
         float moveX = (float) (velocity * Math.cos(getRadians() + radiansTurn));
         float moveY = (float) (velocity * Math.sin(getRadians() + radiansTurn));
@@ -151,7 +151,7 @@ public class Actor extends BaseSprite {
     }
 
     public void push(float force) {
-        offsetRadians.setValueTarget(force, Game.getWorld().time.getCurrentMilliseconds());
+        offsetRadians.setValueTarget(force, Game.getWorld().getTime().getCurrentMilliseconds());
 
         if (this == Actor.player) {
             CameraShaker.shake(force);

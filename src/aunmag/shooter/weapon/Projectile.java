@@ -55,7 +55,7 @@ public class Projectile extends BaseSprite {
     }
 
     private void updatePosition() {
-        double velocity = this.velocity * VELOCITY_FACTOR * Game.getWorld().time.getDelta();
+        double velocity = this.velocity * VELOCITY_FACTOR * Game.getWorld().getTime().getDelta();
 
         positionTail.set(getX(), getY());
 
@@ -71,7 +71,7 @@ public class Projectile extends BaseSprite {
         Actor farthestActor = null;
         float farthestActorDistance = 0;
 
-        for (Actor actor: Game.getWorld().actors) {
+        for (Actor actor: Game.getWorld().getActors()) {
             if (!actor.isAlive() || actor.isRemoved()) {
                 continue;
             }
@@ -96,7 +96,7 @@ public class Projectile extends BaseSprite {
     }
 
     private void updateVelocity() {
-        velocity -= velocity * (type.velocityRecessionFactor * Game.getWorld().time.getDelta());
+        velocity -= velocity * (type.velocityRecessionFactor * Game.getWorld().getTime().getDelta());
 
         if (velocity <= VELOCITY_MIN) {
             stop();

@@ -58,7 +58,7 @@ public class Blackout {
     }
 
     private static void renderDynamicRectangle() {
-        long timeWorld = Game.getWorld().time.getCurrentMilliseconds();
+        long timeWorld = Game.getWorld().getTime().getCurrentMilliseconds();
 
         if (healthCurrent != healthLast) {
             if (intensity.getTimeDuration() != timeHurtAscent) {

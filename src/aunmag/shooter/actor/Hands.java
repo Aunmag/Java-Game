@@ -24,7 +24,7 @@ public class Hands extends CollisionCircle {
     public void update() {
         updatePosition();
 
-        nextAttackTime.update(Game.getWorld().time.getCurrentMilliseconds());
+        nextAttackTime.update(Game.getWorld().getTime().getCurrentMilliseconds());
         if (owner.isAttacking && !owner.getHasWeapon() && nextAttackTime.isNow()) {
             attack();
         }
@@ -37,7 +37,7 @@ public class Hands extends CollisionCircle {
     }
 
     private void attack() {
-        for (Actor opponent: Game.getWorld().actors) {
+        for (Actor opponent: Game.getWorld().getActors()) {
             if (!opponent.isAlive() || opponent.isRemoved()) {
                 continue;
             }

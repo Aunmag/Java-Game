@@ -34,18 +34,18 @@ public class Ai implements BaseOperative {
             return;
         }
 
-        reactionChangeStrategy.update(Game.getWorld().time.getCurrentMilliseconds());
+        reactionChangeStrategy.update(Game.getWorld().getTime().getCurrentMilliseconds());
         if (reactionChangeStrategy.isNow()) {
             changeStrategy();
         }
 
-        reactionLookAround.update(Game.getWorld().time.getCurrentMilliseconds());
+        reactionLookAround.update(Game.getWorld().getTime().getCurrentMilliseconds());
         if (reactionLookAround.isNow()) {
             searchTarget();
         }
 
         if (hasTarget()) {
-            reactionWatch.update(Game.getWorld().time.getCurrentMilliseconds());
+            reactionWatch.update(Game.getWorld().getTime().getCurrentMilliseconds());
             if (reactionWatch.isNow()) {
                 updateTargetData();
             }
@@ -68,7 +68,7 @@ public class Ai implements BaseOperative {
         target = null;
         isTargetReached = false;
 
-        for (Actor actor: Game.getWorld().actors) {
+        for (Actor actor: Game.getWorld().getActors()) {
             if (actor.isAlive() && !actor.isRemoved() && actor.type == ActorType.human) {
                 target = actor;
                 break;
