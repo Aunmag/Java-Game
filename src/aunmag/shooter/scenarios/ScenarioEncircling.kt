@@ -9,7 +9,6 @@ import aunmag.nightingale.gui.GuiPage
 import aunmag.nightingale.structures.Texture
 import aunmag.nightingale.utilities.TimerDone
 import aunmag.nightingale.utilities.TimerNext
-import aunmag.nightingale.utilities.UtilsGraphics
 import aunmag.nightingale.utilities.UtilsMath
 import aunmag.shooter.actor.Actor
 import aunmag.shooter.actor.ActorType
@@ -17,11 +16,9 @@ import aunmag.shooter.ai.Ai
 import aunmag.shooter.client.Game
 import aunmag.shooter.data.soundGameOver
 import aunmag.shooter.world.World
-import org.lwjgl.opengl.GL11
 
 class ScenarioEncircling(world: World) : Scenario(world) {
 
-    private val bordersDistance = 32f
     private var wave = 0
     private val waveFinal = 8
     private val zombiesQuantityInitial = 32
@@ -54,26 +51,6 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     override fun render() {
-        renderBorders()
-        renderNotifications()
-    }
-
-    // TODO: Clean
-    private fun renderBorders() {
-        GL11.glLineWidth(2f)
-        GL11.glColor3f(1f, 0f, 0f)
-        UtilsGraphics.drawPrepare()
-
-        val n = bordersDistance
-        UtilsGraphics.drawLine(-n, -n, +n, -n, true)
-        UtilsGraphics.drawLine(+n, -n, +n, +n, true)
-        UtilsGraphics.drawLine(+n, +n, -n, +n, true)
-        UtilsGraphics.drawLine(-n, +n, -n, -n, true)
-
-        GL11.glLineWidth(1f)
-    }
-
-    private fun renderNotifications() {
         if (notificationTimer.calculateIsDone(world.time.currentMilliseconds)) {
             removeNotifications()
         } else {
@@ -100,18 +77,18 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
     private fun confinePlayerPosition() {
         val player = getPlayer() ?: return
-        val n = bordersDistance
+        val boundary = 32f
 
-        if (player.x < -n) {
-            player.x = -n
-        } else if (player.x > n) {
-            player.x = n
+        if (player.x < -boundary) {
+            player.x = -boundary
+        } else if (player.x > boundary) {
+            player.x = boundary
         }
 
-        if (player.y < -n) {
-            player.y = -n
-        } else if (player.y > n) {
-            player.y = n
+        if (player.y < -boundary) {
+            player.y = -boundary
+        } else if (player.y > boundary) {
+            player.y = boundary
         }
     }
 
