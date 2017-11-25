@@ -187,7 +187,7 @@ public class Game extends Application {
         player.isAttacking = Input.isMouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_1);
 
         if (Input.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_2)) {
-            player.isAiming.toggle(Game.getWorld().time.getCurrentMilliseconds());
+            player.isAiming.toggle(Game.getWorld().getTime().getCurrentMilliseconds());
         }
 
         float mouseSensitivity = 0.005f;
@@ -282,12 +282,12 @@ public class Game extends Application {
             GuiManager.activate();
             themePlay();
             if (isWorldCreated()) {
-                world.stop();
+                world.stopSounds();
             }
         } else {
             themeStop();
             if (isWorldCreated()) {
-                world.play();
+                world.playSounds();
             }
         }
     }

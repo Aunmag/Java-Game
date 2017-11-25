@@ -14,7 +14,7 @@ public class Striker {
     }
 
     boolean isCocked() {
-        nextShotTime.update(Game.getWorld().time.getCurrentMilliseconds());
+        nextShotTime.update(Game.getWorld().getTime().getCurrentMilliseconds());
         return nextShotTime.isNow();
     }
 

@@ -48,9 +48,9 @@ public class Hud {
         message += String.format("Spent time on updating: %s ms\n", timeSpentUpdate);
         message += String.format("Spent time on rendering: %s ms\n", timeSpentRender);
         message += String.format("Spent time total: %s ms \n", timeSpentTotal);
-        message += String.format("\nAIs: %s", Game.getWorld().ais.size());
-        message += String.format("\nActors: %s", Game.getWorld().actors.size());
-        message += String.format("\nBullets: %s", Game.getWorld().projectiles.size());
+        message += String.format("\nAIs: %s", Game.getWorld().getAis().size());
+        message += String.format("\nActors: %s", Game.getWorld().getActors().size());
+        message += String.format("\nBullets: %s", Game.getWorld().getProjectiles().size());
 
         if (!text.message.equals(message)) {
             text.delete();

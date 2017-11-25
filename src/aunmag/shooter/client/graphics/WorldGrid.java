@@ -4,6 +4,7 @@ import aunmag.nightingale.Application;
 import aunmag.nightingale.Camera;
 import aunmag.nightingale.Configs;
 import aunmag.nightingale.utilities.UtilsGraphics;
+import org.lwjgl.opengl.GL11;
 
 public class WorldGrid {
 
@@ -25,6 +26,8 @@ public class WorldGrid {
         int maxX = initialX + start;
         int minY = initialY - start;
         int maxY = initialY + start;
+
+        GL11.glColor4f(1f, 1f, 1f, 0.2f);
 
         for (int i = start; i < end; i += step) {
             int x = initialX + i;
