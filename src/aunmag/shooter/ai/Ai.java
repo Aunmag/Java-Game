@@ -16,12 +16,7 @@ public class Ai implements BaseOperative {
     private TimerNext reactionChangeStrategy = new TimerNext(30_000);
     private int strategyDeviationWay = 0;
     private Actor subject;
-    private Actor target;
-    private float targetDistance;
-    private float targetDirection;
-    private float targetRadiansDifference;
-    private float targetRadiansDifferenceAbsolute;
-    private boolean isTargetReached;
+    private AiMemoryTarget memoryTarget = new AiMemoryTarget();
 
     public Ai(Actor subject) {
         this.subject = subject;
@@ -44,13 +39,13 @@ public class Ai implements BaseOperative {
             searchTarget();
         }
 
-        if (hasTarget()) {
+        if (memoryTarget.isInMemory()) {
             reactionWatch.update(Game.getWorld().getTime().getCurrentMilliseconds());
             if (reactionWatch.isNow()) {
                 updateTargetData();
             }
 
-            if (isTargetReached) {
+            if (memoryTarget.isReached()) {
                 doAttack();
             } else {
                 chaseTarget();
@@ -65,62 +60,61 @@ public class Ai implements BaseOperative {
     }
 
     private void searchTarget() {
-        target = null;
-        isTargetReached = false;
+        memoryTarget.forget();
 
         for (Actor actor: Game.getWorld().getActors()) {
             if (actor.isAlive() && !actor.isRemoved() && actor.type == ActorType.human) {
-                target = actor;
+                memoryTarget.setActor(actor);
                 break;
             }
         }
     }
 
     private void updateTargetData() {
-        if (!hasTarget()) {
+        Actor targetActor = memoryTarget.getActor();
+
+        if (targetActor == null) {
             return;
         }
 
         float x = subject.getX();
         float y = subject.getY();
-        float targetX = target.getX();
-        float targetY = target.getY();
+        float targetX = targetActor.getX();
+        float targetY = targetActor.getY();
 
-        targetDistance = UtilsMath.calculateDistanceBetween(x, y, targetX, targetY);
-        targetDirection = UtilsMath.calculateRadiansBetween(targetX, targetY, x, y);
+        memoryTarget.setDistance(UtilsMath.calculateDistanceBetween(x, y, targetX, targetY));
+        memoryTarget.setDirection(UtilsMath.calculateRadiansBetween(targetX, targetY, x, y));
 
-        isTargetReached = Collision.calculateIsCollision(
+        memoryTarget.setReached(Collision.calculateIsCollision(
                 subject.getHands(),
-                target.getCollision()
-        );
+                targetActor.getCollision()
+        ));
 
-        targetRadiansDifference = targetDirection - target.getRadians();
-        targetRadiansDifference = UtilsMath.correctRadians(targetRadiansDifference);
-        targetRadiansDifferenceAbsolute = Math.abs(targetRadiansDifference);
+        float radiansDifference = memoryTarget.getDirection() - targetActor.getRadians();
+        radiansDifference = UtilsMath.correctRadians(radiansDifference);
+        memoryTarget.setRadiansDifference(radiansDifference);
+        memoryTarget.setRadiansDifferenceAbsolute(Math.abs(radiansDifference));
     }
 
     private boolean calculateIsBehindTarget() {
-        return targetRadiansDifferenceAbsolute < UtilsMath.PIx0_5;
+        return memoryTarget.getRadiansDifferenceAbsolute() < UtilsMath.PIx0_5;
     }
 
     private void chaseTarget() {
-        if (target == null) {
-            return;
-        }
-
         subject.isAttacking = false;
-        subject.setRadians(targetDirection);
+        subject.setRadians(memoryTarget.getDirection());
         subject.isWalkingForward = true;
         subject.isSprinting = calculateIsBehindTarget();
 
-        if (targetRadiansDifferenceAbsolute > UtilsMath.PIx0_5) {
+        if (memoryTarget.getRadiansDifferenceAbsolute() > UtilsMath.PIx0_5) {
             deviateRoute();
-        } else if (targetDistance < 3) {
+        } else if (memoryTarget.getDistance() < 3) {
             subject.isSprinting = true;
         }
     }
 
     private void deviateRoute() {
+        float targetDistance = memoryTarget.getDistance();
         int distanceMin = 3;
         int distanceMax = 20;
 
@@ -152,10 +146,6 @@ public class Ai implements BaseOperative {
 
     public boolean isRemoved() {
         return isRemoved;
-    }
-
-    public boolean hasTarget() {
-        return target != null;
     }
 
 }
