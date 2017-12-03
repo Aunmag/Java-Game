@@ -11,6 +11,7 @@ import aunmag.nightingale.utilities.TimerDone
 import aunmag.nightingale.utilities.TimerNext
 import aunmag.nightingale.utilities.UtilsGraphics
 import aunmag.nightingale.utilities.UtilsMath
+import aunmag.nightingale.utilities.UtilsMath.limitNumber
 import aunmag.shooter.actor.Actor
 import aunmag.shooter.actor.ActorType
 import aunmag.shooter.ai.Ai
@@ -100,19 +101,8 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
     private fun confinePlayerPosition() {
         val player = getPlayer() ?: return
-        val n = bordersDistance
-
-        if (player.x < -n) {
-            player.x = -n
-        } else if (player.x > n) {
-            player.x = n
-        }
-
-        if (player.y < -n) {
-            player.y = -n
-        } else if (player.y > n) {
-            player.y = n
-        }
+        player.x = limitNumber(player.x, -bordersDistance, bordersDistance)
+        player.y = limitNumber(player.y, -bordersDistance, bordersDistance)
     }
 
     private fun spawnZombie() {

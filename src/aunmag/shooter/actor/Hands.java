@@ -6,8 +6,6 @@ import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionCircle;
 import org.joml.Vector4f;
 
-import java.awt.*;
-
 public class Hands extends CollisionCircle {
 
     private static final float radius = 0.34f;

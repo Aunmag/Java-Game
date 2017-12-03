@@ -25,7 +25,7 @@ public class Blackout {
     }
 
     public static void render() {
-        healthCurrent = correctHealth(Actor.getPlayer().getHealth());
+        healthCurrent = Actor.getPlayer().getHealth();
 
         renderBoundaries();
 
@@ -81,16 +81,6 @@ public class Blackout {
         float height = Application.getWindow().getHeight();
         GL11.glColor4f(0f, 0f, 0f, alpha);
         UtilsGraphics.drawQuad(0, 0, width, height, true, false);
-    }
-
-    private static float correctHealth(float health) {
-        if (health > 1) {
-            health = 1;
-        } else if (health < 0) {
-            health = 0;
-        }
-
-        return health;
     }
 
 }

@@ -6,8 +6,6 @@ import aunmag.shooter.actor.Actor;
 import aunmag.shooter.client.Game;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionLine;
-import aunmag.nightingale.utilities.UtilsGraphics;
-import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 

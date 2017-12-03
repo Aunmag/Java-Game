@@ -205,13 +205,7 @@ public class Actor extends CollisionCircle {
     /* Setters */
 
     private void addHealth(float addHealth) {
-        health += addHealth;
-
-        if (health < 0) {
-            health = 0;
-        } else if (health > 1) {
-            health = 1;
-        }
+        health = UtilsMath.limitNumber(health + addHealth, 0, 1);
 
         if (!isAlive()) {
             remove();
