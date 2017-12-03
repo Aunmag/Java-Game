@@ -23,14 +23,22 @@ class World {
     val actors: MutableList<Actor> = ArrayList()
     val projectiles: MutableList<Projectile> = ArrayList()
 
+    // TODO: : World shouldn't know about player's weapons
+    val laserGun = WeaponFactory.laserGun(this)
+    val makarovPistol = WeaponFactory.makarovPistol(this)
+    val mp27 = WeaponFactory.mp27(this)
+    val aks74u = WeaponFactory.aks74u(this)
+    val pecheneg = WeaponFactory.pecheneg(this)
+    val saiga12k = WeaponFactory.saiga12k(this)
+
     init {
         initializePlayer() // TODO: World should not know about client's player
     }
 
     private fun initializePlayer() {
-        val player = Actor(ActorType.human)
+        val player = Actor(ActorType.human, this)
         player.radians = -UtilsMath.PIx0_5.toFloat()
-        player.weapon = WeaponFactory.mp27()
+        player.weapon = mp27
 
         Actor.setPlayer(player)
         actors.add(player)

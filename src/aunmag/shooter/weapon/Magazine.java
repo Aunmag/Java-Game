@@ -4,10 +4,12 @@ import aunmag.nightingale.Application;
 import aunmag.nightingale.utilities.TimerDone;
 import aunmag.nightingale.utilities.UtilsGraphics;
 import aunmag.shooter.client.Game;
+import aunmag.shooter.world.World;
 import org.lwjgl.opengl.GL11;
 
 public class Magazine {
 
+    public final World world;
     public final CartridgeType cartridgeType;
     private final boolean isAutomatic;
     private final int capacity;
@@ -16,11 +18,13 @@ public class Magazine {
     private TimerDone timeReloading;
 
     public Magazine(
+            World world,
             CartridgeType cartridgeType,
             boolean isAutomatic,
             int capacity,
             float reloadingTime
     ) {
+        this.world = world;
         this.cartridgeType = cartridgeType;
         this.isAutomatic = isAutomatic;
         this.capacity = capacity;
@@ -36,13 +40,13 @@ public class Magazine {
     }
 
     void update() {
-        if (isReloading && timeReloading.calculateIsDone(Game.getWorld().getTime().getCurrent())) {
+        if (isReloading && timeReloading.calculateIsDone(world.getTime().getCurrent())) {
             cartridgesQuantity++;
 
             if (isFull() || !isAutomatic) {
                 isReloading = false;
             } else {
-                timeReloading.setTimeInitial(Game.getWorld().getTime().getCurrent());
+                timeReloading.setTimeInitial(world.getTime().getCurrent());
             }
         }
     }
@@ -72,7 +76,7 @@ public class Magazine {
         }
 
         isReloading = true;
-        timeReloading.setTimeInitial(Game.getWorld().getTime().getCurrent());
+        timeReloading.setTimeInitial(world.getTime().getCurrent());
 
         if (isAutomatic) {
             cartridgesQuantity = 0;

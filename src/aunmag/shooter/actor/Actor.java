@@ -10,6 +10,7 @@ import aunmag.shooter.weapon.Weapon;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.collision.CollisionCircle;
+import aunmag.shooter.world.World;
 
 public class Actor extends CollisionCircle {
 
@@ -19,6 +20,7 @@ public class Actor extends CollisionCircle {
     private static final float velocityFactorBack = 0.8f;
     private static int indexOfLastCollisionCheckedActor = 0;
 
+    public final World world;
     public final ActorType type;
     private float health = 1;
     private int kills = 0;
@@ -42,9 +44,10 @@ public class Actor extends CollisionCircle {
         }
     }
 
-    public Actor(ActorType type) {
+    public Actor(ActorType type, World world) {
         super(0, 0, 0.225f);
         this.type = type;
+        this.world = world;
         offsetRadians.setFlexDegree(0.5f);
         isAiming.setFlexDegree(1.25f);
     }
@@ -55,14 +58,14 @@ public class Actor extends CollisionCircle {
             return;
         }
 
-        offsetRadians.update(Game.getWorld().getTime().getCurrent());
+        offsetRadians.update(world.getTime().getCurrent());
         if (offsetRadians.getValueTarget() != 0 && offsetRadians.isTargetReached()) {
             addRadiansCarefully(offsetRadians.getValueCurrent());
-            offsetRadians.setValueTarget(0, Game.getWorld().getTime().getCurrent());
+            offsetRadians.setValueTarget(0, world.getTime().getCurrent());
             offsetRadians.reachTargetNow();
         }
 
-        isAiming.update(Game.getWorld().getTime().getCurrent());
+        isAiming.update(world.getTime().getCurrent());
         walk();
         updateCollision();
         hands.update();
@@ -70,12 +73,12 @@ public class Actor extends CollisionCircle {
     }
 
     private void updateCollision() {
-        for (int index = Game.getWorld().getActors().size() - 1; index >= 0; index--) {
+        for (int index = world.getActors().size() - 1; index >= 0; index--) {
             if (index == indexOfLastCollisionCheckedActor) {
                 break;
             }
 
-            Actor opponent = Game.getWorld().getActors().get(index);
+            Actor opponent = world.getActors().get(index);
 
             if (!opponent.isAlive() || opponent.isRemoved() || opponent == this) {
                 continue;
@@ -135,7 +138,7 @@ public class Actor extends CollisionCircle {
 
         velocity -= velocity * isAiming.getValueCurrent() / 2f;
         velocity *= health;
-        velocity *= Game.getWorld().getTime().getDelta();
+        velocity *= world.getTime().getDelta();
 
         float moveX = (float) (velocity * Math.cos(getRadians() + radiansTurn));
         float moveY = (float) (velocity * Math.sin(getRadians() + radiansTurn));
@@ -156,7 +159,7 @@ public class Actor extends CollisionCircle {
     }
 
     public void push(float force) {
-        offsetRadians.setValueTarget(force, Game.getWorld().getTime().getCurrent());
+        offsetRadians.setValueTarget(force, world.getTime().getCurrent());
 
         if (this == Actor.player) {
             CameraShaker.shake(force);

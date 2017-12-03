@@ -6,6 +6,7 @@ import aunmag.shooter.actor.Actor;
 import aunmag.shooter.client.Game;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionLine;
+import aunmag.shooter.world.World;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
@@ -14,11 +15,13 @@ public class Projectile extends CollisionLine {
     private static final float VELOCITY_MIN = 0.5f;
     private static final float VELOCITY_FACTOR = 1f / 5f;
 
+    public final World world;
     public final CartridgeType type;
     private float velocity;
     private Actor shooter;
 
     public Projectile(
+            World world,
             CartridgeType type,
             float x,
             float y,
@@ -27,6 +30,7 @@ public class Projectile extends CollisionLine {
             Actor shooter
     ) {
         super(x, y);
+        this.world = world;
         this.type = type;
         this.velocity = velocity;
         this.shooter = shooter;
@@ -50,7 +54,7 @@ public class Projectile extends CollisionLine {
     }
 
     private void updatePosition() {
-        double velocity = this.velocity * VELOCITY_FACTOR * Game.getWorld().getTime().getDelta();
+        double velocity = this.velocity * VELOCITY_FACTOR * world.getTime().getDelta();
 
         addPosition(
                 (float) (velocity * Math.cos(getRadians())),
@@ -62,7 +66,7 @@ public class Projectile extends CollisionLine {
         Actor farthestActor = null;
         float farthestActorDistance = 0;
 
-        for (Actor actor: Game.getWorld().getActors()) {
+        for (Actor actor: world.getActors()) {
             if (!actor.isAlive() || actor.isRemoved()) {
                 continue;
             }
@@ -87,7 +91,7 @@ public class Projectile extends CollisionLine {
     }
 
     private void updateVelocity() {
-        velocity -= velocity * (type.velocityRecessionFactor * Game.getWorld().getTime().getDelta());
+        velocity -= velocity * (type.velocityRecessionFactor * world.getTime().getDelta());
 
         if (velocity <= VELOCITY_MIN) {
             stop();

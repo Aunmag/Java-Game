@@ -114,7 +114,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         val x = centerX - distance * Math.cos(direction.toDouble()).toFloat()
         val y = centerY - distance * Math.sin(direction.toDouble()).toFloat()
 
-        val zombie = Actor(ActorType.zombieEasy) // TODO: Spawn different types of zombies
+        val zombie = Actor(ActorType.zombieEasy, world) // TODO: Spawn different types of zombies
         zombie.setPosition(x, y)
         zombie.radians = -direction
         world.actors.add(zombie)

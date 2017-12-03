@@ -4,9 +4,11 @@ import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.collision.CollisionEmpty;
 import aunmag.shooter.client.Game;
 import aunmag.nightingale.utilities.UtilsMath;
+import aunmag.shooter.world.World;
 
 public class Weapon extends CollisionEmpty {
 
+    public final World world;
     public final WeaponType type;
     public final Magazine magazine;
     public final Striker striker;
@@ -14,12 +16,14 @@ public class Weapon extends CollisionEmpty {
     private AudioSource audioSource;
 
     public Weapon(
+            World world,
             WeaponType type,
             Magazine magazine,
             Striker striker,
             Trigger trigger
     ) {
         super(0, 0, 0);
+        this.world = world;
         this.type = type;
         this.magazine = magazine;
         this.striker = striker;
@@ -53,6 +57,7 @@ public class Weapon extends CollisionEmpty {
 
     private void makeBullet(float x, float y) {
         Projectile projectile = new Projectile(
+                world,
                 magazine.cartridgeType,
                 x,
                 y,
@@ -60,7 +65,7 @@ public class Weapon extends CollisionEmpty {
                 calculateRandomVelocity(),
                 trigger.getShooter()
         );
-        Game.getWorld().getProjectiles().add(projectile);
+        world.getProjectiles().add(projectile);
     }
 
     private float calculateRandomRecoil() {
