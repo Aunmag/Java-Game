@@ -15,8 +15,8 @@ public class Blackout {
     private static final float healthThird = healthMax / 3f;
     private static float healthCurrent = healthMax;
     private static float healthLast = healthCurrent;
-    private static final int timeHurtAscent = 60;
-    private static final int timeHurtDecline = 480;
+    private static final float timeHurtAscent = 0.06f;
+    private static final float timeHurtDecline = 0.48f;
     private static FluidValue intensity = new FluidValue(timeHurtAscent);
 
     static {
@@ -58,7 +58,7 @@ public class Blackout {
     }
 
     private static void renderDynamicRectangle() {
-        long timeWorld = Game.getWorld().getTime().getCurrentMilliseconds();
+        double timeWorld = Game.getWorld().getTime().getCurrent();
 
         if (healthCurrent != healthLast) {
             if (intensity.getTimeDuration() != timeHurtAscent) {

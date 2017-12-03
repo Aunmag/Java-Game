@@ -5,16 +5,14 @@ import aunmag.shooter.client.Game;
 
 public class Striker {
 
-    private static final int convert = 1000 * 60;
-
     private final TimerNext nextShotTime;
 
     public Striker(int shotsPerMinute) {
-        nextShotTime = new TimerNext(convert / shotsPerMinute);
+        nextShotTime = new TimerNext(60f / (float) shotsPerMinute);
     }
 
     boolean isCocked() {
-        nextShotTime.update(Game.getWorld().getTime().getCurrentMilliseconds());
+        nextShotTime.update(Game.getWorld().getTime().getCurrent());
         return nextShotTime.isNow();
     }
 

@@ -4,7 +4,6 @@ import aunmag.nightingale.Application;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.client.Game;
-import aunmag.shooter.world.World;
 import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionLine;

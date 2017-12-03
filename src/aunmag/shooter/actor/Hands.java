@@ -12,7 +12,7 @@ public class Hands extends CollisionCircle {
     protected static final Color renderColor = new Color(255, 0, 0, 128);
     private static final float radius = 0.34f;
     private static final float distance = radius;
-    private TimerNext nextAttackTime = new TimerNext(400);
+    private TimerNext nextAttackTime = new TimerNext(0.4f);
     private final Actor owner;
 
     public Hands(Actor owner) {
@@ -24,7 +24,7 @@ public class Hands extends CollisionCircle {
     public void update() {
         updatePosition();
 
-        nextAttackTime.update(Game.getWorld().getTime().getCurrentMilliseconds());
+        nextAttackTime.update(Game.getWorld().getTime().getCurrent());
         if (owner.isAttacking && !owner.getHasWeapon() && nextAttackTime.isNow()) {
             attack();
         }

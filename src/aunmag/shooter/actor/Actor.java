@@ -28,14 +28,14 @@ public class Actor extends BaseSprite {
     private CollisionCircle collision = new CollisionCircle(getX(), getY(), 0.225f);
     private AudioSource audioSource = new AudioSource();
 
-    private FluidValue offsetRadians = new FluidValue(60);
+    private FluidValue offsetRadians = new FluidValue(0.06f);
     public boolean isWalkingForward = false;
     public boolean isWalkingBack = false;
     public boolean isWalkingLeft = false;
     public boolean isWalkingRight = false;
     public boolean isSprinting = false;
     public boolean isAttacking = false;
-    public FluidToggle isAiming = new FluidToggle(250);
+    public FluidToggle isAiming = new FluidToggle(0.25f);
 
     static {
         for (int i = 0; i < samples.length; i++) {
@@ -57,14 +57,14 @@ public class Actor extends BaseSprite {
             return;
         }
 
-        offsetRadians.update(Game.getWorld().getTime().getCurrentMilliseconds());
+        offsetRadians.update(Game.getWorld().getTime().getCurrent());
         if (offsetRadians.getValueTarget() != 0 && offsetRadians.isTargetReached()) {
             addRadiansCarefully(offsetRadians.getValueCurrent());
-            offsetRadians.setValueTarget(0, Game.getWorld().getTime().getCurrentMilliseconds());
+            offsetRadians.setValueTarget(0, Game.getWorld().getTime().getCurrent());
             offsetRadians.reachTargetNow();
         }
 
-        isAiming.update(Game.getWorld().getTime().getCurrentMilliseconds());
+        isAiming.update(Game.getWorld().getTime().getCurrent());
         walk();
         updateCollision();
         hands.update();
@@ -151,7 +151,7 @@ public class Actor extends BaseSprite {
     }
 
     public void push(float force) {
-        offsetRadians.setValueTarget(force, Game.getWorld().getTime().getCurrentMilliseconds());
+        offsetRadians.setValueTarget(force, Game.getWorld().getTime().getCurrent());
 
         if (this == Actor.player) {
             CameraShaker.shake(force);
@@ -188,7 +188,7 @@ public class Actor extends BaseSprite {
             return;
         }
 
-        int sample = samples[UtilsMath.random.nextInt(6)];
+        int sample = samples[UtilsMath.random.nextInt(samples.length)];
         audioSource.setSample(sample);
         audioSource.play();
     }

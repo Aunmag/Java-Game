@@ -26,8 +26,8 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     private val waveFinal = 8
     private val zombiesQuantityInitial = 32
     private var zombiesQuantityToSpawn = 0
-    private val zombiesSpawnTimer = TimerNext(500)
-    private val notificationTimer = TimerDone(3000)
+    private val zombiesSpawnTimer = TimerNext(0.5)
+    private val notificationTimer = TimerDone(3.0)
     private var notificationWave: GuiLabel? = null
     private var notificationKills: GuiLabel? = null
 
@@ -44,7 +44,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         confinePlayerPosition()
 
         if (zombiesQuantityToSpawn > 0) {
-            zombiesSpawnTimer.update(world.time.currentMilliseconds)
+            zombiesSpawnTimer.update(world.time.current)
             if (zombiesSpawnTimer.isNow) {
                 spawnZombie()
             }
@@ -74,7 +74,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     private fun renderNotifications() {
-        if (notificationTimer.calculateIsDone(world.time.currentMilliseconds)) {
+        if (notificationTimer.calculateIsDone(world.time.current)) {
             removeNotifications()
         } else {
             notificationWave?.render()
@@ -142,7 +142,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         val messageKills = "Kill $zombiesQuantityToSpawn zombies"
         notificationKills = GuiLabel(5, 5, 2, 1, messageKills, Font.fontDefault, 1f)
 
-        notificationTimer.timeInitial = world.time.currentMilliseconds
+        notificationTimer.timeInitial = world.time.current
     }
 
     private fun removeNotifications() {

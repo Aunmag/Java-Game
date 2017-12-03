@@ -11,9 +11,9 @@ import aunmag.shooter.client.Game;
 public class Ai implements BaseOperative {
 
     private boolean isRemoved = false;
-    private TimerNext reactionWatch = new TimerNext(300);
-    private TimerNext reactionLookAround = new TimerNext(2_000);
-    private TimerNext reactionChangeStrategy = new TimerNext(30_000);
+    private TimerNext reactionWatch = new TimerNext(0.3f);
+    private TimerNext reactionLookAround = new TimerNext(2f);
+    private TimerNext reactionChangeStrategy = new TimerNext(30f);
     private int strategyDeviationWay = 0;
     private Actor subject;
     private AiMemoryTarget memoryTarget = new AiMemoryTarget();
@@ -29,18 +29,18 @@ public class Ai implements BaseOperative {
             return;
         }
 
-        reactionChangeStrategy.update(Game.getWorld().getTime().getCurrentMilliseconds());
+        reactionChangeStrategy.update(Game.getWorld().getTime().getCurrent());
         if (reactionChangeStrategy.isNow()) {
             changeStrategy();
         }
 
-        reactionLookAround.update(Game.getWorld().getTime().getCurrentMilliseconds());
+        reactionLookAround.update(Game.getWorld().getTime().getCurrent());
         if (reactionLookAround.isNow()) {
             searchTarget();
         }
 
         if (memoryTarget.isInMemory()) {
-            reactionWatch.update(Game.getWorld().getTime().getCurrentMilliseconds());
+            reactionWatch.update(Game.getWorld().getTime().getCurrent());
             if (reactionWatch.isNow()) {
                 updateTargetData();
             }

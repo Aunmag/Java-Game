@@ -19,7 +19,7 @@ public class Magazine {
             CartridgeType cartridgeType,
             boolean isAutomatic,
             int capacity,
-            int reloadingTime
+            float reloadingTime
     ) {
         this.cartridgeType = cartridgeType;
         this.isAutomatic = isAutomatic;
@@ -29,20 +29,20 @@ public class Magazine {
         if (isUnlimited()) {
             reloadingTime = 0;
         } else if (isAutomatic) {
-            reloadingTime /= capacity;
+            reloadingTime /= (float) capacity;
         }
 
         timeReloading = new TimerDone(reloadingTime);
     }
 
     void update() {
-        if (isReloading && timeReloading.calculateIsDone(Game.getWorld().getTime().getCurrentMilliseconds())) {
+        if (isReloading && timeReloading.calculateIsDone(Game.getWorld().getTime().getCurrent())) {
             cartridgesQuantity++;
 
             if (isFull() || !isAutomatic) {
                 isReloading = false;
             } else {
-                timeReloading.setTimeInitial(Game.getWorld().getTime().getCurrentMilliseconds());
+                timeReloading.setTimeInitial(Game.getWorld().getTime().getCurrent());
             }
         }
     }
@@ -72,7 +72,7 @@ public class Magazine {
         }
 
         isReloading = true;
-        timeReloading.setTimeInitial(Game.getWorld().getTime().getCurrentMilliseconds());
+        timeReloading.setTimeInitial(Game.getWorld().getTime().getCurrent());
 
         if (isAutomatic) {
             cartridgesQuantity = 0;

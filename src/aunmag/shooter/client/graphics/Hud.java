@@ -2,7 +2,6 @@ package aunmag.shooter.client.graphics;
 
 import aunmag.nightingale.Input;
 import aunmag.shooter.client.Game;
-import aunmag.shooter.world.World;
 import aunmag.nightingale.Application;
 import aunmag.nightingale.data.DataEngine;
 import aunmag.nightingale.font.Text;

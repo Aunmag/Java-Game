@@ -16,7 +16,7 @@ public class WeaponFactory {
     public static Weapon makarovPistol() {
         return new Weapon(
                 WeaponType.makarovPistol,
-                new Magazine(CartridgeType._9x18mm_Makarov, true, 8, 2000),
+                new Magazine(CartridgeType._9x18mm_Makarov, true, 8, 2f),
                 new Striker(SEMI_AUTO_SHOTS_PER_MINUTE),
                 new Trigger(false)
         );
@@ -25,7 +25,7 @@ public class WeaponFactory {
     public static Weapon mp27() {
         return new Weapon(
                 WeaponType.mp27,
-                new Magazine(CartridgeType._12_76_Magnum, false, 2, 250),
+                new Magazine(CartridgeType._12_76_Magnum, false, 2, 0.25f),
                 new Striker(SEMI_AUTO_SHOTS_PER_MINUTE),
                 new Trigger(false)
         );
@@ -34,7 +34,7 @@ public class WeaponFactory {
     public static Weapon aks74u() {
         return new Weapon(
                 WeaponType.aks74u,
-                new Magazine(CartridgeType._5_45x39mm, true, 30, 2000),
+                new Magazine(CartridgeType._5_45x39mm, true, 30, 2f),
                 new Striker(675),
                 new Trigger(true)
         );
@@ -43,7 +43,7 @@ public class WeaponFactory {
     public static Weapon pecheneg() {
         return new Weapon(
                 WeaponType.pecheneg,
-                new Magazine(CartridgeType._7_62x54mmR, true, 200, 8000),
+                new Magazine(CartridgeType._7_62x54mmR, true, 200, 8f),
                 new Striker(650),
                 new Trigger(true)
         );
@@ -52,7 +52,7 @@ public class WeaponFactory {
     public static Weapon saiga12k() {
         return new Weapon(
                 WeaponType.saiga12k,
-                new Magazine(CartridgeType._12_76_Magnum, true, 8, 2000),
+                new Magazine(CartridgeType._12_76_Magnum, true, 8, 2f),
                 new Striker(SEMI_AUTO_SHOTS_PER_MINUTE),
                 new Trigger(false)
         );
