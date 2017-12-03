@@ -1,5 +1,6 @@
 package aunmag.shooter.world
 
+import aunmag.nightingale.utilities.TimeFlow
 import aunmag.nightingale.utilities.UtilsBaseOperative
 import aunmag.nightingale.utilities.UtilsGraphics
 import aunmag.nightingale.utilities.UtilsMath
@@ -17,7 +18,7 @@ import java.util.ArrayList
 class World {
 
     private val grid = WorldGrid() // TODO: Change this class
-    val time = WorldTime()
+    val time = TimeFlow()
     val ais: MutableList<Ai> = ArrayList()
     val actors: MutableList<Actor> = ArrayList()
     val projectiles: MutableList<Projectile> = ArrayList()
