@@ -7,12 +7,11 @@ import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.weapon.Weapon;
-import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.collision.CollisionCircle;
 
-public class Actor extends BaseSprite {
+public class Actor extends CollisionCircle {
 
     private static Actor player;
     private static final int[] samples = new int[6];
@@ -25,7 +24,6 @@ public class Actor extends BaseSprite {
     private int kills = 0;
     private Weapon weapon = null;
     private Hands hands = new Hands(this);
-    private CollisionCircle collision = new CollisionCircle(getX(), getY(), 0.225f);
     private AudioSource audioSource = new AudioSource();
 
     private FluidValue offsetRadians = new FluidValue(0.06f);
@@ -45,7 +43,7 @@ public class Actor extends BaseSprite {
     }
 
     public Actor(ActorType type) {
-        super(0, 0, 0, null);
+        super(0, 0, 0.225f);
         this.type = type;
         offsetRadians.setFlexDegree(0.5f);
         isAiming.setFlexDegree(1.25f);
@@ -83,9 +81,7 @@ public class Actor extends BaseSprite {
                 continue;
             }
 
-            collision.preventCollisionWith(opponent.collision);
-            setPosition(collision.getX(), collision.getY());
-            opponent.setPosition(opponent.collision.getX(), opponent.collision.getY());
+            preventCollisionWith(opponent);
         }
 
         indexOfLastCollisionCheckedActor++;
@@ -103,6 +99,15 @@ public class Actor extends BaseSprite {
         }
 
         weapon.update();
+    }
+
+    private void updateWeaponPosition() {
+        if (weapon != null) {
+            weapon.setRadians(getRadians());
+            float x = getX() + 0.375f * (float) Math.cos(getRadians());
+            float y = getY() + 0.375f * (float) Math.sin(getRadians());
+            weapon.setPosition(x, y);
+        }
     }
 
     private void walk() {
@@ -159,12 +164,8 @@ public class Actor extends BaseSprite {
     }
 
     public void render() {
-        if (weapon != null) {
-            weapon.render();
-        }
-
         hands.render();
-        collision.render();
+        super.render();
     }
 
     public void remove() {
@@ -222,16 +223,14 @@ public class Actor extends BaseSprite {
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
 
-        collision.setPosition(getX(), getY());
         hands.updatePosition();
         audioSource.setPosition(getX(), getY());
+        updateWeaponPosition();
+    }
 
-        if (weapon != null) {
-            weapon.setRadians(getRadians());
-            float weaponX = getX() + 0.375f * (float) Math.cos(getRadians());
-            float weaponY = getY() + 0.375f * (float) Math.sin(getRadians());
-            weapon.setPosition(weaponX, weaponY);
-        }
+    public void setRadians(float radians) {
+        super.setRadians(radians);
+        updateWeaponPosition(); // TODO: Optimize
     }
 
     public static void setPlayer(Actor player) {
@@ -266,10 +265,6 @@ public class Actor extends BaseSprite {
 
     public boolean getHasWeapon() {
         return weapon != null;
-    }
-
-    public CollisionCircle getCollision() {
-        return collision;
     }
 
     public Hands getHands() {

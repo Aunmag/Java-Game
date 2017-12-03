@@ -1,12 +1,11 @@
 package aunmag.shooter.weapon;
 
 import aunmag.nightingale.audio.AudioSource;
+import aunmag.nightingale.collision.CollisionEmpty;
 import aunmag.shooter.client.Game;
-import aunmag.shooter.world.World;
-import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.utilities.UtilsMath;
 
-public class Weapon extends BaseSprite {
+public class Weapon extends CollisionEmpty {
 
     public final WeaponType type;
     public final Magazine magazine;
@@ -20,7 +19,7 @@ public class Weapon extends BaseSprite {
             Striker striker,
             Trigger trigger
     ) {
-        super(0, 0, 0, type.texture);
+        super(0, 0, 0);
         this.type = type;
         this.magazine = magazine;
         this.striker = striker;

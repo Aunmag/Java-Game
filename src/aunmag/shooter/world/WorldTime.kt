@@ -1,6 +1,6 @@
 package aunmag.shooter.world
 
-import aunmag.nightingale.data.DataTime
+import aunmag.nightingale.Application
 
 class WorldTime {
 
@@ -11,7 +11,7 @@ class WorldTime {
     var speed = 1.0
 
     internal fun update() {
-        delta = DataTime.getDelta() * speed
+        delta = Application.getTimeDelta() * speed
         current += delta
     }
 

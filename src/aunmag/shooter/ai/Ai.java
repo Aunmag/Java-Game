@@ -87,7 +87,7 @@ public class Ai implements BaseOperative {
 
         memoryTarget.setReached(Collision.calculateIsCollision(
                 subject.getHands(),
-                targetActor.getCollision()
+                targetActor
         ));
 
         float radiansDifference = memoryTarget.getDirection() - targetActor.getRadians();
