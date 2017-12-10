@@ -15,8 +15,8 @@ public class Blackout {
     private static final float healthThird = healthMax / 3f;
     private static float healthCurrent = healthMax;
     private static float healthLast = healthCurrent;
-    private static final int timeHurtAscent = 60;
-    private static final int timeHurtDecline = 480;
+    private static final float timeHurtAscent = 0.06f;
+    private static final float timeHurtDecline = 0.48f;
     private static FluidValue intensity = new FluidValue(timeHurtAscent);
 
     static {
@@ -25,7 +25,7 @@ public class Blackout {
     }
 
     public static void render() {
-        healthCurrent = correctHealth(Actor.getPlayer().getHealth());
+        healthCurrent = Actor.getPlayer().getHealth();
 
         renderBoundaries();
 
@@ -58,7 +58,7 @@ public class Blackout {
     }
 
     private static void renderDynamicRectangle() {
-        long timeWorld = Game.getWorld().getTime().getCurrentMilliseconds();
+        double timeWorld = Game.getWorld().getTime().getCurrent();
 
         if (healthCurrent != healthLast) {
             if (intensity.getTimeDuration() != timeHurtAscent) {
@@ -81,16 +81,6 @@ public class Blackout {
         float height = Application.getWindow().getHeight();
         GL11.glColor4f(0f, 0f, 0f, alpha);
         UtilsGraphics.drawQuad(0, 0, width, height, true, false);
-    }
-
-    private static float correctHealth(float health) {
-        if (health > 1) {
-            health = 1;
-        } else if (health < 0) {
-            health = 0;
-        }
-
-        return health;
     }
 
 }

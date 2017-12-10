@@ -1,11 +1,11 @@
 package aunmag.shooter.weapon;
 
-import org.joml.Vector3f;
-import org.joml.Vector3fc;
+import org.joml.Vector4f;
+import org.joml.Vector4fc;
 
 public class CartridgeType {
 
-    public static final Vector3fc color = new Vector3f(1.0f, 0.8f, 0.2f);
+    public static final Vector4fc color = new Vector4f(1.0f, 0.8f, 0.2f, 1.0f);
 
     public final int shot;
     public final float weight;

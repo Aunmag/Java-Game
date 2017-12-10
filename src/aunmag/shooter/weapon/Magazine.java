@@ -1,26 +1,29 @@
 package aunmag.shooter.weapon;
 
 import aunmag.nightingale.Application;
-import aunmag.nightingale.utilities.TimerDone;
+import aunmag.nightingale.utilities.Timer;
 import aunmag.nightingale.utilities.UtilsGraphics;
-import aunmag.shooter.client.Game;
+import aunmag.shooter.world.World;
 import org.lwjgl.opengl.GL11;
 
 public class Magazine {
 
+    public final World world;
     public final CartridgeType cartridgeType;
     private final boolean isAutomatic;
     private final int capacity;
     private int cartridgesQuantity;
     private boolean isReloading = false;
-    private TimerDone timeReloading;
+    private final Timer timeReloading;
 
     public Magazine(
+            World world,
             CartridgeType cartridgeType,
             boolean isAutomatic,
             int capacity,
-            int reloadingTime
+            float reloadingTime
     ) {
+        this.world = world;
         this.cartridgeType = cartridgeType;
         this.isAutomatic = isAutomatic;
         this.capacity = capacity;
@@ -29,20 +32,20 @@ public class Magazine {
         if (isUnlimited()) {
             reloadingTime = 0;
         } else if (isAutomatic) {
-            reloadingTime /= capacity;
+            reloadingTime /= (float) capacity;
         }
 
-        timeReloading = new TimerDone(reloadingTime);
+        timeReloading = new Timer(world.getTime(), reloadingTime, 0.125f);
     }
 
     void update() {
-        if (isReloading && timeReloading.calculateIsDone(Game.getWorld().getTime().getCurrentMilliseconds())) {
+        if (isReloading && timeReloading.isDone()) {
             cartridgesQuantity++;
 
             if (isFull() || !isAutomatic) {
                 isReloading = false;
             } else {
-                timeReloading.setTimeInitial(Game.getWorld().getTime().getCurrentMilliseconds());
+                timeReloading.next();
             }
         }
     }
@@ -62,7 +65,7 @@ public class Magazine {
             return;
         }
 
-        if (timeReloading.getTimeDuration() == 0) {
+        if (timeReloading.getDuration() == 0) {
             if (isAutomatic) {
                 cartridgesQuantity = capacity;
             } else {
@@ -72,7 +75,7 @@ public class Magazine {
         }
 
         isReloading = true;
-        timeReloading.setTimeInitial(Game.getWorld().getTime().getCurrentMilliseconds());
+        timeReloading.next();
 
         if (isAutomatic) {
             cartridgesQuantity = 0;

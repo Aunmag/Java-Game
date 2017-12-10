@@ -27,8 +27,8 @@ public class Crosshair {
         float cos = (float) Math.cos(radians);
         float sin = (float) Math.sin(radians);
         float distance = Application.getWindow().getCenterY() * degree / scale;
-        float x = shooter.getX() + (distance + shooter.getCollision().radius) * cos;
-        float y = shooter.getY() + (distance + shooter.getCollision().radius) * sin;
+        float x = shooter.getX() + (distance + shooter.radius) * cos;
+        float y = shooter.getY() + (distance + shooter.radius) * sin;
 
         float offset = size / scale;
         float offsetX1 = offset * (float) Math.cos(radians + UtilsMath.PIx0_5);
@@ -36,11 +36,7 @@ public class Crosshair {
         float offsetX2 = offsetX1 * 3;
         float offsetY2 = offsetY1 * 3;
 
-        float alpha = distance;
-        if (alpha > 1) {
-            alpha = 1;
-        }
-
+        float alpha = UtilsMath.limitNumber(distance, 0, 1);
         GL11.glColor4f(1f, 1f, 1f, alpha);
         UtilsGraphics.drawPrepare();
         UtilsGraphics.drawLine(x + offsetX1, y + offsetY1, x + offsetX2, y + offsetY2, true);

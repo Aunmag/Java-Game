@@ -1,59 +1,67 @@
 package aunmag.shooter.weapon;
 
+import aunmag.shooter.world.World;
+
 public class WeaponFactory {
 
     private static final int SEMI_AUTO_SHOTS_PER_MINUTE = 400;
 
-    public static Weapon laserGun() {
+    public static Weapon laserGun(World world) {
         return new Weapon(
+                world,
                 WeaponType.laserGun,
-                new Magazine(CartridgeType.LASER, true, 0, 0),
-                new Striker(1200),
+                new Magazine(world, CartridgeType.LASER, true, 0, 0),
+                new Striker(world, 1200),
                 new Trigger(true)
         );
     }
 
-    public static Weapon makarovPistol() {
+    public static Weapon makarovPistol(World world) {
         return new Weapon(
+                world,
                 WeaponType.makarovPistol,
-                new Magazine(CartridgeType._9x18mm_Makarov, true, 8, 2000),
-                new Striker(SEMI_AUTO_SHOTS_PER_MINUTE),
+                new Magazine(world, CartridgeType._9x18mm_Makarov, true, 8, 2f),
+                new Striker(world, SEMI_AUTO_SHOTS_PER_MINUTE),
                 new Trigger(false)
         );
     }
 
-    public static Weapon mp27() {
+    public static Weapon mp27(World world) {
         return new Weapon(
+                world,
                 WeaponType.mp27,
-                new Magazine(CartridgeType._12_76_Magnum, false, 2, 250),
-                new Striker(SEMI_AUTO_SHOTS_PER_MINUTE),
+                new Magazine(world, CartridgeType._12_76_Magnum, false, 2, 0.25f),
+                new Striker(world, SEMI_AUTO_SHOTS_PER_MINUTE),
                 new Trigger(false)
         );
     }
 
-    public static Weapon aks74u() {
+    public static Weapon aks74u(World world) {
         return new Weapon(
+                world,
                 WeaponType.aks74u,
-                new Magazine(CartridgeType._5_45x39mm, true, 30, 2000),
-                new Striker(675),
+                new Magazine(world, CartridgeType._5_45x39mm, true, 30, 2f),
+                new Striker(world, 675),
                 new Trigger(true)
         );
     }
 
-    public static Weapon pecheneg() {
+    public static Weapon pecheneg(World world) {
         return new Weapon(
+                world,
                 WeaponType.pecheneg,
-                new Magazine(CartridgeType._7_62x54mmR, true, 200, 8000),
-                new Striker(650),
+                new Magazine(world, CartridgeType._7_62x54mmR, true, 200, 8f),
+                new Striker(world, 650),
                 new Trigger(true)
         );
     }
 
-    public static Weapon saiga12k() {
+    public static Weapon saiga12k(World world) {
         return new Weapon(
+                world,
                 WeaponType.saiga12k,
-                new Magazine(CartridgeType._12_76_Magnum, true, 8, 2000),
-                new Striker(SEMI_AUTO_SHOTS_PER_MINUTE),
+                new Magazine(world, CartridgeType._12_76_Magnum, true, 8, 2f),
+                new Striker(world, SEMI_AUTO_SHOTS_PER_MINUTE),
                 new Trigger(false)
         );
     }

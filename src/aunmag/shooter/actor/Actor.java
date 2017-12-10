@@ -7,12 +7,12 @@ import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.weapon.Weapon;
-import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.collision.CollisionCircle;
+import aunmag.shooter.world.World;
 
-public class Actor extends BaseSprite {
+public class Actor extends CollisionCircle {
 
     private static Actor player;
     private static final int[] samples = new int[6];
@@ -20,22 +20,22 @@ public class Actor extends BaseSprite {
     private static final float velocityFactorBack = 0.8f;
     private static int indexOfLastCollisionCheckedActor = 0;
 
+    public final World world;
     public final ActorType type;
     private float health = 1;
     private int kills = 0;
     private Weapon weapon = null;
-    private Hands hands = new Hands(this);
-    private CollisionCircle collision = new CollisionCircle(getX(), getY(), 0.225f);
+    private Hands hands;
     private AudioSource audioSource = new AudioSource();
 
-    private FluidValue offsetRadians = new FluidValue(60);
+    private FluidValue offsetRadians = new FluidValue(0.06f);
     public boolean isWalkingForward = false;
     public boolean isWalkingBack = false;
     public boolean isWalkingLeft = false;
     public boolean isWalkingRight = false;
     public boolean isSprinting = false;
     public boolean isAttacking = false;
-    public FluidToggle isAiming = new FluidToggle(250);
+    public FluidToggle isAiming = new FluidToggle(0.25f);
 
     static {
         for (int i = 0; i < samples.length; i++) {
@@ -44,9 +44,11 @@ public class Actor extends BaseSprite {
         }
     }
 
-    public Actor(ActorType type) {
-        super(0, 0, 0, null);
+    public Actor(ActorType type, World world) {
+        super(0, 0, 0.225f);
         this.type = type;
+        this.world = world;
+        hands = new Hands(this);
         offsetRadians.setFlexDegree(0.5f);
         isAiming.setFlexDegree(1.25f);
     }
@@ -57,14 +59,14 @@ public class Actor extends BaseSprite {
             return;
         }
 
-        offsetRadians.update(Game.getWorld().getTime().getCurrentMilliseconds());
+        offsetRadians.update(world.getTime().getCurrent());
         if (offsetRadians.getValueTarget() != 0 && offsetRadians.isTargetReached()) {
             addRadiansCarefully(offsetRadians.getValueCurrent());
-            offsetRadians.setValueTarget(0, Game.getWorld().getTime().getCurrentMilliseconds());
+            offsetRadians.setValueTarget(0, world.getTime().getCurrent());
             offsetRadians.reachTargetNow();
         }
 
-        isAiming.update(Game.getWorld().getTime().getCurrentMilliseconds());
+        isAiming.update(world.getTime().getCurrent());
         walk();
         updateCollision();
         hands.update();
@@ -72,20 +74,18 @@ public class Actor extends BaseSprite {
     }
 
     private void updateCollision() {
-        for (int index = Game.getWorld().getActors().size() - 1; index >= 0; index--) {
+        for (int index = world.getActors().size() - 1; index >= 0; index--) {
             if (index == indexOfLastCollisionCheckedActor) {
                 break;
             }
 
-            Actor opponent = Game.getWorld().getActors().get(index);
+            Actor opponent = world.getActors().get(index);
 
             if (!opponent.isAlive() || opponent.isRemoved() || opponent == this) {
                 continue;
             }
 
-            collision.preventCollisionWith(opponent.collision);
-            setPosition(collision.getX(), collision.getY());
-            opponent.setPosition(opponent.collision.getX(), opponent.collision.getY());
+            preventCollisionWith(opponent);
         }
 
         indexOfLastCollisionCheckedActor++;
@@ -103,6 +103,15 @@ public class Actor extends BaseSprite {
         }
 
         weapon.update();
+    }
+
+    private void updateWeaponPosition() {
+        if (weapon != null) {
+            weapon.setRadians(getRadians());
+            float x = getX() + 0.375f * (float) Math.cos(getRadians());
+            float y = getY() + 0.375f * (float) Math.sin(getRadians());
+            weapon.setPosition(x, y);
+        }
     }
 
     private void walk() {
@@ -130,7 +139,7 @@ public class Actor extends BaseSprite {
 
         velocity -= velocity * isAiming.getValueCurrent() / 2f;
         velocity *= health;
-        velocity *= Game.getWorld().getTime().getDelta();
+        velocity *= world.getTime().getDelta();
 
         float moveX = (float) (velocity * Math.cos(getRadians() + radiansTurn));
         float moveY = (float) (velocity * Math.sin(getRadians() + radiansTurn));
@@ -151,7 +160,7 @@ public class Actor extends BaseSprite {
     }
 
     public void push(float force) {
-        offsetRadians.setValueTarget(force, Game.getWorld().getTime().getCurrentMilliseconds());
+        offsetRadians.setValueTarget(force, world.getTime().getCurrent());
 
         if (this == Actor.player) {
             CameraShaker.shake(force);
@@ -159,12 +168,8 @@ public class Actor extends BaseSprite {
     }
 
     public void render() {
-        if (weapon != null) {
-            weapon.render();
-        }
-
         hands.render();
-        collision.render();
+        super.render();
     }
 
     public void remove() {
@@ -188,7 +193,7 @@ public class Actor extends BaseSprite {
             return;
         }
 
-        int sample = samples[UtilsMath.random.nextInt(6)];
+        int sample = samples[UtilsMath.random.nextInt(samples.length)];
         audioSource.setSample(sample);
         audioSource.play();
     }
@@ -204,13 +209,7 @@ public class Actor extends BaseSprite {
     /* Setters */
 
     private void addHealth(float addHealth) {
-        health += addHealth;
-
-        if (health < 0) {
-            health = 0;
-        } else if (health > 1) {
-            health = 1;
-        }
+        health = UtilsMath.limitNumber(health + addHealth, 0, 1);
 
         if (!isAlive()) {
             remove();
@@ -222,16 +221,14 @@ public class Actor extends BaseSprite {
     public void setPosition(float x, float y) {
         super.setPosition(x, y);
 
-        collision.setPosition(getX(), getY());
         hands.updatePosition();
         audioSource.setPosition(getX(), getY());
+        updateWeaponPosition();
+    }
 
-        if (weapon != null) {
-            weapon.setRadians(getRadians());
-            float weaponX = getX() + 0.375f * (float) Math.cos(getRadians());
-            float weaponY = getY() + 0.375f * (float) Math.sin(getRadians());
-            weapon.setPosition(weaponX, weaponY);
-        }
+    public void setRadians(float radians) {
+        super.setRadians(radians);
+        updateWeaponPosition(); // TODO: Optimize
     }
 
     public static void setPlayer(Actor player) {
@@ -266,10 +263,6 @@ public class Actor extends BaseSprite {
 
     public boolean getHasWeapon() {
         return weapon != null;
-    }
-
-    public CollisionCircle getCollision() {
-        return collision;
     }
 
     public Hands getHands() {

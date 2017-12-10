@@ -4,26 +4,24 @@ import aunmag.nightingale.Application;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.client.Game;
-import aunmag.shooter.world.World;
-import aunmag.nightingale.basics.BaseSprite;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionLine;
-import aunmag.nightingale.utilities.UtilsGraphics;
-import org.joml.Vector2f;
+import aunmag.shooter.world.World;
+import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
-public class Projectile extends BaseSprite {
+public class Projectile extends CollisionLine {
 
     private static final float VELOCITY_MIN = 0.5f;
     private static final float VELOCITY_FACTOR = 1f / 5f;
 
+    public final World world;
     public final CartridgeType type;
     private float velocity;
-    private Vector2f positionTail;
-    private CollisionLine collision;
     private Actor shooter;
 
     public Projectile(
+            World world,
             CartridgeType type,
             float x,
             float y,
@@ -31,12 +29,13 @@ public class Projectile extends BaseSprite {
             float velocity,
             Actor shooter
     ) {
-        super(x, y, radians, null);
+        super(x, y);
+        this.world = world;
         this.type = type;
         this.velocity = velocity;
         this.shooter = shooter;
-        positionTail = new Vector2f(x, y);
-        collision = new CollisionLine(x, y, x, y);
+        this.color = new Vector4f(type.color); // TODO: Optimize
+        setRadians(radians);
     }
 
     public void update() {
@@ -55,28 +54,24 @@ public class Projectile extends BaseSprite {
     }
 
     private void updatePosition() {
-        double velocity = this.velocity * VELOCITY_FACTOR * Game.getWorld().getTime().getDelta();
-
-        positionTail.set(getX(), getY());
+        double velocity = this.velocity * VELOCITY_FACTOR * world.getTime().getDelta();
 
         addPosition(
                 (float) (velocity * Math.cos(getRadians())),
                 (float) (velocity * Math.sin(getRadians()))
         );
-
-        collision.setPosition(getX(), getY(), positionTail.x(), positionTail.y());
     }
 
     private void updateCollision() {
         Actor farthestActor = null;
         float farthestActorDistance = 0;
 
-        for (Actor actor: Game.getWorld().getActors()) {
+        for (Actor actor: world.getActors()) {
             if (!actor.isAlive() || actor.isRemoved()) {
                 continue;
             }
 
-            if (Collision.calculateIsCollision(actor.getCollision(), collision)) {
+            if (Collision.calculateIsCollision(actor, this)) {
                 float distance = UtilsMath.calculateDistanceBetween(this, actor);
                 if (farthestActor == null || distance > farthestActorDistance) {
                     farthestActor = actor;
@@ -96,7 +91,7 @@ public class Projectile extends BaseSprite {
     }
 
     private void updateVelocity() {
-        velocity -= velocity * (type.velocityRecessionFactor * Game.getWorld().getTime().getDelta());
+        velocity -= velocity * (type.velocityRecessionFactor * world.getTime().getDelta());
 
         if (velocity <= VELOCITY_MIN) {
             stop();
@@ -109,8 +104,7 @@ public class Projectile extends BaseSprite {
 
     public void render() {
         GL11.glLineWidth(type.size * Application.getCamera().getScaleFull());
-        GL11.glColor3f(type.color.x(), type.color.y(), type.color.z());
-        UtilsGraphics.drawLine(getX(), getY(), positionTail.x(), positionTail.y(), true);
+        super.render();
     }
 
     /* Getters */

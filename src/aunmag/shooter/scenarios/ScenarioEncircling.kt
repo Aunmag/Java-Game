@@ -7,10 +7,10 @@ import aunmag.nightingale.gui.GuiButtonBack
 import aunmag.nightingale.gui.GuiLabel
 import aunmag.nightingale.gui.GuiPage
 import aunmag.nightingale.structures.Texture
-import aunmag.nightingale.utilities.TimerDone
-import aunmag.nightingale.utilities.TimerNext
+import aunmag.nightingale.utilities.Timer
 import aunmag.nightingale.utilities.UtilsGraphics
 import aunmag.nightingale.utilities.UtilsMath
+import aunmag.nightingale.utilities.UtilsMath.limitNumber
 import aunmag.shooter.actor.Actor
 import aunmag.shooter.actor.ActorType
 import aunmag.shooter.ai.Ai
@@ -26,8 +26,8 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     private val waveFinal = 8
     private val zombiesQuantityInitial = 32
     private var zombiesQuantityToSpawn = 0
-    private val zombiesSpawnTimer = TimerNext(500)
-    private val notificationTimer = TimerDone(3000)
+    private val zombiesSpawnTimer = Timer(world.time, 0.5)
+    private val notificationTimer = Timer(world.time, 3.0)
     private var notificationWave: GuiLabel? = null
     private var notificationKills: GuiLabel? = null
 
@@ -43,11 +43,9 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
         confinePlayerPosition()
 
-        if (zombiesQuantityToSpawn > 0) {
-            zombiesSpawnTimer.update(world.time.currentMilliseconds)
-            if (zombiesSpawnTimer.isNow) {
-                spawnZombie()
-            }
+        if (zombiesQuantityToSpawn > 0 && zombiesSpawnTimer.isDone) {
+            spawnZombie()
+            zombiesSpawnTimer.next()
         } else if (world.actors.size == 1) { // TODO: Improve
             startNextWave()
         }
@@ -74,7 +72,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     private fun renderNotifications() {
-        if (notificationTimer.calculateIsDone(world.time.currentMilliseconds)) {
+        if (notificationTimer.isDone) {
             removeNotifications()
         } else {
             notificationWave?.render()
@@ -100,19 +98,8 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
     private fun confinePlayerPosition() {
         val player = getPlayer() ?: return
-        val n = bordersDistance
-
-        if (player.x < -n) {
-            player.x = -n
-        } else if (player.x > n) {
-            player.x = n
-        }
-
-        if (player.y < -n) {
-            player.y = -n
-        } else if (player.y > n) {
-            player.y = n
-        }
+        player.x = limitNumber(player.x, -bordersDistance, bordersDistance)
+        player.y = limitNumber(player.y, -bordersDistance, bordersDistance)
     }
 
     private fun spawnZombie() {
@@ -124,7 +111,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         val x = centerX - distance * Math.cos(direction.toDouble()).toFloat()
         val y = centerY - distance * Math.sin(direction.toDouble()).toFloat()
 
-        val zombie = Actor(ActorType.zombieEasy) // TODO: Spawn different types of zombies
+        val zombie = Actor(ActorType.zombieEasy, world) // TODO: Spawn different types of zombies
         zombie.setPosition(x, y)
         zombie.radians = -direction
         world.actors.add(zombie)
@@ -142,7 +129,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         val messageKills = "Kill $zombiesQuantityToSpawn zombies"
         notificationKills = GuiLabel(5, 5, 2, 1, messageKills, Font.fontDefault, 1f)
 
-        notificationTimer.timeInitial = world.time.currentMilliseconds
+        notificationTimer.next()
     }
 
     private fun removeNotifications() {

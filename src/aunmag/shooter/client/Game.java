@@ -15,8 +15,6 @@ import aunmag.nightingale.data.DataEngine;
 import aunmag.nightingale.gui.*;
 import aunmag.nightingale.structures.Texture;
 import aunmag.shooter.scenarios.ScenarioEncircling;
-import aunmag.shooter.weapon.Weapon;
-import aunmag.shooter.weapon.WeaponFactory;
 import org.lwjgl.glfw.GLFW;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
@@ -29,13 +27,6 @@ public class Game extends Application {
     private static GuiButtonBack buttonContinue;
     private static AudioSource soundTheme;
     private Crosshair crosshair = null;
-
-    private final Weapon laserGun = WeaponFactory.laserGun();
-    private final Weapon makarovPistol = WeaponFactory.makarovPistol();
-    private final Weapon mp27 = WeaponFactory.mp27();
-    private final Weapon aks74u = WeaponFactory.aks74u();
-    private final Weapon pecheneg = WeaponFactory.pecheneg();
-    private final Weapon saiga12k = WeaponFactory.saiga12k();
 
     public Game() {
         buttonContinue = new GuiButtonBack(4, 7, 4, 1, "Continue");
@@ -187,7 +178,7 @@ public class Game extends Application {
         player.isAttacking = Input.isMouseButtonDown(GLFW.GLFW_MOUSE_BUTTON_1);
 
         if (Input.isMouseButtonPressed(GLFW.GLFW_MOUSE_BUTTON_2)) {
-            player.isAiming.toggle(Game.getWorld().getTime().getCurrentMilliseconds());
+            player.isAiming.toggle(world.getTime().getCurrent());
         }
 
         float mouseSensitivity = 0.005f;
@@ -199,17 +190,17 @@ public class Game extends Application {
         }
 
         if (Input.isKeyPressed(GLFW.GLFW_KEY_0)) {
-            player.setWeapon(laserGun);
+            player.setWeapon(world.getLaserGun());
         } else if (Input.isKeyPressed(GLFW.GLFW_KEY_1)) {
-            player.setWeapon(makarovPistol);
+            player.setWeapon(world.getMakarovPistol());
         } else if (Input.isKeyPressed(GLFW.GLFW_KEY_2)) {
-            player.setWeapon(mp27);
+            player.setWeapon(world.getMp27());
         } else if (Input.isKeyPressed(GLFW.GLFW_KEY_3)) {
-            player.setWeapon(aks74u);
+            player.setWeapon(world.getAks74u());
         } else if (Input.isKeyPressed(GLFW.GLFW_KEY_4)) {
-            player.setWeapon(pecheneg);
+            player.setWeapon(world.getPecheneg());
         } else if (Input.isKeyPressed(GLFW.GLFW_KEY_5)) {
-            player.setWeapon(saiga12k);
+            player.setWeapon(world.getSaiga12k());
         }
     }
 
