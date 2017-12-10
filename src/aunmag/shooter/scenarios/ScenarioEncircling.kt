@@ -43,11 +43,12 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
         confinePlayerPosition()
 
-        if (zombiesQuantityToSpawn > 0 && zombiesSpawnTimer.isDone) {
+        val areAllZombiesSpawned = zombiesQuantityToSpawn == 0
+        if (areAllZombiesSpawned && world.actors.size == 1) {
+            startNextWave()
+        } else if (!areAllZombiesSpawned && zombiesSpawnTimer.isDone) {
             spawnZombie()
             zombiesSpawnTimer.next()
-        } else if (world.actors.size == 1) { // TODO: Improve
-            startNextWave()
         }
     }
 
