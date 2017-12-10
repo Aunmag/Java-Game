@@ -7,8 +7,7 @@ import aunmag.nightingale.gui.GuiButtonBack
 import aunmag.nightingale.gui.GuiLabel
 import aunmag.nightingale.gui.GuiPage
 import aunmag.nightingale.structures.Texture
-import aunmag.nightingale.utilities.TimerDone
-import aunmag.nightingale.utilities.TimerNext
+import aunmag.nightingale.utilities.Timer
 import aunmag.nightingale.utilities.UtilsGraphics
 import aunmag.nightingale.utilities.UtilsMath
 import aunmag.nightingale.utilities.UtilsMath.limitNumber
@@ -27,8 +26,8 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     private val waveFinal = 8
     private val zombiesQuantityInitial = 32
     private var zombiesQuantityToSpawn = 0
-    private val zombiesSpawnTimer = TimerNext(0.5)
-    private val notificationTimer = TimerDone(3.0)
+    private val zombiesSpawnTimer = Timer(world.time, 0.5)
+    private val notificationTimer = Timer(world.time, 3.0)
     private var notificationWave: GuiLabel? = null
     private var notificationKills: GuiLabel? = null
 
@@ -44,11 +43,9 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
         confinePlayerPosition()
 
-        if (zombiesQuantityToSpawn > 0) {
-            zombiesSpawnTimer.update(world.time.current)
-            if (zombiesSpawnTimer.isNow) {
-                spawnZombie()
-            }
+        if (zombiesQuantityToSpawn > 0 && zombiesSpawnTimer.isDone) {
+            spawnZombie()
+            zombiesSpawnTimer.next()
         } else if (world.actors.size == 1) { // TODO: Improve
             startNextWave()
         }
@@ -75,7 +72,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     private fun renderNotifications() {
-        if (notificationTimer.calculateIsDone(world.time.current)) {
+        if (notificationTimer.isDone) {
             removeNotifications()
         } else {
             notificationWave?.render()
@@ -132,7 +129,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         val messageKills = "Kill $zombiesQuantityToSpawn zombies"
         notificationKills = GuiLabel(5, 5, 2, 1, messageKills, Font.fontDefault, 1f)
 
-        notificationTimer.timeInitial = world.time.current
+        notificationTimer.next()
     }
 
     private fun removeNotifications() {

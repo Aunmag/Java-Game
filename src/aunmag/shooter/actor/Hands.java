@@ -1,7 +1,6 @@
 package aunmag.shooter.actor;
 
-import aunmag.nightingale.utilities.TimerNext;
-import aunmag.shooter.client.Game;
+import aunmag.nightingale.utilities.Timer;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionCircle;
 import org.joml.Vector4f;
@@ -10,12 +9,13 @@ public class Hands extends CollisionCircle {
 
     private static final float radius = 0.34f;
     private static final float distance = radius;
-    private TimerNext nextAttackTime = new TimerNext(0.4f);
+    private final Timer nextAttackTime;
     private final Actor owner;
 
     public Hands(Actor owner) {
         super(owner.getX(), owner.getY(), radius);
         this.owner = owner;
+        nextAttackTime = new Timer(owner.world.getTime(), 0.4f, 0.125f);
         updatePosition();
         this.color = new Vector4f(1f, 0f, 0f, 0.5f);
     }
@@ -23,9 +23,9 @@ public class Hands extends CollisionCircle {
     public void update() {
         updatePosition();
 
-        nextAttackTime.update(owner.world.getTime().getCurrent());
-        if (owner.isAttacking && !owner.getHasWeapon() && nextAttackTime.isNow()) {
+        if (owner.isAttacking && !owner.getHasWeapon() && nextAttackTime.isDone()) {
             attack();
+            nextAttackTime.next();
         }
     }
 

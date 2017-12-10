@@ -3,23 +3,27 @@ package aunmag.shooter.ai;
 import aunmag.nightingale.basics.BaseOperative;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.utilities.UtilsMath;
-import aunmag.nightingale.utilities.TimerNext;
+import aunmag.nightingale.utilities.Timer;
 import aunmag.shooter.actor.Actor;
 import aunmag.shooter.actor.ActorType;
-import aunmag.shooter.client.Game;
 
 public class Ai implements BaseOperative {
 
     private boolean isRemoved = false;
-    private TimerNext reactionWatch = new TimerNext(0.3f);
-    private TimerNext reactionLookAround = new TimerNext(2f);
-    private TimerNext reactionChangeStrategy = new TimerNext(30f);
+    private final Timer reactionWatch;
+    private final Timer reactionLookAround;
+    private final Timer reactionChangeStrategy;
     private int strategyDeviationWay = 0;
     private Actor subject;
     private AiMemoryTarget memoryTarget = new AiMemoryTarget();
 
     public Ai(Actor subject) {
         this.subject = subject;
+
+        reactionWatch = new Timer(subject.world.getTime(), 0.3f, 0.125f);
+        reactionLookAround = new Timer(subject.world.getTime(), 2f, 0.125f);
+        reactionChangeStrategy = new Timer(subject.world.getTime(), 30f, 0.125f);
+
         changeStrategy();
     }
 
@@ -29,20 +33,20 @@ public class Ai implements BaseOperative {
             return;
         }
 
-        reactionChangeStrategy.update(subject.world.getTime().getCurrent());
-        if (reactionChangeStrategy.isNow()) {
+        if (reactionChangeStrategy.isDone()) {
             changeStrategy();
+            reactionChangeStrategy.next();
         }
 
-        reactionLookAround.update(subject.world.getTime().getCurrent());
-        if (reactionLookAround.isNow()) {
+        if (reactionLookAround.isDone()) {
             searchTarget();
+            reactionLookAround.next();
         }
 
         if (memoryTarget.isInMemory()) {
-            reactionWatch.update(subject.world.getTime().getCurrent());
-            if (reactionWatch.isNow()) {
+            if (reactionWatch.isDone()) {
                 updateTargetData();
+                reactionWatch.next();
             }
 
             if (memoryTarget.isReached()) {

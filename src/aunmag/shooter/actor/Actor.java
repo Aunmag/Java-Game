@@ -25,7 +25,7 @@ public class Actor extends CollisionCircle {
     private float health = 1;
     private int kills = 0;
     private Weapon weapon = null;
-    private Hands hands = new Hands(this);
+    private Hands hands;
     private AudioSource audioSource = new AudioSource();
 
     private FluidValue offsetRadians = new FluidValue(0.06f);
@@ -48,6 +48,7 @@ public class Actor extends CollisionCircle {
         super(0, 0, 0.225f);
         this.type = type;
         this.world = world;
+        hands = new Hands(this);
         offsetRadians.setFlexDegree(0.5f);
         isAiming.setFlexDegree(1.25f);
     }

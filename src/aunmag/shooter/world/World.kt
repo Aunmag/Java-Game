@@ -23,7 +23,7 @@ class World {
     val actors: MutableList<Actor> = ArrayList()
     val projectiles: MutableList<Projectile> = ArrayList()
 
-    // TODO: : World shouldn't know about player's weapons
+    // TODO: World shouldn't know about player's weapons
     val laserGun = WeaponFactory.laserGun(this)
     val makarovPistol = WeaponFactory.makarovPistol(this)
     val mp27 = WeaponFactory.mp27(this)

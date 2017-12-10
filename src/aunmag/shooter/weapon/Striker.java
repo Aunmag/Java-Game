@@ -1,22 +1,22 @@
 package aunmag.shooter.weapon;
 
-import aunmag.nightingale.utilities.TimerNext;
-import aunmag.shooter.client.Game;
+import aunmag.nightingale.utilities.Timer;
 import aunmag.shooter.world.World;
 
 public class Striker {
 
     public final World world;
-    private final TimerNext nextShotTime;
+    private final Timer nextShotTime;
 
     public Striker(World world, int shotsPerMinute) {
         this.world = world;
-        nextShotTime = new TimerNext(60f / (float) shotsPerMinute);
+        nextShotTime = new Timer(world.getTime(), 60f / (float) shotsPerMinute);
     }
 
     boolean isCocked() {
-        nextShotTime.update(world.getTime().getCurrent());
-        return nextShotTime.isNow();
+        boolean isCocked = nextShotTime.isDone();
+        nextShotTime.next(true);
+        return isCocked;
     }
 
 }
