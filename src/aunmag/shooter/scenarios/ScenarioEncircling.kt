@@ -24,7 +24,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     private val bordersDistance = 32f
     private var wave = 0
     private val waveFinal = 8
-    private val zombiesQuantityInitial = 1
+    private val zombiesQuantityInitial = 32
     private var zombiesQuantityToSpawn = 0
     private val zombiesSpawnTimer = Timer(world.time, 0.5)
 
