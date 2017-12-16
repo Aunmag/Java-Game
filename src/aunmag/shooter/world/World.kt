@@ -10,6 +10,7 @@ import aunmag.shooter.ai.Ai
 import aunmag.shooter.client.graphics.WorldGrid
 import aunmag.shooter.data.soundAmbiance
 import aunmag.shooter.data.soundAtmosphere
+import aunmag.shooter.gui.NotificationLayer
 import aunmag.shooter.weapon.Projectile
 import aunmag.shooter.weapon.WeaponFactory
 import org.lwjgl.opengl.GL11
@@ -22,6 +23,7 @@ class World {
     val ais: MutableList<Ai> = ArrayList()
     val actors: MutableList<Actor> = ArrayList()
     val projectiles: MutableList<Projectile> = ArrayList()
+    val notifications: NotificationLayer
 
     // TODO: World shouldn't know about player's weapons
     val laserGun = WeaponFactory.laserGun(this)
@@ -33,6 +35,7 @@ class World {
 
     init {
         initializePlayer() // TODO: World should not know about client's player
+        notifications = NotificationLayer(time)
     }
 
     private fun initializePlayer() {
@@ -50,6 +53,7 @@ class World {
         UtilsBaseOperative.updateAll(actors)
         Actor.finalizeUpdate() // TODO: Get rid of this
         UtilsBaseOperative.updateAll(projectiles)
+        notifications.update()
     }
 
     // TODO: Optimize draw modes
@@ -61,6 +65,7 @@ class World {
         UtilsBaseOperative.renderAll(projectiles)
         GL11.glLineWidth(1f)
         UtilsGraphics.drawFinish()
+        notifications.render()
     }
 
     fun playSounds() {
@@ -74,6 +79,7 @@ class World {
     }
 
     fun remove() {
+        notifications.clear()
         UtilsBaseOperative.removeAll(ais)
         UtilsBaseOperative.removeAll(actors)
         UtilsBaseOperative.removeAll(projectiles)

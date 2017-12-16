@@ -24,12 +24,9 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     private val bordersDistance = 32f
     private var wave = 0
     private val waveFinal = 8
-    private val zombiesQuantityInitial = 32
+    private val zombiesQuantityInitial = 1
     private var zombiesQuantityToSpawn = 0
     private val zombiesSpawnTimer = Timer(world.time, 0.5)
-    private val notificationTimer = Timer(world.time, 3.0)
-    private var notificationWave: GuiLabel? = null
-    private var notificationKills: GuiLabel? = null
 
     init {
         startNextWave()
@@ -54,7 +51,6 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
     override fun render() {
         renderBorders()
-        renderNotifications()
     }
 
     // TODO: Clean
@@ -72,20 +68,6 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         GL11.glLineWidth(1f)
     }
 
-    private fun renderNotifications() {
-        if (notificationTimer.isDone) {
-            removeNotifications()
-        } else {
-            notificationWave?.render()
-            notificationKills?.render()
-        }
-    }
-
-    override fun remove() {
-        removeNotifications()
-        super.remove()
-    }
-
     private fun startNextWave() {
         if (wave == waveFinal) {
             gameOver(true)
@@ -94,7 +76,11 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
         wave++
         zombiesQuantityToSpawn = zombiesQuantityInitial * wave
-        createNotifications()
+
+        world.notifications.add(
+                "Wave $wave/$waveFinal",
+                "Kill $zombiesQuantityToSpawn zombies"
+        )
     }
 
     private fun confinePlayerPosition() {
@@ -119,26 +105,6 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         world.ais.add(Ai(zombie))
 
         zombiesQuantityToSpawn--
-    }
-
-    private fun createNotifications() {
-        removeNotifications()
-
-        val messageWave = "Wave $wave/$waveFinal"
-        notificationWave = GuiLabel(5, 4, 2, 1, messageWave)
-
-        val messageKills = "Kill $zombiesQuantityToSpawn zombies"
-        notificationKills = GuiLabel(5, 5, 2, 1, messageKills, Font.fontDefault, 1f)
-
-        notificationTimer.next()
-    }
-
-    private fun removeNotifications() {
-        notificationWave?.delete()
-        notificationKills?.delete()
-
-        notificationWave = null
-        notificationKills = null
     }
 
     private fun gameOver(isVictory: Boolean) {
