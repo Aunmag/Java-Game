@@ -6,7 +6,7 @@
 
     <groupId>aunmag.shooter</groupId>
     <artifactId>a-zombie-shooter-game</artifactId>
-    <version>0.3</version>
+    <version>0.3.68</version>
 
     <properties>
         <java.version>1.8</java.version>
@@ -18,18 +18,34 @@
 
     <dependencies>
         <dependency>
-        <groupId>aunmag.nightingale</groupId>
+            <groupId>aunmag.nightingale</groupId>
             <artifactId>nightingale-engine</artifactId>
             <version>${nightingale.version}</version>
             <scope>system</scope>
             <systemPath>${basedir}/lib/nightingale-engine.jar</systemPath>
         </dependency>
-
         <dependency>
             <groupId>org.jetbrains.kotlin</groupId>
             <artifactId>kotlin-stdlib</artifactId>
             <version>${kotlin.version}</version>
         </dependency>
     </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**/*.properties</include>
+                    <include>**/*.frag</include>
+                    <include>**/*.vert</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
+    </build>
 
 </project>
