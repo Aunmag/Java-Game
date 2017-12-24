@@ -21,7 +21,7 @@ public class Crosshair {
         }
 
         float scale = Application.getCamera().getScaleFull();
-        float degree = shooter.isAiming.getValueCurrent();
+        float degree = shooter.isAiming.getCurrent();
         float radians = shooter.getRadians();
 
         float cos = (float) Math.cos(radians);

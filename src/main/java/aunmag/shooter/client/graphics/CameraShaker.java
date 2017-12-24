@@ -12,23 +12,23 @@ public class CameraShaker {
 
     static {
         float flexDegree = 0.8f;
-        fluidRadians = new FluidValue(timeUp);
+        fluidRadians = new FluidValue(Application.time, timeUp); // TODO: Use world time
         fluidRadians.setFlexDegree(flexDegree);
     }
 
     public static void shake(float force) {
-        fluidRadians.setTimeDuration(timeUp);
-        fluidRadians.setValueTarget(force, Game.getWorld().getTime().getCurrent());
+        fluidRadians.timer.setDuration(timeUp);
+        fluidRadians.setTarget(force);
     }
 
     public static void update() {
-        fluidRadians.update(Game.getWorld().getTime().getCurrent());
-        if (fluidRadians.isTargetReached() && fluidRadians.getValueTarget() != 0) {
-            fluidRadians.setTimeDuration(timeDown);
-            fluidRadians.setValueTarget(0, Game.getWorld().getTime().getCurrent());
+        fluidRadians.update();
+        if (fluidRadians.isTargetReached() && fluidRadians.getTarget() != 0) {
+            fluidRadians.timer.setDuration(timeDown);
+            fluidRadians.setTarget(0);
         }
 
-        Application.getCamera().addRadiansOffset(fluidRadians.getValueCurrent());
+        Application.getCamera().addRadiansOffset(fluidRadians.getCurrent());
     }
 
 }

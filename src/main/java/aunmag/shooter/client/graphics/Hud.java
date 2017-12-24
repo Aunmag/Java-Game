@@ -1,6 +1,6 @@
 package aunmag.shooter.client.graphics;
 
-import aunmag.nightingale.Input;
+import aunmag.nightingale.input.Input;
 import aunmag.shooter.client.Game;
 import aunmag.nightingale.Application;
 import aunmag.nightingale.data.DataEngine;
@@ -27,7 +27,7 @@ public class Hud {
     }
 
     public static void render() {
-        if (Input.isKeyPressed(GLFW.GLFW_KEY_F1)) {
+        if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_F1)) {
             isVisible = !isVisible;
         }
 
