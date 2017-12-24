@@ -56,6 +56,7 @@ public class Projectile extends CollisionLine {
     private void updatePosition() {
         double velocity = this.velocity * VELOCITY_FACTOR * world.getTime().getDelta();
 
+        pullUpTail();
         addPosition(
                 (float) (velocity * Math.cos(getRadians())),
                 (float) (velocity * Math.sin(getRadians()))

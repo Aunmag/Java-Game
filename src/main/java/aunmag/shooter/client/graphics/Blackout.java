@@ -4,6 +4,7 @@ import aunmag.nightingale.Application;
 import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsGraphics;
+import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.client.Game;
 import org.lwjgl.opengl.GL11;
 import aunmag.shooter.actor.Actor;
@@ -17,11 +18,13 @@ public class Blackout {
     private static float healthLast = healthCurrent;
     private static final float timeHurtAscent = 0.06f;
     private static final float timeHurtDecline = 0.48f;
-    private static FluidValue intensity = new FluidValue(timeHurtAscent);
+    private static FluidValue intensity;
 
     static {
         texture = Texture.getOrCreate("images/gui/blackout1600", false, false);
         texture.scaleAsWindow();
+
+         intensity = new FluidValue(Application.time, timeHurtAscent); // TODO: Use world time
     }
 
     public static void render() {
@@ -39,7 +42,6 @@ public class Blackout {
         float alpha = 1 - healthCurrent / 1.4f;
 
         texture.bind();
-        Application.getShader().setUniformSampler(0);
         Application.getShader().setUniformProjection(Application.getWindow().projection);
         Application.getShader().setUniformColour(1, 1, 1, alpha);
         texture.render();
@@ -58,24 +60,22 @@ public class Blackout {
     }
 
     private static void renderDynamicRectangle() {
-        double timeWorld = Game.getWorld().getTime().getCurrent();
-
+        intensity.update();
         if (healthCurrent != healthLast) {
-            if (intensity.getTimeDuration() != timeHurtAscent) {
-                intensity.setTimeDuration(timeHurtAscent);
+            if (intensity.timer.getDuration() != timeHurtAscent) {
+                intensity.timer.setDuration(timeHurtAscent);
             }
-            float intensityTarget = Math.abs(healthLast - healthCurrent) * 8 % 1;
-            intensity.setValueTarget(intensityTarget, timeWorld);
+            float intensityTarget = Math.abs(healthLast - healthCurrent) * 4;
+            intensity.setTarget(UtilsMath.limitNumber(intensityTarget, 0, 1));
             if (intensity.isTargetReached()) {
                 healthLast = healthCurrent;
-                intensity.setTimeDuration(timeHurtDecline);
+                intensity.timer.setDuration(timeHurtDecline);
             }
         } else {
-            intensity.setValueTarget(0, timeWorld);
+            intensity.setTarget(0);
         }
 
-        intensity.update(timeWorld);
-        float alpha = intensity.getValueCurrent();
+        float alpha = intensity.getCurrent();
 
         float width = Application.getWindow().getWidth();
         float height = Application.getWindow().getHeight();

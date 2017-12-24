@@ -1,5 +1,6 @@
 package aunmag.shooter.world
 
+import aunmag.nightingale.Application
 import aunmag.nightingale.utilities.TimeFlow
 import aunmag.nightingale.utilities.UtilsBaseOperative
 import aunmag.nightingale.utilities.UtilsGraphics
@@ -48,7 +49,7 @@ class World {
     }
 
     fun update() {
-        time.update()
+        time.add(Application.time.delta, true)
         UtilsBaseOperative.updateAll(ais)
         UtilsBaseOperative.updateAll(actors)
         Actor.finalizeUpdate() // TODO: Get rid of this

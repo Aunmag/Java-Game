@@ -28,14 +28,14 @@ public class Actor extends CollisionCircle {
     private Hands hands;
     private AudioSource audioSource = new AudioSource();
 
-    private FluidValue offsetRadians = new FluidValue(0.06f);
+    private FluidValue offsetRadians;
     public boolean isWalkingForward = false;
     public boolean isWalkingBack = false;
     public boolean isWalkingLeft = false;
     public boolean isWalkingRight = false;
     public boolean isSprinting = false;
     public boolean isAttacking = false;
-    public FluidToggle isAiming = new FluidToggle(0.25f);
+    public final FluidToggle isAiming;
 
     static {
         for (int i = 0; i < samples.length; i++) {
@@ -49,7 +49,11 @@ public class Actor extends CollisionCircle {
         this.type = type;
         this.world = world;
         hands = new Hands(this);
+
+        offsetRadians = new FluidValue(world.getTime(), 0.06f);
         offsetRadians.setFlexDegree(0.5f);
+
+        isAiming = new FluidToggle(world.getTime(), 0.25f);
         isAiming.setFlexDegree(1.25f);
     }
 
@@ -59,14 +63,14 @@ public class Actor extends CollisionCircle {
             return;
         }
 
-        offsetRadians.update(world.getTime().getCurrent());
-        if (offsetRadians.getValueTarget() != 0 && offsetRadians.isTargetReached()) {
-            addRadiansCarefully(offsetRadians.getValueCurrent());
-            offsetRadians.setValueTarget(0, world.getTime().getCurrent());
+        offsetRadians.update();
+        if (offsetRadians.getTarget() != 0 && offsetRadians.isTargetReached()) {
+            addRadiansCarefully(offsetRadians.getCurrent());
+            offsetRadians.setTarget(0);
             offsetRadians.reachTargetNow();
         }
 
-        isAiming.update(world.getTime().getCurrent());
+        isAiming.update();
         walk();
         updateCollision();
         hands.update();
@@ -137,7 +141,7 @@ public class Actor extends CollisionCircle {
             velocity *= type.velocityFactorSprint;
         }
 
-        velocity -= velocity * isAiming.getValueCurrent() / 2f;
+        velocity -= velocity * isAiming.getCurrent() / 2f;
         velocity *= health;
         velocity *= world.getTime().getDelta();
 
@@ -160,7 +164,7 @@ public class Actor extends CollisionCircle {
     }
 
     public void push(float force) {
-        offsetRadians.setValueTarget(force, world.getTime().getCurrent());
+        offsetRadians.setTarget(force);
 
         if (this == Actor.player) {
             CameraShaker.shake(force);
@@ -243,7 +247,7 @@ public class Actor extends CollisionCircle {
 
     public float getRadians() {
         if (offsetRadians != null) {
-            return super.getRadians() + offsetRadians.getValueCurrent();
+            return super.getRadians() + offsetRadians.getCurrent();
         } else {
             return super.getRadians();
         }
