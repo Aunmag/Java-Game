@@ -6,7 +6,7 @@
 
     <groupId>aunmag.shooter</groupId>
     <artifactId>a-zombie-shooter-game</artifactId>
-    <version>0.3.69</version>
+    <version>0.3.70</version>
 
     <properties>
         <java.version>1.8</java.version>

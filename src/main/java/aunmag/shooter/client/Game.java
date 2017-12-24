@@ -1,6 +1,5 @@
 package aunmag.shooter.client;
 
-import aunmag.nightingale.Camera;
 import aunmag.nightingale.input.Input;
 import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.basics.BaseGrid;
@@ -16,7 +15,6 @@ import aunmag.nightingale.gui.*;
 import aunmag.nightingale.structures.Texture;
 import aunmag.shooter.scenarios.ScenarioEncircling;
 import org.lwjgl.glfw.GLFW;
-import aunmag.shooter.actor.Actor;
 import aunmag.shooter.world.World;
 
 public class Game extends Application {
@@ -24,6 +22,7 @@ public class Game extends Application {
     private static boolean isPause = true;
     private static ScenarioEncircling scenario = null;
     private static World world;
+    private static Player player;
     private static GuiButtonBack buttonContinue;
     private static AudioSource soundTheme;
     private Crosshair crosshair = null;
@@ -38,7 +37,8 @@ public class Game extends Application {
     private void initializeWorld() {
         deleteWorld();
         world = new World();
-        crosshair = new Crosshair(Actor.getPlayer());
+        player = new Player(world);
+        crosshair = new Crosshair(player.getActor());
         buttonContinue.setIsAvailable(true);
         scenario = new ScenarioEncircling(world);
     }
@@ -136,88 +136,16 @@ public class Game extends Application {
                 setPause(false);
             }
         } else {
-            updateInputForCamera();
-            updateInputForPlayer();
+            player.updateInput();
             world.update();
-
-            CameraShaker.update();
-            updateCamera();
-
             scenario.update();
+            CameraShaker.update();
+            player.updateCameraPosition();
+
             if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
                 setPause(true);
             }
         }
-    }
-
-    private void updateInputForCamera() {
-        Camera camera = Application.getCamera();
-
-        float zoom = camera.getScaleZoom();
-        float zoomChange = zoom * 0.01f;
-
-        if (Input.keyboard.isKeyDown(GLFW.GLFW_KEY_KP_ADD)) {
-            camera.setScaleZoom(zoom + zoomChange);
-        } else if (Input.keyboard.isKeyDown(GLFW.GLFW_KEY_KP_SUBTRACT)) {
-            camera.setScaleZoom(zoom - zoomChange);
-        }
-    }
-
-    private void updateInputForPlayer() {
-        Actor player = Actor.getPlayer();
-
-        if (player == null) {
-            return;
-        }
-
-        player.isWalkingForward = Input.keyboard.isKeyDown(GLFW.GLFW_KEY_W);
-        player.isWalkingBack = Input.keyboard.isKeyDown(GLFW.GLFW_KEY_S);
-        player.isWalkingLeft = Input.keyboard.isKeyDown(GLFW.GLFW_KEY_A);
-        player.isWalkingRight = Input.keyboard.isKeyDown(GLFW.GLFW_KEY_D);
-        player.isSprinting = Input.keyboard.isKeyDown(GLFW.GLFW_KEY_LEFT_SHIFT);
-        player.isAttacking = Input.mouse.isButtonDown(GLFW.GLFW_MOUSE_BUTTON_1);
-
-        if (Input.mouse.isButtonPressed(GLFW.GLFW_MOUSE_BUTTON_2)) {
-            player.isAiming.toggle();
-        }
-
-        float mouseSensitivity = 0.005f;
-        mouseSensitivity -= mouseSensitivity * player.isAiming.getCurrent() * 0.75f;
-        player.addRadiansCarefully(Input.mouse.getVelocityX() * mouseSensitivity);
-
-        if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_R) && player.getHasWeapon()) {
-            player.getWeapon().magazine.reload();
-        }
-
-        if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_0)) {
-            player.setWeapon(world.getLaserGun());
-        } else if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_1)) {
-            player.setWeapon(world.getMakarovPistol());
-        } else if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_2)) {
-            player.setWeapon(world.getMp27());
-        } else if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_3)) {
-            player.setWeapon(world.getAks74u());
-        } else if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_4)) {
-            player.setWeapon(world.getPecheneg());
-        } else if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_5)) {
-            player.setWeapon(world.getSaiga12k());
-        }
-    }
-
-    private void updateCamera() {
-        Actor player = Actor.getPlayer();
-
-        if (player == null) {
-            return;
-        }
-
-        Camera camera = Application.getCamera();
-        camera.setPosition(player.getX(), player.getY());
-        camera.setRadians(player.getRadians());
-
-        float offset = Application.getWindow().getCenterY() / 2f;
-        camera.addOffset(0, offset, true);
-        camera.addOffset(0, offset * player.isAiming.getCurrent(), true);
     }
 
     protected void gameRender() {
@@ -228,8 +156,8 @@ public class Game extends Application {
             Blackout.render();
             crosshair.render();
 
-            if (Actor.getPlayer().getHasWeapon()) {
-                Actor.getPlayer().getWeapon().magazine.renderHud();
+            if (player.getActor().getHasWeapon()) {
+                player.getActor().getWeapon().magazine.renderHud();
             }
 
             scenario.render();
@@ -242,6 +170,8 @@ public class Game extends Application {
     }
 
     public static void deleteWorld() {
+        player = null;
+
         if (isWorldCreated()) {
             world.remove();
             world = null;
@@ -291,6 +221,10 @@ public class Game extends Application {
 
     public static World getWorld() {
         return world;
+    }
+
+    public static Player getPlayer() {
+        return player;
     }
 
     public static boolean isWorldCreated() {

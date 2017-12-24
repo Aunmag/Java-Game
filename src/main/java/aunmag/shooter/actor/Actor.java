@@ -14,7 +14,6 @@ import aunmag.shooter.world.World;
 
 public class Actor extends CollisionCircle {
 
-    private static Actor player;
     private static final int[] samples = new int[6];
     private static final float velocityFactorAside = 0.6f;
     private static final float velocityFactorBack = 0.8f;
@@ -166,7 +165,7 @@ public class Actor extends CollisionCircle {
     public void push(float force) {
         offsetRadians.setTarget(force);
 
-        if (this == Actor.player) {
+        if (this == Game.getPlayer().getActor()) {
             CameraShaker.shake(force);
         }
     }
@@ -235,10 +234,6 @@ public class Actor extends CollisionCircle {
         updateWeaponPosition(); // TODO: Optimize
     }
 
-    public static void setPlayer(Actor player) {
-        Actor.player = player;
-    }
-
     public void setWeapon(Weapon weapon) {
         this.weapon = weapon;
     }
@@ -251,10 +246,6 @@ public class Actor extends CollisionCircle {
         } else {
             return super.getRadians();
         }
-    }
-
-    public static Actor getPlayer() {
-        return player;
     }
 
     public float getHealth() {

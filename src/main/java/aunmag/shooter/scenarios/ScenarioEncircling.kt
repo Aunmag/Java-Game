@@ -142,7 +142,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     private fun getPlayer(): Actor? {
-        return Actor.getPlayer()
+        return Game.getPlayer().actor
     }
 
 }

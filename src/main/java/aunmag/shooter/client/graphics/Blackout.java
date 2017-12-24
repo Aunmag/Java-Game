@@ -7,7 +7,6 @@ import aunmag.nightingale.utilities.UtilsGraphics;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.client.Game;
 import org.lwjgl.opengl.GL11;
-import aunmag.shooter.actor.Actor;
 
 public class Blackout {
 
@@ -28,7 +27,7 @@ public class Blackout {
     }
 
     public static void render() {
-        healthCurrent = Actor.getPlayer().getHealth();
+        healthCurrent = Game.getPlayer().getActor().getHealth();
 
         renderBoundaries();
 
