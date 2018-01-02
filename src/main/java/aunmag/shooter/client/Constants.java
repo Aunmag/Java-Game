@@ -15,7 +15,7 @@ public class Constants {
         String filename = "/a-zombie-shooter-game.properties";
         String version = "X.X.X";
         String versionEngineRequired = "X.X.X";
-        String versionEngineActual = DataEngine.version;
+        String versionEngineActual = DataEngine.VERSION;
 
         try {
             InputStream inputStream = Constants.class.getResourceAsStream(filename);

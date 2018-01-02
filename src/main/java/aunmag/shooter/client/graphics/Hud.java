@@ -12,7 +12,7 @@ import org.lwjgl.glfw.GLFW;
 public class Hud {
 
     private static boolean isVisible = false;
-    private static Text text = createText(DataEngine.titleFull);
+    private static Text text = createText(DataEngine.TITLE_FULL);
 
     private static Text createText(String message) {
         return new Text(
