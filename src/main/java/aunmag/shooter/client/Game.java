@@ -49,7 +49,7 @@ public class Game extends Application {
 
     private void initializePageMain() {
         BaseGrid grid = BaseGrid.grid24;
-        String detailsEngine = "Made with " + DataEngine.title;
+        String detailsEngine = "Made with " + DataEngine.TITLE;
         String detailsGame = "version " + Constants.VERSION + " by " + Constants.DEVELOPER;
         GuiLabel[] labels = new GuiLabel[] {
                 new GuiLabel(grid, 6, 8, 12, 1, detailsEngine, Font.fontDefault, 1),
