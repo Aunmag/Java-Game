@@ -7,7 +7,7 @@ import aunmag.nightingale.font.Font
 import aunmag.nightingale.gui.*
 import aunmag.nightingale.utilities.UtilsAudio
 import aunmag.shooter.client.Constants
-import aunmag.shooter.client.Game
+import aunmag.shooter.client.App
 
 class Pause {
 
@@ -21,8 +21,6 @@ class Pause {
     }
 
     private fun createPageMain() {
-        // TODO: Clean method
-
         val page = GuiPage()
 
         page.add(GuiLabel(3, 3, 6, 1, Constants.TITLE))
@@ -41,10 +39,7 @@ class Pause {
                 1f
         ))
         page.add(buttonContinue)
-        page.add(GuiButtonAction(4, 8, 4, 1, "New game") {
-            Game.initializeWorld()
-            Game.setPause(false)
-        })
+        page.add(GuiButtonAction(4, 8, 4, 1, "New game") { App.main.newGame() })
         page.add(GuiButtonLink(4, 9, 4, 1, "Help", createPageHelp()))
         page.add(GuiButtonLink(4, 10, 4, 1, "Exit", createPageExit()))
 
@@ -94,9 +89,8 @@ class Pause {
     fun update() {
         GuiManager.update()
 
-        // TODO: Simplify:
-        if (GuiManager.isShouldClose() && Game.isWorldCreated()) {
-            Game.setPause(false)
+        if (GuiManager.isShouldClose()) {
+            App.main.isPause = false
         }
     }
 

@@ -3,7 +3,6 @@ package aunmag.shooter.weapon;
 import aunmag.nightingale.Application;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.actor.Actor;
-import aunmag.shooter.client.Game;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionLine;
 import aunmag.shooter.world.World;

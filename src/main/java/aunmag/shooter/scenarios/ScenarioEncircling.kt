@@ -12,8 +12,9 @@ import aunmag.nightingale.utilities.UtilsMath.limitNumber
 import aunmag.shooter.actor.Actor
 import aunmag.shooter.actor.ActorType
 import aunmag.shooter.ai.Ai
-import aunmag.shooter.client.Game
+import aunmag.shooter.client.App
 import aunmag.shooter.data.soundGameOver
+import aunmag.shooter.utils.player
 import aunmag.shooter.world.World
 import org.lwjgl.opengl.GL11
 
@@ -31,7 +32,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     override fun update() {
-        if (getPlayer()?.isAlive != true) {
+        if (player?.isAlive != true) {
             gameOver(false)
             return
         }
@@ -51,18 +52,15 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         renderBorders()
     }
 
-    // TODO: Clean
     private fun renderBorders() {
+        val n = bordersDistance
         GL11.glLineWidth(2f)
         GL11.glColor3f(1f, 0f, 0f)
         UtilsGraphics.drawPrepare()
-
-        val n = bordersDistance
         UtilsGraphics.drawLine(-n, -n, +n, -n, true)
         UtilsGraphics.drawLine(+n, -n, +n, +n, true)
         UtilsGraphics.drawLine(+n, +n, -n, +n, true)
         UtilsGraphics.drawLine(-n, +n, -n, -n, true)
-
         GL11.glLineWidth(1f)
     }
 
@@ -82,7 +80,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     private fun confinePlayerPosition() {
-        val player = getPlayer() ?: return
+        val player = player ?: return
         player.x = limitNumber(player.x, -bordersDistance, bordersDistance)
         player.y = limitNumber(player.y, -bordersDistance, bordersDistance)
     }
@@ -91,8 +89,8 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         val distance = Application.getCamera().distanceView / 2f
         val direction = UtilsMath.randomizeBetween(0f, UtilsMath.PIx2.toFloat())
 
-        val centerX = getPlayer()?.x ?: 0f
-        val centerY = getPlayer()?.y ?: 0f
+        val centerX = player?.x ?: 0f
+        val centerY = player?.y ?: 0f
         val x = centerX - distance * Math.cos(direction.toDouble()).toFloat()
         val y = centerY - distance * Math.sin(direction.toDouble()).toFloat()
 
@@ -107,20 +105,19 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
     private fun gameOver(isVictory: Boolean) {
         createGameOverPage(isVictory)
-        Game.deleteWorld()
+        App.main.endGame()
 
         if (!isVictory) {
             soundGameOver.play()
         }
     }
 
-    // TODO: Clean
     private fun createGameOverPage(isVictory: Boolean) {
         val page = GuiPage()
 
-        val kills = getPlayer()?.kills ?: 0
-        val wavesSurvived = if (isVictory) wave else wave - 1
         val title = if (isVictory) "Well done!" else "You have died"
+        val kills = player?.kills ?: 0
+        val wavesSurvived = if (isVictory) wave else wave - 1
         val score = "You killed $kills zombies and survived $wavesSurvived/$waveFinal waves."
 
         page.add(GuiLabel(4, 3, 4, 1, title))
@@ -128,11 +125,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         page.add(GuiButtonBack(4, 9, 4, 1, "Back to main menu"))
 
         page.open()
-        Game.setPause(true)
-    }
-
-    private fun getPlayer(): Actor? {
-        return Game.getPlayer().actor
+        App.main.isPause = true
     }
 
 }

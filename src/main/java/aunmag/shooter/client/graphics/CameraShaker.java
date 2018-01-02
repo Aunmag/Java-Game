@@ -2,7 +2,6 @@ package aunmag.shooter.client.graphics;
 
 import aunmag.nightingale.Application;
 import aunmag.nightingale.utilities.FluidValue;
-import aunmag.shooter.client.Game;
 
 public class CameraShaker {
 

@@ -5,7 +5,8 @@ import aunmag.nightingale.structures.Texture;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsGraphics;
 import aunmag.nightingale.utilities.UtilsMath;
-import aunmag.shooter.client.Game;
+import aunmag.shooter.actor.Actor;
+import aunmag.shooter.utils.LinksKt;
 import org.lwjgl.opengl.GL11;
 
 public class Blackout {
@@ -27,7 +28,13 @@ public class Blackout {
     }
 
     public static void render() {
-        healthCurrent = Game.getPlayer().getActor().getHealth();
+        Actor actor = LinksKt.getPlayer();
+
+        if (actor == null) {
+            return;
+        }
+
+        healthCurrent = actor.getHealth();
 
         renderBoundaries();
 
