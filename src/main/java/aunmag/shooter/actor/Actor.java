@@ -4,8 +4,8 @@ import aunmag.nightingale.audio.AudioSample;
 import aunmag.nightingale.audio.AudioSampleType;
 import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.utilities.FluidToggle;
-import aunmag.shooter.client.Game;
 import aunmag.shooter.client.graphics.CameraShaker;
+import aunmag.shooter.utils.LinksKt;
 import aunmag.shooter.weapon.Weapon;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsMath;
@@ -165,7 +165,7 @@ public class Actor extends CollisionCircle {
     public void push(float force) {
         offsetRadians.setTarget(force);
 
-        if (this == Game.getPlayer().getActor()) {
+        if (this == LinksKt.getPlayer()) {
             CameraShaker.shake(force);
         }
     }

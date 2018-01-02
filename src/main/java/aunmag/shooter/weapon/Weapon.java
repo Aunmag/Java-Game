@@ -2,7 +2,6 @@ package aunmag.shooter.weapon;
 
 import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.collision.CollisionEmpty;
-import aunmag.shooter.client.Game;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.world.World;
 
