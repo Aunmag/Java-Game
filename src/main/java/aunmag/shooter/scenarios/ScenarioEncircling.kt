@@ -2,11 +2,9 @@ package aunmag.shooter.scenarios
 
 import aunmag.nightingale.Application
 import aunmag.nightingale.font.Font
-import aunmag.nightingale.gui.GuiButton
 import aunmag.nightingale.gui.GuiButtonBack
 import aunmag.nightingale.gui.GuiLabel
 import aunmag.nightingale.gui.GuiPage
-import aunmag.nightingale.structures.Texture
 import aunmag.nightingale.utilities.Timer
 import aunmag.nightingale.utilities.UtilsGraphics
 import aunmag.nightingale.utilities.UtilsMath
@@ -118,26 +116,18 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
     // TODO: Clean
     private fun createGameOverPage(isVictory: Boolean) {
+        val page = GuiPage()
+
         val kills = getPlayer()?.kills ?: 0
         val wavesSurvived = if (isVictory) wave else wave - 1
         val title = if (isVictory) "Well done!" else "You have died"
         val score = "You killed $kills zombies and survived $wavesSurvived/$waveFinal waves."
 
-        val labels = arrayOf(
-                GuiLabel(4, 3, 4, 1, title),
-                GuiLabel(4, 4, 4, 1, score, Font.fontDefault, 1f)
-        )
+        page.add(GuiLabel(4, 3, 4, 1, title))
+        page.add(GuiLabel(4, 4, 4, 1, score, Font.fontDefault, 1f))
+        page.add(GuiButtonBack(4, 9, 4, 1, "Back to main menu"))
 
-        val buttons = arrayOf<GuiButton>(GuiButtonBack(4, 9, 4, 1, "Back to main menu"))
-
-        val wallpaper = Texture.getOrCreate(
-                if (isVictory) "images/wallpapers/victory" else "images/wallpapers/death",
-                true,
-                false
-        )
-        wallpaper.scaleAsWallpaper()
-
-        GuiPage(labels, buttons, wallpaper).open()
+        page.open()
         Game.setPause(true)
     }
 
