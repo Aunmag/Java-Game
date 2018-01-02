@@ -59,6 +59,7 @@ public final class App extends Application {
 
     public final void gameTerminate() {
         endGame();
+        pause.remove();
     }
 
     /* Getters */
@@ -84,6 +85,7 @@ public final class App extends Application {
 
         if (isPause) {
             pause.resume();
+            pause.getScenario().refresh();
             if (game != null) {
                 game.suspend();
             }

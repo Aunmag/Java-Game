@@ -8,11 +8,15 @@ import aunmag.nightingale.gui.*
 import aunmag.nightingale.utilities.UtilsAudio
 import aunmag.shooter.client.Constants
 import aunmag.shooter.client.App
+import aunmag.shooter.scenarios.ScenarioPause
+import aunmag.shooter.world.World
 
 class Pause {
 
-    private val theme = UtilsAudio.getOrCreateSoundOgg("sounds/music/menu")
     val buttonContinue = GuiButtonBack(4, 7, 4, 1, "Continue")
+    private val theme = UtilsAudio.getOrCreateSoundOgg("sounds/music/menu")
+    val world = World()
+    val scenario = ScenarioPause()
 
     init {
         theme.setIsLooped(true)
@@ -88,6 +92,8 @@ class Pause {
 
     fun update() {
         GuiManager.update()
+        world.update()
+        scenario.update()
 
         if (GuiManager.isShouldClose()) {
             App.main.isPause = false
@@ -95,7 +101,12 @@ class Pause {
     }
 
     fun render() {
+        world.render()
         GuiManager.render()
+    }
+
+    fun remove() {
+        world.remove()
     }
 
 }
