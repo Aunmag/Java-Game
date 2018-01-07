@@ -40,7 +40,6 @@ class World {
         UtilsGraphics.drawPrepare()
         UtilsBaseOperative.renderAll(projectiles)
         GL11.glLineWidth(1f)
-        UtilsGraphics.drawFinish()
         notifications.render()
     }
 

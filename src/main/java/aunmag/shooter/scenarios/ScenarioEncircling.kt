@@ -1,7 +1,7 @@
 package aunmag.shooter.scenarios
 
 import aunmag.nightingale.Application
-import aunmag.nightingale.font.Font
+import aunmag.nightingale.font.FontStyleDefault
 import aunmag.nightingale.gui.GuiButtonBack
 import aunmag.nightingale.gui.GuiLabel
 import aunmag.nightingale.gui.GuiPage
@@ -121,7 +121,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         val score = "You killed $kills zombies and survived $wavesSurvived/$waveFinal waves."
 
         page.add(GuiLabel(4, 3, 4, 1, title))
-        page.add(GuiLabel(4, 4, 4, 1, score, Font.fontDefault, 1f))
+        page.add(GuiLabel(4, 4, 4, 1, score, FontStyleDefault.labelLight))
         page.add(GuiButtonBack(4, 9, 4, 1, "Back to main menu"))
 
         page.open()

@@ -1,10 +1,8 @@
 package aunmag.shooter.client.graphics;
 
+import aunmag.nightingale.font.FontStyleDefault;
 import aunmag.nightingale.input.Input;
-import aunmag.nightingale.Application;
-import aunmag.nightingale.data.DataEngine;
 import aunmag.nightingale.font.Text;
-import aunmag.nightingale.font.Font;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.client.App;
 import aunmag.shooter.client.states.Game;
@@ -14,19 +12,7 @@ import org.lwjgl.glfw.GLFW;
 public class Hud {
 
     private static boolean isVisible = false;
-    private static Text text = createText(DataEngine.TITLE_FULL);
-
-    private static Text createText(String message) {
-        return new Text(
-                10,
-                10,
-                Application.getWindow().getWidth(),
-                message,
-                1f,
-                Font.fontDefault,
-                false
-        );
-    }
+    private static Text text = new Text(10, 10, "", FontStyleDefault.simple);
 
     public static void render() {
         if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_F1)) {
@@ -61,13 +47,8 @@ public class Hud {
         message += String.format("\nActors: %s", world.getActors().size());
         message += String.format("\nBullets: %s", world.getProjectiles().size());
 
-        if (!text.message.equals(message)) {
-            text.delete();
-            text = createText(message);
-        }
-
-        Font.fontDefault.renderPrepare();
-        text.render();
+        text.load(message);
+        text.orderRendering();
     }
 
 }

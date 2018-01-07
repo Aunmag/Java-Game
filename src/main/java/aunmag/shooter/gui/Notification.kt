@@ -1,7 +1,7 @@
 package aunmag.shooter.gui
 
 import aunmag.nightingale.basics.BaseOperative
-import aunmag.nightingale.font.Font
+import aunmag.nightingale.font.FontStyleDefault
 import aunmag.nightingale.gui.GuiLabel
 import aunmag.nightingale.utilities.TimeFlow
 import aunmag.nightingale.utilities.Timer
@@ -18,7 +18,7 @@ internal class Notification(
     private val timeFadeOut = 0.5f
     private val timer = Timer(time, 3.0)
     private val title = GuiLabel(5, 4, 2, 1, title)
-    private val details = GuiLabel(5, 5, 2, 1, details, Font.fontDefault, 1f)
+    private val details = GuiLabel(5, 5, 2, 1, details, FontStyleDefault.labelLight)
 
     init {
         timer.next()
