@@ -41,7 +41,6 @@ public class Blackout {
         UtilsGraphics.drawPrepare();
         renderRectangle();
         renderDynamicRectangle();
-        UtilsGraphics.drawFinish();
     }
 
     private static void renderBoundaries() {

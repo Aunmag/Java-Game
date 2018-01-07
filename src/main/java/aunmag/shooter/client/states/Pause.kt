@@ -3,7 +3,7 @@ package aunmag.shooter.client.states
 import aunmag.nightingale.Application
 import aunmag.nightingale.basics.BaseGrid
 import aunmag.nightingale.data.DataEngine
-import aunmag.nightingale.font.Font
+import aunmag.nightingale.font.FontStyleDefault
 import aunmag.nightingale.gui.*
 import aunmag.nightingale.utilities.UtilsAudio
 import aunmag.shooter.client.Constants
@@ -32,15 +32,13 @@ class Pause {
                 BaseGrid.grid24,
                 6, 8, 12, 1,
                 "Made with " + DataEngine.TITLE,
-                Font.fontDefault,
-                1f
+                FontStyleDefault.labelLight
         ))
         page.add(GuiLabel(
                 BaseGrid.grid24,
                 6, 9, 12, 1,
                 "version " + Constants.VERSION + " by " + Constants.DEVELOPER,
-                Font.fontDefault,
-                1f
+                FontStyleDefault.labelLight
         ))
         page.add(buttonContinue)
         page.add(GuiButtonAction(4, 8, 4, 1, "New game") { App.main.newGame() })
@@ -52,20 +50,21 @@ class Pause {
 
     private fun createPageHelp(): GuiPage {
         val page = GuiPage()
+        val style = FontStyleDefault.labelLight
 
         page.add(GuiLabel(5, 1, 2, 1, "Help"))
-        page.add(GuiLabel(4, 3, 1, 1, "Movement", Font.fontDefault, 1f))
-        page.add(GuiLabel(7, 3, 1, 1, "W, A, S, D", Font.fontDefault, 1f))
-        page.add(GuiLabel(4, 4, 1, 1, "Rotation", Font.fontDefault, 1f))
-        page.add(GuiLabel(7, 4, 1, 1, "Mouse", Font.fontDefault, 1f))
-        page.add(GuiLabel(4, 5, 1, 1, "Sprint", Font.fontDefault, 1f))
-        page.add(GuiLabel(7, 5, 1, 1, "Shift", Font.fontDefault, 1f))
-        page.add(GuiLabel(4, 6, 1, 1, "Attack", Font.fontDefault, 1f))
-        page.add(GuiLabel(7, 6, 1, 1, "LMB", Font.fontDefault, 1f))
-        page.add(GuiLabel(4, 7, 1, 1, "Zoom in/out", Font.fontDefault, 1f))
-        page.add(GuiLabel(7, 7, 1, 1, "+/-", Font.fontDefault, 1f))
-        page.add(GuiLabel(4, 8, 1, 1, "Menu", Font.fontDefault, 1f))
-        page.add(GuiLabel(7, 8, 1, 1, "Escape", Font.fontDefault, 1f))
+        page.add(GuiLabel(4, 3, 1, 1, "Movement", style))
+        page.add(GuiLabel(7, 3, 1, 1, "W, A, S, D", style))
+        page.add(GuiLabel(4, 4, 1, 1, "Rotation", style))
+        page.add(GuiLabel(7, 4, 1, 1, "Mouse", style))
+        page.add(GuiLabel(4, 5, 1, 1, "Sprint", style))
+        page.add(GuiLabel(7, 5, 1, 1, "Shift", style))
+        page.add(GuiLabel(4, 6, 1, 1, "Attack", style))
+        page.add(GuiLabel(7, 6, 1, 1, "LMB", style))
+        page.add(GuiLabel(4, 7, 1, 1, "Zoom in/out", style))
+        page.add(GuiLabel(7, 7, 1, 1, "+/-", style))
+        page.add(GuiLabel(4, 8, 1, 1, "Menu", style))
+        page.add(GuiLabel(7, 8, 1, 1, "Escape", style))
         page.add(GuiButtonBack(4, 10, 4, 1, "Back"))
 
         return page

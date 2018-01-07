@@ -106,8 +106,6 @@ public class Magazine {
 
         GL11.glColor4f(1, 1, 1, 1 - alpha);
         UtilsGraphics.drawLine(x + widthLoaded, y, x + width, y, false);
-
-        UtilsGraphics.drawFinish();
         GL11.glLineWidth(1);
     }
 
