@@ -22,8 +22,8 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
     private val bordersDistance = 32f
     private var wave = 0
-    private val waveFinal = 8
-    private val zombiesQuantityInitial = 32
+    private val waveFinal = 6
+    private val zombiesQuantityInitial = 5
     private var zombiesQuantityToSpawn = 0
     private val zombiesSpawnTimer = Timer(world.time, 0.5)
 
@@ -71,7 +71,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         }
 
         wave++
-        zombiesQuantityToSpawn = zombiesQuantityInitial * wave
+        zombiesQuantityToSpawn = wave * wave * zombiesQuantityInitial
 
         world.notifications.add(
                 "Wave $wave/$waveFinal",
