@@ -14,7 +14,9 @@ import aunmag.shooter.actor.ActorType
 import aunmag.shooter.ai.Ai
 import aunmag.shooter.client.App
 import aunmag.shooter.data.soundGameOver
+import aunmag.shooter.items.ItemWeapon
 import aunmag.shooter.utils.player
+import aunmag.shooter.weapon.WeaponFactory
 import aunmag.shooter.world.World
 import org.lwjgl.opengl.GL11
 
@@ -26,6 +28,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     private val zombiesQuantityInitial = 5
     private var zombiesQuantityToSpawn = 0
     private val zombiesSpawnTimer = Timer(world.time, 0.5)
+    private var bonusDropChance = 0f
 
     init {
         startNextWave()
@@ -72,6 +75,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
         wave++
         zombiesQuantityToSpawn = wave * wave * zombiesQuantityInitial
+        bonusDropChance = wave * 1.2f / zombiesQuantityToSpawn
 
         world.notifications.add(
                 "Wave $wave/$waveFinal",
@@ -100,7 +104,27 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         world.actors.add(zombie)
         world.ais.add(Ai(zombie))
 
+        if (UtilsMath.random.nextFloat() < bonusDropChance) {
+            createWeaponBonus(zombie)
+        }
+
         zombiesQuantityToSpawn--
+    }
+
+    private fun createWeaponBonus(giver: Actor) {
+        val indexMax = UtilsMath.limitNumber(wave.toFloat(), 1f, 5f).toInt()
+        val index: Int = UtilsMath.randomizeBetween(1, indexMax)
+
+        val weapon = when (true) {
+            index == 1 -> WeaponFactory.makarovPistol(world)
+            index == 2 -> WeaponFactory.mp27(world)
+            index == 3 -> WeaponFactory.aks74u(world)
+            index == 4 -> WeaponFactory.pecheneg(world)
+            index == 5 -> WeaponFactory.saiga12k(world)
+            else -> WeaponFactory.laserGun(world)
+        }
+
+        world.itemsWeapon.add(ItemWeapon(giver, weapon))
     }
 
     private fun gameOver(isVictory: Boolean) {

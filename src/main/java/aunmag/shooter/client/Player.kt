@@ -12,23 +12,16 @@ import org.lwjgl.glfw.GLFW
 class Player(world: World) {
 
     val actor = Actor(ActorType.human, world)
-    private val laserGun = WeaponFactory.laserGun(world)
-    private val makarovPistol = WeaponFactory.makarovPistol(world)
-    private val mp27 = WeaponFactory.mp27(world)
-    private val aks74u = WeaponFactory.aks74u(world)
-    private val pecheneg = WeaponFactory.pecheneg(world)
-    private val saiga12k = WeaponFactory.saiga12k(world)
 
     init {
         actor.radians = -UtilsMath.PIx0_5.toFloat()
-        actor.weapon = mp27
+        actor.weapon = WeaponFactory.makarovPistol(world)
         world.actors.add(actor)
     }
 
     fun updateInput() {
         updateInputForActions()
         updateInputForRotation()
-        updateInputForWeapon()
         updateInputForCamera()
     }
 
@@ -43,26 +36,15 @@ class Player(world: World) {
         if (Input.mouse.isButtonPressed(GLFW.GLFW_MOUSE_BUTTON_2)) {
             actor.isAiming.toggle()
         }
+
+        if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_R) && actor.hasWeapon) {
+            actor.weapon.magazine.reload()
+        }
     }
 
     private fun updateInputForRotation() {
         val mouseSensitivity = 0.005f * (1f - actor.isAiming.current * 0.75f)
         actor.addRadiansCarefully(Input.mouse.velocityX * mouseSensitivity)
-    }
-
-    private fun updateInputForWeapon() {
-        if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_R) && actor.hasWeapon) {
-            actor.weapon.magazine.reload()
-        }
-
-        when (true) {
-            Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_0) -> actor.weapon = laserGun
-            Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_1) -> actor.weapon = makarovPistol
-            Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_2) -> actor.weapon = mp27
-            Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_3) -> actor.weapon = aks74u
-            Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_4) -> actor.weapon = pecheneg
-            Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_5) -> actor.weapon = saiga12k
-        }
     }
 
     private fun updateInputForCamera() {
