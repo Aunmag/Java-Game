@@ -27,8 +27,8 @@ public class Crosshair {
         float cos = (float) Math.cos(radians);
         float sin = (float) Math.sin(radians);
         float distance = Application.getWindow().getCenterY() * degree / scale;
-        float x = shooter.getX() + (distance + shooter.radius) * cos;
-        float y = shooter.getY() + (distance + shooter.radius) * sin;
+        float x = shooter.getX() + (distance + shooter.getRadius()) * cos;
+        float y = shooter.getY() + (distance + shooter.getRadius()) * sin;
 
         float offset = size / scale;
         float offsetX1 = offset * (float) Math.cos(radians + UtilsMath.PIx0_5);
