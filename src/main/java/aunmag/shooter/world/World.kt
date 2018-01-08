@@ -10,6 +10,7 @@ import aunmag.shooter.client.graphics.WorldGrid
 import aunmag.shooter.data.soundAmbiance
 import aunmag.shooter.data.soundAtmosphere
 import aunmag.shooter.gui.NotificationLayer
+import aunmag.shooter.items.ItemWeapon
 import aunmag.shooter.weapon.Projectile
 import org.lwjgl.opengl.GL11
 import java.util.ArrayList
@@ -22,6 +23,7 @@ class World {
     val actors: MutableList<Actor> = ArrayList()
     val projectiles: MutableList<Projectile> = ArrayList()
     val notifications = NotificationLayer(time)
+    val itemsWeapon: MutableList<ItemWeapon> = ArrayList()
 
     fun update() {
         time.add(Application.time.delta, true)
@@ -29,13 +31,27 @@ class World {
         UtilsBaseOperative.updateAll(actors)
         Actor.finalizeUpdate() // TODO: Get rid of this
         UtilsBaseOperative.updateAll(projectiles)
+        updateItemsWeapon()
         notifications.update()
+    }
+
+    private fun updateItemsWeapon() {
+        for (index in itemsWeapon.size - 1 downTo 0) {
+            val item = itemsWeapon[index]
+
+            item.update()
+
+            if (item.isRemoved) {
+                itemsWeapon.removeAt(index)
+            }
+        }
     }
 
     // TODO: Optimize draw modes
     fun render() {
         UtilsGraphics.drawPrepare()
         grid.render()
+        UtilsBaseOperative.renderAll(itemsWeapon)
         UtilsBaseOperative.renderAll(actors)
         UtilsGraphics.drawPrepare()
         UtilsBaseOperative.renderAll(projectiles)
@@ -58,6 +74,7 @@ class World {
         UtilsBaseOperative.removeAll(ais)
         UtilsBaseOperative.removeAll(actors)
         UtilsBaseOperative.removeAll(projectiles)
+        UtilsBaseOperative.renderAll(itemsWeapon)
         stopSounds()
     }
 
