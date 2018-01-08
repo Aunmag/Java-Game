@@ -49,13 +49,15 @@ class Player(world: World) {
 
     private fun updateInputForCamera() {
         val camera = Application.getCamera()
-        val zoomChange = camera.scaleZoom * 0.01f
+        val delta = Application.time.delta.toFloat()
 
         if (Input.keyboard.isKeyDown(GLFW.GLFW_KEY_KP_ADD)) {
-            camera.scaleZoom += zoomChange
+            camera.scaleZoom += camera.scaleZoom * delta
         } else if (Input.keyboard.isKeyDown(GLFW.GLFW_KEY_KP_SUBTRACT)) {
-            camera.scaleZoom -= zoomChange
+            camera.scaleZoom -= camera.scaleZoom * delta
         }
+
+        camera.scaleZoom += Input.mouse.wheel.velocitySmooth * delta
     }
 
     fun updateCameraPosition() {
