@@ -15,16 +15,17 @@ public class Blackout {
     private final float healthMax = 1;
     private final float healthThird = healthMax / 3f;
     private float healthLast = healthMax;
-    private final float timeHurtAscent = 0.06f;
-    private final float timeHurtDecline = 0.48f;
     private final FluidValue intensity;
+    private final float intensityFactor = 4.0f;
+    private final float timeFadeIn = 0.06f;
+    private final float timeFadeOut = timeFadeIn * 8;
 
     public Blackout(Actor player) {
         this.player = player;
 
         texture = Texture.getOrCreate("images/gui/blackout1600", false, false);
         texture.scaleAsWindow();
-        intensity = new FluidValue(player.world.getTime(), timeHurtAscent);
+        intensity = new FluidValue(player.world.getTime(), timeFadeIn);
     }
 
     public void render() {
@@ -58,26 +59,23 @@ public class Blackout {
 
     private void renderDynamicRectangle() {
         intensity.update();
-        if (player.getHealth() != healthLast) {
-            if (intensity.timer.getDuration() != timeHurtAscent) {
-                intensity.timer.setDuration(timeHurtAscent);
-            }
-            float intensityTarget = Math.abs(healthLast - player.getHealth()) * 4;
-            intensity.setTarget(UtilsMath.limitNumber(intensityTarget, 0, 1));
-            if (intensity.isTargetReached()) {
-                healthLast = player.getHealth();
-                intensity.timer.setDuration(timeHurtDecline);
-            }
-        } else {
+
+        float damage = healthLast - player.getHealth();
+        healthLast = player.getHealth();
+
+        if (damage > 0) {
+            intensity.timer.setDuration(timeFadeIn);
+            intensity.setTarget(damage * intensityFactor + intensity.getTarget());
+        }
+
+        if (intensity.getTarget() != 0 && intensity.isTargetReached()) {
+            intensity.timer.setDuration(timeFadeOut);
             intensity.setTarget(0);
         }
 
-        float alpha = intensity.getCurrent();
-
-        float width = Application.getWindow().getWidth();
-        float height = Application.getWindow().getHeight();
+        float alpha = UtilsMath.limitNumber(intensity.getCurrent(), 0, 1);
         GL11.glColor4f(0f, 0f, 0f, alpha);
-        UtilsGraphics.drawQuad(0, 0, width, height, true, false);
+        UtilsGraphics.fillScreen();
     }
 
 }
