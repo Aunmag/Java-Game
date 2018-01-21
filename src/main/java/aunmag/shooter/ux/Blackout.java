@@ -1,4 +1,4 @@
-package aunmag.shooter.client.graphics;
+package aunmag.shooter.ux;
 
 import aunmag.nightingale.Application;
 import aunmag.nightingale.structures.Texture;

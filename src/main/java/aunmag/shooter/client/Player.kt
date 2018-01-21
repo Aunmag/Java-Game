@@ -5,7 +5,7 @@ import aunmag.nightingale.input.Input
 import aunmag.nightingale.utilities.UtilsMath
 import aunmag.shooter.actor.Actor
 import aunmag.shooter.actor.ActorType
-import aunmag.shooter.client.graphics.Blackout
+import aunmag.shooter.ux.Blackout
 import aunmag.shooter.weapon.WeaponFactory
 import aunmag.shooter.world.World
 import org.lwjgl.glfw.GLFW
