@@ -29,10 +29,8 @@ public class Blackout {
 
     public void render() {
         renderBoundaries();
-
         UtilsGraphics.drawPrepare();
         renderRectangle();
-        renderDynamicRectangle();
     }
 
     private void renderBoundaries() {
@@ -45,14 +43,21 @@ public class Blackout {
     }
 
     private void renderRectangle() {
+        updateIntensity();
+
+        float hurt = UtilsMath.limitNumber(intensity.getCurrent(), 0, 1);
+        float wound = 0;
+
         if (player.getHealth() <= thresholdIsInjured) {
-            float alpha = (1.0f - player.getHealth() / thresholdIsInjured) * 0.9f;
-            GL11.glColor4f(0f, 0f, 0f, alpha);
-            UtilsGraphics.fillScreen();
+            wound = (1.0f - player.getHealth() / thresholdIsInjured) * 0.9f;
         }
+
+        float alpha = hurt + wound - (hurt * wound);
+        GL11.glColor4f(0f, 0f, 0f, UtilsMath.limitNumber(alpha, 0, 1));
+        UtilsGraphics.fillScreen();
     }
 
-    private void renderDynamicRectangle() {
+    private void updateIntensity() {
         intensity.update();
 
         float damage = healthLast - player.getHealth();
@@ -67,10 +72,6 @@ public class Blackout {
             intensity.timer.setDuration(timeFadeOut);
             intensity.setTarget(0);
         }
-
-        float alpha = UtilsMath.limitNumber(intensity.getCurrent(), 0, 1);
-        GL11.glColor4f(0f, 0f, 0f, alpha);
-        UtilsGraphics.fillScreen();
     }
 
 }
