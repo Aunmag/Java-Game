@@ -3,7 +3,6 @@ package aunmag.shooter.client.states
 import aunmag.nightingale.input.Input
 import aunmag.shooter.client.App
 import aunmag.shooter.client.Player
-import aunmag.shooter.client.graphics.Blackout
 import aunmag.shooter.client.graphics.CameraShaker
 import aunmag.shooter.client.graphics.Crosshair
 import aunmag.shooter.client.graphics.Hud
@@ -40,7 +39,7 @@ class Game {
 
     fun render() {
         world.render()
-        Blackout.render()
+        player.renderUx()
         crosshair.render()
 
         if (player.actor.hasWeapon) {

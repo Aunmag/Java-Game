@@ -5,6 +5,7 @@ import aunmag.nightingale.input.Input
 import aunmag.nightingale.utilities.UtilsMath
 import aunmag.shooter.actor.Actor
 import aunmag.shooter.actor.ActorType
+import aunmag.shooter.ux.Blackout
 import aunmag.shooter.weapon.WeaponFactory
 import aunmag.shooter.world.World
 import org.lwjgl.glfw.GLFW
@@ -12,6 +13,7 @@ import org.lwjgl.glfw.GLFW
 class Player(world: World) {
 
     val actor = Actor(ActorType.human, world)
+    private val blackout = Blackout(actor)
 
     init {
         actor.radians = -UtilsMath.PIx0_5.toFloat()
@@ -67,6 +69,10 @@ class Player(world: World) {
 
         val offset = Application.getWindow().centerY / 2f * (1f + actor.isAiming.current)
         camera.addOffset(0f, offset, true)
+    }
+
+    fun renderUx() {
+        blackout.render()
     }
 
 }
