@@ -12,13 +12,12 @@ public class Blackout {
 
     private final Actor player;
     private final Texture texture;
-    private final float healthMax = 1;
-    private final float healthThird = healthMax / 3f;
-    private float healthLast = healthMax;
+    private float healthLast = 1.0f;
     private final FluidValue intensity;
     private final float intensityFactor = 4.0f;
     private final float timeFadeIn = 0.06f;
     private final float timeFadeOut = timeFadeIn * 8;
+    private final float thresholdIsInjured = 2.0f / 3.0f;
 
     public Blackout(Actor player) {
         this.player = player;
@@ -46,14 +45,10 @@ public class Blackout {
     }
 
     private void renderRectangle() {
-        float healthDoubleThird = healthThird * 2;
-
-        if (player.getHealth() <= healthDoubleThird) {
-            float alpha = (healthMax - player.getHealth() / healthDoubleThird) * 0.9f;
-            float width = Application.getWindow().getWidth();
-            float height = Application.getWindow().getHeight();
+        if (player.getHealth() <= thresholdIsInjured) {
+            float alpha = (1.0f - player.getHealth() / thresholdIsInjured) * 0.9f;
             GL11.glColor4f(0f, 0f, 0f, alpha);
-            UtilsGraphics.drawQuad(0, 0, width, height, true, false);
+            UtilsGraphics.fillScreen();
         }
     }
 
