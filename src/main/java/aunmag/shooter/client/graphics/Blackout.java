@@ -13,24 +13,43 @@ public class Blackout {
     private final Actor player;
     private final Texture texture;
     private float healthLast = 1.0f;
-    private final FluidValue intensity;
-    private final float intensityFactor = 4.0f;
-    private final float timeFadeIn = 0.06f;
-    private final float timeFadeOut = timeFadeIn * 8;
     private final float thresholdIsInjured = 2.0f / 3.0f;
+    private final FluidValue hurt;
+    private final float hurtFactor = 4.0f;
+    private final float hurtTimeFadeIn = 0.06f;
+    private final float hurtTimeFadeOut = hurtTimeFadeIn * 8;
 
     public Blackout(Actor player) {
         this.player = player;
 
         texture = Texture.getOrCreate("images/gui/blackout1600", false, false);
         texture.scaleAsWindow();
-        intensity = new FluidValue(player.world.getTime(), timeFadeIn);
+        hurt = new FluidValue(player.world.getTime(), hurtTimeFadeIn);
     }
 
     public void render() {
+        updateHurt();
+
         renderBoundaries();
         UtilsGraphics.drawPrepare();
         renderRectangle();
+    }
+
+    private void updateHurt() {
+        hurt.update();
+
+        float damage = healthLast - player.getHealth();
+        healthLast = player.getHealth();
+
+        if (damage > 0) {
+            hurt.timer.setDuration(hurtTimeFadeIn);
+            hurt.setTarget(damage * hurtFactor + hurt.getTarget());
+        }
+
+        if (hurt.getTarget() != 0 && hurt.isTargetReached()) {
+            hurt.timer.setDuration(hurtTimeFadeOut);
+            hurt.setTarget(0);
+        }
     }
 
     private void renderBoundaries() {
@@ -43,35 +62,16 @@ public class Blackout {
     }
 
     private void renderRectangle() {
-        updateIntensity();
-
-        float hurt = UtilsMath.limitNumber(intensity.getCurrent(), 0, 1);
-        float wound = 0;
+        float alphaHurt = UtilsMath.limitNumber(hurt.getCurrent(), 0, 1);
+        float alphaWound = 0;
 
         if (player.getHealth() <= thresholdIsInjured) {
-            wound = (1.0f - player.getHealth() / thresholdIsInjured) * 0.9f;
+            alphaWound = (1.0f - player.getHealth() / thresholdIsInjured) * 0.9f;
         }
 
-        float alpha = hurt + wound - (hurt * wound);
+        float alpha = alphaHurt + alphaWound - (alphaHurt * alphaWound);
         GL11.glColor4f(0f, 0f, 0f, UtilsMath.limitNumber(alpha, 0, 1));
         UtilsGraphics.fillScreen();
-    }
-
-    private void updateIntensity() {
-        intensity.update();
-
-        float damage = healthLast - player.getHealth();
-        healthLast = player.getHealth();
-
-        if (damage > 0) {
-            intensity.timer.setDuration(timeFadeIn);
-            intensity.setTarget(damage * intensityFactor + intensity.getTarget());
-        }
-
-        if (intensity.getTarget() != 0 && intensity.isTargetReached()) {
-            intensity.timer.setDuration(timeFadeOut);
-            intensity.setTarget(0);
-        }
     }
 
 }
