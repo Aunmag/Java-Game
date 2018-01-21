@@ -13,7 +13,6 @@ public class Blackout {
     private final Actor player;
     private final Texture texture;
     private float healthLast = 1.0f;
-    private final float thresholdIsInjured = 2.0f / 3.0f;
     private final FluidValue hurt;
     private final float hurtFactor = 4.0f;
     private final float hurtTimeFadeIn = 0.06f;
@@ -29,10 +28,8 @@ public class Blackout {
 
     public void render() {
         updateHurt();
-
-        renderBoundaries();
-        UtilsGraphics.drawPrepare();
         renderRectangle();
+        renderBoundaries();
     }
 
     private void updateHurt() {
@@ -52,26 +49,21 @@ public class Blackout {
         }
     }
 
-    private void renderBoundaries() {
-        float alpha = 1 - player.getHealth() / 1.4f;
-
-        texture.bind();
-        Application.getShader().setUniformProjection(Application.getWindow().projection);
-        Application.getShader().setUniformColour(1, 1, 1, alpha);
-        texture.render();
-    }
-
     private void renderRectangle() {
-        float alphaHurt = UtilsMath.limitNumber(hurt.getCurrent(), 0, 1);
-        float alphaWound = 0;
-
-        if (player.getHealth() <= thresholdIsInjured) {
-            alphaWound = (1.0f - player.getHealth() / thresholdIsInjured) * 0.9f;
-        }
-
+        float alphaHurt = hurt.getCurrent();
+        float alphaWound = (float) Math.pow(1.0f - player.getHealth(), 3);
         float alpha = alphaHurt + alphaWound - (alphaHurt * alphaWound);
         GL11.glColor4f(0f, 0f, 0f, UtilsMath.limitNumber(alpha, 0, 1));
         UtilsGraphics.fillScreen();
+    }
+
+    private void renderBoundaries() {
+        float alpha = 1 - player.getHealth() / 1.4f;
+        Application.getShader().bind();
+        Application.getShader().setUniformColour(1, 1, 1, alpha);
+        Application.getShader().setUniformProjection(Application.getWindow().projection);
+        texture.bind();
+        texture.render();
     }
 
 }
