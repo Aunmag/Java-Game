@@ -4,8 +4,8 @@ import aunmag.nightingale.basics.BaseOperative;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.utilities.Timer;
-import aunmag.shooter.actor.Actor;
-import aunmag.shooter.actor.ActorType;
+import aunmag.shooter.environment.actor.Actor;
+import aunmag.shooter.environment.actor.ActorType;
 
 public class Ai implements BaseOperative {
 

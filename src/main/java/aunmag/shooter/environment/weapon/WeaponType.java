@@ -1,4 +1,4 @@
-package aunmag.shooter.weapon;
+package aunmag.shooter.environment.weapon;
 
 import aunmag.nightingale.audio.AudioSample;
 import aunmag.nightingale.audio.AudioSampleType;

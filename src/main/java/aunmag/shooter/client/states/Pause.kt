@@ -9,7 +9,7 @@ import aunmag.nightingale.utilities.UtilsAudio
 import aunmag.shooter.client.Constants
 import aunmag.shooter.client.App
 import aunmag.shooter.scenarios.ScenarioPause
-import aunmag.shooter.world.World
+import aunmag.shooter.environment.World
 
 class Pause {
 

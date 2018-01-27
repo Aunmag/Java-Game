@@ -6,7 +6,7 @@ import aunmag.nightingale.font.Text;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.client.App;
 import aunmag.shooter.client.states.Game;
-import aunmag.shooter.world.World;
+import aunmag.shooter.environment.World;
 import org.lwjgl.glfw.GLFW;
 
 public class Hud {

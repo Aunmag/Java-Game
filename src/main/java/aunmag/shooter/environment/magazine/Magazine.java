@@ -1,15 +1,16 @@
-package aunmag.shooter.weapon;
+package aunmag.shooter.environment.magazine;
 
 import aunmag.nightingale.Application;
 import aunmag.nightingale.utilities.Timer;
 import aunmag.nightingale.utilities.UtilsGraphics;
-import aunmag.shooter.world.World;
+import aunmag.shooter.environment.projectile.ProjectileType;
+import aunmag.shooter.environment.World;
 import org.lwjgl.opengl.GL11;
 
 public class Magazine {
 
     public final World world;
-    public final CartridgeType cartridgeType;
+    public final ProjectileType projectileType;
     private final boolean isAutomatic;
     private final int capacity;
     private int cartridgesQuantity;
@@ -18,13 +19,13 @@ public class Magazine {
 
     public Magazine(
             World world,
-            CartridgeType cartridgeType,
+            ProjectileType projectileType,
             boolean isAutomatic,
             int capacity,
             float reloadingTime
     ) {
         this.world = world;
-        this.cartridgeType = cartridgeType;
+        this.projectileType = projectileType;
         this.isAutomatic = isAutomatic;
         this.capacity = capacity;
         cartridgesQuantity = capacity;
@@ -38,7 +39,7 @@ public class Magazine {
         timeReloading = new Timer(world.getTime(), reloadingTime, 0.125f);
     }
 
-    void update() {
+    public void update() {
         if (isReloading && timeReloading.isDone()) {
             cartridgesQuantity++;
 
@@ -50,7 +51,7 @@ public class Magazine {
         }
     }
 
-    boolean takeNextCartridge() {
+    public boolean takeNextCartridge() {
         boolean hasCartridge = !isEmpty();
 
         if (hasCartridge && !isUnlimited()) {

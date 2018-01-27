@@ -1,16 +1,17 @@
-package aunmag.shooter.actor;
+package aunmag.shooter.environment.actor;
 
 import aunmag.nightingale.audio.AudioSample;
 import aunmag.nightingale.audio.AudioSampleType;
 import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.shooter.client.graphics.CameraShaker;
-import aunmag.shooter.utils.LinksKt;
-import aunmag.shooter.weapon.Weapon;
+import aunmag.shooter.data.LinksKt;
+import aunmag.shooter.environment.actor.components.Hands;
+import aunmag.shooter.environment.weapon.Weapon;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.collision.CollisionCircle;
-import aunmag.shooter.world.World;
+import aunmag.shooter.environment.World;
 
 public class Actor extends CollisionCircle {
 

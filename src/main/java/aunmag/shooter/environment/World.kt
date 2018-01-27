@@ -1,17 +1,17 @@
-package aunmag.shooter.world
+package aunmag.shooter.environment
 
 import aunmag.nightingale.Application
 import aunmag.nightingale.utilities.TimeFlow
 import aunmag.nightingale.utilities.UtilsBaseOperative
 import aunmag.nightingale.utilities.UtilsGraphics
-import aunmag.shooter.actor.Actor
+import aunmag.shooter.environment.actor.Actor
 import aunmag.shooter.ai.Ai
 import aunmag.shooter.client.graphics.WorldGrid
 import aunmag.shooter.data.soundAmbiance
 import aunmag.shooter.data.soundAtmosphere
 import aunmag.shooter.gui.NotificationLayer
 import aunmag.shooter.items.ItemWeapon
-import aunmag.shooter.weapon.Projectile
+import aunmag.shooter.environment.projectile.Projectile
 import org.lwjgl.opengl.GL11
 import java.util.ArrayList
 

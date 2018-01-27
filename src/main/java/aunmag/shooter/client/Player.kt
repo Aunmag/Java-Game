@@ -3,11 +3,11 @@ package aunmag.shooter.client
 import aunmag.nightingale.Application
 import aunmag.nightingale.input.Input
 import aunmag.nightingale.utilities.UtilsMath
-import aunmag.shooter.actor.Actor
-import aunmag.shooter.actor.ActorType
+import aunmag.shooter.environment.actor.Actor
+import aunmag.shooter.environment.actor.ActorType
 import aunmag.shooter.ux.Blackout
-import aunmag.shooter.weapon.WeaponFactory
-import aunmag.shooter.world.World
+import aunmag.shooter.environment.weapon.WeaponFactory
+import aunmag.shooter.environment.World
 import org.lwjgl.glfw.GLFW
 
 class Player(world: World) {

@@ -1,8 +1,9 @@
-package aunmag.shooter.actor;
+package aunmag.shooter.environment.actor.components;
 
 import aunmag.nightingale.utilities.Timer;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionCircle;
+import aunmag.shooter.environment.actor.Actor;
 import org.joml.Vector4f;
 
 public class Hands extends CollisionCircle {

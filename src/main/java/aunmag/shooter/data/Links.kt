@@ -1,6 +1,6 @@
-package aunmag.shooter.utils
+package aunmag.shooter.data
 
-import aunmag.shooter.actor.Actor
+import aunmag.shooter.environment.actor.Actor
 import aunmag.shooter.client.App
 
 val player: Actor?
