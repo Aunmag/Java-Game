@@ -1,6 +1,6 @@
 package aunmag.shooter.ai
 
-import aunmag.shooter.actor.Actor
+import aunmag.shooter.environment.actor.Actor
 
 class AiMemoryTarget : AiMemory() {
 

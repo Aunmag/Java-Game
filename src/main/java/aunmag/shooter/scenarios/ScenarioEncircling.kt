@@ -9,15 +9,15 @@ import aunmag.nightingale.utilities.Timer
 import aunmag.nightingale.utilities.UtilsGraphics
 import aunmag.nightingale.utilities.UtilsMath
 import aunmag.nightingale.utilities.UtilsMath.limitNumber
-import aunmag.shooter.actor.Actor
-import aunmag.shooter.actor.ActorType
+import aunmag.shooter.environment.actor.Actor
+import aunmag.shooter.environment.actor.ActorType
 import aunmag.shooter.ai.Ai
 import aunmag.shooter.client.App
 import aunmag.shooter.data.soundGameOver
 import aunmag.shooter.items.ItemWeapon
-import aunmag.shooter.utils.player
-import aunmag.shooter.weapon.WeaponFactory
-import aunmag.shooter.world.World
+import aunmag.shooter.data.player
+import aunmag.shooter.environment.weapon.WeaponFactory
+import aunmag.shooter.environment.World
 import org.lwjgl.opengl.GL11
 
 class ScenarioEncircling(world: World) : Scenario(world) {

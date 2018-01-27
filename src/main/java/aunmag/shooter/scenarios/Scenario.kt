@@ -1,6 +1,6 @@
 package aunmag.shooter.scenarios
 
-import aunmag.shooter.world.World
+import aunmag.shooter.environment.World
 
 open class Scenario(val world: World) {
 

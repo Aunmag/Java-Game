@@ -1,4 +1,4 @@
-package aunmag.shooter.actor;
+package aunmag.shooter.environment.actor;
 
 public class ActorType {
 

@@ -7,7 +7,7 @@ import aunmag.shooter.client.graphics.CameraShaker
 import aunmag.shooter.client.graphics.Crosshair
 import aunmag.shooter.client.graphics.Hud
 import aunmag.shooter.scenarios.ScenarioEncircling
-import aunmag.shooter.world.World
+import aunmag.shooter.environment.World
 import org.lwjgl.glfw.GLFW
 
 class Game {

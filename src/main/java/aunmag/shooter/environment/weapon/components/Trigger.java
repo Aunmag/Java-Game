@@ -1,6 +1,6 @@
-package aunmag.shooter.weapon;
+package aunmag.shooter.environment.weapon.components;
 
-import aunmag.shooter.actor.Actor;
+import aunmag.shooter.environment.actor.Actor;
 
 public class Trigger {
 

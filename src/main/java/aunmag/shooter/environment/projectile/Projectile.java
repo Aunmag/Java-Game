@@ -1,11 +1,11 @@
-package aunmag.shooter.weapon;
+package aunmag.shooter.environment.projectile;
 
 import aunmag.nightingale.Application;
 import aunmag.nightingale.utilities.UtilsMath;
-import aunmag.shooter.actor.Actor;
+import aunmag.shooter.environment.actor.Actor;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionLine;
-import aunmag.shooter.world.World;
+import aunmag.shooter.environment.World;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
@@ -15,13 +15,13 @@ public class Projectile extends CollisionLine {
     private static final float VELOCITY_FACTOR = 1f / 5f;
 
     public final World world;
-    public final CartridgeType type;
+    public final ProjectileType type;
     private float velocity;
     private Actor shooter;
 
     public Projectile(
             World world,
-            CartridgeType type,
+            ProjectileType type,
             float x,
             float y,
             float radians,

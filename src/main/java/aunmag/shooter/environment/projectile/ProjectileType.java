@@ -1,9 +1,9 @@
-package aunmag.shooter.weapon;
+package aunmag.shooter.environment.projectile;
 
 import org.joml.Vector4f;
 import org.joml.Vector4fc;
 
-public class CartridgeType {
+public class ProjectileType {
 
     public static final Vector4fc color = new Vector4f(1.0f, 0.8f, 0.2f, 1.0f);
 
@@ -12,7 +12,7 @@ public class CartridgeType {
     public final float velocityRecessionFactor;
     public final float size;
 
-    private CartridgeType(
+    private ProjectileType(
             int shot,
             float weight,
             float velocityRecessionFactor,
@@ -26,35 +26,35 @@ public class CartridgeType {
 
     /* Types */
 
-    public static final CartridgeType LASER = new CartridgeType(
+    public static final ProjectileType LASER = new ProjectileType(
             1,
             1f,
             0f,
             0.05f
     );
 
-    public static final CartridgeType _9x18mm_Makarov = new CartridgeType(
+    public static final ProjectileType _9x18mm_Makarov = new ProjectileType(
             1,
             6.1f,
             6f,
             0.08f
     );
 
-    public static final CartridgeType _12_76_Magnum = new CartridgeType(
+    public static final ProjectileType _12_76_Magnum = new ProjectileType(
             16,
             48f,
             4f,
             0.02f
     );
 
-    public static final CartridgeType _5_45x39mm = new CartridgeType(
+    public static final ProjectileType _5_45x39mm = new ProjectileType(
             1,
             3.4f,
             6f,
             0.08f
     );
 
-    public static final CartridgeType _7_62x54mmR = new CartridgeType(
+    public static final ProjectileType _7_62x54mmR = new ProjectileType(
             1,
             9.6f,
             4.5f,

@@ -1,7 +1,7 @@
-package aunmag.shooter.weapon;
+package aunmag.shooter.environment.weapon.components;
 
 import aunmag.nightingale.utilities.Timer;
-import aunmag.shooter.world.World;
+import aunmag.shooter.environment.World;
 
 public class Striker {
 
@@ -13,7 +13,7 @@ public class Striker {
         nextShotTime = new Timer(world.getTime(), 60f / (float) shotsPerMinute);
     }
 
-    boolean isCocked() {
+    public boolean isCocked() {
         boolean isCocked = nextShotTime.isDone();
         nextShotTime.next(true);
         return isCocked;

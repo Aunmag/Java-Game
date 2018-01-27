@@ -1,9 +1,13 @@
-package aunmag.shooter.weapon;
+package aunmag.shooter.environment.weapon;
 
 import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.collision.CollisionEmpty;
 import aunmag.nightingale.utilities.UtilsMath;
-import aunmag.shooter.world.World;
+import aunmag.shooter.environment.weapon.components.Striker;
+import aunmag.shooter.environment.weapon.components.Trigger;
+import aunmag.shooter.environment.magazine.Magazine;
+import aunmag.shooter.environment.projectile.Projectile;
+import aunmag.shooter.environment.World;
 
 public class Weapon extends CollisionEmpty {
 
@@ -49,7 +53,7 @@ public class Weapon extends CollisionEmpty {
         float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
         float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
 
-        for (int bullet = 0; bullet < magazine.cartridgeType.shot; bullet++) {
+        for (int bullet = 0; bullet < magazine.projectileType.shot; bullet++) {
             makeBullet(bulletX, bulletY);
         }
     }
@@ -57,7 +61,7 @@ public class Weapon extends CollisionEmpty {
     private void makeBullet(float x, float y) {
         Projectile projectile = new Projectile(
                 world,
-                magazine.cartridgeType,
+                magazine.projectileType,
                 x,
                 y,
                 calculateRandomRadians(),

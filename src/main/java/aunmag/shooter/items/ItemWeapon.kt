@@ -8,9 +8,9 @@ import aunmag.nightingale.input.Input
 import aunmag.nightingale.utilities.FluidValue
 import aunmag.nightingale.utilities.Timer
 import aunmag.nightingale.utilities.UtilsMath
-import aunmag.shooter.actor.Actor
-import aunmag.shooter.utils.player
-import aunmag.shooter.weapon.Weapon
+import aunmag.shooter.environment.actor.Actor
+import aunmag.shooter.data.player
+import aunmag.shooter.environment.weapon.Weapon
 import org.joml.Vector4f
 import org.lwjgl.glfw.GLFW
 
