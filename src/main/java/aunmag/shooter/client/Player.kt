@@ -6,8 +6,9 @@ import aunmag.nightingale.utilities.UtilsMath
 import aunmag.shooter.environment.actor.Actor
 import aunmag.shooter.environment.actor.ActorType
 import aunmag.shooter.ux.Blackout
-import aunmag.shooter.environment.weapon.WeaponFactory
 import aunmag.shooter.environment.World
+import aunmag.shooter.environment.weapon.Weapon
+import aunmag.shooter.environment.weapon.WeaponType
 import org.lwjgl.glfw.GLFW
 
 class Player(world: World) {
@@ -17,7 +18,7 @@ class Player(world: World) {
 
     init {
         actor.radians = -UtilsMath.PIx0_5.toFloat()
-        actor.weapon = WeaponFactory.makarovPistol(world)
+        actor.weapon = Weapon(world, WeaponType.makarovPistol)
         world.actors.add(actor)
     }
 

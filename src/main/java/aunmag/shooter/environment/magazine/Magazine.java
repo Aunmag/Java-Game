@@ -3,50 +3,39 @@ package aunmag.shooter.environment.magazine;
 import aunmag.nightingale.Application;
 import aunmag.nightingale.utilities.Timer;
 import aunmag.nightingale.utilities.UtilsGraphics;
-import aunmag.shooter.environment.projectile.ProjectileType;
 import aunmag.shooter.environment.World;
 import org.lwjgl.opengl.GL11;
 
 public class Magazine {
 
     public final World world;
-    public final ProjectileType projectileType;
-    private final boolean isAutomatic;
-    private final int capacity;
+    public final MagazineType type;
     private int cartridgesQuantity;
     private boolean isReloading = false;
-    private final Timer timeReloading;
+    private final Timer reloadingTimer;
 
-    public Magazine(
-            World world,
-            ProjectileType projectileType,
-            boolean isAutomatic,
-            int capacity,
-            float reloadingTime
-    ) {
+    public Magazine(World world, MagazineType type) {
         this.world = world;
-        this.projectileType = projectileType;
-        this.isAutomatic = isAutomatic;
-        this.capacity = capacity;
-        cartridgesQuantity = capacity;
+        this.type = type;
+        cartridgesQuantity = type.getCapacity();
 
-        if (isUnlimited()) {
-            reloadingTime = 0;
-        } else if (isAutomatic) {
-            reloadingTime /= (float) capacity;
+        float reloadingTime = type.getTimeReloading();
+
+        if (type.isAutomatic()) {
+            reloadingTime /= (float) type.getCapacity();
         }
 
-        timeReloading = new Timer(world.getTime(), reloadingTime, 0.125f);
+        reloadingTimer = new Timer(world.getTime(), reloadingTime, 0.125f);
     }
 
     public void update() {
-        if (isReloading && timeReloading.isDone()) {
+        if (isReloading && reloadingTimer.isDone()) {
             cartridgesQuantity++;
 
-            if (isFull() || !isAutomatic) {
+            if (isFull() || !type.isAutomatic()) {
                 isReloading = false;
             } else {
-                timeReloading.next();
+                reloadingTimer.next();
             }
         }
     }
@@ -54,7 +43,7 @@ public class Magazine {
     public boolean takeNextCartridge() {
         boolean hasCartridge = !isEmpty();
 
-        if (hasCartridge && !isUnlimited()) {
+        if (hasCartridge && !type.isUnlimited()) {
             cartridgesQuantity--;
         }
 
@@ -66,9 +55,9 @@ public class Magazine {
             return;
         }
 
-        if (timeReloading.getDuration() == 0) {
-            if (isAutomatic) {
-                cartridgesQuantity = capacity;
+        if (reloadingTimer.getDuration() == 0) {
+            if (type.isAutomatic()) {
+                cartridgesQuantity = type.getCapacity();
             } else {
                 cartridgesQuantity++;
             }
@@ -76,9 +65,9 @@ public class Magazine {
         }
 
         isReloading = true;
-        timeReloading.next();
+        reloadingTimer.next();
 
-        if (isAutomatic) {
+        if (type.isAutomatic()) {
             cartridgesQuantity = 0;
         }
     }
@@ -91,11 +80,11 @@ public class Magazine {
         float x = (Application.getWindow().getWidth() - width) / 2;
         float y = Application.getWindow().getHeight() - height * 1.5f;
 
-        if (!isUnlimited()) {
-            widthLoaded *= cartridgesQuantity / (float) capacity;
+        if (!type.isUnlimited()) {
+            widthLoaded *= cartridgesQuantity / (float) type.getCapacity();
         }
 
-        if (isReloading && isAutomatic) {
+        if (isReloading && type.isAutomatic()) {
             alpha = 1 - alpha;
         }
 
@@ -113,15 +102,11 @@ public class Magazine {
     /* Getters */
 
     public boolean isFull() {
-        return cartridgesQuantity == capacity;
+        return cartridgesQuantity == type.getCapacity();
     }
 
     public boolean isEmpty() {
-        return isReloading || (cartridgesQuantity == 0 && !isUnlimited());
-    }
-
-    public boolean isUnlimited() {
-        return capacity == 0;
+        return isReloading || (cartridgesQuantity == 0 && !type.isUnlimited());
     }
 
 }
