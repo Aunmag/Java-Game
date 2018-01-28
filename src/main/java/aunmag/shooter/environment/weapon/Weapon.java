@@ -18,19 +18,13 @@ public class Weapon extends CollisionEmpty {
     public final Trigger trigger;
     private AudioSource audioSource;
 
-    public Weapon(
-            World world,
-            WeaponType type,
-            Magazine magazine,
-            Striker striker,
-            Trigger trigger
-    ) {
+    public Weapon(World world, WeaponType type) {
         super(0, 0, 0);
         this.world = world;
         this.type = type;
-        this.magazine = magazine;
-        this.striker = striker;
-        this.trigger = trigger;
+        this.magazine = new Magazine(world, type.magazine);
+        this.striker = new Striker(world, type.shotsPerMinute);
+        this.trigger = new Trigger(type.isAutomatic);
 
         audioSource = new AudioSource();
         audioSource.setSample(type.sample);
@@ -53,7 +47,7 @@ public class Weapon extends CollisionEmpty {
         float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
         float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
 
-        for (int bullet = 0; bullet < magazine.projectileType.shot; bullet++) {
+        for (int bullet = 0; bullet < magazine.type.getProjectile().shot; bullet++) {
             makeBullet(bulletX, bulletY);
         }
     }
@@ -61,7 +55,7 @@ public class Weapon extends CollisionEmpty {
     private void makeBullet(float x, float y) {
         Projectile projectile = new Projectile(
                 world,
-                magazine.projectileType,
+                magazine.type.getProjectile(),
                 x,
                 y,
                 calculateRandomRadians(),

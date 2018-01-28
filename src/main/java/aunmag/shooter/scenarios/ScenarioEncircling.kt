@@ -16,8 +16,9 @@ import aunmag.shooter.client.App
 import aunmag.shooter.data.soundGameOver
 import aunmag.shooter.items.ItemWeapon
 import aunmag.shooter.data.player
-import aunmag.shooter.environment.weapon.WeaponFactory
 import aunmag.shooter.environment.World
+import aunmag.shooter.environment.weapon.Weapon
+import aunmag.shooter.environment.weapon.WeaponType
 import org.lwjgl.opengl.GL11
 
 class ScenarioEncircling(world: World) : Scenario(world) {
@@ -114,15 +115,17 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     private fun createWeaponBonus(giver: Actor) {
         val indexMax = UtilsMath.limitNumber(wave.toFloat(), 1f, 5f).toInt()
         val index: Int = UtilsMath.randomizeBetween(1, indexMax)
-
-        val weapon = when (true) {
-            index == 1 -> WeaponFactory.makarovPistol(world)
-            index == 2 -> WeaponFactory.mp27(world)
-            index == 3 -> WeaponFactory.aks74u(world)
-            index == 4 -> WeaponFactory.pecheneg(world)
-            index == 5 -> WeaponFactory.saiga12k(world)
-            else -> WeaponFactory.laserGun(world)
-        }
+        val weapon = Weapon(
+                world,
+                when (index) {
+                    1 -> WeaponType.makarovPistol
+                    2 -> WeaponType.mp27
+                    3 -> WeaponType.aks74u
+                    4 -> WeaponType.pecheneg
+                    5 -> WeaponType.saiga12k
+                    else -> WeaponType.laserGun
+                }
+        )
 
         world.itemsWeapon.add(ItemWeapon(giver, weapon))
     }
