@@ -5,9 +5,9 @@ import aunmag.shooter.client.App
 import aunmag.shooter.client.Player
 import aunmag.shooter.client.graphics.CameraShaker
 import aunmag.shooter.client.graphics.Crosshair
-import aunmag.shooter.client.graphics.Hud
 import aunmag.shooter.scenarios.ScenarioEncircling
 import aunmag.shooter.environment.World
+import aunmag.shooter.ux.Hud
 import org.lwjgl.glfw.GLFW
 
 class Game {
@@ -16,6 +16,7 @@ class Game {
     val player = Player(world)
     private val scenario = ScenarioEncircling(world)
     private val crosshair = Crosshair(player.actor) // TODO: Change implementation
+    private val hud = Hud()
 
     fun resume() {
         world.playSounds()
@@ -35,24 +36,22 @@ class Game {
         if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
             App.main.isPause = true
         }
+
+        hud.update()
     }
 
     fun render() {
         world.render()
         player.renderUx()
         crosshair.render()
-
-        if (player.actor.hasWeapon) {
-            player.actor.weapon.magazine.renderHud()
-        }
-
         scenario.render()
-        Hud.render()
+        hud.render()
     }
 
     fun remove() {
         world.remove()
         scenario.remove()
+        hud.remove()
     }
 
 }

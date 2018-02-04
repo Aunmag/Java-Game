@@ -1,10 +1,7 @@
 package aunmag.shooter.environment.magazine;
 
-import aunmag.nightingale.Application;
 import aunmag.nightingale.utilities.Timer;
-import aunmag.nightingale.utilities.UtilsGraphics;
 import aunmag.shooter.environment.World;
-import org.lwjgl.opengl.GL11;
 
 public class Magazine {
 
@@ -72,33 +69,6 @@ public class Magazine {
         }
     }
 
-    public void renderHud() {
-        float alpha = 0.75f;
-        float height = 10f;
-        float width = Application.getWindow().getCenterX() / 4;
-        float widthLoaded = width;
-        float x = (Application.getWindow().getWidth() - width) / 2;
-        float y = Application.getWindow().getHeight() - height * 1.5f;
-
-        if (!type.isUnlimited()) {
-            widthLoaded *= cartridgesQuantity / (float) type.getCapacity();
-        }
-
-        if (isReloading && type.isAutomatic()) {
-            alpha = 1 - alpha;
-        }
-
-        UtilsGraphics.drawPrepare();
-        GL11.glLineWidth(height);
-
-        GL11.glColor4f(1, 1, 1, alpha);
-        UtilsGraphics.drawLine(x, y, x + widthLoaded, y, false);
-
-        GL11.glColor4f(1, 1, 1, 1 - alpha);
-        UtilsGraphics.drawLine(x + widthLoaded, y, x + width, y, false);
-        GL11.glLineWidth(1);
-    }
-
     /* Getters */
 
     public boolean isFull() {
@@ -107,6 +77,18 @@ public class Magazine {
 
     public boolean isEmpty() {
         return isReloading || (cartridgesQuantity == 0 && !type.isUnlimited());
+    }
+
+    public boolean isReloading() {
+        return isReloading;
+    }
+
+    public float calculateVolumeRatio() {
+        if (type.isUnlimited()) {
+            return 1.0f;
+        } else {
+            return cartridgesQuantity / (float) type.getCapacity();
+        }
     }
 
 }
