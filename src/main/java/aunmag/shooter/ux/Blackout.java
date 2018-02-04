@@ -49,6 +49,9 @@ public class Blackout {
         }
     }
 
+    /**
+     * ~/src/python/blackout_wound.py
+     */
     private void renderRectangle() {
         float alphaHurt = hurt.getCurrent();
         float alphaWound = (float) Math.pow(1.0f - player.getHealth(), 3);

@@ -11,7 +11,8 @@ import org.lwjgl.glfw.GLFW
 
 class Hud {
 
-    private val health = Parameter("Health", 0.0f, 30, 33)
+    private val health = Parameter("Health", 0.0f, 30, 32)
+    private val stamina = Parameter("Stamina", 0.0f, 30, 33)
     private val ammo = Parameter("Ammo", 0.0f, 30, 34)
     private val debug = Text(10f, 10f, "", FontStyleDefault.simple)
     private var isDebug = false
@@ -19,6 +20,7 @@ class Hud {
     fun update() {
         Parameter.update()
         health.value = player?.health ?: 0f
+        stamina.value = player?.stamina?.current ?: 0f
         ammo.value = player?.weapon?.magazine?.calculateVolumeRatio() ?: 0f
         ammo.isPulsing = player?.weapon?.magazine?.isReloading ?: false
 
@@ -29,6 +31,7 @@ class Hud {
 
     fun render() {
         health.render()
+        stamina.render()
         ammo.render()
 
         if (isDebug) {
@@ -62,6 +65,7 @@ class Hud {
 
     fun remove() {
         health.remove()
+        stamina.remove()
         ammo.remove()
         debug.remove()
     }
