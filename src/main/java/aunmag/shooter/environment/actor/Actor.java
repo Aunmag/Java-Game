@@ -7,6 +7,7 @@ import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.data.LinksKt;
 import aunmag.shooter.environment.actor.components.Hands;
+import aunmag.shooter.environment.actor.components.Stamina;
 import aunmag.shooter.environment.weapon.Weapon;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.UtilsMath;
@@ -22,7 +23,8 @@ public class Actor extends CollisionCircle {
 
     public final World world;
     public final ActorType type;
-    private float health = 1;
+    private float health = 1.0f;
+    public final Stamina stamina;
     private int kills = 0;
     private Weapon weapon = null;
     private Hands hands;
@@ -49,6 +51,7 @@ public class Actor extends CollisionCircle {
         this.type = type;
         this.world = world;
         hands = new Hands(this);
+        stamina = new Stamina(this);
 
         offsetRadians = new FluidValue(world.getTime(), 0.06f);
         offsetRadians.setFlexDegree(0.5f);
@@ -70,11 +73,32 @@ public class Actor extends CollisionCircle {
             offsetRadians.reachTargetNow();
         }
 
+        updateStamina();
         isAiming.update();
         walk();
         updateCollision();
         hands.update();
         updateWeapon();
+    }
+
+    private void updateStamina() {
+        stamina.update();
+        float spend = isAiming.getCurrent() / 2.0f;
+
+        if (isWalking()) {
+            spend += 0.7f;
+            if (isSprinting) {
+                spend += 1.8f;
+            }
+        }
+
+        if (weapon != null && weapon.magazine.isReloading()) {
+            spend += 0.2f;
+        }
+
+        if (spend != 0.0) {
+            stamina.spend(spend);
+        }
     }
 
     private void updateCollision() {
@@ -138,7 +162,8 @@ public class Actor extends CollisionCircle {
 
     private void move(double velocity, float radiansTurn) {
         if (isSprinting && isWalkingForward) {
-            velocity *= type.velocityFactorSprint;
+            float efficiency = this.stamina.calculateEfficiency();
+            velocity *= type.velocityFactorSprint * efficiency + (1 - efficiency);
         }
 
         velocity -= velocity * isAiming.getCurrent() / 2f;
@@ -255,6 +280,10 @@ public class Actor extends CollisionCircle {
 
     public boolean isAlive() {
         return health > 0;
+    }
+
+    public boolean isWalking() {
+        return isWalkingForward || isWalkingBack || isWalkingLeft || isWalkingRight;
     }
 
     public boolean getHasWeapon() {
