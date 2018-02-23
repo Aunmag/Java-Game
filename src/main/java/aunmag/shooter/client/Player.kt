@@ -20,6 +20,7 @@ class Player(world: World) {
         actor.radians = -UtilsMath.PIx0_5.toFloat()
         actor.weapon = Weapon(world, WeaponType.makarovPistol)
         world.actors.add(actor)
+        App.getCamera().mount.holder = actor
     }
 
     fun updateInput() {
@@ -64,12 +65,15 @@ class Player(world: World) {
     }
 
     fun updateCameraPosition() {
-        val camera = Application.getCamera()
-        camera.setPosition(actor.x, actor.y)
-        camera.radians = actor.radians
+        val camera = App.getCamera()
+        val window = App.getWindow()
+        val offsetMin = window.centerY / 2.0f / camera.scaleFull
+        val offset = offsetMin * (1.0f + actor.isAiming.current)
 
-        val offset = Application.getWindow().centerY / 2f * (1f + actor.isAiming.current)
-        camera.addOffset(0f, offset, true)
+        camera.radians = actor.radians
+        camera.mount.length = offset
+        camera.mount.radians = actor.radians
+        camera.mount.apply()
     }
 
     fun renderUx() {
