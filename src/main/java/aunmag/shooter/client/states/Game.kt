@@ -30,8 +30,8 @@ class Game {
         player.updateInput()
         world.update()
         scenario.update()
-        CameraShaker.update()
         player.updateCameraPosition()
+        CameraShaker.update()
 
         if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_ESCAPE)) {
             App.main.isPause = true
