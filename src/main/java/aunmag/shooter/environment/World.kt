@@ -6,24 +6,24 @@ import aunmag.nightingale.utilities.UtilsBaseOperative
 import aunmag.nightingale.utilities.UtilsGraphics
 import aunmag.shooter.environment.actor.Actor
 import aunmag.shooter.ai.Ai
-import aunmag.shooter.client.graphics.WorldGrid
 import aunmag.shooter.data.soundAmbiance
 import aunmag.shooter.data.soundAtmosphere
 import aunmag.shooter.gui.NotificationLayer
 import aunmag.shooter.items.ItemWeapon
 import aunmag.shooter.environment.projectile.Projectile
+import aunmag.shooter.environment.terrain.Terrain
 import org.lwjgl.opengl.GL11
 import java.util.ArrayList
 
 class World {
 
-    private val grid = WorldGrid() // TODO: Change this class
     val time = TimeFlow()
-    val ais: MutableList<Ai> = ArrayList()
-    val actors: MutableList<Actor> = ArrayList()
-    val projectiles: MutableList<Projectile> = ArrayList()
+    private val terrain = Terrain()
+    val ais = mutableListOf<Ai>()
+    val actors = mutableListOf<Actor>()
+    val projectiles = mutableListOf<Projectile>()
     val notifications = NotificationLayer(time)
-    val itemsWeapon: MutableList<ItemWeapon> = ArrayList()
+    val itemsWeapon = mutableListOf<ItemWeapon>()
 
     fun update() {
         time.add(Application.time.delta, true)
@@ -49,8 +49,8 @@ class World {
 
     // TODO: Optimize draw modes
     fun render() {
+        terrain.render()
         UtilsGraphics.drawPrepare()
-        grid.render()
         UtilsBaseOperative.renderAll(itemsWeapon)
         UtilsBaseOperative.renderAll(actors)
         UtilsGraphics.drawPrepare()

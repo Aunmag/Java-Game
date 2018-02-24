@@ -15,7 +15,6 @@ class Hud {
     private val stamina = Parameter("Stamina", 0.0f, 30, 33)
     private val ammo = Parameter("Ammo", 0.0f, 30, 34)
     private val debug = Text(10f, 10f, "", FontStyleDefault.simple)
-    private var isDebug = false
 
     fun update() {
         Parameter.update()
@@ -23,10 +22,6 @@ class Hud {
         stamina.value = player?.stamina?.current ?: 0f
         ammo.value = player?.weapon?.magazine?.calculateVolumeRatio() ?: 0f
         ammo.isPulsing = player?.weapon?.magazine?.isReloading ?: false
-
-        if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_F1)) {
-            isDebug = !isDebug
-        }
     }
 
     fun render() {
@@ -34,7 +29,7 @@ class Hud {
         stamina.render()
         ammo.render()
 
-        if (isDebug) {
+        if (App.main.isDebug) {
             renderDebug()
         }
     }
