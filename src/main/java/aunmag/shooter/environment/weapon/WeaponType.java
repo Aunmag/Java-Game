@@ -34,7 +34,7 @@ public class WeaponType {
     ) {
         path = "weapons/" + path;
         this.name = name;
-        this.texture = Texture.getOrCreateAsSprite(path + "/image");
+        this.texture = Texture.getOrCreate(path + "/image", Texture.Type.SPRITE);
         this.sample = AudioSample.getOrCreate(path + "/shot", AudioSampleType.OGG);
         this.shotsPerMinute = shotsPerMinute;
         this.velocity = velocity;

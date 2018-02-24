@@ -2,9 +2,11 @@ package aunmag.shooter.client;
 
 import aunmag.nightingale.Application;
 import aunmag.nightingale.Configs;
+import aunmag.nightingale.input.Input;
 import aunmag.shooter.client.states.Game;
 import aunmag.shooter.client.states.Pause;
 import org.jetbrains.annotations.Nullable;
+import org.lwjgl.glfw.GLFW;
 
 public final class App extends Application {
 
@@ -20,8 +22,9 @@ public final class App extends Application {
         main.run();
     }
 
-    public final Pause pause = new Pause();
+    private boolean isDebug = false;
     private boolean isPause = true;
+    public final Pause pause = new Pause();
     private Game game;
 
     private App() {}
@@ -42,6 +45,10 @@ public final class App extends Application {
     }
 
     public final void gameUpdate() {
+        if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_BACKSPACE)) {
+            isDebug = !isDebug;
+        }
+
         if (isPause) {
             pause.update();
         } else if (game != null) {
@@ -63,6 +70,10 @@ public final class App extends Application {
     }
 
     /* Getters */
+
+    public final boolean isDebug() {
+        return isDebug;
+    }
 
     public final boolean isPause() {
         return isPause;

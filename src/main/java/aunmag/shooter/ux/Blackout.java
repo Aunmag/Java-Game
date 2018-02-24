@@ -21,8 +21,7 @@ public class Blackout {
     public Blackout(Actor player) {
         this.player = player;
 
-        texture = Texture.getOrCreate("images/gui/blackout1600", false, false);
-        texture.scaleAsWindow();
+        texture = Texture.getOrCreate("images/gui/blackout1600", Texture.Type.STRETCHED);
         hurt = new FluidValue(player.world.getTime(), hurtTimeFadeIn);
     }
 
