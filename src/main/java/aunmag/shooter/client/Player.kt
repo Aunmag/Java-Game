@@ -52,16 +52,20 @@ class Player(world: World) {
     }
 
     private fun updateInputForCamera() {
-        val camera = Application.getCamera()
-        val delta = Application.time.delta.toFloat()
+        var zoom = Input.mouse.wheel.velocitySmooth
 
         if (Input.keyboard.isKeyDown(GLFW.GLFW_KEY_KP_ADD)) {
-            camera.scaleZoom += camera.scaleZoom * delta
-        } else if (Input.keyboard.isKeyDown(GLFW.GLFW_KEY_KP_SUBTRACT)) {
-            camera.scaleZoom -= camera.scaleZoom * delta
+            zoom += 1.0f
         }
 
-        camera.scaleZoom += Input.mouse.wheel.velocitySmooth * delta
+        if (Input.keyboard.isKeyDown(GLFW.GLFW_KEY_KP_SUBTRACT)) {
+            zoom -= 1.0f
+        }
+
+        if (zoom != 0.0f) {
+            val camera = Application.getCamera()
+            camera.scaleZoom += zoom * camera.scaleZoom * Application.time.delta.toFloat()
+        }
     }
 
     fun updateCameraPosition() {
