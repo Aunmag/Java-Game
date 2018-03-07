@@ -92,9 +92,9 @@ public class WeaponType {
             new MagazineType(ProjectileType._5_45x39mm, true, 30, 2f)
     );
 
-    public static final WeaponType pecheneg = new WeaponType(
-            "Pecheneg",
-            "pecheneg",
+    public static final WeaponType pkpPecheneg = new WeaponType(
+            "PKP Pecheneg",
+            "pkp_pecheneg",
             650,
             825,
             0.02f,
