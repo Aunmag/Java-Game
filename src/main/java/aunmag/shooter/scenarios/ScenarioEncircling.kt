@@ -121,7 +121,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
                     1 -> WeaponType.makarovPistol
                     2 -> WeaponType.mp27
                     3 -> WeaponType.aks74u
-                    4 -> WeaponType.pecheneg
+                    4 -> WeaponType.pkpPecheneg
                     5 -> WeaponType.saiga12k
                     else -> WeaponType.laserGun
                 }
