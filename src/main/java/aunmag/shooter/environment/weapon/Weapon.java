@@ -83,11 +83,4 @@ public class Weapon extends BaseObject {
         return UtilsMath.randomizeFlexibly(type.velocity, type.velocityDeflection);
     }
 
-    /* Setters */
-//
-//    public void setPosition(float x, float y) {
-//        super.setPosition(x, y);
-//        audioSource.setPosition(getPosition().x(), getPosition().y());
-//    }
-
 }
