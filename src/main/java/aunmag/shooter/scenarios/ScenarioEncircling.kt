@@ -2,7 +2,7 @@ package aunmag.shooter.scenarios
 
 import aunmag.nightingale.Application
 import aunmag.nightingale.font.FontStyleDefault
-import aunmag.nightingale.gui.GuiButtonBack
+import aunmag.nightingale.gui.GuiButton
 import aunmag.nightingale.gui.GuiLabel
 import aunmag.nightingale.gui.GuiPage
 import aunmag.nightingale.utilities.Timer
@@ -85,22 +85,22 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     private fun confinePlayerPosition() {
-        val player = player ?: return
-        player.x = limitNumber(player.x, -bordersDistance, bordersDistance)
-        player.y = limitNumber(player.y, -bordersDistance, bordersDistance)
+        val position = player?.position ?: return
+        position.x = limitNumber(position.x, -bordersDistance, bordersDistance)
+        position.y = limitNumber(position.y, -bordersDistance, bordersDistance)
     }
 
     private fun spawnZombie() {
         val distance = Application.getCamera().distanceView / 2f
         val direction = UtilsMath.randomizeBetween(0f, UtilsMath.PIx2.toFloat())
 
-        val centerX = player?.x ?: 0f
-        val centerY = player?.y ?: 0f
+        val centerX = player?.position?.x ?: 0f
+        val centerY = player?.position?.y ?: 0f
         val x = centerX - distance * Math.cos(direction.toDouble()).toFloat()
         val y = centerY - distance * Math.sin(direction.toDouble()).toFloat()
 
         val zombie = Actor(ActorType.zombieEasy, world) // TODO: Spawn different types of zombies
-        zombie.setPosition(x, y)
+        zombie.position.set(x, y)
         zombie.radians = -direction
         world.actors.add(zombie)
         world.ais.add(Ai(zombie))
@@ -149,7 +149,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
         page.add(GuiLabel(4, 3, 4, 1, title))
         page.add(GuiLabel(4, 4, 4, 1, score, FontStyleDefault.labelLight))
-        page.add(GuiButtonBack(4, 9, 4, 1, "Back to main menu"))
+        page.add(GuiButton(4, 9, 4, 1, "Back to main menu", GuiButton.actionBack))
 
         page.open()
         App.main.isPause = true

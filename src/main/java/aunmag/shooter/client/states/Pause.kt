@@ -4,7 +4,10 @@ import aunmag.nightingale.Application
 import aunmag.nightingale.basics.BaseGrid
 import aunmag.nightingale.data.DataEngine
 import aunmag.nightingale.font.FontStyleDefault
-import aunmag.nightingale.gui.*
+import aunmag.nightingale.gui.GuiButton
+import aunmag.nightingale.gui.GuiLabel
+import aunmag.nightingale.gui.GuiPage
+import aunmag.nightingale.gui.GuiManager
 import aunmag.nightingale.utilities.UtilsAudio
 import aunmag.shooter.client.Constants
 import aunmag.shooter.client.App
@@ -13,7 +16,7 @@ import aunmag.shooter.environment.World
 
 class Pause {
 
-    val buttonContinue = GuiButtonBack(4, 7, 4, 1, "Continue")
+    val buttonContinue = GuiButton(4, 7, 4, 1, "Continue", GuiButton.actionBack)
     private val theme = UtilsAudio.getOrCreateSoundOgg("sounds/music/menu")
     val world = World()
     val scenario = ScenarioPause()
@@ -41,9 +44,9 @@ class Pause {
                 FontStyleDefault.labelLight
         ))
         page.add(buttonContinue)
-        page.add(GuiButtonAction(4, 8, 4, 1, "New game") { App.main.newGame() })
-        page.add(GuiButtonLink(4, 9, 4, 1, "Help", createPageHelp()))
-        page.add(GuiButtonLink(4, 10, 4, 1, "Exit", createPageExit()))
+        page.add(GuiButton(4, 8, 4, 1, "New game") { App.main.newGame() })
+        page.add(GuiButton(4, 9, 4, 1, "Help", createPageHelp()::open))
+        page.add(GuiButton(4, 10, 4, 1, "Exit", createPageExit()::open))
 
         page.open()
     }
@@ -65,7 +68,7 @@ class Pause {
         page.add(GuiLabel(7, 7, 1, 1, "+/-", style))
         page.add(GuiLabel(4, 8, 1, 1, "Menu", style))
         page.add(GuiLabel(7, 8, 1, 1, "Escape", style))
-        page.add(GuiButtonBack(4, 10, 4, 1, "Back"))
+        page.add(GuiButton(4, 10, 4, 1, "Back", GuiButton.actionBack))
 
         return page
     }
@@ -74,8 +77,8 @@ class Pause {
         val page = GuiPage()
 
         page.add(GuiLabel(3, 3, 6, 1, "Are you sure you want to exit?"))
-        page.add(GuiButtonAction(4, 8, 4, 1, "Yes") { Application.stopRunning() })
-        page.add(GuiButtonBack(4, 9, 4, 1, "No"))
+        page.add(GuiButton(4, 8, 4, 1, "Yes") { Application.stopRunning() })
+        page.add(GuiButton(4, 9, 4, 1, "No", GuiButton.actionBack))
 
         return page
     }

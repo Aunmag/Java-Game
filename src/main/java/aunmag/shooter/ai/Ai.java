@@ -81,10 +81,10 @@ public class Ai implements BaseOperative {
             return;
         }
 
-        float x = subject.getX();
-        float y = subject.getY();
-        float targetX = targetActor.getX();
-        float targetY = targetActor.getY();
+        float x = subject.getPosition().x();
+        float y = subject.getPosition().y();
+        float targetX = targetActor.getPosition().x();
+        float targetY = targetActor.getPosition().y();
 
         memoryTarget.setDistance(UtilsMath.calculateDistanceBetween(x, y, targetX, targetY));
         memoryTarget.setDirection(UtilsMath.calculateRadiansBetween(targetX, targetY, x, y));
@@ -125,7 +125,8 @@ public class Ai implements BaseOperative {
         if (distanceMin < targetDistance && targetDistance < distanceMax) {
             float intensity = targetDistance / distanceMax;
             float radians = (float) (UtilsMath.PIx0_5) * intensity;
-            subject.addRadiansCarefully(radians * strategyDeviationWay);
+            subject.addRadians(radians * strategyDeviationWay);
+            subject.correctRadians();
         }
     }
 

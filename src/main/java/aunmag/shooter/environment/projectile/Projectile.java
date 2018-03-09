@@ -6,6 +6,7 @@ import aunmag.shooter.environment.actor.Actor;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionLine;
 import aunmag.shooter.environment.World;
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
@@ -22,13 +23,12 @@ public class Projectile extends CollisionLine {
     public Projectile(
             World world,
             ProjectileType type,
-            float x,
-            float y,
+            Vector2f position,
             float radians,
             float velocity,
             Actor shooter
     ) {
-        super(x, y);
+        super(position);
         this.world = world;
         this.type = type;
         this.velocity = velocity;
@@ -56,7 +56,7 @@ public class Projectile extends CollisionLine {
         double velocity = this.velocity * VELOCITY_FACTOR * world.getTime().getDelta();
 
         pullUpTail();
-        addPosition(
+        getPosition().add(
                 (float) (velocity * Math.cos(getRadians())),
                 (float) (velocity * Math.sin(getRadians()))
         );
@@ -72,7 +72,7 @@ public class Projectile extends CollisionLine {
             }
 
             if (Collision.calculateIsCollision(actor, this)) {
-                float distance = UtilsMath.calculateDistanceBetween(this, actor);
+                float distance = getPosition().distance(actor.getPosition());
                 if (farthestActor == null || distance > farthestActorDistance) {
                     farthestActor = actor;
                     farthestActorDistance = distance;
@@ -82,9 +82,9 @@ public class Projectile extends CollisionLine {
 
         if (farthestActor != null) {
             farthestActor.hit(velocity * type.weight, shooter);
-            addPosition(
-                    -farthestActorDistance * (float) Math.cos(getRadians()),
-                    -farthestActorDistance * (float) Math.sin(getRadians())
+            getPosition().sub(
+                    farthestActorDistance * (float) Math.cos(getRadians()),
+                    farthestActorDistance * (float) Math.sin(getRadians())
             );
             stop();
         }

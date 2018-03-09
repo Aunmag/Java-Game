@@ -20,7 +20,7 @@ class Player(world: World) {
         actor.radians = -UtilsMath.PIx0_5.toFloat()
         actor.weapon = Weapon(world, WeaponType.makarovPistol)
         world.actors.add(actor)
-        App.getCamera().mount.holder = actor
+        App.getCamera().mount.holder = actor.position
     }
 
     fun updateInput() {
@@ -48,7 +48,8 @@ class Player(world: World) {
 
     private fun updateInputForRotation() {
         val mouseSensitivity = 0.005f * (1f - actor.isAiming.current * 0.75f)
-        actor.addRadiansCarefully(Input.mouse.velocityX * mouseSensitivity)
+        actor.radians += Input.mouse.velocityX * mouseSensitivity
+        actor.correctRadians()
     }
 
     private fun updateInputForCamera() {

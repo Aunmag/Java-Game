@@ -1,15 +1,16 @@
 package aunmag.shooter.environment.weapon;
 
 import aunmag.nightingale.audio.AudioSource;
-import aunmag.nightingale.collision.CollisionEmpty;
+import aunmag.nightingale.basics.BaseObject;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.environment.weapon.components.Striker;
 import aunmag.shooter.environment.weapon.components.Trigger;
 import aunmag.shooter.environment.magazine.Magazine;
 import aunmag.shooter.environment.projectile.Projectile;
 import aunmag.shooter.environment.World;
+import org.joml.Vector2f;
 
-public class Weapon extends CollisionEmpty {
+public class Weapon extends BaseObject {
 
     public final World world;
     public final WeaponType type;
@@ -19,7 +20,7 @@ public class Weapon extends CollisionEmpty {
     private AudioSource audioSource;
 
     public Weapon(World world, WeaponType type) {
-        super(0, 0, 0);
+        super(new Vector2f(0, 0), 0);
         this.world = world;
         this.type = type;
         this.magazine = new Magazine(world, type.magazine);
@@ -44,8 +45,8 @@ public class Weapon extends CollisionEmpty {
         audioSource.play();
 
         float muzzleLength = type.texture.getCenterX();
-        float bulletX = getX() + muzzleLength * (float) Math.cos(getRadians());
-        float bulletY = getY() + muzzleLength * (float) Math.sin(getRadians());
+        float bulletX = getPosition().x() + muzzleLength * (float) Math.cos(getRadians());
+        float bulletY = getPosition().y() + muzzleLength * (float) Math.sin(getRadians());
 
         for (int bullet = 0; bullet < magazine.type.getProjectile().shot; bullet++) {
             makeBullet(bulletX, bulletY);
@@ -56,8 +57,7 @@ public class Weapon extends CollisionEmpty {
         Projectile projectile = new Projectile(
                 world,
                 magazine.type.getProjectile(),
-                x,
-                y,
+                new Vector2f(x, y),
                 calculateRandomRadians(),
                 calculateRandomVelocity(),
                 trigger.getShooter()
@@ -81,13 +81,6 @@ public class Weapon extends CollisionEmpty {
 
     private float calculateRandomVelocity() {
         return UtilsMath.randomizeFlexibly(type.velocity, type.velocityDeflection);
-    }
-
-    /* Setters */
-
-    public void setPosition(float x, float y) {
-        super.setPosition(x, y);
-        audioSource.setPosition(getX(), getY());
     }
 
 }

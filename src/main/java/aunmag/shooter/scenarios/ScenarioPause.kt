@@ -15,7 +15,7 @@ class ScenarioPause {
 
     fun refresh() {
         val camera = Application.getCamera()
-        camera.setPosition(0f, 0f)
+        camera.position.set(0f, 0f)
         camera.radians = UtilsMath.randomizeBetween(0f, UtilsMath.PIx2.toFloat())
         direction = UtilsMath.randomizeBetween(0f, UtilsMath.PIx2.toFloat())
     }
@@ -23,8 +23,8 @@ class ScenarioPause {
     fun update() {
         val camera = Application.getCamera()
         val velocity = this.velocity * App.main.pause.world.time.delta.toFloat()
-        camera.x += velocity * Math.cos(direction.toDouble()).toFloat()
-        camera.y += velocity * Math.sin(direction.toDouble()).toFloat()
+        camera.position.x += velocity * Math.cos(direction.toDouble()).toFloat()
+        camera.position.y += velocity * Math.sin(direction.toDouble()).toFloat()
     }
 
 }
