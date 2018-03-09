@@ -4,6 +4,7 @@ import aunmag.nightingale.utilities.Timer;
 import aunmag.nightingale.collision.Collision;
 import aunmag.nightingale.collision.CollisionCircle;
 import aunmag.shooter.environment.actor.Actor;
+import org.joml.Vector2f;
 import org.joml.Vector4f;
 
 public class Hands extends CollisionCircle {
@@ -14,7 +15,7 @@ public class Hands extends CollisionCircle {
     private final Actor owner;
 
     public Hands(Actor owner) {
-        super(owner.getX(), owner.getY(), radius);
+        super(new Vector2f(0, 0), radius);
         this.owner = owner;
         nextAttackTime = new Timer(owner.world.getTime(), 0.4f, 0.125f);
         updatePosition();
@@ -31,9 +32,10 @@ public class Hands extends CollisionCircle {
     }
 
     public void updatePosition() {
-        float x = owner.getX() + distance * (float) Math.cos(owner.getRadians());
-        float y = owner.getY() + distance * (float) Math.sin(owner.getRadians());
-        setPosition(x, y);
+        getPosition().set(
+                owner.getPosition().x() + distance * (float) Math.cos(owner.getRadians()),
+                owner.getPosition().y() + distance * (float) Math.sin(owner.getRadians())
+        );
     }
 
     private void attack() {

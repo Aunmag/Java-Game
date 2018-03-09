@@ -11,6 +11,7 @@ import aunmag.nightingale.utilities.UtilsMath
 import aunmag.shooter.environment.actor.Actor
 import aunmag.shooter.data.player
 import aunmag.shooter.environment.weapon.Weapon
+import org.joml.Vector2f
 import org.joml.Vector4f
 import org.lwjgl.glfw.GLFW
 
@@ -19,10 +20,15 @@ class ItemWeapon private constructor(
         y: Float,
         val weapon: Weapon,
         private var giver: Actor? = null
-) : CollisionCircle(x, y, 0f) {
+) : CollisionCircle(Vector2f(x, y), 0f) {
 
-    constructor(giver: Actor, weapon: Weapon) : this(giver.x, giver.y, weapon, giver)
     constructor(x: Float, y: Float, weapon: Weapon) : this(x, y, weapon, null)
+    constructor(giver: Actor, weapon: Weapon) : this(
+            giver.position.x,
+            giver.position.y,
+            weapon,
+            giver
+    )
 
     private val timer = Timer(weapon.world.time, 15.0)
     private val pulse = FluidValue(weapon.world.time, 0.4)
@@ -37,9 +43,8 @@ class ItemWeapon private constructor(
 
     private fun drop() {
         giver?.let {
-            x = it.x
-            y = it.y
-            text.setPosition(x, y)
+            text.position.x = it.position.x
+            text.position.y = it.position.y
         }
 
         timer.next()
@@ -93,7 +98,7 @@ class ItemWeapon private constructor(
                 && Collision.calculateIsCollision(this, player.hands)) {
 
             player.weapon?.let {
-                player.world.itemsWeapon.add(ItemWeapon(x, y, it))
+                player.world.itemsWeapon.add(ItemWeapon(position.x, position.y, it))
             }
 
             player.weapon = weapon

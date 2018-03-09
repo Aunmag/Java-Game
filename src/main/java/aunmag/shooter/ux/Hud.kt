@@ -2,12 +2,10 @@ package aunmag.shooter.ux
 
 import aunmag.nightingale.font.FontStyleDefault
 import aunmag.nightingale.font.Text
-import aunmag.nightingale.input.Input
 import aunmag.nightingale.utilities.UtilsMath
 import aunmag.shooter.client.App
 import aunmag.shooter.data.player
 import aunmag.shooter.gui.Parameter
-import org.lwjgl.glfw.GLFW
 
 class Hud {
 

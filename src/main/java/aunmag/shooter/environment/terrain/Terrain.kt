@@ -39,10 +39,10 @@ class Terrain {
     private fun renderTexture() {
         val camera = Application.getCamera()
 
-        val offsetX = calculateAxisOffset(camera.x, blockSize / 2.0f)
-        val offsetY = calculateAxisOffset(camera.y, blockSize / 2.0f)
-        val x = camera.x + offsetX - (camera.x - offsetX) % blockSize
-        val y = camera.y + offsetY - (camera.y - offsetY) % blockSize
+        val offsetX = calculateAxisOffset(camera.position.x, blockSize / 2.0f)
+        val offsetY = calculateAxisOffset(camera.position.y, blockSize / 2.0f)
+        val x = camera.position.x + offsetX - (camera.position.x - offsetX) % blockSize
+        val y = camera.position.y + offsetY - (camera.position.y - offsetY) % blockSize
         val projection = camera.calculateViewProjection(x, y, 0.0f)
 
         shader.bind()
@@ -67,20 +67,20 @@ class Terrain {
         val size = camera.distanceView / camera.scaleFull * Configs.getPixelsPerMeter()
         val center = removeRemainder(size * 1.25f, step * 2.0f) / 2.0f
 
-        val xMin = camera.x - center
-        val xMax = camera.x + center
-        val yMin = camera.y - center
-        val yMax = camera.y + center
-        val gridX = removeRemainder(camera.x, step)
-        val gridY = removeRemainder(camera.y, step)
+        val xMin = camera.position.x - center
+        val xMax = camera.position.x + center
+        val yMin = camera.position.y - center
+        val yMax = camera.position.y + center
+        val gridX = removeRemainder(camera.position.x, step)
+        val gridY = removeRemainder(camera.position.y, step)
 
         UtilsGraphics.drawPrepare()
         updateColor(0)
 
         var counter = -center + step
         while (counter <= center) {
-            val x = gridX + counter * calculateMagnitude(camera.x)
-            val y = gridY + counter * calculateMagnitude(camera.y)
+            val x = gridX + counter * calculateMagnitude(camera.position.x)
+            val y = gridY + counter * calculateMagnitude(camera.position.y)
 
             val isCenterByX = x == 0.0f
             if (isCenterByX) updateColor(1)
