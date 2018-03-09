@@ -125,7 +125,7 @@ public class Ai implements BaseOperative {
         if (distanceMin < targetDistance && targetDistance < distanceMax) {
             float intensity = targetDistance / distanceMax;
             float radians = (float) (UtilsMath.PIx0_5) * intensity;
-            subject.addRadians(radians);
+            subject.addRadians(radians * strategyDeviationWay);
             subject.correctRadians();
         }
     }
