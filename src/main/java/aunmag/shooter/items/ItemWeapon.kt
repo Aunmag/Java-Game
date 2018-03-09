@@ -43,6 +43,8 @@ class ItemWeapon private constructor(
 
     private fun drop() {
         giver?.let {
+            position.x = it.position.x
+            position.y = it.position.y
             text.position.x = it.position.x
             text.position.y = it.position.y
         }
