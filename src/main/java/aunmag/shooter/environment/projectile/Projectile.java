@@ -66,11 +66,7 @@ public class Projectile extends CollisionLine {
         Actor farthestActor = null;
         float farthestActorDistance = 0;
 
-        for (Actor actor: world.getActors()) {
-            if (!actor.isAlive() || actor.isRemoved()) {
-                continue;
-            }
-
+        for (Actor actor: world.getActors().all) {
             if (Collision.calculateIsCollision(actor, this)) {
                 float distance = getPosition().distance(actor.getPosition());
                 if (farthestActor == null || distance > farthestActorDistance) {

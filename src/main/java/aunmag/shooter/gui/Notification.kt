@@ -1,8 +1,8 @@
 package aunmag.shooter.gui
 
-import aunmag.nightingale.basics.BaseOperative
 import aunmag.nightingale.font.FontStyleDefault
 import aunmag.nightingale.gui.GuiLabel
+import aunmag.nightingale.utilities.Operative
 import aunmag.nightingale.utilities.TimeFlow
 import aunmag.nightingale.utilities.Timer
 import aunmag.nightingale.utilities.UtilsMath
@@ -11,9 +11,8 @@ internal class Notification(
         time: TimeFlow,
         title: String,
         details: String
-) : BaseOperative {
+) : Operative() {
 
-    private var isRemoved = false
     private val timeFadeIn = 0.125f
     private val timeFadeOut = 0.5f
     private val timer = Timer(time, 3.0)
@@ -34,13 +33,11 @@ internal class Notification(
         val timeInitial = timer.target - timer.duration
         val timePassed = timer.time.current - timeInitial
         val timeRemain = timer.target - timer.time.current
-        val timeFade: Float
-
-        if (timePassed < timeRemain) {
-            timeFade = (timePassed / timeFadeIn).toFloat()
+        val timeFade = if (timePassed < timeRemain) {
+            timePassed / timeFadeIn
         } else {
-            timeFade = (timeRemain / timeFadeOut).toFloat()
-        }
+            timeRemain / timeFadeOut
+        }.toFloat()
 
         val alpha = UtilsMath.limitNumber(timeFade, 0f, 1f)
 
@@ -52,15 +49,13 @@ internal class Notification(
     }
 
     override fun remove() {
+        if (isRemoved) {
+            return
+        }
+
         title.delete()
         details.delete()
-        isRemoved = true
+
+        super.remove()
     }
-
-    /* Getters */
-
-    override fun isRemoved(): Boolean {
-        return isRemoved
-    }
-
 }

@@ -39,8 +39,8 @@ public class Hands extends CollisionCircle {
     }
 
     private void attack() {
-        for (Actor opponent: owner.world.getActors()) {
-            if (!opponent.isAlive() || opponent.isRemoved()) {
+        for (Actor opponent: owner.world.getActors().all) {
+            if (!opponent.isAlive()) {
                 continue;
             }
 

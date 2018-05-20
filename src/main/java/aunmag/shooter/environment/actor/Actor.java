@@ -104,14 +104,14 @@ public class Actor extends CollisionCircle {
     }
 
     private void updateCollision() {
-        for (int index = world.getActors().size() - 1; index >= 0; index--) {
+        for (int index = world.getActors().all.size() - 1; index >= 0; index--) {
             if (index == indexOfLastCollisionCheckedActor) {
                 break;
             }
 
-            Actor opponent = world.getActors().get(index);
+            Actor opponent = world.getActors().all.get(index);
 
-            if (!opponent.isAlive() || opponent.isRemoved() || opponent == this) {
+            if (!opponent.isAlive() || opponent == this) {
                 continue;
             }
 
@@ -199,14 +199,6 @@ public class Actor extends CollisionCircle {
     public void render() {
         hands.render();
         super.render();
-    }
-
-    public void remove() {
-        if (isRemoved()) {
-            return;
-        }
-
-        super.remove();
     }
 
     private void soundHurt() {

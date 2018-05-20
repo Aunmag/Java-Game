@@ -48,9 +48,9 @@ class Hud {
         message += String.format("Spent time on updating: %s ms\n", timeSpentUpdate)
         message += String.format("Spent time on rendering: %s ms\n", timeSpentRender)
         message += String.format("Spent time total: %s ms \n", timeSpentTotal)
-        message += String.format("\nAIs: %s", world.ais.size)
-        message += String.format("\nActors: %s", world.actors.size)
-        message += String.format("\nBullets: %s", world.projectiles.size)
+        message += String.format("\nAIs: %s", world.ais.all.size)
+        message += String.format("\nActors: %s", world.actors.all.size)
+        message += String.format("\nBullets: %s", world.projectiles.all.size)
 
         debug.load(message)
         debug.orderRendering()
