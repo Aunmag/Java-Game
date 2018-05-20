@@ -1,10 +1,6 @@
-lib
 target
-
 *.log
 
 # IntelliJ IDEA:
 *.iml
 .idea
-out
-
