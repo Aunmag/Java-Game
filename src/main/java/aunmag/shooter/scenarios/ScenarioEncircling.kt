@@ -44,7 +44,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         confinePlayerPosition()
 
         val areAllZombiesSpawned = zombiesQuantityToSpawn == 0
-        if (areAllZombiesSpawned && world.actors.size == 1) {
+        if (areAllZombiesSpawned && world.actors.all.size == 1) {
             startNextWave()
         } else if (!areAllZombiesSpawned && zombiesSpawnTimer.isDone) {
             spawnZombie()
@@ -102,8 +102,8 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         val zombie = Actor(ActorType.zombieEasy, world) // TODO: Spawn different types of zombies
         zombie.position.set(x, y)
         zombie.radians = -direction
-        world.actors.add(zombie)
-        world.ais.add(Ai(zombie))
+        world.actors.all.add(zombie)
+        world.ais.all.add(Ai(zombie))
 
         if (UtilsMath.random.nextFloat() < bonusDropChance) {
             createWeaponBonus(zombie)
@@ -127,7 +127,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
                 }
         )
 
-        world.itemsWeapon.add(ItemWeapon(giver, weapon))
+        world.itemsWeapon.all.add(ItemWeapon(giver, weapon))
     }
 
     private fun gameOver(isVictory: Boolean) {

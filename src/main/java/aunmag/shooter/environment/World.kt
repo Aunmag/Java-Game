@@ -1,8 +1,8 @@
 package aunmag.shooter.environment
 
 import aunmag.nightingale.Application
+import aunmag.nightingale.utilities.OperativeManager
 import aunmag.nightingale.utilities.TimeFlow
-import aunmag.nightingale.utilities.UtilsBaseOperative
 import aunmag.nightingale.utilities.UtilsGraphics
 import aunmag.shooter.environment.actor.Actor
 import aunmag.shooter.ai.Ai
@@ -13,48 +13,35 @@ import aunmag.shooter.items.ItemWeapon
 import aunmag.shooter.environment.projectile.Projectile
 import aunmag.shooter.environment.terrain.Terrain
 import org.lwjgl.opengl.GL11
-import java.util.ArrayList
 
 class World {
 
     val time = TimeFlow()
     private val terrain = Terrain()
-    val ais = mutableListOf<Ai>()
-    val actors = mutableListOf<Actor>()
-    val projectiles = mutableListOf<Projectile>()
+    val ais = OperativeManager<Ai>()
+    val actors = OperativeManager<Actor>()
+    val projectiles = OperativeManager<Projectile>()
     val notifications = NotificationLayer(time)
-    val itemsWeapon = mutableListOf<ItemWeapon>()
+    val itemsWeapon = OperativeManager<ItemWeapon>()
 
     fun update() {
         time.add(Application.time.delta, true)
-        UtilsBaseOperative.updateAll(ais)
-        UtilsBaseOperative.updateAll(actors)
+        ais.update()
+        actors.update()
         Actor.finalizeUpdate() // TODO: Get rid of this
-        UtilsBaseOperative.updateAll(projectiles)
-        updateItemsWeapon()
+        projectiles.update()
+        itemsWeapon.update()
         notifications.update()
-    }
-
-    private fun updateItemsWeapon() {
-        for (index in itemsWeapon.size - 1 downTo 0) {
-            val item = itemsWeapon[index]
-
-            item.update()
-
-            if (item.isRemoved) {
-                itemsWeapon.removeAt(index)
-            }
-        }
     }
 
     // TODO: Optimize draw modes
     fun render() {
         terrain.render()
         UtilsGraphics.drawPrepare()
-        UtilsBaseOperative.renderAll(itemsWeapon)
-        UtilsBaseOperative.renderAll(actors)
+        itemsWeapon.render()
+        actors.render()
         UtilsGraphics.drawPrepare()
-        UtilsBaseOperative.renderAll(projectiles)
+        projectiles.render()
         GL11.glLineWidth(1f)
         notifications.render()
     }
@@ -71,10 +58,10 @@ class World {
 
     fun remove() {
         notifications.clear()
-        UtilsBaseOperative.removeAll(ais)
-        UtilsBaseOperative.removeAll(actors)
-        UtilsBaseOperative.removeAll(projectiles)
-        UtilsBaseOperative.renderAll(itemsWeapon)
+        ais.remove()
+        actors.remove()
+        projectiles.remove()
+        itemsWeapon.remove()
         stopSounds()
     }
 

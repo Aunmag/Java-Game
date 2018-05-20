@@ -100,7 +100,7 @@ class ItemWeapon private constructor(
                 && Collision.calculateIsCollision(this, player.hands)) {
 
             player.weapon?.let {
-                player.world.itemsWeapon.add(ItemWeapon(position.x, position.y, it))
+                player.world.itemsWeapon.all.add(ItemWeapon(position.x, position.y, it))
             }
 
             player.weapon = weapon

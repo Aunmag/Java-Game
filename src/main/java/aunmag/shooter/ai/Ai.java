@@ -1,15 +1,14 @@
 package aunmag.shooter.ai;
 
-import aunmag.nightingale.basics.BaseOperative;
 import aunmag.nightingale.collision.Collision;
+import aunmag.nightingale.utilities.Operative;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.utilities.Timer;
 import aunmag.shooter.environment.actor.Actor;
 import aunmag.shooter.environment.actor.ActorType;
 
-public class Ai implements BaseOperative {
+public class Ai extends Operative {
 
-    private boolean isRemoved = false;
     private final Timer reactionWatch;
     private final Timer reactionLookAround;
     private final Timer reactionChangeStrategy;
@@ -66,8 +65,8 @@ public class Ai implements BaseOperative {
     private void searchTarget() {
         memoryTarget.forget();
 
-        for (Actor actor: subject.world.getActors()) {
-            if (actor.isAlive() && !actor.isRemoved() && actor.type == ActorType.human) {
+        for (Actor actor: subject.world.getActors().all) {
+            if (actor.isAlive() && actor.type == ActorType.human) {
                 memoryTarget.setActor(actor);
                 break;
             }
@@ -142,15 +141,5 @@ public class Ai implements BaseOperative {
     }
 
     public void render() {}
-
-    public void remove() {
-        isRemoved = true;
-    }
-
-    /* Getters */
-
-    public boolean isRemoved() {
-        return isRemoved;
-    }
 
 }

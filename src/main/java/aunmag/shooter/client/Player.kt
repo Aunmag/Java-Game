@@ -19,7 +19,7 @@ class Player(world: World) {
     init {
         actor.radians = -UtilsMath.PIx0_5.toFloat()
         actor.weapon = Weapon(world, WeaponType.makarovPistol)
-        world.actors.add(actor)
+        world.actors.all.add(actor)
         App.getCamera().mount.holder = actor.position
     }
 

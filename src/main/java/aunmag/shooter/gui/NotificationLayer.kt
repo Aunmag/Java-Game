@@ -1,29 +1,28 @@
 package aunmag.shooter.gui
 
+import aunmag.nightingale.utilities.OperativeManager
 import aunmag.nightingale.utilities.TimeFlow
-import aunmag.nightingale.utilities.UtilsBaseOperative
-import java.util.ArrayList
 
 class NotificationLayer(
         private val time: TimeFlow
 ) {
 
-    private val notifications: MutableList<Notification> = ArrayList()
+    private val manager = OperativeManager<Notification>()
 
     internal fun add(title: String, details: String) {
-        notifications.add(Notification(time, title, details))
+        manager.all.add(Notification(time, title, details))
     }
 
     internal fun update() {
-        UtilsBaseOperative.updateAll(notifications)
+        manager.update()
     }
 
     internal fun render() {
-        UtilsBaseOperative.renderAll(notifications)
+        manager.render()
     }
 
     internal fun clear() {
-        UtilsBaseOperative.removeAll(notifications)
+        manager.remove()
     }
 
 }
