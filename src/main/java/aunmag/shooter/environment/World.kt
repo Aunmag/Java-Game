@@ -28,7 +28,6 @@ class World {
         time.add(Application.time.delta, true)
         ais.update()
         actors.update()
-        Actor.finalizeUpdate() // TODO: Get rid of this
         projectiles.update()
         itemsWeapon.update()
         notifications.update()

@@ -85,7 +85,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     private fun confinePlayerPosition() {
-        val position = player?.position ?: return
+        val position = player?.body?.position ?: return
         position.x = limitNumber(position.x, -bordersDistance, bordersDistance)
         position.y = limitNumber(position.y, -bordersDistance, bordersDistance)
     }
@@ -94,14 +94,13 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         val distance = Application.getCamera().distanceView / 2f
         val direction = UtilsMath.randomizeBetween(0f, UtilsMath.PIx2.toFloat())
 
-        val centerX = player?.position?.x ?: 0f
-        val centerY = player?.position?.y ?: 0f
+        val centerX = player?.body?.position?.x ?: 0f
+        val centerY = player?.body?.position?.y ?: 0f
         val x = centerX - distance * Math.cos(direction.toDouble()).toFloat()
         val y = centerY - distance * Math.sin(direction.toDouble()).toFloat()
 
-        val zombie = Actor(ActorType.zombieEasy, world) // TODO: Spawn different types of zombies
-        zombie.position.set(x, y)
-        zombie.radians = -direction
+        // TODO: Spawn different types of zombies:
+        val zombie = Actor(ActorType.zombieEasy, world, x, y, -direction)
         world.actors.all.add(zombie)
         world.ais.all.add(Ai(zombie))
 

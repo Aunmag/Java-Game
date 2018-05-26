@@ -3,9 +3,11 @@ package aunmag.shooter.environment.actor;
 import aunmag.nightingale.audio.AudioSample;
 import aunmag.nightingale.audio.AudioSampleType;
 import aunmag.nightingale.audio.AudioSource;
-import aunmag.nightingale.collision.CollisionCircle;
+import aunmag.nightingale.math.CollisionCC;
+import aunmag.nightingale.math.BodyCircle;
 import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.nightingale.utilities.FluidValue;
+import aunmag.nightingale.utilities.Operative;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.data.LinksKt;
@@ -13,22 +15,21 @@ import aunmag.shooter.environment.World;
 import aunmag.shooter.environment.actor.components.Hands;
 import aunmag.shooter.environment.actor.components.Stamina;
 import aunmag.shooter.environment.weapon.Weapon;
-import org.joml.Vector2f;
 
-public class Actor extends CollisionCircle {
+public class Actor extends Operative {
 
     private static final int[] samples = new int[6];
     private static final float velocityFactorAside = 0.6f;
     private static final float velocityFactorBack = 0.8f;
-    private static int indexOfLastCollisionCheckedActor = 0;
 
     public final World world;
     public final ActorType type;
+    public final BodyCircle body;
     private float health = 1.0f;
     public final Stamina stamina;
     private int kills = 0;
     private Weapon weapon = null;
-    private Hands hands;
+    public final Hands hands;
     private AudioSource audioSource = new AudioSource();
 
     private FluidValue offsetRadians;
@@ -47,10 +48,10 @@ public class Actor extends CollisionCircle {
         }
     }
 
-    public Actor(ActorType type, World world) {
-        super(new Vector2f(0, 0), 0.225f);
+    public Actor(ActorType type, World world, float x, float y, float radians) {
         this.type = type;
         this.world = world;
+        body = new BodyCircle(x, y, radians, 0.225f);
         hands = new Hands(this);
         stamina = new Stamina(this);
 
@@ -67,10 +68,11 @@ public class Actor extends CollisionCircle {
             return;
         }
 
+        // TODO: Fix affect on body radians:
         offsetRadians.update();
         if (offsetRadians.getTarget() != 0 && offsetRadians.isTargetReached()) {
-            addRadians(offsetRadians.getCurrent());
-            correctRadians();
+            body.radians += offsetRadians.getCurrent();
+            body.correctRadians();
             offsetRadians.setTarget(0);
             offsetRadians.reachTargetNow();
         }
@@ -104,21 +106,11 @@ public class Actor extends CollisionCircle {
     }
 
     private void updateCollision() {
-        for (int index = world.getActors().all.size() - 1; index >= 0; index--) {
-            if (index == indexOfLastCollisionCheckedActor) {
-                break;
+        for (Actor opponent: world.getActors().all) {
+            if (opponent != this) {
+                new CollisionCC(body, opponent.body).resolve();
             }
-
-            Actor opponent = world.getActors().all.get(index);
-
-            if (!opponent.isAlive() || opponent == this) {
-                continue;
-            }
-
-            preventCollisionWith(opponent);
         }
-
-        indexOfLastCollisionCheckedActor++;
     }
 
     private void updateWeapon() {
@@ -127,10 +119,10 @@ public class Actor extends CollisionCircle {
         }
 
         // TODO: Use holder:
-        weapon.setRadians(getRadians());
-        weapon.getPosition().set(
-                getPosition().x() + 0.375f * (float) Math.cos(getRadians()),
-                getPosition().y() + 0.375f * (float) Math.sin(getRadians())
+        weapon.body.radians = body.radians;
+        weapon.body.position.set(
+                body.position.x + 0.375f * (float) Math.cos(body.radians),
+                body.position.y + 0.375f * (float) Math.sin(body.radians)
         );
 
         if (isAttacking) {
@@ -170,9 +162,9 @@ public class Actor extends CollisionCircle {
         velocity *= health;
         velocity *= world.getTime().getDelta();
 
-        float moveX = (float) (velocity * Math.cos(getRadians() + radiansTurn));
-        float moveY = (float) (velocity * Math.sin(getRadians() + radiansTurn));
-        getPosition().add(moveX, moveY);
+        float moveX = (float) (velocity * Math.cos(body.radians + radiansTurn));
+        float moveY = (float) (velocity * Math.sin(body.radians + radiansTurn));
+        body.position.add(moveX, moveY);
     }
 
     public void hit(float intensity, Actor attacker) {
@@ -197,8 +189,8 @@ public class Actor extends CollisionCircle {
     }
 
     public void render() {
-        hands.render();
-        super.render();
+        body.render();
+        hands.coverage.render();
     }
 
     private void soundHurt() {
@@ -219,10 +211,6 @@ public class Actor extends CollisionCircle {
         kills++;
     }
 
-    public static void finalizeUpdate() {
-        indexOfLastCollisionCheckedActor = 0;
-    }
-
     /* Setters */
 
     private void addHealth(float addHealth) {
@@ -241,14 +229,6 @@ public class Actor extends CollisionCircle {
 
     /* Getters */
 
-    public float getRadians() {
-        if (offsetRadians != null) {
-            return super.getRadians() + offsetRadians.getCurrent();
-        } else {
-            return super.getRadians();
-        }
-    }
-
     public float getHealth() {
         return health;
     }
@@ -263,10 +243,6 @@ public class Actor extends CollisionCircle {
 
     public boolean getHasWeapon() {
         return weapon != null;
-    }
-
-    public Hands getHands() {
-        return hands;
     }
 
     public int getKills() {

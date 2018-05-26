@@ -1,6 +1,6 @@
 package aunmag.shooter.ai;
 
-import aunmag.nightingale.collision.Collision;
+import aunmag.nightingale.math.CollisionCC;
 import aunmag.nightingale.utilities.Operative;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.utilities.Timer;
@@ -80,20 +80,19 @@ public class Ai extends Operative {
             return;
         }
 
-        float x = subject.getPosition().x();
-        float y = subject.getPosition().y();
-        float targetX = targetActor.getPosition().x();
-        float targetY = targetActor.getPosition().y();
+        float x = subject.body.position.x();
+        float y = subject.body.position.y();
+        float targetX = targetActor.body.position.x();
+        float targetY = targetActor.body.position.y();
 
         memoryTarget.setDistance(UtilsMath.calculateDistanceBetween(x, y, targetX, targetY));
         memoryTarget.setDirection(UtilsMath.calculateRadiansBetween(targetX, targetY, x, y));
 
-        memoryTarget.setReached(Collision.calculateIsCollision(
-                subject.getHands(),
-                targetActor
-        ));
+        memoryTarget.setReached(
+                new CollisionCC(subject.hands.coverage, targetActor.body).isTrue()
+        );
 
-        float radiansDifference = memoryTarget.getDirection() - targetActor.getRadians();
+        float radiansDifference = memoryTarget.getDirection() - targetActor.body.radians;
         radiansDifference = UtilsMath.correctRadians(radiansDifference);
         memoryTarget.setRadiansDifference(radiansDifference);
         memoryTarget.setRadiansDifferenceAbsolute(Math.abs(radiansDifference));
@@ -105,7 +104,7 @@ public class Ai extends Operative {
 
     private void chaseTarget() {
         subject.isAttacking = false;
-        subject.setRadians(memoryTarget.getDirection());
+        subject.body.radians = memoryTarget.getDirection();
         subject.isWalkingForward = true;
         subject.isSprinting = calculateIsBehindTarget();
 
@@ -124,8 +123,8 @@ public class Ai extends Operative {
         if (distanceMin < targetDistance && targetDistance < distanceMax) {
             float intensity = targetDistance / distanceMax;
             float radians = (float) (UtilsMath.PIx0_5) * intensity;
-            subject.addRadians(radians * strategyDeviationWay);
-            subject.correctRadians();
+            subject.body.radians += radians * strategyDeviationWay;
+            subject.body.correctRadians();
         }
     }
 

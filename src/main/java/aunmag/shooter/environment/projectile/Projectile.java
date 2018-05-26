@@ -1,20 +1,19 @@
 package aunmag.shooter.environment.projectile;
 
 import aunmag.nightingale.Application;
-import aunmag.nightingale.utilities.UtilsMath;
+import aunmag.nightingale.math.BodyLine;
+import aunmag.nightingale.math.CollisionCL;
+import aunmag.nightingale.utilities.Operative;
 import aunmag.shooter.environment.actor.Actor;
-import aunmag.nightingale.collision.Collision;
-import aunmag.nightingale.collision.CollisionLine;
 import aunmag.shooter.environment.World;
-import org.joml.Vector2f;
-import org.joml.Vector4f;
 import org.lwjgl.opengl.GL11;
 
-public class Projectile extends CollisionLine {
+public class Projectile extends Operative {
 
     private static final float VELOCITY_MIN = 0.5f;
     private static final float VELOCITY_FACTOR = 1f / 5f;
 
+    public final BodyLine body;
     public final World world;
     public final ProjectileType type;
     private float velocity;
@@ -23,18 +22,19 @@ public class Projectile extends CollisionLine {
     public Projectile(
             World world,
             ProjectileType type,
-            Vector2f position,
+            float x,
+            float y,
             float radians,
             float velocity,
             Actor shooter
     ) {
-        super(position);
+        body = new BodyLine(x, y, x, y);
+        body.radians = radians;
+        body.color.set(type.color);
         this.world = world;
         this.type = type;
         this.velocity = velocity;
         this.shooter = shooter;
-        this.color = new Vector4f(type.color); // TODO: Optimize
-        setRadians(radians);
     }
 
     public void update() {
@@ -55,10 +55,10 @@ public class Projectile extends CollisionLine {
     private void updatePosition() {
         double velocity = this.velocity * VELOCITY_FACTOR * world.getTime().getDelta();
 
-        pullUpTail();
-        getPosition().add(
-                (float) (velocity * Math.cos(getRadians())),
-                (float) (velocity * Math.sin(getRadians()))
+        body.pullUpTail();
+        body.position.add(
+                (float) (velocity * Math.cos(body.radians)),
+                (float) (velocity * Math.sin(body.radians))
         );
     }
 
@@ -67,8 +67,8 @@ public class Projectile extends CollisionLine {
         float farthestActorDistance = 0;
 
         for (Actor actor: world.getActors().all) {
-            if (Collision.calculateIsCollision(actor, this)) {
-                float distance = getPosition().distance(actor.getPosition());
+            if (new CollisionCL(actor.body, body).isTrue()) {
+                float distance = body.position.distance(actor.body.position);
                 if (farthestActor == null || distance > farthestActorDistance) {
                     farthestActor = actor;
                     farthestActorDistance = distance;
@@ -78,9 +78,9 @@ public class Projectile extends CollisionLine {
 
         if (farthestActor != null) {
             farthestActor.hit(velocity * type.weight, shooter);
-            getPosition().sub(
-                    farthestActorDistance * (float) Math.cos(getRadians()),
-                    farthestActorDistance * (float) Math.sin(getRadians())
+            body.position.sub(
+                    farthestActorDistance * (float) Math.cos(body.radians),
+                    farthestActorDistance * (float) Math.sin(body.radians)
             );
             stop();
         }
@@ -100,7 +100,7 @@ public class Projectile extends CollisionLine {
 
     public void render() {
         GL11.glLineWidth(type.size * Application.getCamera().getScaleFull());
-        super.render();
+        body.render();
     }
 
     /* Getters */

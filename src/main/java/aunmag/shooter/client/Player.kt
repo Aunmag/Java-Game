@@ -13,14 +13,13 @@ import org.lwjgl.glfw.GLFW
 
 class Player(world: World) {
 
-    val actor = Actor(ActorType.human, world)
+    val actor = Actor(ActorType.human, world, 0f, 0f, -UtilsMath.PIx0_5.toFloat())
     private val blackout = Blackout(actor)
 
     init {
-        actor.radians = -UtilsMath.PIx0_5.toFloat()
         actor.weapon = Weapon(world, WeaponType.makarovPistol)
         world.actors.all.add(actor)
-        App.getCamera().mount.holder = actor.position
+        App.getCamera().mount.holder = actor.body.position
     }
 
     fun updateInput() {
@@ -48,8 +47,8 @@ class Player(world: World) {
 
     private fun updateInputForRotation() {
         val mouseSensitivity = 0.005f * (1f - actor.isAiming.current * 0.75f)
-        actor.radians += Input.mouse.velocityX * mouseSensitivity
-        actor.correctRadians()
+        actor.body.radians += Input.mouse.velocityX * mouseSensitivity
+        actor.body.correctRadians()
     }
 
     private fun updateInputForCamera() {
@@ -75,9 +74,9 @@ class Player(world: World) {
         val offsetMin = window.centerY / 2.0f / camera.scaleFull
         val offset = offsetMin * (1.0f + actor.isAiming.current)
 
-        camera.radians = actor.radians
+        camera.radians = actor.body.radians
         camera.mount.length = offset
-        camera.mount.radians = actor.radians
+        camera.mount.radians = actor.body.radians
         camera.mount.apply()
     }
 

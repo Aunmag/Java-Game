@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>aunmag.shooter</groupId>
     <artifactId>a-zombie-shooter-game</artifactId>
-    <version>0.3.90</version>
+    <version>0.3.91</version>
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -15,7 +15,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <kotlin.version>1.2.41</kotlin.version>
-        <nightingale.version>0.55.0</nightingale.version>
+        <nightingale.version>0.56.3</nightingale.version>
     </properties>
 
     <dependencies>
@@ -23,6 +23,17 @@
             <groupId>aunmag.nightingale</groupId>
             <artifactId>nightingale-engine</artifactId>
             <version>${nightingale.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-stdlib-jdk8</artifactId>
+            <version>${kotlin.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jetbrains.kotlin</groupId>
+            <artifactId>kotlin-test</artifactId>
+            <version>${kotlin.version}</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 

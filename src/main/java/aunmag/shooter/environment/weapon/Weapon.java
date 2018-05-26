@@ -1,17 +1,18 @@
 package aunmag.shooter.environment.weapon;
 
 import aunmag.nightingale.audio.AudioSource;
-import aunmag.nightingale.basics.BaseObject;
+import aunmag.nightingale.math.BodyLine;
+import aunmag.nightingale.utilities.Operative;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.environment.weapon.components.Striker;
 import aunmag.shooter.environment.weapon.components.Trigger;
 import aunmag.shooter.environment.magazine.Magazine;
 import aunmag.shooter.environment.projectile.Projectile;
 import aunmag.shooter.environment.World;
-import org.joml.Vector2f;
 
-public class Weapon extends BaseObject {
+public class Weapon extends Operative {
 
+    public final BodyLine body;
     public final World world;
     public final WeaponType type;
     public final Magazine magazine;
@@ -20,7 +21,7 @@ public class Weapon extends BaseObject {
     private AudioSource audioSource;
 
     public Weapon(World world, WeaponType type) {
-        super(new Vector2f(0, 0), 0);
+        this.body = new BodyLine(0, 0, 0, 0);
         this.world = world;
         this.type = type;
         this.magazine = new Magazine(world, type.magazine);
@@ -45,8 +46,8 @@ public class Weapon extends BaseObject {
         audioSource.play();
 
         float muzzleLength = type.texture.getCenterX();
-        float bulletX = getPosition().x() + muzzleLength * (float) Math.cos(getRadians());
-        float bulletY = getPosition().y() + muzzleLength * (float) Math.sin(getRadians());
+        float bulletX = body.position.x + muzzleLength * (float) Math.cos(body.radians);
+        float bulletY = body.position.y + muzzleLength * (float) Math.sin(body.radians);
 
         for (int bullet = 0; bullet < magazine.type.getProjectile().shot; bullet++) {
             makeBullet(bulletX, bulletY);
@@ -57,7 +58,8 @@ public class Weapon extends BaseObject {
         Projectile projectile = new Projectile(
                 world,
                 magazine.type.getProjectile(),
-                new Vector2f(x, y),
+                x,
+                y,
                 calculateRandomRadians(),
                 calculateRandomVelocity(),
                 trigger.getShooter()
@@ -76,7 +78,7 @@ public class Weapon extends BaseObject {
     }
 
     private float calculateRandomRadians() {
-        return UtilsMath.randomizeFlexibly(getRadians(), type.radiansDeflection);
+        return UtilsMath.randomizeFlexibly(body.radians, type.radiansDeflection);
     }
 
     private float calculateRandomVelocity() {

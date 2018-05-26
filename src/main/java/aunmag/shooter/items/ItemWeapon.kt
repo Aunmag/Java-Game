@@ -1,17 +1,17 @@
 package aunmag.shooter.items
 
-import aunmag.nightingale.collision.Collision
-import aunmag.nightingale.collision.CollisionCircle
 import aunmag.nightingale.font.FontStyleDefault
 import aunmag.nightingale.font.Text
 import aunmag.nightingale.input.Input
+import aunmag.nightingale.math.CollisionCC
+import aunmag.nightingale.math.BodyCircle
 import aunmag.nightingale.utilities.FluidValue
+import aunmag.nightingale.utilities.Operative
 import aunmag.nightingale.utilities.Timer
 import aunmag.nightingale.utilities.UtilsMath
 import aunmag.shooter.environment.actor.Actor
 import aunmag.shooter.data.player
 import aunmag.shooter.environment.weapon.Weapon
-import org.joml.Vector2f
 import org.joml.Vector4f
 import org.lwjgl.glfw.GLFW
 
@@ -20,16 +20,17 @@ class ItemWeapon private constructor(
         y: Float,
         val weapon: Weapon,
         private var giver: Actor? = null
-) : CollisionCircle(Vector2f(x, y), 0f) {
+) : Operative() {
 
     constructor(x: Float, y: Float, weapon: Weapon) : this(x, y, weapon, null)
     constructor(giver: Actor, weapon: Weapon) : this(
-            giver.position.x,
-            giver.position.y,
+            giver.body.position.x,
+            giver.body.position.y,
             weapon,
             giver
     )
 
+    val body = BodyCircle(x, y, 0f, 0f)
     private val timer = Timer(weapon.world.time, 15.0)
     private val pulse = FluidValue(weapon.world.time, 0.4)
     private val pulseMin = 0.12f
@@ -43,10 +44,10 @@ class ItemWeapon private constructor(
 
     private fun drop() {
         giver?.let {
-            position.x = it.position.x
-            position.y = it.position.y
-            text.position.x = it.position.x
-            text.position.y = it.position.y
+            body.position.x = it.body.position.x
+            body.position.y = it.body.position.y
+            text.position.x = it.body.position.x
+            text.position.y = it.body.position.y
         }
 
         timer.next()
@@ -75,7 +76,7 @@ class ItemWeapon private constructor(
                 0.8f
         )
 
-        color.set(0f, 0f, 0f, alpha)
+        body.color.set(0f, 0f, 0f, alpha)
         text.setColour(Vector4f(1f, 1f, 1f, alpha))
     }
 
@@ -90,17 +91,17 @@ class ItemWeapon private constructor(
             }
         }
 
-        radius = pulse.current
+        body.radius = pulse.current
     }
 
     private fun updatePickup() {
         val player: Actor = player ?: return
+        val collision = CollisionCC(body, player.body)
 
-        if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_E)
-                && Collision.calculateIsCollision(this, player.hands)) {
-
+        if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_E) && collision.isTrue) {
             player.weapon?.let {
-                player.world.itemsWeapon.all.add(ItemWeapon(position.x, position.y, it))
+                val replacement = ItemWeapon(body.position.x, body.position.y, it)
+                player.world.itemsWeapon.all.add(replacement)
             }
 
             player.weapon = weapon
@@ -110,7 +111,7 @@ class ItemWeapon private constructor(
 
     override fun render() {
         if (giver == null) {
-            super.render()
+            body.render()
             text.orderRendering()
         }
     }
