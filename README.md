@@ -14,5 +14,6 @@ To launch this game make sure you have installed [Java 8](https://www.java.com/d
 ### Build
 - Build [Nightingale Engine](https://github.com/aunmag/nightingale-engine) using appropriate version
 - Clone this repository and go to its directory
-- Run `mvn package` to build the game
-- Run `mvn exec:java` to launch it
+- Run `mvn package` to build the game. It will also make standalone jar file in `/target` folder
+- Run `mvn exec:java` to launch just built game
+- To quickly recompile and launch game without rebuilding and tests run `./run.sh`
