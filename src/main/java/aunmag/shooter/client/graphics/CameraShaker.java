@@ -40,7 +40,7 @@ public class CameraShaker {
         float radiansSum = UtilsMath.correctRadians(radiansCamera + radiansShaker);
 
         camera.setRadians(radiansSum);
-        camera.mount.setRadians(radiansSum);
+        camera.mount.radians = radiansSum;
         camera.mount.apply();
     }
 

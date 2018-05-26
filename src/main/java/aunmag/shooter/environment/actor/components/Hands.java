@@ -1,25 +1,25 @@
 package aunmag.shooter.environment.actor.components;
 
+import aunmag.nightingale.math.BodyCircle;
+import aunmag.nightingale.math.CollisionCC;
 import aunmag.nightingale.utilities.Timer;
-import aunmag.nightingale.collision.Collision;
-import aunmag.nightingale.collision.CollisionCircle;
 import aunmag.shooter.environment.actor.Actor;
-import org.joml.Vector2f;
-import org.joml.Vector4f;
 
-public class Hands extends CollisionCircle {
+public class Hands {
 
     private static final float radius = 0.34f;
     private static final float distance = radius;
     private final Timer nextAttackTime;
     private final Actor owner;
+    public final BodyCircle coverage;
 
     public Hands(Actor owner) {
-        super(new Vector2f(0, 0), radius);
         this.owner = owner;
+        coverage = new BodyCircle(0, 0, 0, radius);
+        coverage.color.set(1f, 0f, 0f, 0.5f);
+
         nextAttackTime = new Timer(owner.world.getTime(), 0.4f, 0.125f);
         updatePosition();
-        this.color = new Vector4f(1f, 0f, 0f, 0.5f);
     }
 
     public void update() {
@@ -32,23 +32,19 @@ public class Hands extends CollisionCircle {
     }
 
     public void updatePosition() {
-        getPosition().set(
-                owner.getPosition().x() + distance * (float) Math.cos(owner.getRadians()),
-                owner.getPosition().y() + distance * (float) Math.sin(owner.getRadians())
-        );
+        float radians = owner.body.radians;
+        float x = owner.body.position.x + distance * (float) Math.cos(radians);
+        float y = owner.body.position.y + distance * (float) Math.sin(radians);
+        coverage.position.set(x, y);
     }
 
     private void attack() {
         for (Actor opponent: owner.world.getActors().all) {
-            if (!opponent.isAlive()) {
-                continue;
-            }
-
             if (owner.type == opponent.type || opponent == owner) {
                 continue;
             }
 
-            if (Collision.calculateIsCollision(this, opponent)) {
+            if (new CollisionCC(coverage, opponent.body).isTrue()) {
                 opponent.hit(owner.type.damage * owner.getHealth(), owner);
             }
         }
