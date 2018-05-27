@@ -18,6 +18,8 @@ import aunmag.shooter.data.soundGameOver
 import aunmag.shooter.items.ItemWeapon
 import aunmag.shooter.data.player
 import aunmag.shooter.environment.World
+import aunmag.shooter.environment.decorations.Ground
+import aunmag.shooter.environment.decorations.GroundType
 import aunmag.shooter.environment.weapon.Weapon
 import aunmag.shooter.environment.weapon.WeaponType
 import org.lwjgl.opengl.GL11
@@ -33,7 +35,36 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     private var bonusDropChance = 0f
 
     init {
+        initializeBluffs()
         startNextWave()
+    }
+
+    private fun initializeBluffs() {
+        val ground = world.ground.all
+        val quantity = bordersDistance / 2 + 1
+        val step = 4
+        val length = step * quantity
+        val first = length / -2f + step / 2f
+        val last = first + length - step
+
+        val a = Math.PI.toFloat()
+        val b = 0f
+        val c = UtilsMath.PIx0_5.toFloat()
+        val d = UtilsMath.PIx1_5.toFloat()
+
+        var i = first + step
+        while (i <= last - step) {
+            ground.add(Ground(GroundType.bluff, i, first, a))
+            ground.add(Ground(GroundType.bluff, i, last, b))
+            ground.add(Ground(GroundType.bluff, first, i, c))
+            ground.add(Ground(GroundType.bluff, last, i, d))
+            i += step.toFloat()
+        }
+
+        ground.add(Ground(GroundType.bluffCorner, first, first, a))
+        ground.add(Ground(GroundType.bluffCorner, last, last, b))
+        ground.add(Ground(GroundType.bluffCorner, first, last, c))
+        ground.add(Ground(GroundType.bluffCorner, last, first, d))
     }
 
     override fun update() {
@@ -54,14 +85,15 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     override fun render() {
-        renderBorders()
+        if (App.main.isDebug) {
+            renderBorders()
+        }
     }
 
     private fun renderBorders() {
         val n = bordersDistance
         GL11.glLineWidth(2f)
         GL11.glColor3f(1f, 0f, 0f)
-        UtilsGraphics.drawPrepare()
         UtilsGraphics.drawLine(-n, -n, +n, -n, true)
         UtilsGraphics.drawLine(+n, -n, +n, +n, true)
         UtilsGraphics.drawLine(+n, +n, -n, +n, true)
