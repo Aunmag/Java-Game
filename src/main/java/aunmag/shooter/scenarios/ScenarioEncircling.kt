@@ -5,6 +5,7 @@ import aunmag.nightingale.font.FontStyleDefault
 import aunmag.nightingale.gui.GuiButton
 import aunmag.nightingale.gui.GuiLabel
 import aunmag.nightingale.gui.GuiPage
+import aunmag.nightingale.structures.Texture
 import aunmag.nightingale.utilities.Timer
 import aunmag.nightingale.utilities.UtilsGraphics
 import aunmag.nightingale.utilities.UtilsMath
@@ -139,7 +140,11 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     private fun createGameOverPage(isVictory: Boolean) {
-        val page = GuiPage()
+        val wallpaperName = if (isVictory) "victory" else "death"
+        val wallpaper = Texture.getOrCreate(
+                "images/wallpapers/$wallpaperName", Texture.Type.WALLPAPER
+        )
+        val page = GuiPage(wallpaper)
 
         val title = if (isVictory) "Well done!" else "You have died"
         val kills = player?.kills ?: 0

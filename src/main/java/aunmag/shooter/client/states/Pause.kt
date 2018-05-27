@@ -8,18 +8,15 @@ import aunmag.nightingale.gui.GuiButton
 import aunmag.nightingale.gui.GuiLabel
 import aunmag.nightingale.gui.GuiPage
 import aunmag.nightingale.gui.GuiManager
+import aunmag.nightingale.structures.Texture
 import aunmag.nightingale.utilities.UtilsAudio
 import aunmag.shooter.client.Constants
 import aunmag.shooter.client.App
-import aunmag.shooter.scenarios.ScenarioPause
-import aunmag.shooter.environment.World
 
 class Pause {
 
     val buttonContinue = GuiButton(4, 7, 4, 1, "Continue", GuiButton.actionBack)
     private val theme = UtilsAudio.getOrCreateSoundOgg("sounds/music/menu")
-    val world = World()
-    val scenario = ScenarioPause()
 
     init {
         theme.setIsLooped(true)
@@ -28,7 +25,10 @@ class Pause {
     }
 
     private fun createPageMain() {
-        val page = GuiPage()
+        val wallpaper = Texture.getOrCreate(
+                "images/wallpapers/main_menu", Texture.Type.WALLPAPER
+        )
+        val page = GuiPage(wallpaper)
 
         page.add(GuiLabel(3, 3, 6, 1, Constants.TITLE))
         page.add(GuiLabel(
@@ -52,7 +52,10 @@ class Pause {
     }
 
     private fun createPageHelp(): GuiPage {
-        val page = GuiPage()
+        val wallpaper = Texture.getOrCreate(
+                "images/wallpapers/help", Texture.Type.WALLPAPER
+        )
+        val page = GuiPage(wallpaper)
         val style = FontStyleDefault.labelLight
 
         page.add(GuiLabel(5, 1, 2, 1, "Help"))
@@ -74,7 +77,10 @@ class Pause {
     }
 
     private fun createPageExit(): GuiPage {
-        val page = GuiPage()
+        val wallpaper = Texture.getOrCreate(
+                "images/wallpapers/exit", Texture.Type.WALLPAPER
+        )
+        val page = GuiPage(wallpaper)
 
         page.add(GuiLabel(3, 3, 6, 1, "Are you sure you want to exit?"))
         page.add(GuiButton(4, 8, 4, 1, "Yes") { Application.stopRunning() })
@@ -94,8 +100,6 @@ class Pause {
 
     fun update() {
         GuiManager.update()
-        world.update()
-        scenario.update()
 
         if (GuiManager.isShouldClose()) {
             App.main.isPause = false
@@ -103,12 +107,7 @@ class Pause {
     }
 
     fun render() {
-        world.render()
         GuiManager.render()
-    }
-
-    fun remove() {
-        world.remove()
     }
 
 }
