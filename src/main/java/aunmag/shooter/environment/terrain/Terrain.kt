@@ -18,7 +18,7 @@ class Terrain {
         textureQuantity = Math.ceil(
                 (Application.getCamera().distanceView + blockSize) / blockSize.toDouble()
         ).toInt()
-        val size = blockSize * textureQuantity
+        val size = (blockSize * textureQuantity).toFloat()
 
         texture = Texture.getOrCreate(
             "images/textures/terrain",
@@ -50,6 +50,7 @@ class Terrain {
         shader.setUniformQuantity(textureQuantity)
         texture.bind()
         texture.render()
+        shader.setUniformQuantity(1)
     }
 
     private fun calculateAxisOffset(value: Float, offset: Float): Float {

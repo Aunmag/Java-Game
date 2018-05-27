@@ -4,6 +4,7 @@ import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.math.BodyLine;
 import aunmag.nightingale.utilities.Operative;
 import aunmag.nightingale.utilities.UtilsMath;
+import aunmag.shooter.client.App;
 import aunmag.shooter.environment.weapon.components.Striker;
 import aunmag.shooter.environment.weapon.components.Trigger;
 import aunmag.shooter.environment.magazine.Magazine;
@@ -33,6 +34,11 @@ public class Weapon extends Operative {
     }
 
     public void update() {
+        float muzzleLength = type.texture.getCenterX();
+        float x = body.positionTail.x + muzzleLength * (float) Math.cos(body.radians);
+        float y = body.positionTail.y + muzzleLength * (float) Math.sin(body.radians);
+        body.position.set(x, y);
+
         magazine.update();
 
         if (trigger.isFiring() && striker.isCocked() && magazine.takeNextCartridge()) {
@@ -83,6 +89,19 @@ public class Weapon extends Operative {
 
     private float calculateRandomVelocity() {
         return UtilsMath.randomizeFlexibly(type.velocity, type.velocityDeflection);
+    }
+
+    @Override
+    public void render() {
+        if (App.main.isDebug()) {
+            body.render();
+        } else {
+            type.texture.renderOnWorld(
+                    body.positionTail.x,
+                    body.positionTail.y,
+                    body.radians
+            );
+        }
     }
 
 }

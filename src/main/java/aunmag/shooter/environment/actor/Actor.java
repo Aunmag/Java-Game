@@ -9,6 +9,7 @@ import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.Operative;
 import aunmag.nightingale.utilities.UtilsMath;
+import aunmag.shooter.client.App;
 import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.data.LinksKt;
 import aunmag.shooter.environment.World;
@@ -120,7 +121,7 @@ public class Actor extends Operative {
 
         // TODO: Use holder:
         weapon.body.radians = body.radians;
-        weapon.body.position.set(
+        weapon.body.positionTail.set(
                 body.position.x + 0.375f * (float) Math.cos(body.radians),
                 body.position.y + 0.375f * (float) Math.sin(body.radians)
         );
@@ -189,8 +190,20 @@ public class Actor extends Operative {
     }
 
     public void render() {
-        body.render();
-        hands.coverage.render();
+        if (weapon != null) {
+            weapon.render();
+        }
+
+        if (App.main.isDebug()) {
+            body.render();
+            hands.coverage.render();
+        } else {
+            type.texture.renderOnWorld(
+                    body.position.x,
+                    body.position.y,
+                    body.radians
+            );
+        }
     }
 
     private void soundHurt() {
