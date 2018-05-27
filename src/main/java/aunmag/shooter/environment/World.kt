@@ -6,6 +6,7 @@ import aunmag.nightingale.utilities.TimeFlow
 import aunmag.nightingale.utilities.UtilsGraphics
 import aunmag.shooter.environment.actor.Actor
 import aunmag.shooter.ai.Ai
+import aunmag.shooter.client.App
 import aunmag.shooter.data.soundAmbiance
 import aunmag.shooter.data.soundAtmosphere
 import aunmag.shooter.gui.NotificationLayer
@@ -36,10 +37,18 @@ class World {
     // TODO: Optimize draw modes
     fun render() {
         terrain.render()
-        UtilsGraphics.drawPrepare()
         itemsWeapon.render()
+
+        if (App.main.isDebug) {
+            UtilsGraphics.drawPrepare()
+        }
+
         actors.render()
-        UtilsGraphics.drawPrepare()
+
+        if (!App.main.isDebug) {
+            UtilsGraphics.drawPrepare()
+        }
+
         projectiles.render()
         GL11.glLineWidth(1f)
         notifications.render()

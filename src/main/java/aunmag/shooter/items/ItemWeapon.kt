@@ -1,14 +1,13 @@
 package aunmag.shooter.items
 
+import aunmag.nightingale.Application
 import aunmag.nightingale.font.FontStyleDefault
 import aunmag.nightingale.font.Text
 import aunmag.nightingale.input.Input
 import aunmag.nightingale.math.CollisionCC
 import aunmag.nightingale.math.BodyCircle
-import aunmag.nightingale.utilities.FluidValue
-import aunmag.nightingale.utilities.Operative
-import aunmag.nightingale.utilities.Timer
-import aunmag.nightingale.utilities.UtilsMath
+import aunmag.nightingale.utilities.*
+import aunmag.shooter.client.App
 import aunmag.shooter.environment.actor.Actor
 import aunmag.shooter.data.player
 import aunmag.shooter.environment.weapon.Weapon
@@ -35,6 +34,7 @@ class ItemWeapon private constructor(
     private val pulse = FluidValue(weapon.world.time, 0.4)
     private val pulseMin = 0.12f
     private val pulseMax = 0.18f
+    private val rotationVelocity = Math.PI.toFloat()
     private val text = Text(x, y, weapon.type.name, FontStyleDefault.simple)
 
     init {
@@ -62,6 +62,7 @@ class ItemWeapon private constructor(
             } else {
                 updateColor()
                 updateRadius()
+                updateWeapon()
                 updatePickup()
             }
         } else if (!owner.isAlive || owner.isRemoved) {
@@ -76,7 +77,7 @@ class ItemWeapon private constructor(
                 0.8f
         )
 
-        body.color.set(0f, 0f, 0f, alpha)
+        body.color.set(0.9f, 0.9f, 0.9f, alpha / 2f)
         text.setColour(Vector4f(1f, 1f, 1f, alpha))
     }
 
@@ -92,6 +93,12 @@ class ItemWeapon private constructor(
         }
 
         body.radius = pulse.current
+    }
+
+    private fun updateWeapon() {
+        weapon.body.positionTail.set(body.position)
+        weapon.body.radians -= rotationVelocity * weapon.world.time.delta.toFloat()
+        weapon.update()
     }
 
     private fun updatePickup() {
@@ -111,8 +118,14 @@ class ItemWeapon private constructor(
 
     override fun render() {
         if (giver == null) {
+            UtilsGraphics.drawPrepare()
             body.render()
             text.orderRendering()
+
+            if (!App.main.isDebug) {
+                Application.getShader().bind()
+                weapon.render()
+            }
         }
     }
 
