@@ -1,6 +1,7 @@
 package aunmag.shooter.client.states
 
 import aunmag.nightingale.input.Input
+import aunmag.nightingale.utilities.UtilsGraphics
 import aunmag.shooter.client.App
 import aunmag.shooter.client.Player
 import aunmag.shooter.client.graphics.CameraShaker
@@ -43,6 +44,7 @@ class Game {
     fun render() {
         world.render()
         player.renderUx()
+        UtilsGraphics.drawPrepare()
         crosshair.render()
         scenario.render()
         hud.render()

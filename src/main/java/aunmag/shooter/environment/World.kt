@@ -9,6 +9,7 @@ import aunmag.shooter.ai.Ai
 import aunmag.shooter.client.App
 import aunmag.shooter.data.soundAmbiance
 import aunmag.shooter.data.soundAtmosphere
+import aunmag.shooter.environment.decorations.Ground
 import aunmag.shooter.gui.NotificationLayer
 import aunmag.shooter.items.ItemWeapon
 import aunmag.shooter.environment.projectile.Projectile
@@ -19,6 +20,7 @@ class World {
 
     val time = TimeFlow()
     private val terrain = Terrain()
+    val ground = OperativeManager<Ground>()
     val ais = OperativeManager<Ai>()
     val actors = OperativeManager<Actor>()
     val projectiles = OperativeManager<Projectile>()
@@ -37,6 +39,7 @@ class World {
     // TODO: Optimize draw modes
     fun render() {
         terrain.render()
+        ground.render()
         itemsWeapon.render()
 
         if (App.main.isDebug) {
@@ -66,6 +69,7 @@ class World {
 
     fun remove() {
         notifications.clear()
+        ground.remove()
         ais.remove()
         actors.remove()
         projectiles.remove()

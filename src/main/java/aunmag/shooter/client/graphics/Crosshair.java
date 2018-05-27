@@ -38,7 +38,6 @@ public class Crosshair {
 
         float alpha = UtilsMath.limitNumber(distance, 0, 1);
         GL11.glColor4f(1f, 1f, 1f, alpha);
-        UtilsGraphics.drawPrepare();
         UtilsGraphics.drawLine(x + offsetX1, y + offsetY1, x + offsetX2, y + offsetY2, true);
         UtilsGraphics.drawLine(x - offsetX1, y - offsetY1, x - offsetX2, y - offsetY2, true);
 
