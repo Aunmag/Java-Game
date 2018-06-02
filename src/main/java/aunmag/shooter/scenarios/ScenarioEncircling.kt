@@ -109,7 +109,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
         wave++
         zombiesQuantityToSpawn = wave * wave * zombiesQuantityInitial
-        bonusDropChance = wave * 1.2f / zombiesQuantityToSpawn
+        bonusDropChance = wave * 0.8f / zombiesQuantityToSpawn
 
         world.notifications.add(
                 "Wave $wave/$waveFinal",
