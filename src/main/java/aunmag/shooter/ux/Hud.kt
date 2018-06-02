@@ -51,6 +51,8 @@ class Hud {
         message += String.format("\nAIs: %s", world.ais.all.size)
         message += String.format("\nActors: %s", world.actors.all.size)
         message += String.format("\nBullets: %s", world.projectiles.all.size)
+        message += String.format("\nGround: %s", world.ground.all.size)
+        message += String.format("\nTrees: %s", world.trees.all.size)
 
         debug.load(message)
         debug.orderRendering()
