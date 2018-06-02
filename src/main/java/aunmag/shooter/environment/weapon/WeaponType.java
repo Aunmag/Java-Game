@@ -78,7 +78,7 @@ public class WeaponType {
             0.06f,
             0.06f,
             false,
-            new MagazineType(ProjectileType._12_76_Magnum, false, 2, 0.25f)
+            new MagazineType(ProjectileType._12_76_Magnum, false, 2, 0.5f)
     );
 
     public static final WeaponType aks74u = new WeaponType(
