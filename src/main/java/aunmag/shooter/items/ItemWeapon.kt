@@ -103,7 +103,7 @@ class ItemWeapon private constructor(
 
     private fun updatePickup() {
         val player: Actor = player ?: return
-        val collision = CollisionCC(body, player.body)
+        val collision = CollisionCC(body, player.hands.coverage)
 
         if (Input.keyboard.isKeyPressed(GLFW.GLFW_KEY_E) && collision.isTrue) {
             player.weapon?.let {
