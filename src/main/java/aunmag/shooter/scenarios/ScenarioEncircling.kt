@@ -18,8 +18,8 @@ import aunmag.shooter.data.soundGameOver
 import aunmag.shooter.items.ItemWeapon
 import aunmag.shooter.data.player
 import aunmag.shooter.environment.World
-import aunmag.shooter.environment.decorations.Ground
-import aunmag.shooter.environment.decorations.GroundType
+import aunmag.shooter.environment.decorations.Decoration
+import aunmag.shooter.environment.decorations.DecorationType
 import aunmag.shooter.environment.weapon.Weapon
 import aunmag.shooter.environment.weapon.WeaponType
 import org.lwjgl.opengl.GL11
@@ -54,17 +54,17 @@ class ScenarioEncircling(world: World) : Scenario(world) {
 
         var i = first + step
         while (i <= last - step) {
-            ground.add(Ground(GroundType.bluff, i, first, a))
-            ground.add(Ground(GroundType.bluff, i, last, b))
-            ground.add(Ground(GroundType.bluff, first, i, c))
-            ground.add(Ground(GroundType.bluff, last, i, d))
+            ground.add(Decoration(DecorationType.bluff, i, first, a))
+            ground.add(Decoration(DecorationType.bluff, i, last, b))
+            ground.add(Decoration(DecorationType.bluff, first, i, c))
+            ground.add(Decoration(DecorationType.bluff, last, i, d))
             i += step.toFloat()
         }
 
-        ground.add(Ground(GroundType.bluffCorner, first, first, a))
-        ground.add(Ground(GroundType.bluffCorner, last, last, b))
-        ground.add(Ground(GroundType.bluffCorner, first, last, c))
-        ground.add(Ground(GroundType.bluffCorner, last, first, d))
+        ground.add(Decoration(DecorationType.bluffCorner, first, first, a))
+        ground.add(Decoration(DecorationType.bluffCorner, last, last, b))
+        ground.add(Decoration(DecorationType.bluffCorner, first, last, c))
+        ground.add(Decoration(DecorationType.bluffCorner, last, first, d))
     }
 
     override fun update() {
