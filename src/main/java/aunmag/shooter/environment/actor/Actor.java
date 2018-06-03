@@ -5,8 +5,8 @@ import aunmag.nightingale.audio.AudioSampleType;
 import aunmag.nightingale.audio.AudioSource;
 import aunmag.nightingale.math.CollisionCC;
 import aunmag.nightingale.math.BodyCircle;
+import aunmag.nightingale.math.Kinetics;
 import aunmag.nightingale.utilities.FluidToggle;
-import aunmag.nightingale.utilities.FluidValue;
 import aunmag.nightingale.utilities.Operative;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.shooter.client.App;
@@ -26,6 +26,7 @@ public class Actor extends Operative {
     public final World world;
     public final ActorType type;
     public final BodyCircle body;
+    public final Kinetics kinetics;
     private float health = 1.0f;
     public final Stamina stamina;
     private int kills = 0;
@@ -33,7 +34,6 @@ public class Actor extends Operative {
     public final Hands hands;
     private AudioSource audioSource = new AudioSource();
 
-    private FluidValue offsetRadians;
     public boolean isWalkingForward = false;
     public boolean isWalkingBack = false;
     public boolean isWalkingLeft = false;
@@ -56,11 +56,10 @@ public class Actor extends Operative {
         hands = new Hands(this);
         stamina = new Stamina(this);
 
-        offsetRadians = new FluidValue(world.getTime(), 0.06f);
-        offsetRadians.setFlexDegree(0.5f);
-
         isAiming = new FluidToggle(world.getTime(), 0.25f);
         isAiming.setFlexDegree(1.25f);
+
+        kinetics = new Kinetics(type.weight);
     }
 
     public void update() {
@@ -69,18 +68,10 @@ public class Actor extends Operative {
             return;
         }
 
-        // TODO: Fix affect on body radians:
-        offsetRadians.update();
-        if (offsetRadians.getTarget() != 0 && offsetRadians.isTargetReached()) {
-            body.radians += offsetRadians.getCurrent();
-            body.correctRadians();
-            offsetRadians.setTarget(0);
-            offsetRadians.reachTargetNow();
-        }
-
         updateStamina();
         isAiming.update();
         walk();
+        updateKinetics();
         updateCollision();
         hands.update();
         updateWeapon();
@@ -106,10 +97,25 @@ public class Actor extends Operative {
         }
     }
 
+    protected void updateKinetics() {
+        float timeDelta = (float) world.getTime().getDelta();
+        kinetics.update(timeDelta);
+
+        float velocityX = kinetics.velocity.x * timeDelta;
+        float velocityY = kinetics.velocity.y * timeDelta;
+        body.position.add(velocityX, velocityY);
+        body.radians += kinetics.velocityRadians * timeDelta;
+    }
+
     private void updateCollision() {
         for (Actor opponent: world.getActors().all) {
             if (opponent != this) {
-                new CollisionCC(body, opponent.body).resolve();
+                CollisionCC collision = new CollisionCC(body, opponent.body);
+
+                if (collision.isTrue()) {
+                    Kinetics.interact(kinetics, opponent.kinetics);
+                    collision.resolve();
+                }
             }
         }
     }
@@ -161,11 +167,11 @@ public class Actor extends Operative {
 
         velocity -= velocity * isAiming.getCurrent() / 2f;
         velocity *= health;
-        velocity *= world.getTime().getDelta();
 
         float moveX = (float) (velocity * Math.cos(body.radians + radiansTurn));
         float moveY = (float) (velocity * Math.sin(body.radians + radiansTurn));
-        body.position.add(moveX, moveY);
+        float timeDelta = (float) world.getTime().getDelta();
+        kinetics.addEnergy(moveX, moveY, timeDelta);
     }
 
     public void hit(float intensity, Actor attacker) {
@@ -182,7 +188,7 @@ public class Actor extends Operative {
     }
 
     public void push(float force) {
-        offsetRadians.setTarget(force);
+        kinetics.velocityRadians += force * 8f;
 
         if (this == LinksKt.getPlayer()) {
             CameraShaker.shake(force);
