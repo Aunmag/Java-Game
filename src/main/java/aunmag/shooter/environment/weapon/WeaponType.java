@@ -24,7 +24,6 @@ public class WeaponType {
 
     private WeaponType(
             String name,
-            String path,
             int shotsPerMinute,
             float velocity,
             float radiansDeflection,
@@ -32,7 +31,7 @@ public class WeaponType {
             boolean isAutomatic,
             MagazineType magazine
     ) {
-        path = "weapons/" + path;
+        String path = "weapons/" + name;
         this.name = name;
         this.texture = Texture.getOrCreate(path + "/image", Texture.Type.SPRITE);
         this.sample = AudioSample.getOrCreate(path + "/shot", AudioSampleType.OGG);
@@ -50,7 +49,6 @@ public class WeaponType {
 
     public static final WeaponType laserGun = new WeaponType(
             "Laser Gun",
-            "laser_gun",
             1200,
             5000,
             0f,
@@ -59,9 +57,8 @@ public class WeaponType {
             new MagazineType(ProjectileType.LASER, true, 0, 0)
     );
 
-    public static final WeaponType makarovPistol = new WeaponType(
-            "Makarov pistol",
-            "makarov_pistol",
+    public static final WeaponType pm = new WeaponType(
+            "PM",
             SEMI_AUTO_SHOTS_PER_MINUTE,
             315,
             0.05f,
@@ -72,7 +69,6 @@ public class WeaponType {
 
     public static final WeaponType mp27 = new WeaponType(
             "MP-27",
-            "mp_27",
             SEMI_AUTO_SHOTS_PER_MINUTE,
             410,
             0.06f,
@@ -83,7 +79,6 @@ public class WeaponType {
 
     public static final WeaponType aks74u = new WeaponType(
             "AKS-74U",
-            "aks_74u",
             675,
             735,
             0.03f,
@@ -94,7 +89,6 @@ public class WeaponType {
 
     public static final WeaponType pkpPecheneg = new WeaponType(
             "PKP Pecheneg",
-            "pkp_pecheneg",
             650,
             825,
             0.02f,
@@ -105,7 +99,6 @@ public class WeaponType {
 
     public static final WeaponType saiga12k = new WeaponType(
             "Saiga-12K",
-            "saiga_12k",
             SEMI_AUTO_SHOTS_PER_MINUTE,
             410,
             0.07f,
