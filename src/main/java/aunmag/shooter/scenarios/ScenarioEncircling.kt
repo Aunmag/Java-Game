@@ -150,7 +150,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         val weapon = Weapon(
                 world,
                 when (index) {
-                    1 -> WeaponType.makarovPistol
+                    1 -> WeaponType.pm
                     2 -> WeaponType.mp27
                     3 -> WeaponType.aks74u
                     4 -> WeaponType.pkpPecheneg
