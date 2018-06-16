@@ -8,7 +8,6 @@ class AiMemoryTarget : AiMemory() {
     var distance = 0f
     var direction = 0f
     var radiansDifference = 0f
-    var radiansDifferenceAbsolute = 0f
     var isReached = false
 
     init {

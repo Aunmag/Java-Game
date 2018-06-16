@@ -10,6 +10,7 @@ public class ActorType {
     public final float strength;
     public final float velocity;
     public final float velocityFactorSprint;
+    public final float velocityRotation;
     public final float damage;
     public final Texture texture;
 
@@ -19,12 +20,14 @@ public class ActorType {
             float strength,
             float velocity,
             float velocityFactorSprint,
+            float velocityRotation,
             float damage
     ) {
         this.weight = weight;
         this.strength = strength;
         this.velocity = velocity;
         this.velocityFactorSprint = velocityFactorSprint;
+        this.velocityRotation = velocityRotation;
         this.damage = damage;
 
         texture = Texture.getOrCreate("actors/" + name + "/image", Texture.Type.SPRITE);
@@ -38,6 +41,7 @@ public class ActorType {
             strengthDefault,
             2.58f,
             2.76f,
+            8,
             strengthDefault / 16f
     );
 
@@ -47,6 +51,7 @@ public class ActorType {
             0.4f * human.strength,
             0.4f * human.velocity,
             0.4f * human.velocityFactorSprint,
+            0.4f * human.velocityRotation,
             human.strength / 8f
     );
 
@@ -56,6 +61,7 @@ public class ActorType {
             0.6f * human.strength,
             0.6f * human.velocity,
             0.6f * human.velocityFactorSprint,
+            0.6f * human.velocityRotation,
             human.strength / 6f
     );
 
@@ -65,6 +71,7 @@ public class ActorType {
             0.8f * human.strength,
             0.8f * human.velocity,
             0.8f * human.velocityFactorSprint,
+            0.8f * human.velocityRotation,
             human.strength / 4f
     );
 

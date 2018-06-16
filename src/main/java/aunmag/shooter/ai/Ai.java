@@ -92,30 +92,54 @@ public class Ai extends Operative {
                 new CollisionCC(subject.hands.coverage, targetActor.body).isTrue()
         );
 
-        float radiansDifference = memoryTarget.getDirection() - targetActor.body.radians;
-        radiansDifference = UtilsMath.correctRadians(radiansDifference);
-        memoryTarget.setRadiansDifference(radiansDifference);
-        memoryTarget.setRadiansDifferenceAbsolute(Math.abs(radiansDifference));
+        memoryTarget.setRadiansDifference(UtilsMath.radiansDifference(
+                targetActor.body.radians,
+                memoryTarget.getDirection()
+        ));
     }
 
-    private boolean calculateIsBehindTarget() {
-        return memoryTarget.getRadiansDifferenceAbsolute() < UtilsMath.PIx0_5;
+    public boolean isBehindTarget() {
+        return Math.abs(memoryTarget.getRadiansDifference()) < UtilsMath.PIx0_5;
     }
 
     private void chaseTarget() {
         subject.isAttacking = false;
-        subject.body.radians = memoryTarget.getDirection();
         subject.isWalkingForward = true;
-        subject.isSprinting = calculateIsBehindTarget();
+        subject.isSprinting = isBehindTarget();
+        turnOnTarget();
 
-        if (memoryTarget.getRadiansDifferenceAbsolute() > UtilsMath.PIx0_5) {
+        if (Math.abs(memoryTarget.getRadiansDifference()) > UtilsMath.PIx0_5) {
             deviateRoute();
         } else if (memoryTarget.getDistance() < 3) {
             subject.isSprinting = true;
         }
     }
 
+    private void turnOnTarget() {
+        float timeDelta = (float) subject.world.getTime().getDelta();
+        float velocity = subject.type.velocityRotation;
+        float velocityFuture = (subject.kinetics.velocityRadians + velocity) * timeDelta;
+        float radiansDifference = UtilsMath.radiansDifference(
+                subject.body.radians,
+                memoryTarget.getDirection()
+        );
+
+        if (velocityFuture * 2f > Math.abs(radiansDifference)) {
+            return;
+        }
+
+        if (radiansDifference < 0) {
+            velocity = -velocity;
+        }
+
+        subject.kinetics.addEnergy(0, 0, velocity, timeDelta);
+    }
+
+    @Deprecated
     private void deviateRoute() {
+        // TODO: Fix this method. It was broken after new AI rotation system
+
+        /*
         float targetDistance = memoryTarget.getDistance();
         int distanceMin = 3;
         int distanceMax = 20;
@@ -126,6 +150,7 @@ public class Ai extends Operative {
             subject.body.radians += radians * strategyDeviationWay;
             subject.body.correctRadians();
         }
+        */
     }
 
     private void doAttack() {

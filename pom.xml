@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>aunmag.shooter</groupId>
     <artifactId>a-zombie-shooter-game</artifactId>
-    <version>0.3.103</version>
+    <version>0.3.104</version>
 
     <properties>
         <main-class>aunmag.shooter.client.App</main-class>
@@ -16,7 +16,7 @@
         <maven.compiler.source>${java.version}</maven.compiler.source>
         <maven.compiler.target>${java.version}</maven.compiler.target>
         <kotlin.version>1.2.41</kotlin.version>
-        <nightingale.version>0.56.9</nightingale.version>
+        <nightingale.version>0.56.12</nightingale.version>
     </properties>
 
     <dependencies>
