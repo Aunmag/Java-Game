@@ -17,7 +17,7 @@ class Player(world: World) {
     private val blackout = Blackout(actor)
 
     init {
-        actor.weapon = Weapon(world, WeaponType.makarovPistol)
+        actor.weapon = Weapon(world, WeaponType.pm)
         world.actors.all.add(actor)
         App.getCamera().mount.holder = actor.body.position
     }

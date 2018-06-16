@@ -171,7 +171,7 @@ public class Actor extends Operative {
         float moveX = (float) (velocity * Math.cos(body.radians + radiansTurn));
         float moveY = (float) (velocity * Math.sin(body.radians + radiansTurn));
         float timeDelta = (float) world.getTime().getDelta();
-        kinetics.addEnergy(moveX, moveY, timeDelta);
+        kinetics.addEnergy(moveX, moveY, 0, timeDelta);
     }
 
     public void hit(float intensity, Actor attacker) {
