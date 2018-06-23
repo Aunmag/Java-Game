@@ -33,6 +33,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     private var zombiesQuantityToSpawn = 0
     private val zombiesSpawnTimer = Timer(world.time, 0.5)
     private var bonusDropChance = 0f
+    private var bonusDropLaserGun = 0.00005f
 
     init {
         initializeBluffs()
@@ -137,40 +138,38 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         world.actors.all.add(zombie)
         world.ais.all.add(Ai(zombie))
 
-        if (UtilsMath.random.nextFloat() < bonusDropChance) {
-            createWeaponBonus(zombie)
+        val randomFloat = UtilsMath.random.nextFloat()
+        if (randomFloat <= bonusDropLaserGun) {
+            createWeaponBonus(zombie, WeaponType.laserGun)
+        } else if (randomFloat <= bonusDropChance) {
+            createWeaponBonus(zombie, selectRandomWeaponType())
         }
 
         zombiesQuantityToSpawn--
     }
 
-    private fun createWeaponBonus(giver: Actor) {
-        val maxNumber = 2 * UtilsMath.limitNumber(
-                wave.toFloat(),
-                1f,
-                waveFinal.toFloat()
-        ).toInt()
+    private fun selectRandomWeaponType(): WeaponType {
+        return when (UtilsMath.randomizeBetween(1, 2 * wave)) {
+            1 -> WeaponType.pm
+            2 -> WeaponType.tt
+            3 -> WeaponType.mp43sawedOff
+            4 -> WeaponType.mp27
+            5 -> WeaponType.pp91kedr
+            6 -> WeaponType.pp19bizon
+            7 -> WeaponType.aks74u
+            8 -> WeaponType.ak74m
+            9 -> WeaponType.rpk74
+            10 -> WeaponType.saiga12k
+            11 -> WeaponType.pkm
+            12 -> WeaponType.pkpPecheneg
+            else -> WeaponType.laserGun
+        }
+    }
 
-        val weapon = Weapon(
-                world,
-                when (UtilsMath.randomizeBetween(1, maxNumber)) {
-                    1 -> WeaponType.pm
-                    2 -> WeaponType.tt
-                    3 -> WeaponType.mp43sawedOff
-                    4 -> WeaponType.mp27
-                    5 -> WeaponType.pp91kedr
-                    6 -> WeaponType.pp19bizon
-                    7 -> WeaponType.aks74u
-                    8 -> WeaponType.ak74m
-                    9 -> WeaponType.rpk74
-                    10 -> WeaponType.saiga12k
-                    11 -> WeaponType.pkm
-                    12 -> WeaponType.pkpPecheneg
-                    else -> WeaponType.laserGun
-                }
-        )
-
-        world.itemsWeapon.all.add(ItemWeapon(giver, weapon))
+    private fun createWeaponBonus(giver: Actor, weaponType: WeaponType) {
+        val weapon = Weapon(world, weaponType)
+        val bonus = ItemWeapon(giver, weapon)
+        world.itemsWeapon.all.add(bonus)
     }
 
     private fun gameOver(isVictory: Boolean) {
