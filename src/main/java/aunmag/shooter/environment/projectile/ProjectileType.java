@@ -40,6 +40,13 @@ public class ProjectileType {
             0.08f
     );
 
+    public static final ProjectileType _7_62x25mm_tt = new ProjectileType(
+            1,
+            5.5f,
+            6f,
+            0.08f
+    );
+
     public static final ProjectileType _12_76_Magnum = new ProjectileType(
             16,
             48f,

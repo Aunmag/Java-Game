@@ -67,6 +67,26 @@ public class WeaponType {
             new MagazineType(ProjectileType._9x18mm_Makarov, true, 8, 2f)
     );
 
+    public static final WeaponType tt = new WeaponType(
+            "TT",
+            SEMI_AUTO_SHOTS_PER_MINUTE,
+            430,
+            0.05f,
+            0.012f,
+            false,
+            new MagazineType(ProjectileType._7_62x25mm_tt, true, 8, 2f)
+    );
+
+    public static final WeaponType mp43sawedOff = new WeaponType(
+            "MP-43 sawed-off",
+            SEMI_AUTO_SHOTS_PER_MINUTE,
+            260,
+            0.08f,
+            0.07f,
+            false,
+            new MagazineType(ProjectileType._12_76_Magnum, false, 2, 0.5f)
+    );
+
     public static final WeaponType mp27 = new WeaponType(
             "MP-27",
             SEMI_AUTO_SHOTS_PER_MINUTE,
@@ -75,6 +95,26 @@ public class WeaponType {
             0.06f,
             false,
             new MagazineType(ProjectileType._12_76_Magnum, false, 2, 0.5f)
+    );
+
+    public static final WeaponType pp91kedr = new WeaponType(
+            "PP-91 Kedr",
+            900,
+            310,
+            0.04f,
+            0.011f,
+            true,
+            new MagazineType(ProjectileType._9x18mm_Makarov, true, 20, 1.8f)
+    );
+
+    public static final WeaponType pp19bizon = new WeaponType(
+            "PP-19 Bizon",
+            680,
+            330,
+            0.03f,
+            0.012f,
+            true,
+            new MagazineType(ProjectileType._9x18mm_Makarov, true, 64, 1.5f)
     );
 
     public static final WeaponType aks74u = new WeaponType(
@@ -87,14 +127,24 @@ public class WeaponType {
             new MagazineType(ProjectileType._5_45x39mm, true, 30, 2f)
     );
 
-    public static final WeaponType pkpPecheneg = new WeaponType(
-            "PKP Pecheneg",
-            650,
-            825,
-            0.02f,
-            0.035f,
+    public static final WeaponType ak74m = new WeaponType(
+            "AK-74M",
+            600,
+            910,
+            0.028f,
+            0.022f,
             true,
-            new MagazineType(ProjectileType._7_62x54mmR, true, 200, 8f)
+            new MagazineType(ProjectileType._5_45x39mm, true, 30, 2f)
+    );
+
+    public static final WeaponType rpk74 = new WeaponType(
+            "RPK-74",
+            600,
+            960,
+            0.025f,
+            0.03f,
+            true,
+            new MagazineType(ProjectileType._5_45x39mm, true, 45, 2f)
     );
 
     public static final WeaponType saiga12k = new WeaponType(
@@ -105,6 +155,26 @@ public class WeaponType {
             0.05f,
             false,
             new MagazineType(ProjectileType._12_76_Magnum, true, 8, 2f)
+    );
+
+    public static final WeaponType pkm = new WeaponType(
+            "PKM",
+            650,
+            825,
+            0.021f,
+            0.035f,
+            true,
+            new MagazineType(ProjectileType._7_62x54mmR, true, 200, 8f)
+    );
+
+    public static final WeaponType pkpPecheneg = new WeaponType(
+            "PKP Pecheneg",
+            650,
+            825,
+            0.02f,
+            0.035f,
+            true,
+            new MagazineType(ProjectileType._7_62x54mmR, true, 200, 8f)
     );
 
 }
