@@ -145,16 +145,27 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     private fun createWeaponBonus(giver: Actor) {
-        val indexMax = UtilsMath.limitNumber(wave.toFloat(), 1f, 5f).toInt()
-        val index: Int = UtilsMath.randomizeBetween(1, indexMax)
+        val maxNumber = 2 * UtilsMath.limitNumber(
+                wave.toFloat(),
+                1f,
+                waveFinal.toFloat()
+        ).toInt()
+
         val weapon = Weapon(
                 world,
-                when (index) {
+                when (UtilsMath.randomizeBetween(1, maxNumber)) {
                     1 -> WeaponType.pm
-                    2 -> WeaponType.mp27
-                    3 -> WeaponType.aks74u
-                    4 -> WeaponType.pkpPecheneg
-                    5 -> WeaponType.saiga12k
+                    2 -> WeaponType.tt
+                    3 -> WeaponType.mp43sawedOff
+                    4 -> WeaponType.mp27
+                    5 -> WeaponType.pp91kedr
+                    6 -> WeaponType.pp19bizon
+                    7 -> WeaponType.aks74u
+                    8 -> WeaponType.ak74m
+                    9 -> WeaponType.rpk74
+                    10 -> WeaponType.saiga12k
+                    11 -> WeaponType.pkm
+                    12 -> WeaponType.pkpPecheneg
                     else -> WeaponType.laserGun
                 }
         )
