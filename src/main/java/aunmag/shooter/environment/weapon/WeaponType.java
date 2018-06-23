@@ -164,7 +164,7 @@ public class WeaponType {
             0.021f,
             0.035f,
             true,
-            new MagazineType(ProjectileType._7_62x54mmR, true, 200, 8f)
+            new MagazineType(ProjectileType._7_62x54mmR, true, 100, 8f)
     );
 
     public static final WeaponType pkpPecheneg = new WeaponType(
@@ -174,7 +174,7 @@ public class WeaponType {
             0.02f,
             0.035f,
             true,
-            new MagazineType(ProjectileType._7_62x54mmR, true, 200, 8f)
+            new MagazineType(ProjectileType._7_62x54mmR, true, 100, 8f)
     );
 
 }
