@@ -26,14 +26,14 @@ public class ProjectileType {
 
     /* Types */
 
-    public static final ProjectileType LASER = new ProjectileType(
+    public static final ProjectileType laser = new ProjectileType(
             1,
             1f,
             0f,
             0.05f
     );
 
-    public static final ProjectileType _9x18mm_Makarov = new ProjectileType(
+    public static final ProjectileType _9x18mm_pm = new ProjectileType(
             1,
             6.1f,
             6f,
@@ -47,7 +47,7 @@ public class ProjectileType {
             0.08f
     );
 
-    public static final ProjectileType _12_76_Magnum = new ProjectileType(
+    public static final ProjectileType _12_76_magnum = new ProjectileType(
             16,
             48f,
             4f,

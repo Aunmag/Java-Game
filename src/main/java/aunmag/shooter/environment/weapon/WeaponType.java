@@ -54,7 +54,7 @@ public class WeaponType {
             0f,
             0f,
             true,
-            new MagazineType(ProjectileType.LASER, true, 0, 0)
+            new MagazineType(ProjectileType.laser, true, 0, 0)
     );
 
     public static final WeaponType pm = new WeaponType(
@@ -64,7 +64,7 @@ public class WeaponType {
             0.05f,
             0.01f,
             false,
-            new MagazineType(ProjectileType._9x18mm_Makarov, true, 8, 2f)
+            new MagazineType(ProjectileType._9x18mm_pm, true, 8, 2f)
     );
 
     public static final WeaponType tt = new WeaponType(
@@ -84,7 +84,7 @@ public class WeaponType {
             0.08f,
             0.07f,
             false,
-            new MagazineType(ProjectileType._12_76_Magnum, false, 2, 0.5f)
+            new MagazineType(ProjectileType._12_76_magnum, false, 2, 0.5f)
     );
 
     public static final WeaponType mp27 = new WeaponType(
@@ -94,7 +94,7 @@ public class WeaponType {
             0.06f,
             0.06f,
             false,
-            new MagazineType(ProjectileType._12_76_Magnum, false, 2, 0.5f)
+            new MagazineType(ProjectileType._12_76_magnum, false, 2, 0.5f)
     );
 
     public static final WeaponType pp91kedr = new WeaponType(
@@ -104,7 +104,7 @@ public class WeaponType {
             0.04f,
             0.011f,
             true,
-            new MagazineType(ProjectileType._9x18mm_Makarov, true, 20, 1.8f)
+            new MagazineType(ProjectileType._9x18mm_pm, true, 20, 1.8f)
     );
 
     public static final WeaponType pp19bizon = new WeaponType(
@@ -114,7 +114,7 @@ public class WeaponType {
             0.03f,
             0.012f,
             true,
-            new MagazineType(ProjectileType._9x18mm_Makarov, true, 64, 1.5f)
+            new MagazineType(ProjectileType._9x18mm_pm, true, 64, 1.5f)
     );
 
     public static final WeaponType aks74u = new WeaponType(
@@ -154,7 +154,7 @@ public class WeaponType {
             0.07f,
             0.05f,
             false,
-            new MagazineType(ProjectileType._12_76_Magnum, true, 8, 2f)
+            new MagazineType(ProjectileType._12_76_magnum, true, 8, 2f)
     );
 
     public static final WeaponType pkm = new WeaponType(
