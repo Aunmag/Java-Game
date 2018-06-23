@@ -45,7 +45,12 @@ class World {
     // TODO: Optimize draw modes
     fun render() {
         terrain.render()
-        ground.render()
+
+        if (!App.main.isDebug) {
+            Application.getShader().bind()
+            ground.render()
+        }
+
         itemsWeapon.render()
 
         if (App.main.isDebug) {
