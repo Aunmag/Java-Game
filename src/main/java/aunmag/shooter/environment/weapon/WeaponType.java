@@ -8,7 +8,11 @@ import aunmag.shooter.environment.projectile.ProjectileType;
 
 public class WeaponType {
 
-    private static final int SEMI_AUTO_SHOTS_PER_MINUTE = 400;
+    public static final float GRIP_OFFSET_STEP = 1f / 32f;
+    public static final float GRIP_OFFSET_SHORT = GRIP_OFFSET_STEP * 2;
+    public static final float GRIP_OFFSET_COMMON = GRIP_OFFSET_STEP * 9;
+    public static final float GRIP_OFFSET_EXTENDED = GRIP_OFFSET_STEP * 10;
+    public static final int SEMI_AUTO_SHOTS_PER_MINUTE = 400;
 
     public final String name;
     public final Texture texture;
@@ -21,6 +25,8 @@ public class WeaponType {
     public final float recoilDeflection;
     public final boolean isAutomatic;
     public final MagazineType magazine;
+    public final float length;
+    public final float gripOffset;
 
     private WeaponType(
             String name,
@@ -29,7 +35,8 @@ public class WeaponType {
             float radiansDeflection,
             float recoil,
             boolean isAutomatic,
-            MagazineType magazine
+            MagazineType magazine,
+            float gripOffset
     ) {
         String path = "weapons/" + name;
         this.name = name;
@@ -43,6 +50,8 @@ public class WeaponType {
         this.recoilDeflection = recoil * 0.25f;
         this.isAutomatic = isAutomatic;
         this.magazine = magazine;
+        this.length = texture.getWidth();
+        this.gripOffset = gripOffset;
     }
 
     /* Types */
@@ -54,7 +63,8 @@ public class WeaponType {
             0f,
             0f,
             true,
-            new MagazineType(ProjectileType.laser, true, 0, 0)
+            new MagazineType(ProjectileType.laser, true, 0, 0),
+            GRIP_OFFSET_EXTENDED
     );
 
     public static final WeaponType pm = new WeaponType(
@@ -64,7 +74,8 @@ public class WeaponType {
             0.05f,
             0.01f,
             false,
-            new MagazineType(ProjectileType._9x18mm_pm, true, 8, 2f)
+            new MagazineType(ProjectileType._9x18mm_pm, true, 8, 2f),
+            GRIP_OFFSET_SHORT
     );
 
     public static final WeaponType tt = new WeaponType(
@@ -74,7 +85,8 @@ public class WeaponType {
             0.05f,
             0.012f,
             false,
-            new MagazineType(ProjectileType._7_62x25mm_tt, true, 8, 2f)
+            new MagazineType(ProjectileType._7_62x25mm_tt, true, 8, 2f),
+            GRIP_OFFSET_SHORT
     );
 
     public static final WeaponType mp43sawedOff = new WeaponType(
@@ -84,7 +96,8 @@ public class WeaponType {
             0.08f,
             0.07f,
             false,
-            new MagazineType(ProjectileType._12_76_magnum, false, 2, 0.5f)
+            new MagazineType(ProjectileType._12_76_magnum, false, 2, 0.5f),
+            GRIP_OFFSET_STEP * 4
     );
 
     public static final WeaponType mp27 = new WeaponType(
@@ -94,7 +107,8 @@ public class WeaponType {
             0.06f,
             0.06f,
             false,
-            new MagazineType(ProjectileType._12_76_magnum, false, 2, 0.5f)
+            new MagazineType(ProjectileType._12_76_magnum, false, 2, 0.5f),
+            GRIP_OFFSET_EXTENDED
     );
 
     public static final WeaponType pp91kedr = new WeaponType(
@@ -104,7 +118,8 @@ public class WeaponType {
             0.04f,
             0.011f,
             true,
-            new MagazineType(ProjectileType._9x18mm_pm, true, 20, 1.8f)
+            new MagazineType(ProjectileType._9x18mm_pm, true, 20, 1.8f),
+            GRIP_OFFSET_COMMON
     );
 
     public static final WeaponType pp19bizon = new WeaponType(
@@ -114,7 +129,8 @@ public class WeaponType {
             0.03f,
             0.012f,
             true,
-            new MagazineType(ProjectileType._9x18mm_pm, true, 64, 1.5f)
+            new MagazineType(ProjectileType._9x18mm_pm, true, 64, 1.5f),
+            GRIP_OFFSET_COMMON
     );
 
     public static final WeaponType aks74u = new WeaponType(
@@ -124,7 +140,8 @@ public class WeaponType {
             0.03f,
             0.02f,
             true,
-            new MagazineType(ProjectileType._5_45x39mm, true, 30, 2f)
+            new MagazineType(ProjectileType._5_45x39mm, true, 30, 2f),
+            GRIP_OFFSET_COMMON
     );
 
     public static final WeaponType ak74m = new WeaponType(
@@ -134,7 +151,8 @@ public class WeaponType {
             0.028f,
             0.022f,
             true,
-            new MagazineType(ProjectileType._5_45x39mm, true, 30, 2f)
+            new MagazineType(ProjectileType._5_45x39mm, true, 30, 2f),
+            GRIP_OFFSET_COMMON
     );
 
     public static final WeaponType rpk74 = new WeaponType(
@@ -144,7 +162,8 @@ public class WeaponType {
             0.025f,
             0.03f,
             true,
-            new MagazineType(ProjectileType._5_45x39mm, true, 45, 2f)
+            new MagazineType(ProjectileType._5_45x39mm, true, 45, 2f),
+            GRIP_OFFSET_COMMON
     );
 
     public static final WeaponType saiga12k = new WeaponType(
@@ -154,7 +173,8 @@ public class WeaponType {
             0.07f,
             0.05f,
             false,
-            new MagazineType(ProjectileType._12_76_magnum, true, 8, 2f)
+            new MagazineType(ProjectileType._12_76_magnum, true, 8, 2f),
+            GRIP_OFFSET_COMMON
     );
 
     public static final WeaponType pkm = new WeaponType(
@@ -164,7 +184,8 @@ public class WeaponType {
             0.021f,
             0.035f,
             true,
-            new MagazineType(ProjectileType._7_62x54mmR, true, 100, 8f)
+            new MagazineType(ProjectileType._7_62x54mmR, true, 100, 8f),
+            GRIP_OFFSET_EXTENDED
     );
 
     public static final WeaponType pkpPecheneg = new WeaponType(
@@ -174,7 +195,8 @@ public class WeaponType {
             0.02f,
             0.035f,
             true,
-            new MagazineType(ProjectileType._7_62x54mmR, true, 100, 8f)
+            new MagazineType(ProjectileType._7_62x54mmR, true, 100, 8f),
+            GRIP_OFFSET_EXTENDED
     );
 
 }

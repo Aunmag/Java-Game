@@ -7,7 +7,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>aunmag.shooter</groupId>
     <artifactId>a-zombie-shooter-game</artifactId>
-    <version>0.3.109</version>
+    <version>0.3.110</version>
 
     <properties>
         <main-class>aunmag.shooter.client.App</main-class>

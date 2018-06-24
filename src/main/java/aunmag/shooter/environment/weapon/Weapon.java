@@ -47,16 +47,11 @@ public class Weapon extends Operative {
     }
 
     private void makeShot() {
+        audioSource.play();
         trigger.getShooter().push(calculateRandomRecoil());
 
-        audioSource.play();
-
-        float muzzleLength = type.texture.getCenterX();
-        float bulletX = body.position.x + muzzleLength * (float) Math.cos(body.radians);
-        float bulletY = body.position.y + muzzleLength * (float) Math.sin(body.radians);
-
         for (int bullet = 0; bullet < magazine.type.getProjectile().shot; bullet++) {
-            makeBullet(bulletX, bulletY);
+            makeBullet(body.position.x, body.position.y);
         }
     }
 

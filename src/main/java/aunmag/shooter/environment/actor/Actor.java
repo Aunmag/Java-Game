@@ -125,11 +125,15 @@ public class Actor extends Operative {
             return;
         }
 
-        // TODO: Use holder:
         weapon.body.radians = body.radians;
+
+        float offset = ActorType.HANDS_DISTANCE;
+        offset += weapon.type.length / 2;
+        offset -= weapon.type.gripOffset;
+
         weapon.body.positionTail.set(
-                body.position.x + 0.375f * (float) Math.cos(body.radians),
-                body.position.y + 0.375f * (float) Math.sin(body.radians)
+                body.position.x + offset * (float) Math.cos(body.radians),
+                body.position.y + offset * (float) Math.sin(body.radians)
         );
 
         if (isAttacking) {
