@@ -68,4 +68,28 @@ public class ActorType {
             0.3f
     );
 
+    public static final ActorType zombieAgile = new ActorType(
+            "zombie agile",
+            0.8f * zombie.radius,
+            40_000,
+            0.6f * zombie.strength,
+            1.5f * zombie.velocity,
+            zombie.velocityFactorSprint,
+            2.5f * zombie.velocityRotation,
+            0.4f * zombie.damage,
+            0.1f
+    );
+
+    public static final ActorType zombieHeavy = new ActorType(
+            "zombie heavy",
+            1.2f * zombie.radius,
+            120_000,
+            2.0f * zombie.strength,
+            0.7f * zombie.velocity,
+            zombie.velocityFactorSprint,
+            0.7f * zombie.velocityRotation,
+            1.8f * zombie.damage,
+            0.4f
+    );
+
 }
