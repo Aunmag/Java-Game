@@ -1,9 +1,6 @@
-package aunmag.shooter.environment.actor.components
+package aunmag.shooter.environment.actor
 
-import aunmag.nightingale.input.Input
 import aunmag.nightingale.utilities.UtilsMath
-import aunmag.shooter.environment.actor.Actor
-import org.lwjgl.glfw.GLFW
 
 class Stamina(private val actor: Actor) {
 
