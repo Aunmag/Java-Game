@@ -2,6 +2,7 @@ package aunmag.shooter.ai;
 
 import aunmag.nightingale.math.CollisionCC;
 import aunmag.nightingale.utilities.Operative;
+import aunmag.nightingale.utilities.TimeFlow;
 import aunmag.nightingale.utilities.UtilsMath;
 import aunmag.nightingale.utilities.Timer;
 import aunmag.shooter.environment.actor.Actor;
@@ -19,9 +20,11 @@ public class Ai extends Operative {
     public Ai(Actor subject) {
         this.subject = subject;
 
-        reactionWatch = new Timer(subject.world.getTime(), 0.3f, 0.125f);
-        reactionLookAround = new Timer(subject.world.getTime(), 2f, 0.125f);
-        reactionChangeStrategy = new Timer(subject.world.getTime(), 30f, 0.125f);
+        TimeFlow time = subject.world.getTime();
+        float reaction = subject.type.reaction;
+        reactionWatch = new Timer(time, reaction, 0.125f);
+        reactionLookAround = new Timer(time, reaction * 8, 0.125f);
+        reactionChangeStrategy = new Timer(time, reaction * 128, 0.125f);
 
         changeStrategy();
     }

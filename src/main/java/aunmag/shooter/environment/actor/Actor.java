@@ -9,19 +9,27 @@ import aunmag.nightingale.math.Kinetics;
 import aunmag.nightingale.utilities.FluidToggle;
 import aunmag.nightingale.utilities.Operative;
 import aunmag.nightingale.utilities.UtilsMath;
+import aunmag.shooter.Config;
 import aunmag.shooter.client.App;
 import aunmag.shooter.client.graphics.CameraShaker;
 import aunmag.shooter.data.LinksKt;
 import aunmag.shooter.environment.World;
-import aunmag.shooter.environment.actor.components.Hands;
-import aunmag.shooter.environment.actor.components.Stamina;
 import aunmag.shooter.environment.weapon.Weapon;
 
 public class Actor extends Operative {
 
+    @Config public static final float VELOCITY_FACTOR_ASIDE = 0.6f;
+    @Config public static final float VELOCITY_FACTOR_BACK = 0.8f;
+    @Config public static final float AIMING_TIME = 0.25f;
+    @Config public static final float AIMING_FLEX = 1.25f;
+    @Config public static final float AIMING_VELOCITY_AFFECT = 0.5f;
+    @Config public static final float AIMING_STAMINA_COST = 0.5f;
+    @Config public static final float WALKING_STAMINA_COST = 0.7f;
+    @Config public static final float SPRINT_STAMINA_COST = 1.8f;
+    @Config public static final float RELOADING_STAMINA_COST = 0.2f;
+    @Config public static final float PAIN_THRESHOLD = 0.005f;
+
     private static final int[] samples = new int[6];
-    private static final float velocityFactorAside = 0.6f;
-    private static final float velocityFactorBack = 0.8f;
 
     public final World world;
     public final ActorType type;
@@ -52,12 +60,12 @@ public class Actor extends Operative {
     public Actor(ActorType type, World world, float x, float y, float radians) {
         this.type = type;
         this.world = world;
-        body = new BodyCircle(x, y, radians, 0.225f);
+        body = new BodyCircle(x, y, radians, type.radius);
         hands = new Hands(this);
         stamina = new Stamina(this);
 
-        isAiming = new FluidToggle(world.getTime(), 0.25f);
-        isAiming.setFlexDegree(1.25f);
+        isAiming = new FluidToggle(world.getTime(), AIMING_TIME);
+        isAiming.setFlexDegree(AIMING_FLEX);
 
         kinetics = new Kinetics(type.weight);
     }
@@ -79,17 +87,17 @@ public class Actor extends Operative {
 
     private void updateStamina() {
         stamina.update();
-        float spend = isAiming.getCurrent() / 2.0f;
+        float spend = AIMING_STAMINA_COST * isAiming.getCurrent();
 
         if (isWalking()) {
-            spend += 0.7f;
+            spend += WALKING_STAMINA_COST;
             if (isSprinting) {
-                spend += 1.8f;
+                spend += SPRINT_STAMINA_COST;
             }
         }
 
         if (weapon != null && weapon.magazine.isReloading()) {
-            spend += 0.2f;
+            spend += RELOADING_STAMINA_COST;
         }
 
         if (spend != 0.0) {
@@ -127,7 +135,7 @@ public class Actor extends Operative {
 
         weapon.body.radians = body.radians;
 
-        float offset = ActorType.HANDS_DISTANCE;
+        float offset = Hands.DISTANCE;
         offset += weapon.type.length / 2;
         offset -= weapon.type.gripOffset;
 
@@ -151,25 +159,25 @@ public class Actor extends Operative {
         }
 
         if (isWalkingBack) {
-            move(type.velocity * velocityFactorBack, (float) -Math.PI);
+            move(type.velocity * VELOCITY_FACTOR_BACK, -Math.PI);
         }
 
         if (isWalkingLeft) {
-            move(type.velocity * velocityFactorAside, (float) UtilsMath.PIx0_5);
+            move(type.velocity * VELOCITY_FACTOR_ASIDE, +UtilsMath.PIx0_5);
         }
 
         if (isWalkingRight) {
-            move(type.velocity * velocityFactorAside, (float) -UtilsMath.PIx0_5);
+            move(type.velocity * VELOCITY_FACTOR_ASIDE, -UtilsMath.PIx0_5);
         }
     }
 
-    private void move(double velocity, float radiansTurn) {
+    private void move(double velocity, double radiansTurn) {
         if (isSprinting && isWalkingForward) {
             float efficiency = this.stamina.calculateEfficiency();
             velocity *= type.velocityFactorSprint * efficiency + (1 - efficiency);
         }
 
-        velocity -= velocity * isAiming.getCurrent() / 2f;
+        velocity -= velocity * isAiming.getCurrent() * AIMING_VELOCITY_AFFECT;
         velocity *= health;
 
         float moveX = (float) (velocity * Math.cos(body.radians + radiansTurn));
@@ -178,17 +186,18 @@ public class Actor extends Operative {
         kinetics.addEnergy(moveX, moveY, 0, timeDelta);
     }
 
-    public void hit(float intensity, Actor attacker) {
-        intensity /= type.strength;
+    public void hit(float damage, Actor attacker) {
+        damage /= type.strength;
 
-        boolean wasDeadBefore = !isAlive();
-        addHealth(-intensity);
+        boolean wasAlive = isAlive();
 
-        if (!wasDeadBefore && !isAlive() && attacker != null) {
+        addHealth(-damage);
+
+        if (wasAlive && !isAlive() && attacker != null) {
             attacker.increaseKills();
         }
 
-        push(UtilsMath.random.nextBoolean() ? intensity : -intensity);
+        push(UtilsMath.random.nextBoolean() ? damage : -damage);
     }
 
     public void push(float force) {
@@ -241,7 +250,7 @@ public class Actor extends Operative {
 
         if (!isAlive()) {
             remove();
-        } else if (addHealth < -0.005) {
+        } else if (addHealth < -PAIN_THRESHOLD) {
             soundHurt();
         }
     }
