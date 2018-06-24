@@ -32,8 +32,12 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     private val zombiesQuantityInitial = 5
     private var zombiesQuantityToSpawn = 0
     private val zombiesSpawnTimer = Timer(world.time, 0.5)
+    private var zombie = ActorType.zombie
+    private var zombieAgile = ActorType.zombieAgile
+    private var zombieHeavy = ActorType.zombieHeavy
     private var bonusDropChance = 0f
     private var bonusDropLaserGun = 0.00005f
+    private val difficulty = 1.1f
 
     init {
         initializeBluffs()
@@ -112,9 +116,32 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         zombiesQuantityToSpawn = wave * wave * zombiesQuantityInitial
         bonusDropChance = wave * 0.8f / zombiesQuantityToSpawn
 
+        updateZombiesTypes()
+
         world.notifications.add(
                 "Wave $wave/$waveFinal",
                 "Kill $zombiesQuantityToSpawn zombies"
+        )
+    }
+
+    private fun updateZombiesTypes() {
+        val skillFactor = (difficulty - 1) * (wave - 1) + 1
+        zombie = creteZombieType(ActorType.zombie, skillFactor)
+        zombieAgile = creteZombieType(ActorType.zombieAgile, skillFactor)
+        zombieHeavy = creteZombieType(ActorType.zombieHeavy, skillFactor)
+    }
+
+    private fun creteZombieType(type: ActorType, skillFactor: Float): ActorType {
+        return ActorType(
+                type.name,
+                type.radius,
+                type.weight,
+                skillFactor * type.strength,
+                skillFactor * type.velocity,
+                type.velocityFactorSprint,
+                type.velocityRotation,
+                skillFactor * type.strength,
+                type.reaction
         )
     }
 
@@ -125,6 +152,12 @@ class ScenarioEncircling(world: World) : Scenario(world) {
     }
 
     private fun spawnZombie() {
+        val type = when (UtilsMath.randomizeBetween(1, 4)) {
+            1 -> zombieAgile
+            2 -> zombieHeavy
+            else -> zombie
+        }
+
         val distance = Application.getCamera().distanceView / 2f
         val direction = UtilsMath.randomizeBetween(0f, UtilsMath.PIx2.toFloat())
 
@@ -133,8 +166,7 @@ class ScenarioEncircling(world: World) : Scenario(world) {
         val x = centerX - distance * Math.cos(direction.toDouble()).toFloat()
         val y = centerY - distance * Math.sin(direction.toDouble()).toFloat()
 
-        // TODO: Spawn different types of zombies:
-        val zombie = Actor(ActorType.zombie, world, x, y, -direction)
+        val zombie = Actor(type, world, x, y, -direction)
         world.actors.all.add(zombie)
         world.ais.all.add(Ai(zombie))
 
